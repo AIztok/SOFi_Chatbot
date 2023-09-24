@@ -1,0 +1,76 @@
+!#!Info  Example:       Coupling of displacements and rotations between structrual lines
+!#!Info  Keyword:       beam elements ; coupling
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 25
+!#!Info  Date:          $Date: 2009-03-31 02:04:38 +0200 (Di, 31 Mrz 2009) $
+
+
+prog aqua urs:1
+head material and sections
+echo full 0
+norm DIN EN199X-200X
+conc 1 C 35
+srec 10 H 400 B 200
+srec 11 H 300 B 150
+end
+
++prog sofimshc urs:2
+head system definition
+syst spac gdiv 1000
+ctrl mesh 2 ; ctrl hmin 1.0
+
+loop#i 6
+ let#j 10*#i
+ let#y  8*#i
+ let#z  5*#i
+ sar #j+1 t 300 mno 1
+ sarb out ; slnb  0 0+#y #z  5 0+#y #z
+ sarb out ; slnb  5 0+#y #z  5 6+#y #z
+ sarb out ; slnb  5 6+#y #z  0 6+#y #z
+ sarb out ; slnb  0 6+#y #z  0 0+#y #z
+
+ sar #j+2 t 200 mno 1
+ sarb out ; slnb  8 0+#y #z  12 0+#y #z
+ sarb out ; slnb 12 0+#y #z  12 6+#y #z
+ sarb out ; slnb 12 6+#y #z   8 6+#y #z
+ sarb out ; slnb  8 6+#y #z   8 0+#y #z
+
+ sln #j+101 fix LMXPZ ;  slnb  0 0+#y #z   0 6+#y #z
+ slns ca 100.0 cl 1000.0
+
+ sln #j+102 fix LMXPZ ; slnb 12 0+#y #z  12 6+#y #z
+ slns ca 100.0 cl 1000.0
+
+ sln #j+103 ; slnb  5 0+#y #z  5 6+#y #z
+ sln #j+104 ; slnb  8 0+#y #z  8 6+#y #z
+endloop
+
+
+$ coupling conditions are added afterwards
+sln -104 ; slns fix PX ref 103   $ coupling of x-displacements between line 104 and 103
+sln -114 ; slns fix PY ref 113   $ coupling of y-displacements
+sln -124 ; slns fix PZ ref 123   $ coupling of z-displacements
+sln -134 ; slns fix MX ref 133   $ coupling of moments about global x
+sln -144 ; slns fix MY ref 143   $ coupling of moments about global y
+sln -154 ; slns fix MZ ref 153   $ coupling of moments about global z
+end
+
++prog sofiload urs:5
+head loads
+echo full 0
+lc 1 titl 'longitudinal'
+ area GAR 1,11,21,31,41,51 Type PXX +1.0
+lc 2 titl 'horizontal'
+ area GAR 1,11,21,31,41,51 Type PYY +0.1
+lc 3 titl 'vertical'
+ area GAR 1,11,21,31,41,51 Type PZZ +1.0
+end
+
++prog ase urs:6
+head solution
+ctrl SPRI 0
+lc 1,2,3
+end
+
+
+

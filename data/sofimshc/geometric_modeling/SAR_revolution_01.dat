@@ -1,0 +1,39 @@
+!#!Info  Example:       Definition of a surface of revolution
+!#!Info  Keyword:       Geometric modeling; area elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2012
+!#!Info  Date:          $Date: 2011-08-01 $
+
++PROG AQUA URS:2
+head material definition
+norm DIN 1045
+conc 1 C 35 ; stee 2 BST 500
+end
+
++prog sofimshc urs:1
+head cooling tower
+syst spac gdiv -100 posz
+
+ctrl mesh 2   $ create quadrilateral elements
+ctrl hmin 2.5 $ size of elements
+
+$ define parameters
+let#R1 22.0  $ radius at basement
+let#R2 15.0  $ radius in mid
+let#R3 18.0  $ radius at upper end
+let#H  50.0  $ height
+
+sln 1 ; slnb x1 +#R1 0 0 x2 +#R3 0 -#H x3 +#R2 0 -0.5*#H
+
+sar 1 t 0.2 mno 1 mctl 1
+sarr type ROTA gid1 1 x 0 0 0 nz 1.0 vmin 0.0 vmax 180.0
+
+sar 2 t 0.2 mno 1 mctl 1
+sarr type ROTA gid1 1 x 0 0 0 nz 1.0 vmin 0.0 vmax -180.0
+
+sln 101
+ slnb x1 +#R1 0 0 xm 0 0 0 nz 1.0
+ slns CA 10000.0 CL 100.0 KR POSZ
+end
+
+

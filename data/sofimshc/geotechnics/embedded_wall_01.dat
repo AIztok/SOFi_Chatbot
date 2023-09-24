@@ -1,0 +1,183 @@
+!#!Info  Example:       Modeling of back-anchored, embedded wall
+!#!Info  Keyword:       Geotechnics; Interface elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 25
+!#!Info  Date:          $Date: 2009-03-31 02:04:38 +0200 (Di, 31 Mrz 2009) $
+
+// variables ========================================================================
+
++PROG TEMPLATE urs:1
+HEAD Global parameters
+
+$ central parameter for variation:
+$   depth of foot of diaphragm wall measured from subsoil surface level
+STO#T 11.0
+
+$ system
+STO#W 25.0        $ model width
+STO#H 20.0        $ model height
+STO#W_TRENCH  6.0 $ trench width
+STO#X1_TLOAD  9.0 $ start of traffic load (left side)
+STO#X2_TLOAD 15.0 $ end of traffic load (right side)
+
+$ anchor
+STO#Y_ANCHR   1.5  $ vertical position of anchor
+STO#C_ANCHR 1.5E6  $ [kN/m] anchor stiffness
+STO#ANGLE_ANCHR 35 $ [°] anchor angle
+STO#L_ANCHR   4.0  $ [m] free anchor length
+STO#L_GROUT   5.0  $ [m] length of grouting body
+
+$ excavation depths
+STO#T1 2.0
+STO#T2 4.0
+STO#T3 6.0
+
+END
+
+
+// system + materials ===============================================================
+
++PROG AQUA urs:2
+HEAD Materials
+NORM EC 7
+
+$ diaphragm wall
+MAT 1 E 3e7 MUE 0.18 GAM 24 TITL 'Wall'
+SREC 1 H 800 B 1000  MNO 1
+
+$ soil material
+let#phi 27.5
+let#coh 10.0
+  MAT  2 E 30000 MUE 0.3  GAM 20  GAMA 19  TITL 'Soil'
+  NMAT 2 MOHR P1 #phi P2 #coh P3 0 P4 0.0
+  $MAT  2 E 90000 MUE 0.15  GAM 20  GAMA 19  TITL 'Soil'
+  $NMAT 2 GRAN P1 #phi P2 #coh P3 0 P4 0.0  P5 30000 P6 0.6 P9 30000
+
+$ interface definition
+MAT  22 E 30000 MUE 0.3  GAM 20  GAMA 19  TITL 'Interface'
+BMAT 22 MREF 22  H 0.4  MUE tan(2/3*#phi) COH #coh  CRAC 0.0
+
+$ working law
+SFLA 101 TYPE MYU F 500
+
+$ grouting body
+MAT    51   E  .3000E+08  MUE 0.20 GAM 25.00 GAMA 15.00
+SVAL   51 MNO   51        A  .4550E-02       IY 1.E-5
+
+END
+
++PROG SOFIMSHC urs:3
+HEAD System
+SYST PAIN GDIV 10000 GDIR POSY
+ECHO SYST FULL
+
+$ meshing parameters
+CTRL MESH 2 ; CTRL HMIN 0.7
+
+
+$ define the bulk body
+SPT NO      X     Y
+     1   0.0    0.0
+     2   #W     0.0
+     3   #W     #H
+     4   0.0    #H
+
+SLN  1 1 2
+SLN  2 1 4 FIX PX
+
+SLN  3 2 3 FIX PX
+SLN  4 3 4 FIX PY
+
+SAR  1  MNO 2  T 1.0[m]  GRP 1  H1 0.7
+SARB OUT NL 1,2,3,4
+
+
+$ define the excavation domains as attribute areas
+                      SPT 102 X #W_TRENCH Y 0.0
+SPT 201 X 0.0 Y #T1 ; SPT 202 X #W_TRENCH Y #T1
+SPT 301 X 0.0 Y #T2 ; SPT 302 X #W_TRENCH Y #T2
+SPT 401 X 0.0 Y #T3 ; SPT 402 X #W_TRENCH Y #T3
+                      SPT 502 X #W_TRENCH Y #T
+
+SAR PROP GRP 11 MNO 2
+SARB OUT NA 1 102 ; SARB OUT NA 102 202 ; SARB OUT NA 202 201 ; SARB OUT NA 201 1
+
+SAR PROP GRP 12 MNO 2
+SARB OUT NA 201 202 ; SARB OUT NA 202 302 ; SARB OUT NA 302 301 ; SARB OUT NA 301 201
+
+SAR PROP GRP 13 MNO 2
+SARB OUT NA 301 302 ; SARB OUT NA 302 402 ; SARB OUT NA 402 401 ; SARB OUT NA 401 301
+
+$ diaphragm wall
+SLN 11 102 502 GRP 20 SNO 1 SDIV 0.15  $FIXA 101 FIXE 101 FIMA 101 FIME 101
+SLNS  GRP 21 REFT *SAR  MNO 22 D 0.05  $ create interface layers on both sides
+
+$ anchor + grouting body
+SPT 1002 X #W_TRENCH Y #Y_ANCHR SX 1 0 0
+SPT 2002 X #L_ANCHR  Y #ANGLE_ANCHR  REF PPOL 1002  $ relative to point 1002 in polar coordinates
+SPT 3002 X #L_GROUT  Y #ANGLE_ANCHR  REF PPOL 2002  $ relative to point 2002 in polar coordinates
+
+SLN NPA 1002 2002 GRP 50 STYP TZ SNO 51 SDIV 0.15  $ anchor (defined as truss element, not embedded in mesh)
+SLN NPA 2002 3002 GRP 51 STYP CE SNO 51 SDIV 0.15  $ grouting body (defined as cable, embedded in mesh)
+
+END
+
+// external loading =================================================================
+
++PROG SOFILOAD urs:5
+HEAD External loading
+LC 101 TITL 'Permanent load'
+LINE  TYPE PYY P1 10 0 0  P2 10 #W 0
+
+LC 102 TITL 'Variable load'
+LINE  TYPE PYY P1 50 #X1_TLOAD 0  P2 50 #X2_TLOAD 0
+
+LC 103 TITL 'Prestressing'
+TRUS  GRP 50 TYPE VX PA 100
+
+END
+
+
+// construction stages ==============================================================
+
+-PROG TALPA urs:6
+HEAD CSG
+$ global control options (defined prior to 1st CS)
+CSYS PROB NONL
+CCRL ITER 30 0.005
+CCRL WARN 7
+CCRL BEAM DBM
+
+CS NO 1  TITL 'In-situ'
+    CGW    HW 9999                            $ ground water level
+    CGRP   NO 1,11,12,13  ACT SITU K 0.5      $ lateral earth pressure coefficient
+    CGRP   NO 21          ACT IN   ACT2 LINE  $ interface elements
+
+CS NO 2  TITL  'Installation wall'
+    CGRP   NO 21     ACT MODI ACT2 FULL       $ interface elements now nonlinear
+    CGRP   NO 20     ACT IN                   $ activation of corresponding groups
+
+CS NO 3  TITL  'Activation of surcharge loads'
+    CLOA 101,102  OPT ACT
+
+CS NO 4  TITL  '1st excavation step'
+    CGRP   NO 11     ACT EX                   $ excavation
+
+CS NO 5  TITL  '2nd excavation step'
+    CCRL STEP 3 SAVE 0
+    CGRP   NO 12     ACT EX                   $ excavation
+
+CS NO 6  TITL  'Anchor + prestressing'
+    CGRP   NO 50     ACT IN  PTYP FFIN        $ installation of anchor
+    CGRP   NO 51     ACT IN                   $ installation of grouting body
+    CLOA   NO 103    OPT TEMP
+
+CS NO 7  TITL  '3rd excavation step'
+    CCRL STEP 3 SAVE 0
+    CGRP   NO 13     ACT EX                   $ excavation
+
+END
+
+
+-apply "$(NAME)_csg.dat"
+

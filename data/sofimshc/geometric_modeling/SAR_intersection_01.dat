@@ -1,0 +1,48 @@
+!#!Info  Example:       Intersection of a cylinder with an inclined plane
+!#!Info  Keyword:       Geometric modeling; area elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2012
+!#!Info  Date:          $Date: 2011-08-01 $
+
+
+prog aqua urs:1
+head material
+norm DIN EN199X-200X
+conc 1 C 30
+end
+
++prog sofimshc urs:3
+head intersection of cylinder with plane
+syst SPAC gdiv 10000 gdir posz
+ctrl mesh 2
+ctrl hmin 0.25
+
+let#R 1.0 $ radius of tube
+
+
+$ cylindrical surface (split in two halfs)
+gax R1 typc ARC ; gaxb x1 -5 0 -#R  x2 +5 0 -#R
+
+gar T1 type ROTA ; gara R1 x 0 0 0 nx 1 0 0 vmin 0 +180
+gar T2 type ROTA ; gara R1 x 0 0 0 nx 1 0 0 vmin 0 -180
+
+$ a planar surface
+gar PL
+gars 1 1 x -2.5 -5 -2.5
+gars 2 1 x +2.5 -5 +2.5
+gars 1 2 x -2.5 +5 -2.5
+gars 2 2 x +2.5 +5 +2.5
+
+$ compute intersection lines
+gax I1 sur1 PL T1 ; sln 1 ref I1
+gax I2 sur1 PL T2 ; sln 2 ref I2
+
+$ structural area referencing the planar surface
+sar 1 grp 1 mno 1 t 200[mm] ref PL
+
+$ opening referencing the intersection curves
+sar VOID
+ sarb in 1,2
+end
+
+

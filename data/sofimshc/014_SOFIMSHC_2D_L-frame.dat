@@ -1,0 +1,23 @@
++prog sofimshc urs:3
+head 'Model'
+page unii 0 unio 0
+
+! Definition der Parameter für die Vernetzung
+ctrl hmin 1.0
+ctrl mesh 1
+
+! Definition des FE-Systems (gruppen divisor gdiv, richtung des eigengewichts)
+syst 2D gdiv 100 gdir posy
+
+! Definition der Strukturpunkte mit Auflagerbedingungen
+spt 1 x 0 y 0 fix f
+spt 2 x 0 y -3.15
+spt 3 x 3 y -3.15
+spt 4 x 6 y -3.15 fix py
+
+! Definition der Strukturlinien
+sln 1 1 2 sno 1 grp 1 titl 'Wand'   styp b.e
+sln 2 2 3 sno 2 grp 2 titl 'Decke'  styp b.e
+sln 3 3 4 sno 2 grp 2 titl 'Decke'  styp b.e
+
+end

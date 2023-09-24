@@ -1,0 +1,123 @@
+!#!Info  Example:       Bridge support parametrically connected with cross-section point
+!#!Info  Keyword:       Alignment axes; Bridge-Design; Variables
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2014
+
+
++PROG AQUA URS:1
+head template section with varying height and width
+norm DIN EN199X-200X
+ctrl STYP 0
+conc 1 C 35
+stee 2 B 500A
+
+$ user defined cross section
+sect 1 btyp 'BEAM' titl 'section'
+
+$ variable
+tvar HEIGHT 1.20  CMNT 'Default height'
+tvar WIDTH  2.50  CMNT 'Default width'
+
+$ (varying) reference points
+  spt  OM     0             0    MNO 0
+  spt  OL  2500             0    MNO 0
+  spt  PL  '=+#WIDTH*0.5' 300    MNO 0
+  spt  UL  '=+#WIDTH*0.5'  '=#HEIGHT'  MNO 0
+  spt  UR  '=-#WIDTH*0.5'  '=#HEIGHT'  MNO 0
+  spt  PR  '=-#WIDTH*0.5' 300    MNO 0
+  spt  OR -2500             0    MNO 0
+  spt  OM     0             0    MNO 0
+
+$ polygonal definition of shape
+poly O
+vert 11  0   0 REFP OM
+     12  0   0 REFP OL
+     13  0 200 REFP OL
+     14  0   0 REFP PL
+     15  0   0 REFP UL
+     16  0   0 REFP UR
+     17  0   0 REFP PR
+     18  0 200 REFP OR
+     19  0   0 REFP OR
+     20  0   0 REFP OM
+
+$ shear cut
+cut  1 zb S
+end
+
+
++prog sofimshc urs:3
+head definition of axis with variables
+syst 3D gdiv -1000
+ctrl TOPO GAXP 1+2  $ generate structural points & lines along placements
+ctrl MESH 1         $ activate meshing of structrual system into beam elements
+ctrl HMIN 0.5       $ mesh size: maximum length of beam elements
+echo GEOM FULL
+
+gax A1
+gaxa s 0.0 x 0 0 sx 1
+gaxa L 40.0 R 100.0
+
+gaxp 'A1' S  0.0 type 'S' grp 1 ncs 1 spt 100 idp P1
+gaxp 'A1' S 20.0 type 'S'             spt 200 idp P2
+gaxp 'A1' S 40.0 type 'S'             spt 300 idp P3
+
+gaxv  S    V    type ID=A1 NAME=HEIGHT
+      0.0  1.6[m]   -
+      2.0  1.6[m]   -
+      8.0  1.2[m]   D-
+     12.0  1.2[m]   D+
+     18.0  1.9[m]   -
+     22.0  1.9[m]   -
+     28.0  1.2[m]   D-
+     32.0  1.2[m]   D+
+     38.0  1.6[m]   -
+     40.0  1.6[m]   -
+
+gaxv  S    V     ID=A1 NAME=WIDTH type=POLY
+      0.0  1.8[m]
+      2.0  1.8[m]
+      8.0  1.8[m]
+     12.0  1.8[m]
+     18.0  1.8[m]
+     22.0  1.8[m]
+     28.0  1.8[m]
+     32.0  1.8[m]
+     38.0  2.5[m]
+     40.0  2.5[m]
+
+$
+#define BLOCK
+ $ both structural points refer to a section point defined in AQUA
+ $ --> this keeps the point fixed to the same cross-section point
+ spt #base+3 ref CSP 'UL' FIX F->#base
+  spts type CZ CP 1.e7 1.e3
+
+ spt #base+4 ref CSP 'UR' FIX F->#base
+  spts type CZ CP 1.e7 1.e3
+#enddef
+
+$ set coordinate system to named placement
+COOR GAXP 'A1' idp P1
+let#base 100
+#include BLOCK
+
+$ set coordinate system to named placement
+COOR GAXP 'A1' idp P2
+let#base 200
+#include BLOCK
+
+$ set coordinate system to placement at parameter
+COOR GAXP 'A1' idp P3
+let#base 300
+#include BLOCK
+
+COOR WRLD $ reset coordinate system
+end
+
+prog aqua urs:2
+head interpolation of sections along axis
+inte 0
+end
+
+

@@ -1,0 +1,64 @@
+!#!Info  Example:       Definition of a freeform surface through interpolation points
+!#!Info  Keyword:       Geometric modeling; area elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2012
+!#!Info  Date:          $Date: 2011-08-01 $
+
++PROG AQUA URS:2
+head material definition
+norm DIN 1045
+conc 1 C 35 ; stee 2 BST 500
+end
+
+
++prog sofimshc urs:1
+head Freeform surface
+syst SPAC gdiv -1000 NEGZ
+
+ctrl mesh 2    $ create quadrilateral elements
+ctrl hmin 1.0  $ mesh density
+
+$ structural lines
+sln 101 fix PP ; slnb  0  0 0  10  0 0
+sln 102        ; slnb 10  0 0  10 10 0
+sln 103 fix PP ; slnb 10 10 0   0 10 0
+sln 104        ; slnb  0 10 0   0  0 0
+
+$ structural region
+sar 1 t 0.1 h1 0.25 mno 1
+
+ $ structural lines of outer boundary
+ sarb out 101,102,103,104
+
+ $ inner boundary = opening
+ sarb in ; slnb xm 5 5 2.5 nz 1 R 1.0
+
+$ 4x4 data-points describing the surface geometry
+$ - the points will be interpolated by bicubic B-Splines
+ sarp SPLI   1  1  x  0  0  0
+      SPLI   2  1  x  3  0  0
+      SPLI   3  1  x  7  0  0
+      SPLI   4  1  x 10  0  0
+
+      SPLI   1  2  x  0  3  0
+      SPLI   2  2  x  3  3  2
+      SPLI   3  2  x  7  3  2
+      SPLI   4  2  x 10  3  0
+
+      SPLI   1  3  x  0  7  0
+      SPLI   2  3  x  3  7  2
+      SPLI   3  3  x  7  7  2
+      SPLI   4  3  x 10  7  0
+
+      SPLI   1  4  x  0 10  0
+      SPLI   2  4  x  3 10  0
+      SPLI   3  4  x  7 10  0
+      SPLI   4  4  x 10 10  0
+
+end
+
+
++prog ase urs:21
+head test calculation
+lc 1 dlz 1.0
+end

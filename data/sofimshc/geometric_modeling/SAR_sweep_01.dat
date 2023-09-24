@@ -1,0 +1,39 @@
+!#!Info  Example:       Definition of a sweep surface
+!#!Info  Keyword:       Geometric modeling; area elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2012
+!#!Info  Date:          $Date: 2011-08-01 $
+
+
++PROG AQUA URS:2
+head material
+norm DIN 1045
+conc 1 C 35
+end
+
+PROG sofimshc urs:3
+head system
+syst SPAC gdiv -1000
+ctrl MESH 1 ; ctrl HMIN 0.5
+
+let#R 1.8
+$ two cross-section curves
+sln 1 ; slnb y1 -#R y2 +#R xm 0 0 0 nx 1
+sln 2 ; slnb y1 +#R y2 -#R xm 0 0 0 nx 1
+
+$ trajectory curve along which the cross section curves will be swept
+$ The local z-Axis should be kept consistent along the whole axis
+gax G1
+ gaxb x1  0 0 0 x2  2 0 0 nz 1.0
+ gaxb x1  2 0 0 x2  6 4 0 nz 1.0 R +4.0
+ gaxb x1  6 4 0 x2 10 8 0 nz 1.0 R -4.0
+ gaxb x1 10 8 0 x2 12 8 0 nz 1.0
+
+$ structural areas defined by sweeping the section curves along the trajectory
+sar 1 t 0.2 mctl 1
+sarr SWEE gid1 1 gid2 G1
+
+sar 2 t 0.2 mctl 1
+sarr SWEE gid1 2 gid2 G1
+end
+

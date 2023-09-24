@@ -1,0 +1,48 @@
+!#!Info  Beispiel:      Extrusion von 1D elementen zu Quad-Netz
+!#!Info  Schlagwort:    Netzgenerierung
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2016
+
++PROG AQUA URS:2
+head material definition
+mate 1 E 20000
+end
+
+
++prog sofimshc urs:1
+head section and extrusion curves
+SYST 3D gdiv 10000
+ctrl mesh 1
+ctrl DELN 0
+
+$ 'section' lines
+sln 1 sdiv -10
+ slnb x1 0 0 0 x2 0 0 -5 nx 1 0 0 R 2.5
+
+sln 2 sdiv -10
+ slnb x1 0 -5 0 x2 0 -5 -5 nx 1 0 0 R 2.5
+
+$ extrusion paths
+sln 11 sdiv -10
+ slnb x1 0 0 0 x2 5 0 5 xm 0 0 5
+
+sln 12 sdiv -10
+ slnb x1 0 -5 0 x2 5 -5 5 xm 0 -5 5
+
+end
+
++prog sofimsha urs:3
+head extrusion to quads
+syst REST
+
+quad PROP mno 1 t 200[mm]
+
+grp 2
+extr SLN 1 path SLN 11 OPT -  $ extrusion without rotation of sectional curve
+
+grp 3
+extr SLN 2 path SLN 12 OPT R  $ extrusion with rotation of sectional curve
+
+end
+
+

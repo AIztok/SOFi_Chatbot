@@ -1,0 +1,48 @@
+!#!Info  Example:       Definition of a cupola as surface of revolution
+!#!Info  Keyword:       Geometric modeling; area elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2012
+!#!Info  Date:          $Date: 2011-08-01 $
+
+
++PROG AQUA URS:2
+head material definition
+norm DIN 1045
+conc 1 C 35
+stee 2 BST 500
+srec 1 h 0.5 b 0.30
+end
+
++prog sofimshc urs:1
+head cupola
+syst spac gdiv 10000
+ctrl WARN 383
+
+ctrl mesh 2   $ activate meshing
+ctrl hmin 0.5 $ mesh density
+
+$ sectional curve to be rotated defined
+$ using a hermite interpolation scheme
+sln 101
+ slnp x  0 0 -4 dx 1 0 0 type HINT  $ create horizontal tangent
+ slnp x +8 0  0 dx 1 0 2
+
+$ structural regions defined by revolving sln 101 around the Z-axis
+$ HINT: As topologically closed regions cannot be meshed, they
+$ should be subdivided into at least two halfs.
+sar 1 t 0.1 mno 1
+ sarr type ROTA gid1 101 x 0 0 0 nz 1.0 vmin 0 +180
+sar 2 t 0.1 mno 1
+ sarr type ROTA gid1 101 x 0 0 0 nz 1.0 vmin 0 -180
+
+$ support at the bottom
+sln 1 sno 1 fix LPZ
+ slnb x1 +8 0  0 xm 0 0 0
+ slns CL 100.0
+
+end
+
++prog ase urs:21
+head test calculation
+lc 1 dlz 1.0
+end

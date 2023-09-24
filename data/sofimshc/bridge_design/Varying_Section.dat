@@ -1,0 +1,135 @@
+!#!Info  Example:       Definition of bridge with varying cross-section
+!#!Info  Keyword:       Alignment axes; Placements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2014
+
+
++PROG AQUA URS:1
+head template section with varying height
+norm DIN EN199X-200X
+ctrl STYP 0
+conc 1 C 35
+stee 2 B 500A
+
+$ user defined cross section
+sect 1 btyp 'BEAM' titl 'section'
+
+$ height of cross section will be variable
+tvar HEIGHT 1000  CMNT 'Total height'
+
+$ (varying) reference points
+  spt  OM     0  0  MNO 0
+  spt  OL  3500  0  MNO 0
+  spt  UL  1500  '=#HEIGHT'  MNO 0
+  spt  UR -1500  '=#HEIGHT'  MNO 0
+  spt  OR -3500  0  MNO 0
+  spt  OM     0  0  MNO 0
+
+$ polygonal definition of shape
+poly O
+vert 11     0   0 REFP OM
+     12     0   0 REFP OL
+     13     0 200 REFP OL
+     14  1500 300 REFP OM
+     15     0   0 REFP UL
+     16     0   0 REFP UR
+     17 -1500 300 REFP OM
+     18     0 200 REFP OR
+     19     0   0 REFP OR
+     20     0   0 REFP OM
+
+$ shear cut
+cut  1 zb S
+
+end
+
+
++prog sofimshc urs:4
+head definition of axis in plan view and height
+syst 3D gdiv 1000 posz
+ctrl TOPO GAXP 1+2 $ create structural points and lines between placements
+echo geom FULL
+
+$ definition of axis in plan view
+gax A1 type LANE titl "central axis"
+ gaxa S  0.0  X -1 0 SX 1 0    $ start point
+      L  5.0                   $ straight line
+      L 15.0 RA  0.0 RE 60.0   $ transition curve
+      L 10.0 R  60.0           $ circular arc
+      L 15.0 RA 60.0 RE  0.0   $ transition curve
+      L  5.0                   $ straight line
+
+$ and height
+ gaxh S  0.0 H 1.0
+      S 20.0 H 2.0 R 200.0
+      S 50.0 H 0.0
+
+$ definition of placements of type 'support'
+$ - point, group and section number to be used for the structural system
+$ - placements of type support initializes an internal variable #S_XI() which
+$   allows to set the axis parameter s in terms of span widths xi(i)
+gaxp A1 S  0.0 Type 'S' spt 100 grp 1 ncs 1 idp AA
+gaxp A1 S 25.0 Type 'S' spt 200 grp 1 ncs 1 idp BB
+gaxp A1 S 50.0 Type 'S' spt 300 grp 1 ncs 1 idp CC
+
+
+$ definition of variable 'HEIGHT' along axis
+$ - using the internal variable #S_XI() the parameter s can be specified
+$   relatively to span widths xi
+gaxv A1 name HEIGHT  s  0.0  v 2000[mm] type -
+gaxv A1 name HEIGHT  s  2.5  v 2000[mm] type -
+gaxv A1 name HEIGHT  s 10.0  v 1200[mm] type D-
+gaxv A1 name HEIGHT  s 15.0  v 1200[mm] type D+
+gaxv A1 name HEIGHT  s 22.5  v 2000[mm] type -
+gaxv A1 name HEIGHT  s 27.5  v 2000[mm] type -
+gaxv A1 name HEIGHT  s 35.0  v 1200[mm] type D-
+gaxv A1 name HEIGHT  s 40.0  v 1200[mm] type D+
+gaxv A1 name HEIGHT  s 47.5  v 2000[mm] type -
+gaxv A1 name HEIGHT  s 50.0  v 2000[mm] type -
+
+end
+
++prog sofimshc urs:2
+head definition of supports and system generation
+syst rest
+ctrl mesh 1   $ activate meshing of structrual system into beam elements
+ctrl hmin 2.0 $ mesh size: maximum length of beam elements
+
+let#LB  4.0 $ width of bearing
+let#LH  2.5 $ height of bearing
+
+coor GAXP id A1 idp AA
+ spt 101 x 0 -#LB*0.5 #LH FIX F->100
+  sptp CZ val 1.e6 valq 1.e3
+ spt 102 x 0 +#LB*0.5 #LH FIX F->100
+  sptp CZ val 1.e6 valq 1.e3
+
+coor GAXP id A1 idp BB
+ spt 201 x 0 -#LB*0.5 #LH FIX F->200
+  sptp CZ val 1.e6 valq 1.e3
+ spt 202 x 0 +#LB*0.5 #LH FIX F->200
+  sptp CZ val 1.e6 valq 1.e3
+
+coor GAXP id A1 idp CC
+ spt 301 x 0 -#LB*0.5 #LH FIX F->300
+  sptp CZ val 1.e6 valq 1.e3
+ spt 302 x 0 +#LB*0.5 #LH FIX F->300
+  sptp CZ val 1.e6 valq 1.e3
+
+
+end
+
+
++prog aqua urs:3
+head interpolation of sections along axis
+echo full 0
+inte 0
+end
+
++prog ase urs:21
+head test calculation
+lc 1 dlz 1
+end
+
+
+

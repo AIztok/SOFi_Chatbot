@@ -1,0 +1,56 @@
+!#!Info  Example:       Possibilities of aligning springs on beam elements
+!#!Info  Keyword:       Structural model; line elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 25
+!#!Info  Date:          $Date: 2009-03-31 02:04:38 +0200 (Di, 31 Mrz 2009) $
+
++prog aqua urs:1
+head material and sections
+norm DIN 1045-1
+conc 1 C 35
+stee 2 S 235
+srec 10 0.5 0.25 mno 1
+scit 11 D 0.2 0.01  mno 2
+end
+
++prog sofimshc urs:2
+head system with springs
+syst SPAC gdiv 1000 POSZ     $ type of system
+ctrl MESH 1 ; ctrl HMIN 0.5  $ meshing parameters
+ctrl LSUP 16                 $ control of support generation: +16= generate
+                             $ always springs instead of boundary elements
+loop#i 7
+ spt #i*10+1 #i*4 0 0 fix PPMY
+ spt #i*10+2 #i*4 5 0 fix PZ
+endloop
+
+$ axial springs oriented along beam axis (=default)
+sln  1  1  2 sno 10 ; slnb R -8
+ slns grp 1 ca 1000.0
+
+$ axial springs oriented perpendicular to the beam axis in local y-direction
+sln 11 11 12 sno 10 ; slnb R -8
+ slns grp 2 ca 1000.0 kr LOCY
+
+$ axial springs oriented locally in z-direction + rotation
+sln 21 21 22 sno 10 ; slnb R -8
+ slns grp 3 ca 1000.0 kr LOCZ drot 60
+
+$ axial springs oriented globally in positive X-direction
+sln 31 31 32 sno 10 ; slnb R -8
+ slns grp 4 ca 1000.0 kr POSX
+
+$ axial springs oriented globally in negative Z-direction
+sln 41 41 42 sno 10 ; slnb R -8
+ slns grp 5 ca 1000.0 kr NEGZ
+
+$ axial springs oriented globally in arbitrary direction
+sln 51 51 52 sno 10 ; slnb R -8
+ slns grp 6 ca 1000.0 drx 1 0 1
+
+$ springs with transversal (lateral) stiffness perpendicular to global Z
+sln 61 61 62 sno 10 ; slnb R -8
+ slns grp 7 cl 1000.0 kr POSZ
+
+end
+

@@ -1,0 +1,57 @@
+!#!Info  Beispiel:      Tetraedervernetzung eines Kegelförmigen Körpers
+!#!Info  Schlagwort:    Geometriemodellierung; Volumenelemente
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2016
+
++PROG AQUA URS:2
+head material definition
+norm DIN 1045
+conc 1 C 35 ; stee 2 BST 500
+end
+
+
++prog sofimshc urs:1
+head definition of surface of cone
+syst 3D gdiv -1000 gdir POSZ
+ctrl mesh 2+32  $ create triangular mesh on surface
+ctrl hmin 0.5
+
+let#r    5.0  $ BASE RADIUS
+let#h  -10.0  $ HEIGHT
+
+$ point at apex with reduced meshsize
+spt 1 x 0 0 #h bx 0.1 0.1
+
+$ lines describing region boundaries
+sln 1 ; slnb x1 +#r 0 0  x2 0 0 #h
+sln 2 ; slnb x1 -#r 0 0  x2 0 0 #h
+sln 11 ; slnb x1 +#r 0 0 x2 -#r 0 0 R #r nz +1
+sln 12 ; slnb x1 -#r 0 0 x2 +#r 0 0 R #r nz +1
+
+$ three structural regions
+sar 1 nra 0 t 0.0
+ sarr ROTA 1 x 0 0 0 nz +1 $ geometry: surface of revolution
+ sarb out 1,2,11
+
+sar 2 nra 0 t 0.0
+ sarr ROTA 2 x 0 0 0 nz +1 $ geometry: surface of revolution
+ sarb out 1,2,12
+
+sar 3 mno 1  nra 0 t 0.0
+sarb out 11,12
+end
+
+
++prog sofimsha urs:3
+head volume meshing
+syst REST
+
+grp 10
+bric PROP mno 1
+
+$ create volume mesh
+umsh type TET hmax 0.5
+ ubnd type out sel COOR x 0 0 -1 $ 'seed' point in interior
+end
+
+

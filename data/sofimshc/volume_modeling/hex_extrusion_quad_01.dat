@@ -1,0 +1,52 @@
+!#!Info  Beispiel:      Extrusion einer Strukturfläche entlang eines Extrusionspfads
+!#!Info  Schlagwort:    Geometriemodellierung; Volumenelemente
+!#!Info  Program:       SOFIMSHC,SOFIMSHA
+!#!Info  Version:       SOFiSTiK 2016
+
++PROG AQUA URS:2
+head material definition
+norm din 1045-1
+conc 1 c 30
+end
+
++prog sofimshc urs:1
+head Sectional quad mesh
+syst 3D gdir POSZ gdiv 10000
+ctrl mesh 1
+ctrl hmin 0.5[m]
+ctrl DELN 0 $ no deletion of auxiliary structural line
+
+$ structural points
+spt 1  0 0 0
+spt 2  0 5 0
+spt 3  0 5 2
+spt 4  0 2 2
+spt 5  0 2 5
+spt 6  0 0 5
+spt 7  0 0 2
+
+$ structural lines
+sln 1 npa 1 2
+sln 2 npa 2 3
+sln 3 npa 3 4
+sln 4 npa 4 5
+sln 5 npa 5 6
+sln 6 npa 6 7
+sln 7 npa 7 1
+
+sar 10 grp 1 mno 1 t 0 nra 0 mctl 1
+sarb out nl (1 7 1)
+
+$ auxiliary structural line as extrusion path
+sln 101
+slnb x1 0 2 2 x2 10 2 12 xm 0 2 12 ny -1
+
+end
+
++prog sofimsha urs:3
+head Extrusion to volume
+syst REST
+
+extr QUAD from SAR 10 path SLN 101 opt R
+end
+

@@ -1,0 +1,79 @@
+!#!Info  Example:       Intersection of a tube with a curved surface
+!#!Info  Keyword:       Geometric modeling; area elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2012
+!#!Info  Date:          $Date: 2011-08-01 $
+
+
+prog aqua urs:2
+head material
+norm DIN 1045-1
+conc 1 c 30
+stee 2 bst 500
+end
+
+prog sofimshc urs:1
+head system definition
+syst spac gdiv 10000
+
+ctrl mesh 2    $ activate meshing of elements
+ctrl hmin 0.5  $ mesh density
+ctrl warn 383  $ do not warn about unused lines
+
+let#RU 10.0  $ radius at top and bottom of the halfshell
+let#RM  8.0  $ radius in mid
+let#H  16.0  $ height of shell
+
+let#H2  6.0  $ elevation of tube axis
+let#R2  2.5  $ radius of tube
+let#L2 12.0  $ length of tube
+
+$ two curves bounding the shell
+gax G1 typc ARC ; gaxb x1 0 +#RU 0 x2 0 +#RU -#H x3 0 +#RM -0.5*#H
+gax G2 typc ARC ; gaxb x1 0 -#RU 0 x2 0 -#RU -#H x3 0 -#RM -0.5*#H
+
+$ geometry of surface by revolving G1 by 180° around global Z
+gar S1 type ROTA
+gara G1 x 0 0 0 nz -1.0 vmax 180.0
+
+$ define the tube geometry crossing the surface
+$ - the surface is split into two halfs in order to stabilize
+$   geometric operations and to allow a more regular mesh
+gax H1 typc ARC ; gaxb x1 0 0 -#H2+#R2 x2 #L2 0 -#H2+#R2
+gax H2 typc ARC ; gaxb x1 0 0 -#H2-#R2 x2 #L2 0 -#H2-#R2
+
+gar TB1 type ROTA ; gara H1 x 0 0 -#H2 nx 1.0 vmax 180.0
+gar TB2 type ROTA ; gara H2 x 0 0 -#H2 nx 1.0 vmax 180.0
+
+$ intersection of the two tubular halfs with surface S1
+gax I1 sur1 S1 TB1
+gax I2 sur1 S1 TB2
+
+
+$ define the structural region on the shell geometry
+sln 1 ref G1
+sln 2 ref G2
+sln 3 ; slnb x1 0 +#RU   0 x2 0 -#RU   0 x3 #RU 0   0
+sln 4 ; slnb x1 0 +#RU -#H x2 0 -#RU -#H x3 #RU 0 -#H
+
+sln 101 sdiv 0.5 ref I1 $ references the geometry of the intersection curve
+sln 102 sdiv 0.5 ref I2 $ references the geometry of the intersection curve
+
+sar 1 t 0.25 ref S1 mno 1
+sarb out 1,2,3,4   $ lines on outer boundary
+sarb in 101,102    $ structural lines forming the opening
+
+
+$ define structural regions on the outer parts of the tube
+sln 11 ref H1
+sln 12 ref H2
+sln 13 ; slnb x1 #L2 0 -#H2+#R2 x2 #L2 0 -#H2-#R2 x3 #L2 -#R2 -#H2
+sln 14 ; slnb x1 #L2 0 -#H2-#R2 x2 #L2 0 -#H2+#R2 x3 #L2 +#R2 -#H2
+
+sar 11 t 0.25 ref TB1
+sarb out 11,12,13,101
+
+sar 12 t 0.25 ref TB2
+sarb out 11,12,14,102
+
+end

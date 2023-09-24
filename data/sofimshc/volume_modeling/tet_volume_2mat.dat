@@ -1,0 +1,53 @@
+!#!Info  Example:       volume body with with two materials
+!#!Info  Keyword:       Meshing
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2016
+
++prog aqua urs:2
+head
+mat 1 E 10000 0.3
+mat 2 E 10000 0.3
+end
+
++prog sofimshc urs:1
+head test 3d with two different materials
+syst spac GDIV -1000
+ctrl mesh 3  $ create volume mesh
+ctrl hmin 0.5
+
+$ structural points
+spt  11,21  0.0 5.0 0.0,2.0
+     12,22  8.0 5.0 0.0,2.0
+     13,23 12.0 5.0 0.0,2.0
+     14,24 12.0 0.0 0.0,2.0
+     15,25  8.0 0.0 0.0,2.0
+     16,26  0.0 0.0 0.0,2.0
+
+$ structural lines
+sln (11 16 1) (11 1) (21 1)
+    100,200 12,22 15,25
+    101,201 15,25 16,26
+    102,202 16,26 11,21
+    103,203 11,21 12,22
+    111,211 12,22 13,23
+    112,212 13,23 14,24
+    113,213 14,24 15,25
+
+$ boundary surfaces
+sar  1 ; sarb OUT 15,101,16,201
+sar  2 ; sarb OUT 16,102,11,202
+sar  3 ; sarb OUT 11,103,12,203
+sar  4 ; sarb OUT 12,111,13,211
+sar  5 ; sarb OUT 13,112,14,212
+sar  6 ; sarb OUT 14,113,15,213
+sar 11 ; sarb OUT 100,101,102,103  ; sar 21 ; sarb OUT 200,201,202,203
+sar 12 ; sarb OUT 100,111,112,113  ; sar 22 ; sarb OUT 200,211,212,213
+sar 10 ; sarb OUT 100,12,200,15
+
+$ first volume mesh defined by boundary surfaces
+svo 1 grp 1 mno 1 ; svos 1,2,3,11,21,10
+$ second volume defined by boundary surfaces
+svo 2 grp 2 mno 2 ; svos 4,5,6,12,22,10
+end
+
+

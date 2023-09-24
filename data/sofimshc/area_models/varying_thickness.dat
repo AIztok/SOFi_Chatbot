@@ -1,0 +1,44 @@
+!#!Info  Example:       Varying thickness of elements in a structural region
+!#!Info  Keyword:       Structural model; area elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 25
+!#!Info  Date:          $Date: 2009-04-22 02:04:38 +0200 (Di, 31 Mrz 2009) $
+
++prog aqua urs:1
+head material
+norm DIN 1045-1
+conc 1 C 35
+conc 2 C 30
+end
+
++prog sofimshc urs:4
+head varying thickness
+syst SPAC gdiv 10000 POSZ $ 3D spacial system
+
+ctrl mesh 2     $ create quadrilateral elements
+ctrl hmin 1.0   $ global mesh density
+
+$ structural lines defined geometrically
+sln 1        ; slnb x1  0 0 0  x2 10 0 0
+sln 2 fix PP ; slnb x1 10 0 0  x2 10 5 0
+sln 3        ; slnb x1 10 5 0  x2  0 5 0
+sln 4 fix PP ; slnb x1  0 5 0  x2  0 0 0
+
+sln 5 fix PP ; slnb x1 10  5 0  x2 10 10 0
+sln 6        ; slnb x1 10 10 0  x2  0 10 0  x3 5 10 -1.5
+sln 7 fix PP ; slnb x1  0 10 0  x2  0  5 0
+
+$ Two structural regions with linearly changing thickness
+sar 1 t 0.1 mno 1 mctl 1
+sarb out nl 1 t 0.2
+sarb out nl 2
+sarb out nl 3 t 0.8
+sarb out nl 4
+
+sar 2 t 0.1 mno 1 mctl 1
+sarb out nl 3 t 0.2 $ thickness at line 3 independend of previous definition
+sarb out nl 5
+sarb out nl 6 t 0.8
+sarb out nl 7
+end
+

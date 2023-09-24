@@ -1,0 +1,134 @@
+!#!Info  Example:       Definition of bridge axis with two secondary lines
+!#!Info  Keyword:       Alignment axes; Bridge-design; Beam elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2014
+
+
++PROG AQUA URS:1
+head template section with varying height and width
+norm DIN EN199X-200X
+ctrl STYP 0
+conc 1 C 35
+stee 2 B 500A
+
+$ general sections
+srec 10 h 1800 b 1000 ref UM
+
+srec 20 h 3000 b 1800
+srec 21 h 4000 b 1800
+
+$ user defined cross section
+sect 1 btyp 'BEAM' titl 'section'
+
+$ variable
+tvar HEIGHT 1200  CMNT 'Default height'
+tvar WIDTH  2500  CMNT 'Default width'
+
+$ (varying) reference points
+  spt  OM     0       0           MNO 0
+  spt  OL  '=#WIDTH'  0           MNO 0
+  spt  UL  1000       '=#HEIGHT'  MNO 0
+  spt  UR -1000       '=#HEIGHT'  MNO 0
+  spt  OR '=-#WIDTH'  0           MNO 0
+  spt  OM     0       0           MNO 0
+
+$ polygonal definition of shape
+poly O
+vert 11     0   0 REFP OM
+     12     0   0 REFP OL
+     13     0 200 REFP OL
+     14  1000 300 REFP OM
+     15     0   0 REFP UL
+     16     0   0 REFP UR
+     17 -1000 300 REFP OM
+     18     0 200 REFP OR
+     19     0   0 REFP OR
+     20     0   0 REFP OM
+
+$ shear cut
+cut  1 zb S
+end
+
+
++prog sofimshc urs:2
+head definition of axis
+syst 3D gdiv 1000 posz
+echo geom FULL
+ctrl topo GAXP 3 $ generate structural points & lines along placements
+ctrl mesh 1      $ activate meshing of structrual system into beam elements
+ctrl hmin 1.0    $ mesh size: maximum length of beam elements
+
+$ definition of axis in plan view
+gax A1 type LANE titl "central axis"
+ gaxa S  0.0  X -1 0 SX 1 0     $ start point
+      L 10.0                    $ straight line
+      L 10.0 RA   0.0 RE 100.0  $ transition curve
+      L 20.0 R  100.0           $ circular arc
+      L 10.0 RA 100.0 RE  0.0   $ transition curve
+
+ $ secondary lines with point and group offset
+ gaxs A1 ids A  y +2.75  spt +10 grp +1
+ gaxs A1 ids B  y -2.75  spt +20 grp +2
+
+ $ placements on main axis
+ $ - all placements are aligned parallel
+ gaxp A1 ids 0 s  0.0  type 'S' grp 10 ncs 0 spt 100 alf 0.0 idp AA
+ gaxp A1 ids 0 s 25.0  type 'S' grp 10 ncs 0 spt 200 alf 0.0 idp BB
+ gaxp A1 ids 0 s 50.0  type 'S' grp 10 ncs 0 spt 300 alf 0.0 idp CC
+
+ $ placements on all secondary axes
+ $ - as a cross section number is given structural elements are created
+ gaxp A1 ids + s  0.0  type 'S' ncs 1
+ gaxp A1 ids + s 25.0  type 'S' ncs 1
+ gaxp A1 ids + s 50.0  type 'S' ncs 1
+
+ $ distribution of height along axis
+ gaxv A1 'HEIGHT'  s  0.0  v 1800[mm] type -
+ gaxv A1 'HEIGHT'  s  2.5  v 1800[mm] type -
+ gaxv A1 'HEIGHT'  s 10.0  v 1200[mm] type D-
+ gaxv A1 'HEIGHT'  s 15.0  v 1200[mm] type D+
+ gaxv A1 'HEIGHT'  s 22.5  v 1800[mm] type -
+ gaxv A1 'HEIGHT'  s 27.5  v 1800[mm] type -
+ gaxv A1 'HEIGHT'  s 35.0  v 1200[mm] type D-
+ gaxv A1 'HEIGHT'  s 40.0  v 1200[mm] type D+
+ gaxv A1 'HEIGHT'  s 47.5  v 1800[mm] type -
+ gaxv A1 'HEIGHT'  s 50.0  v 1800[mm] type -
+
+ $ points and lines at 1st support
+ spt 101 ref PT 110 z 1.8 fix F->110
+  sptp CZ val 1.E+6 1.0
+ spt 102 ref PT 120 z 1.8 fix F->120
+  sptp CZ val 1.E+6 1.0
+
+ sln 101 npa 100 110 sno 10
+ sln 102 npa 100 120 sno 10
+
+ $ points and lines at 2nd support
+ spt 201 ref PT 200 x 0 0 +10.0  FIX F
+
+ sln 201 npa 200 210 sno 10 styp B
+ sln 202 npa 200 220 sno 10 styp B
+ sln 203 npa 200 201 sno '20.21'
+
+ $ points and lines at 3rd support
+ spt 301 ref PT 310 z 1.8 fix F->310
+  sptp CZ val 1.E+6 1.E+6
+ spt 302 ref PT 320 z 1.8 fix F->320
+  sptp CZ val 1.E+6 1.0
+
+ sln 301 npa 300 310 sno 10
+ sln 302 npa 300 320 sno 10
+
+end
+
+
++prog aqua urs:3
+head Interpolation of sections along axis
+echo full 0
+inte 0
+end
+
++prog ase urs:21
+head test calculation
+lc 1 dlz 1
+end

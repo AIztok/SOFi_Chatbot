@@ -1,0 +1,50 @@
+!#!Info  Example:       Modeling of attribute regions and 'free' openings
+!#!Info  Keyword:       Structural model; area elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 25
+!#!Info  Date:          $Date: 2009-04-22 02:04:38 +0200 (Di, 31 Mrz 2009) $
+
++prog aqua urs:1
+head material
+norm DIN 1045-1
+conc 1 C 35
+conc 2 C 30
+end
+
++prog sofimshc urs:4
+head attribute regions
+syst PESS gdiv 10000 POSY $ 2D plain stress system
+
+ctrl mesh 2     $ create quadrilateral elements
+ctrl hmin 0.5   $ global mesh density
+
+$ a region is defined on an entirely geometrical basis
+sar 1 t 0.2 mno 1 grp 1
+sarb out ; slnb x1  0 0 0  x2 12 0 0
+sarb out ; slnb x1 12 0 0  x2 12 8 0
+sarb out ; slnb x1 12 8 0  x2  0 8 0
+sarb out ; slnb x1  0 8 0  x2  0 0 0
+
+$ attribute region changing thickness and material
+sar PROP t 0.5 mno 2
+sarb out ; slnb x1  1 0 0  x2  3 0 0
+sarb out ; slnb x1  3 0 0  x2  3 5 0
+sarb out ; slnb x1  3 5 0  x2  1 5 0
+sarb out ; slnb x1  1 5 0  x2  1 0 0
+
+$ attribute region with reduced mesh size
+sar PROP H1 0.25
+sarb out ; slnb x1  5 8 0  x2  7 8 0
+sarb out ; slnb x1  7 8 0  x2  7 3 0
+sarb out ; slnb x1  7 3 0  x2  5 3 0
+sarb out ; slnb x1  5 3 0  x2  5 8 0
+
+$ 'free' opening cutting out a hole
+sar VOID
+sarb out ; slnb x1  9 0 0  x2 11 0 0
+sarb out ; slnb x1 11 0 0  x2 11 5 0
+sarb out ; slnb x1 11 5 0  x2  9 5 0
+sarb out ; slnb x1  9 5 0  x2  9 0 0
+
+end
+

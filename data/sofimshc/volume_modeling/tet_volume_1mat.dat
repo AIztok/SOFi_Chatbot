@@ -1,0 +1,96 @@
+!#!Info  Example:       SOFIMSHC-Solid with inclined drilling hole
+!#!Info  Keyword:       Meshing; Tetrahedral elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2016
+
++prog aqua urs:2
+head
+mat 1 E 1.e6 0.3
+mat 2 E 1.e3 0.4
+end
+
++prog sofimshc urs:3
+head modeling of surface
+syst SPAC gdiv -1000
+ctrl MESH 2     $ create surface mesh
+ctrl HMIN 0.5   $ mesh density
+ctrl WARN 383   $ ignore warnings about unconnected structural lines
+
+let#L 10.0 $ length of body
+let#W  5.0 $ width of body
+let#H  2.0 $ height of body
+
+let#R 1.0       $ radius of hole
+let#C 5,2.5,1.0 $ center position of hole
+let#alph 45.0   $ inclination of hole
+
+gar P1 type PLAN ; gara x 0 0 0  nz 1.0 umin -#L +#L vmin -#L +#L
+gar P2 type PLAN ; gara x 0 0 #H nz 1.0 umin -#L +#L vmin -#L +#L
+
+
+gax G1 typc ARC
+ gaxb x1 #C(0)-10*tan(#alph) #C(1)-#R #C(2)-10 x2 #C(0)+10*tan(#alph) #C(1)-#R #C(2)+10
+gax G2 typc ARC
+ gaxb x1 #C(0)-10*tan(#alph) #C(1)+#R #C(2)-10 x2 #C(0)+10*tan(#alph) #C(1)+#R #C(2)+10
+
+gar R1 type ROTA
+ gara G1 x #C(0) #C(1) #C(2) nx tan(#alph) nz 1.0 vmin 0.0 vmax 180.0
+
+gar R2 type ROTA
+ gara G2 x #C(0) #C(1) #C(2) nx tan(#alph) nz 1.0 vmin 0.0 vmax 180.0
+
+gax P1R1 sur1 P1 sur2 R1
+gax P1R2 sur1 P1 sur2 R2
+gax P2R1 sur1 P2 sur2 R1
+gax P2R2 sur1 P2 sur2 R2
+
+
+spt 1 x  0  0 0
+    2 x #L  0 0
+    3 x #L #W 0
+    4 x  0 #W 0
+   11 x  0  0 #H
+   12 x #L  0 #H
+   13 x #L #W #H
+   14 x  0 #W #H
+
+$ lines defining the body
+sln 1,2,3,4 npa 1,2,3,4 npe 2,3,4,1
+sln 11,12,13,14 npa 11,12,13,14 npe 12,13,14,11
+sln 21,22,23,24 npa 1,2,3,4 npe 11,12,13,14
+
+$ lines defining the hole
+sln 51 ref G1
+sln 52 ref G2
+sln 61 ref P1R1
+sln 62 ref P1R2
+sln 71 ref P2R1
+sln 72 ref P2R2
+
+$ structural areas
+sar  1 grp 1 t 0 ; sarb out 1,2,3,4 ; sarb in 61,62
+sar  2 grp 1 t 0 ; sarb out 1,11,21,22
+sar  3 grp 1 t 0 ; sarb out 2,12,22,23
+sar  4 grp 1 t 0 ; sarb out 3,13,23,24
+sar  5 grp 1 t 0 fix F ; sarb out 4,14,24,21
+sar  6 grp 1 t 0 ; sarb out 11,12,13,14 ; sarb in 71,72
+
+sar 11 grp - ref R1 t 0 ; sarb out 51,52,61,71
+sar 12 grp - ref R2 t 0 ; sarb out 51,52,62,72
+
+end
+
+
++prog sofimsha urs:1
+head volume meshing
+syst REST
+
+grp 10
+bric PROP mno 2
+
+umsh type TET
+ ubnd type OUT sel QGRP n1 1
+ ubnd type OUT QREF n1 11 12
+end
+
+

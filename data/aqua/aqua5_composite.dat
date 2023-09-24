@@ -1,0 +1,143 @@
++PROG AQUA urs:1
+HEAD EXAMPLES COMPOSITE SECTIONS
+NORM DIN EN199X-200X UNIT 5
+ECHO MAT
+ECHO SECT
+CTRL RFCS 2 ; CTRL SCUT 0
+CONC 1 C 25 ; STEE 2 S 235 ; STEE 3 B 500B ; CONC 4 C 20
+SECT 1 2 $ Steel column with concrete centre
+POLY OPZ 2 ; VERT  101  150  150
+                   102  150 -150
+POLY OPZ 1 ; VERT  201  140  140
+                   202  140 -140
+CUT 1 YB -150  YE -140 MNO 2
+    1 YB -140  YE  140 MNO 1 MRF 3
+    1 YB  140  YE  150 MNO 2
+SECT 2 2 3 $ Steel column with concrete centre and single reinforcement
+POLY OPZ 2 ; VERT  101  150  150
+                   102  150 -150
+POLY OPZ 1 ; VERT  201  140  140
+                   202  140 -140
+RF 1  130  130 AS 6.25
+RF 2 -130  130 AS 6.25
+RF 3  130 -130 AS 6.25
+RF 4 -130 -130 AS 6.25
+CUT 1 YB -150  YE -140 MNO 2
+    1 YB -140  YE  140 MNO 1 MRF 3
+    1 YB  140  YE  150 MNO 2
+SECT 3 2 3 $ Steel column with concrete centre and line reinforcement
+POLY OPZ 2 ; VERT  101  150  150
+                   102  150 -150
+POLY OPZ 1 ; VERT  201  140  140
+                   202  140 -140
+LRF 1  130  130 -130  130 AS 6.25
+LRF 2 -130  130 -130 -130 AS 6.25
+LRF 3 -130 -130  130 -130 AS 6.25
+LRF 4  130 -130  130  130 AS 6.25
+CUT 1 YB -150  YE -140 MNO 2
+    1 YB -140  YE  140 MNO 1 MRF 3
+    1 YB  140  YE  150 MNO 2
+$
+LET#M 0,+40,-40
+LOOP#1 3
+   SECT 4+#1 2 3 TITL 'STEEL BEAM WITH FILLETS'
+   POLY RECT MNO 1 DY 310+#M(#1) 340+#M(#1)
+   PROF 1 HEM 300 DTYP S
+$ REMARK ON COORDINATES: WE DEFINE A SMALL OVERLAP
+   CUT 1 YB -200  YE -100  MNO 1 MRF 3
+       1 YB -100  YE  -10  MNO 1 MRF 3
+       1 YB  -20  YE   20  MNO 2
+       1 YB   10  YE  100  MNO 1 MRF 3
+       1 YB  100  YE  200  MNO 1 MRF 3
+ENDLOOP
+
+SECT 7 1 3 TITL 'COMPOSITE PLATE WITH BEAMS'
+POLY O MNO 1
+VERT NO   Y      Z       TYPE
+     1    2500   0       O
+     2   -2500   0       O
+     3   -2500   190     O
+     4    2500   190     O
+PROF NO TYPE     Z1      YM      ZM     DTYP    REF  MNO=2
+     1  heb     1000    -1875   190     S       UM
+     2  heb     1000     -625   190     S       UM
+     3  heb     1000      625   190     S       UM
+     4  heb     1000     1875   190     S       UM
+
+SECT 8 2 TITL 'COMPOUND WITH CS-DEFINITIONS'
+CS 10 TITL 'Steel beam'
+PROF NO TYPE     Z1      ZM    DTYP    REF  MNO=2
+     1  heb     500    190     S       UM
+CS 12 TITL 'In situ concrete'
+POLY O MNO 1
+VERT NO   Y      Z    TYPE
+   1    1250     0    O
+   2   -1250     0    O
+   3   -1250    190   O
+   4    1250    190   O
+
+SECT 9 MNO 2 ; PROF 1 RHS  200 200 8 MATI 1
+$
+SECT 11 2 3 TITL 'Double C + Filling'
+POLY RECT MNO 1 DY 310 300
+PROF 1 U 300 DTYP S YM  155 ALPH 180 MNO 2
+PROF 1 U 300 DTYP S YM -155 ALPH 0   MNO 2
+$
+SECT 12 2 3 TITL 'Double C + Filling'
+POLY RECT MNO 1 DY 310 500
+PROF 1 U 300 DTYP S YM  155 ZM -250 ALPH 180 REF LL  MNO 2
+PROF 1 U 300 DTYP S YM -155 ZM -250 ALPH 0   REF UL  MNO 2
+$
+SECT 13 1 3 TITL 'Compound with CS-Definitions'
+CS 11 TITL 'Part 1'
+POLY OPZ MNO 1 ; VERT 2 500 700 ; 1 = 1000
+CS 12 TITL  'Part 1+2'
+POLY OPZ MNO 4 ; VERT 3 500 400 ; 2 =  700
+CS 19 TITL  'Part 1+2+3'
+POLY OPZ MNO 2 ; VERT 4 500 200 ; 3 =  400
+$
+SECT 16 TITL 'cloned'
+INTE ADD 13 ICS 10
+$
+SECT 17 1 3 TITL 'Part 1' ; POLY OPZ MNO 1 ; VERT 2 500 700 ; 1 = 1000
+SECT 18 1 3 TITL 'Part 2' ; POLY OPZ MNO 1 ; VERT 3 500 400 ; 2 =  700
+SECT 19 2 3 TITL 'Part 3' ; POLY OPZ MNO 2 ; VERT 4 500 200 ; 3 =  400
+$
+SECT 20 1 3 TITL 'composed I'
+    INTE ADD 17,18,19
+SECT 21 1 3 TITL 'composed II'
+    POLY OPZ MNO 1 ; VERT 2 500 700 ; 1 = 1000
+    INTE ADD 18
+    POLY OPZ MNO 2 ; VERT 4 500 200 ; 3 =  400
+SECT 22 4 3 TITL 'composed III'
+    CS 11 TITL 'Part 1'
+    POLY OPZ MNO 4 ; VERT 2 500 700 ; 1 = 1000
+    CS 12 TITL  'Part 1+2'
+    INTE ADD 18
+    CS 19 TITL  'Part 1+2+3'
+    POLY OPZ MNO 2 ; VERT 4 500 200 ; 3 =  400
+$
+END
+END
+
++prog RESULTS urs:2
+HEAD
+SIZE "-urs"
+
+LOOP#1 10
+lc sect #1
+stru type cros repr dstr; and; cros type name repr dtxt
+ENDLOOP
+
+LOOP#1 3
+lc sect #1+11
+stru type cros repr dstr; and; cros type name repr dtxt
+ENDLOOP
+
+LOOP#1 3
+lc sect #1+17
+stru type cros repr dstr; and; cros type name repr dtxt
+ENDLOOP
+
+
+END

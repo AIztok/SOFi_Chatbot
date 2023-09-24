@@ -1,0 +1,51 @@
++prog aqua urs:2
+head 'Definition des Querschnitts'
+echo full extr
+ctrl rest 2 ! Steuerung, dass die Angaben des vorherigen AQUA nicht überschrieben werden
+
+$----------------------------------------------------------------------------------
+!*! Wand-QS
+srec 1 h 0.25 b 100[cm] so 0.04[m] su 0.04[m] mno 1 mrf 101 ! QS-Definition mit vereeinfachter Eingabe für Rechteckquerschnitte
+
+$----------------------------------------------------------------------------------
+!*! Decken-QS
+SECT NO   2  MNO  2 MRF 101 titl 'Section A-A' ! QS-Definition über Polygonpunkte
+
+let#h 0.3[m] ! Lokale Variable für die Querschnittshöhe
+let#b 1.0[m] ! Lokale Variable für die Querschnittsbreite
+
+!*! Spannungspunkte - wo wir die Spannungen ermitteln wollen
+$ Oberkante
+SPT OKL  Y -#b/2 Z 0 MNO 2
+SPT OKM  Y  0.00   Z 0 MNO 2
+SPT OKR  Y +#b/2 Z 0 MNO 2
+$ Unterkante
+SPT UKL  Y -#b/2 Z #H MNO 2
+SPT UK   Y  0.00   Z #H MNO 2
+SPT UKR  Y +#b/2 Z #H MNO 2
+
+POLY TYPE O   MNO  2
+    VERT   1  Y   0     Z   0       REFP OKL
+    VERT   2  Y   0     Z   0       REFP OKM
+    VERT   3  Y   0     Z   0       REFP OKR
+    VERT  11  Y   0     Z   0       REFP UKR
+    VERT  12  Y   0     Z   0       REFP UK
+    VERT  13  Y   0     Z   0       REFP UKL
+! Obere Bewehrung
+! Eingabe Bewehrungsdurchmesser und Abstand
+LRF 1 YB -0.04 ZB  0.04 YE 0.04 ZE  0.04 REFA 'OKR' REFE 'OKL' D 10[mm] A 0.1[m] DIST FULL LAY M1
+! Eingabe Bewehrungsdurchmesser und Anzahl
+$LRF 1 YB -0.04 ZB  0.04 YE 0.04 ZE  0.04 REFA 'OKR' REFE 'OKL' D 10[mm] A 9[-] DIST FULL LAY M1
+! Eingabe Bewehrungsquerschnittsfläche im Querschnitt
+$LRF 1 YB -0.04 ZB  0.04 YE 0.04 ZE  0.04 REFA 'OKR' REFE 'OKL' AS 6.0[cm2]  D 10[mm] DIST FULL LAY M1
+! Eingabe Bewehrungsquerschnittsfläche pro m
+$LRF 1 YB -0.04 ZB  0.04 YE 0.04 ZE  0.04 REFA 'OKR' REFE 'OKL' AS 6.0[cm2/m] A 1 D 10[mm] DIST EVEN LAY M1
+
+! Untere Bewehrung
+LRF 1 YB -0.04 ZB -0.04 YE 0.04 ZE -0.04 REFA 'UKR' REFE 'UKL' D 10[mm] A 0.1[m] DIST FULL LAY M2
+
+! Schubschnitte                                                                                         $schwächere Steg wegen der Kabel
+CUT 'Csc' ZB 'S' BRED 0.1[m] ! Schubschnitt durch den Schwerpunkt des QS
+
+
+end

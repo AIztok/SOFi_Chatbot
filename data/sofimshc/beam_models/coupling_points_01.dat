@@ -1,0 +1,65 @@
+!#!Info  Example:       Coupling of displacements and rotations between structrual points
+!#!Info  Keyword:       beam elements ; coupling
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 25
+!#!Info  Date:          $Date: 2009-03-31 02:04:38 +0200 (Di, 31 Mrz 2009) $
+
+
+prog aqua urs:1
+head material and sections
+norm DIN EN199X-200X
+conc 1 C 35
+srec 10 H 400 b 150
+$ srec 11 H 300 b 150
+end
+
++prog sofimshc urs:2
+head system definition
+syst spac gdiv 1000
+ctrl mesh 1 ; ctrl hmin 1.0
+echo full 0 ; echo node full
+
+loop#i 6
+ let#j 10*#i
+ let#y  5*#i
+ let#z  3*#i
+ spt 1+#j  0  #y  #z fix MM ; sptp CX val 3000.0 3000.0 1000.0
+ spt 2+#j  4  #y  #z
+ spt 3+#j  6  #y  #z
+ spt 4+#j  10 #y  #z fix MM ; sptp CX val 3000.0 3000.0 1000.0
+
+ sln 1+#j  1+#j 2+#j sno 10 grp 1
+ sln 2+#j  3+#j 4+#j sno 10 grp 1
+endloop
+
+$ coupling conditions are added afterwards
+spt  -3 ; sptp KPPZ ref 2  grp 2   $ coupling of z-displacements between point 3 and 2
+spt -13 ; sptp KPPY ref 12 grp 2   $ coupling of y-displacements
+spt -23 ; sptp   KP ref 22 grp 2   $ coupling of all displacements
+spt -33 ; sptp  KMX ref 32 grp 2   $ coupling of moments about global x
+spt -43 ; sptp  KMY ref 42 grp 2   $ coupling of moments about global y
+spt -53 ; sptp   KF ref 52 grp 2   $ coupling of moments and displacements (all fixed)
+
+end
+
++prog sofiload urs:5
+head loads
+echo full 0
+lc 1 titl 'horizontal'
+ line GLN 1,11,21,31,41,51 Type PYY 5.0
+lc 2 titl 'longitudinal'
+ line GLN 1,11,21,31,41,51 Type PXX -5.0
+lc 3 titl 'vertical'
+ line GLN 1,11,21,31,41,51 Type PZZ 1.0
+lc 4 titl 'rotational'
+ line GLN 1,11,21,31,41,51 Type MX 1.0
+
+end
+
++prog ase urs:6
+head solution
+lc 1,2,3,4
+end
+
+
+

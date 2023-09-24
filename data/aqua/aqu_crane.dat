@@ -1,0 +1,131 @@
+$ Template for German Kranschienenprofile der Klasse A und F
+#define AQ_TMP_NR=0    $ section number
+#define AQ_TMP_MNR=10  $ Material number
+#define CLASS=A
+#define PROFIL=75
+
++PROG AQUA
+HEAD Crane Rail profiles of class A and F
+<TEXT>
+<B>Crane Rail according to German Design code</B>
+<LF>
+Section number.: <EDIT:AQ_TMP_NR,Format=3>$(AQ_TMP_NR)</EDIT>
+       Material: <EDIT:AQ_TMP_MNR,Format=3>$(AQ_TMP_MNR)</EDIT>
+          Class: <EDIT:CLASS,Update=Yes,List=A,F>$(CLASS)</EDIT>
+#if $(CLASS)==A
+        Profile: <EDIT:PROFIL,Update=Yes,List=45,55,65,75,100,120>$(PROFIL)</EDIT>
+#ENDIF
+#if $(CLASS)==F
+        Profile: <EDIT:PROFIL,Update=Yes,List=100,120>$(PROFIL)</EDIT>
+#ENDIF
+</TEXT>
+
+PAGE UNII 2 $ INPUT IS DONE IN MM
+
+$ let#LOOPSIZE 1000
+#define Asect
+SECT #nr #mnr TITL 'Kranschiene A #P'
+$ List of parameters
+$  k , b1,b2,b3 ,f1,f2,f3, h1,h2,h3, r1,r2,r3,r4,r5,r6
+$  1   2  3  4   5  6  7   8  9  10  11 12 13 14 15 16
+if #P==45  ; let#2 125.0,54.0,24.0,14.5,11.0,8.0,55.0,24.0,20.0,4.0,400.0,3.0,4.0,5.0,4.0 ; endif
+if #P==55  ; let#2 150.0,66.0,31.0,17.5,12.5,9.0,65.0,28.5,25.0,5.0,400.0,5.0,5.0,6.0,5.0 ; endif
+if #P==65  ; let#2 175.0,78.0,38.0,20,14.0,10.0,75.0,34.0,30.0,6.0,400.0,5.0,5.0,6.0,5.0  ; endif
+if #P==75  ; let#2 200.0,90.0,45.0,22.0,15.50,11.0,85.0,39.5,35.0,8.0,500.0,6.0,6.0,8.0,6.0 ; endif
+if #P==100 ; let#2 200.0,100.0,60.0,23.0,16.5,12.0,95.0,45.5,40.0,10.0,500.0,6.0,6.0,8.0,6.0 ; endif
+if #P==120 ; let#2 220.0,120.0,72.0,30.0,20.0,14.0,105.0,55.5,47.5,10.0,600.0,6.0,10.0,10.0,6.0 ; endif
+   let#31  #P/2-#11         $  k/2-r1
+   let#32  #P/2             $  k/2
+   let#33  #11              $  r1
+   let#34  #10-#13          $  h3-r3
+   let#35  #P/2-#13/2       $ ( k/2)-(r3/2)
+   let#36  #10              $  h3
+   let#37  #4/2+#14/2       $  b3/2+r4/2
+   let#38  #9               $  h2
+   let#39  #4/2             $  b3/2
+   let#40  #9+#14           $  h2+r4
+   let#41  #8-#5-#15/2      $  h1-f1-r5/2
+   let#42  #8-#5            $  h1-f1
+   let#43  #3/2             $  b2/2
+   let#44  #8-#6            $  h1-f2
+   let#45  #2/2-#16/2       $  b1/2-r6/2
+   let#46  #8-#7            $  h1-f3
+   let#47  #2/2             $  b1/2
+   let#48  #8-#7+#16        $  h1-f3+r6
+   let#49  #8               $  h1
+   let#50  #13              $  r3
+   let#51  #14,#15,#16,#12  $  r4,r5,r66,r2
+   let#100 sqr(#54*#54-#31*#31)-#54
+POLY OPZ
+VERT 1 0.0       0.0
+   2 #31      -#100       R #54
+   3 #32      #33-#100    R #33
+   4 #32      #34
+   5 #35      #36         R #50
+   6 #37      #38
+   7 #39      #40         R -#51
+   8 #39      #41
+   9 #37      #42         R -#52
+  10 #43      #44
+  11 #45      #46
+  12 #47      #48         R #53
+  13 #47      #49
+#enddef
+$
+#define fsect
+SECT #nr #mnr TITL 'Kranschiene F #P'
+let#2 #P/2
+POLY OPZ
+VERT 1 0.0        0.0
+   2 #2-5       0.0
+   3 #2         5.0     R  5.0
+   4 #2         38.5
+   5 #2-2.5     41.0    R  2.5
+   6 #2-12.5    42.0
+   7 #2-15      45.0    R -2.5
+   8 #2-15      59.5
+   9 #2-12.5    62.0    R -2.5
+  10 #2-2.5     63.0
+  11 #2         65.5    R  2.5
+  12 #2         77.5
+  13 #2-2.5     80.0    R  2.5
+#enddef
+$
+let#cdb_ier 0
+@key 10 1      $ check for existing design code
+if #cdb_ier>0  $ and specify if not already set
+   NORM DIN 18800
+endif
+let#mnr $(AQ_TMP_MNR)
+@key 1  #mnr   $ check for existing material
+if #cdb_ier>0  $ and specify if not already set
+   STEE #mnr S 235
+endif
+$ batch version of template will create all sections
+if $(AQ_TMP_NR)==0
+   let#P 0,45,55,65,75,100,120
+   loop#1 6
+     let#nr #1+1 ; let#P #P(#1+1)
+          #include asect
+   endloop
+   let#P 0,100,120
+   loop#1 2
+     let#nr #1+7 ; let#P #P(#1+1)
+          #include fsect
+   endloop
+else
+   let#nr $(AQ_TMP_NR)
+   let#P  $(PROFIL)
+      #if $(CLASS)==A
+              #include asect
+      #endif
+      #if $(CLASS)==F
+              #include fsect
+      #endif
+$ SAVE THE TEMPLATE DATA TO THE SECTION IN THE CDBASE
+   CS  0 "$(NAME).DAT"
+   CS -1 " "#define CLASS=$(CLASS)""
+   CS -1 " "#define PROFIL=$(PROFIL)""
+endif
+END
+

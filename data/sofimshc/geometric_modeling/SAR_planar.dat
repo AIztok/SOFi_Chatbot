@@ -1,0 +1,30 @@
+!#!Info  Example:       Definition of a planar region
+!#!Info  Keyword:       Geometric modeling; area elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2012
+!#!Info  Date:          $Date: 2011-11-23 $
+
+
++PROG AQUA URS:2
+head material
+norm DIN EN199X-200X
+conc 1 C 35
+end
+
+PROG sofimshc urs:3
+head system
+syst SPAC gdiv -1000
+ctrl MESH 1 ; ctrl HMIN 0.5
+
+sar 1 t 250 mno 1
+sarr PLAN x 0 0 0 sx 4 3 0 tx 1.5 -2 0
+
+sar 2 t 250 mno 1
+sarr PLAN x 0 0 -2 sx 1 ty -1 umin -2.0 +4.0 vmin 0.0 3.0
+
+sar 3 t 250 mno 1
+sarr PLAN x 0 0 -4 nz -1 sx 1 1 umin -2.0 +2.0 vmin -2.0 +2.0
+
+
+end
+

@@ -1,0 +1,24 @@
++prog aqua urs:43.1
+head 'Materialangabe'
+$----------------------------------------------------------------------------------
+!*! Angabe der Norm
+NORM 'OEN' 'en1992-2004' CAT 'A'  unit 0 !
+$----------------------------------------------------------------------------------
+!*! Umfang der Ausgabe
+echo full extr
+$----------------------------------------------------------------------------------
+!*! Beton
+CONC NO 1  TYPE c 30N           titl 'Beton C30/37 Normalerhärtend'
+CONC NO 2  TYPE c 30R           titl 'Beton C30/37 Schnellerhärtend'
+CONC NO 3  TYPE c 30S           titl 'Beton C30/37 Langsamerhärtend'
+CONC NO 4  TYPE c 25 gam 0.0    titl 'Beton C25/30 Ohne EGW' ! Ohne EGW, z.B. für Bohrpfähle
+!
+$----------------------------------------------------------------------------------
+!*! Bewehrung
+STEE NO 101 TYPE b 550b titl 'Bewehrung B550B'
+
+$----------------------------------------------------------------------------------
+!*! Konstruktionsstahl
+STEE NO 301 TYPE S 355 titl 'S355'
+
+end

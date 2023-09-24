@@ -1,0 +1,64 @@
+!#!Info  Example:       Elastic coupling of two structural regions
+!#!Info  Keyword:       elastic interface
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 25
+!#!Info  Date:          $Date: 2010-03-26 02:04:38 +0200 (Di, 31 Mrz 2009) $
+
+
++prog aqua URS:2
+head material definition
+norm DIN EN199X-200X
+conc 1 c 30
+srec 1 500 250 mno 1
+end
+
++prog sofimshc urs:1
+head two regions
+syst SPAC gdiv 10000
+ctrl mesh 1 ; ctrl HMIN 1.0
+
+spt 1 x -5 -5 0
+spt 2 x +5 -5 0
+spt 3 x +5 +5 0
+spt 4 x -5 +5 0
+
+spt 11 x -5 -5 .5
+spt 12 x +5 -5 .5
+spt 13 x +5 +5 .5
+spt 14 x -5 +5 .5
+
+sln 1,2,3,4 npa 1,2,3,4 npe 2,3,4,1
+sln 11,12,13,14 npa 11,12,13,14 npe 12,13,14,11
+
+$ structural region
+sar 1 grp 1 t 200 mno 1
+sarb out 1,2,3,4
+
+$ second region with elastic bedding
+sar 2 grp 2 t 200 mno 1 CB 2000.0 2000.0 h1 0.5
+sarb out 11,12,13,14
+
+end
+
++prog sofimsha urs:3
+head elastic interface
+syst REST
+
+$ regions 1 and 2 are coupled with spring elements
+spri QGRP 1 2 cp 2000.0 2000.0
+end
+
++prog sofiload urs:4
+head loads
+lc 1 ; area GAR 1 Type PZ 1.0
+end
+
++prog ase urs:5
+head test calculation
+lc 1
+end
+
+
+
+
+

@@ -1,0 +1,74 @@
++prog aqua urs:43.1
+head 'Material Neubau AUT'
+page unii 0 unio 0
+NORM 'OEN' 'en1992-2004' CAT 'D'  unit 0 $ Eisenbahnbrücke
+echo full extr
+
+$----------------------------------------------------------------------------------
+!*! Beton
+$ S10H1A
+CONC NO 1  TYPE c 60N alfa 1.0e-5 gam 22.99 fct 4.9         titl 'S10H1A FT'
+SSLA SERV 1.00
+SSLA EPS       SIG      TYPE
+     0.150       0.00   POL
+     0.123       4.90   POL
+     0.000       0.00   SPL
+    -0.647     -25.06   SPL
+    -1.295     -46.25   SPL
+    -1.942     -61.68   SPL
+    -2.589     -68.00   SPL
+    -3.019     -64.19   SPL
+
+$ Topping
+CONC NO 11 TYPE c 40N alfa 1.0e-5 gam 23.33 fct 3.8     titl 'S10H1A topping'
+SSLA SERV 1.00
+SSLA EPS       SIG      TYPE
+     0.150       0.00   POL
+     0.104       3.80   POL
+     0.000       0.00   SPL
+    -0.581     -19.51   SPL
+    -1.162     -34.60   SPL
+    -1.743     -44.44   SPL
+    -2.324     -48.00   SPL
+    -3.500     -30.06   SPL
+
+$ Cantilever
+CONC NO 2  TYPE c 60N alfa 1.0e-5 gam 23.14 fct 4.9          titl 'Cantilever'
+SSLA SERV 1.00
+SSLA EPS       SIG      TYPE
+     0.150       0.00   POL
+     0.123       4.90   POL
+     0.000       0.00   SPL
+    -0.647     -25.06   SPL
+    -1.295     -46.25   SPL
+    -1.942     -61.68   SPL
+    -2.589     -68.00   SPL
+    -3.019     -64.19   SPL
+
+$----------------------------------------------------------------------------------
+!*! Bewehrung
+$ Long. reinf. Topping Top S10H1A
+STEE NO 101 TYPE b 550b fy 593 ft 702 es 198000 titl 'Long. Reinf. DM20'    $ Bewehrung Longitudinal reinforcement
+    SSLA SERV 1.00 TS I_S MUET 9*314/(1200*80) MNOC 11 FCTF 1.0
+$ Long. reinf. Topping Top S10H2D
+STEE NO 102 TYPE b 550b fy 543 ft 647 es 200000 titl 'Long. Reinf. DM25'    $ Bewehrung Longitudinal reinforcement
+    SSLA SERV 1.00 TS I_S MUET 9*492/(1200*160) MNOC 1 FCTF 1.0
+$ Long. reinf. Topping Bottom S10H1A
+STEE NO 103 TYPE b 550b fy 536 ft 605 es 203000 titl 'Long. Reinf. DM12'    $ Bewehrung Longitudinal reinforcement
+    SSLA SERV 1.00 TS I_S MUET 10*113/(1200*80) MNOC 11 FCTF 1.0
+$ Long. reinf. Prefab Bottom S10H1A
+STEE NO 104 TYPE b 550b fy 524 ft 642 es 213000 titl 'Long. Reinf. DM16'    $ Bewehrung Longitudinal reinforcement
+    SSLA SERV 1.00 TS I_S MUET 8*203/(1180*72.5) MNOC 1 FCTF 1.0
+
+$ Shear reinf.
+STEE NO 111 TYPE b 550b fy 524 ft 603 es 197000 titl 'Shear Reinf. DM6'    $ Bewehrung shear reinforcement
+STEE NO 112 TYPE b 550b fy 539 ft 618 es 199000 titl 'Shear Reinf. DM8'    $ Bewehrung shear reinforcement
+STEE NO 113 TYPE b 550b fy 524 ft 605 es 204000 titl 'Shear Reinf. DM12'    $ Bewehrung shear reinforcement
+STEE NO 114 TYPE b 550b fy 524 ft 642 es 213000 titl 'Shear Reinf. DM16'    $ Bewehrung shear reinforcement
+
+$----------------------------------------------------------------------------------
+!*! Spannstahl
+STEE NO 201 TYPE Y 1860 fy 1600 rel1 2.5 rel2 2.5     $ Spannstahl  fpk=1860 N/mm2; fp01=1680 N/mm2
+
+
+end

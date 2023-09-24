@@ -1,0 +1,101 @@
+#DEFINE CLASS=235
+#DEFINE FY=240
+#DEFINE FT=450
+#DEFINE ES=170000
+
++PROG AQUA
+HEAD Stainless Steel according to SONDERDRUCK 862 INFORMATIONSSTELLE EDELSTAHL
+HEAD ALLGEMEINE BAUAUFSICHTLICHE ZULASSUNG Z-30.3-6 - 5. DEZEMBER 2003
+#DEFINE CLTXT=Strengthclass      :
+#DEFINE EMTXT=Elasticity modulus :
+#DEFINE FYTXT=Yield strength     :
+#DEFINE FTTXT=Tensile strength   :
+NORM DIN 18800
+ECHO MAT FULL
+<TEXT>
+<LF>
+    $(CLTXT)   S  <EDIT:CLASS,Update=Yes,List=235,275,355,460,690>$(CLASS)</EDIT>
+    $(EMTXT)   Es <EDIT:ES,List=170000,200000>$(ES)</EDIT>
+</TEXT>
+#IF $(CLASS)==235
+<TEXT>
+    $(FYTXT)   fy <EDIT:FY,Update=Yes,List=190,200,220,240>$(FY)</EDIT>
+    $(FTTXT)   ft <EDIT:FT,Update=Yes,List=400,450,500>$(FT)</EDIT>
+</TEXT>
+#ENDIF
+#IF $(CLASS)==275
+<TEXT>
+    $(FYTXT)   fy <EDIT:FY,Update=Yes,List=275,300>$(FY)</EDIT>
+    $(FTTXT)   ft <EDIT:FT,Update=Yes,List=550,600>$(FT)</EDIT>
+</TEXT>
+#ENDIF
+#IF $(CLASS)==355
+<TEXT>
+    $(FYTXT)   fy <EDIT:FY,Update=Yes,List=330,355>$(FY)</EDIT>
+    $(FTTXT)   ft <EDIT:FT,Update=Yes,List=600>$(FT)</EDIT>
+</TEXT>
+#ENDIF
+#IF $(CLASS)==460
+<TEXT>
+    $(FYTXT)   fy <EDIT:FY,Update=Yes,List=420,460>$(FY)</EDIT>
+    $(FTTXT)   ft <EDIT:FT,Update=Yes,List=800>$(FT)</EDIT>
+</TEXT>
+#ENDIF
+#IF $(CLASS)==690
+<TEXT>
+    $(FYTXT)   fy <EDIT:FY,Update=Yes,List=690>$(FY)</EDIT>
+    $(FTTXT)   ft <EDIT:FT,Update=Yes,List=800>$(FT)</EDIT>
+</TEXT>
+#ENDIF
+LET#ES $(ES)
+LET#FY $(FY)
+LET#FT $(FT)
+LET#FTM MIN(#FT,1.441*#FY)  $ yield limit or 998 Permille
+LET#EPS(9) 0.0
+LET#SIG(9) 0.0
+LET#NP 5
+LET#2 -1
+LOOP#1 #NP
+  let#2 #2+1
+  LET#SIG(#2) #1/(#NP(0)-1)*#FY
+  LET#EPS(#2) 1000*#SIG(#1)/#ES+2.0*(#SIG(#1)/#FY)**6
+$ PRT#EPS(#1)
+$ PRT#SIG(#1)
+ENDLOOP
+  let#2 #2+1
+  LET#SIG(#2) 1.05*#FY
+  LET#EPS(#2) 1000*#SIG(#2)/#ES+2.0*(#SIG(#2)/#FY)**17
+  let#2 #2+1
+  LET#SIG(#2) 1.10*#FY
+  LET#EPS(#2) 1000*#SIG(#2)/#ES+2.0*(#SIG(#2)/#FY)**17
+  LET#FYM 1.15*#FY
+LET#NP 3
+LOOP#1 #NP
+  let#2 #2+1
+  LET#SIG(#2) (#1*#FTM+(#np-#1-1)*#FYm)/(#NP-1)
+  LET#EPS(#2) 1000*#SIG(#2)/#ES+2.0*(#SIG(#2)/#FY)**17
+ENDLOOP
+$
+STEE 1 S $(CLASS) ES #ES FY #FY FT #FT
+SSLA ULTI
+    -#EPS(9) -#SIG(9)
+    -#EPS(8) -#SIG(8) TYPE SPL
+    -#EPS(7) -#SIG(7) TYPE SPL
+    -#EPS(6) -#SIG(6) TYPE SPL
+    -#EPS(5) -#SIG(5) TYPE SPL
+    -#EPS(4) -#SIG(4)
+    -#EPS(3) -#SIG(3) TYPE SPL
+    -#EPS(2) -#SIG(2) TYPE SPL
+    -#EPS(1) -#SIG(1) TYPE SPL
+       0.0      0.0   TYPE SPL
+     #EPS(1)  #SIG(1) TYPE SPL
+     #EPS(2)  #SIG(2) TYPE SPL
+     #EPS(3)  #SIG(3) TYPE SPL
+     #EPS(4)  #SIG(4)
+     #EPS(5)  #SIG(5) TYPE SPL
+     #EPS(6)  #SIG(6) TYPE SPL
+     #EPS(7)  #SIG(7) TYPE SPL
+     #EPS(8)  #SIG(8) TYPE SPL
+     #EPS(9)  #SIG(9)
+END
+

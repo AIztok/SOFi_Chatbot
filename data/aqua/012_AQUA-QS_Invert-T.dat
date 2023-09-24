@@ -1,0 +1,223 @@
++prog aqua
+head 'Cross section'
+echo full extr
+!#!Chapter Section A-A
+SECT NO   10  MNO  1 MRF 101 titl 'Section A-A'
+
+!*!Label Stress points
+$ Topping oben
+SPT TOL  Y -1.20/2 Z 0 MNO 11
+SPT TOM  Y  0.00   Z 0 MNO 11
+SPT TOR  Y +1.20/2 Z 0 MNO 11
+$ Topping unten
+SPT TUL  Y -1.20/2 Z 0.16 MNO 11
+SPT TUM  Y +1.20/2 Z 0.16 MNO 11
+SPT TUR  Y +1.20/2 Z 0.16 MNO 11
+$ Steg oben
+SPT SOL  Y -0.30/2+0.025 Z #H-0.163-0.047-0.082-0.608-0.01 MNO 1
+SPT SOR  Y +0.30/2-0.025 Z #H-0.163-0.047-0.082-0.608-0.01 MNO 1
+$ Steg unten über Aufweitung
+SPT S1L  Y -0.30/2 Z #H-0.163-0.047-0.082 MNO 1
+SPT S1R  Y +0.30/2 Z #H-0.163-0.047-0.082 MNO 1
+$ Steg unten Aufweitung
+SPT S2L  Y -0.30/2-0.078 Z #H-0.163-0.047 MNO 1
+SPT S2R  Y +0.30/2+0.078 Z #H-0.163-0.047 MNO 1
+$ Unterkante FT
+SPT UKL  Y -1.18/2 Z #H MNO 1
+SPT UK   Y  0.00   Z #H MNO 1
+SPT UKR  Y +1.18/2 Z #H MNO 1
+
+!*!Label Prefab
+CS 1
+POLY TYPE O   MNO  1
+    VERT   1  Y   0     Z   0       REFP SOL
+    VERT   2  Y   0     Z   0       REFP SOR
+    VERT   4  Y   0     Z   0.02    REFP SOR
+    VERT   6  Y   0.025 Z   0.02    REFP SOR
+    VERT   8  Y   0     Z   0       REFP S1R
+    VERT  10  Y   0     Z   0       REFP S2R
+    VERT  12  Y   0     Z  -0.163   REFP UKR
+    VERT  14  Y   0     Z   0       REFP UKR
+    VERT  15  Y   0     Z   0       REFP UK
+    VERT  13  Y   0     Z   0       REFP UKL
+    VERT  11  Y   0     Z  -0.163   REFP UKL
+    VERT   9  Y   0     Z   0       REFP S2L
+    VERT   7  Y   0     Z   0       REFP S1L
+    VERT   5  Y  -0.025 Z   0.02    REFP SOL
+    VERT   3  Y   0     Z   0.02    REFP SOL
+
+!*!Label Reinforcement Prefab
+
+$ Bottom
+RF 1 Y -0.035-0.010-0.02/2-0.15*0   Z  -0.035-0.010-0.02/2      D 16 LAY M1 tors pass REFP 14 MRF 104 $ right side
+RF 2 Y -0.035-0.010-0.02/2-0.15*1   Z  -0.035-0.010-0.02/2      D 16 LAY M1 tors pass REFP 14 MRF 104 $
+RF 3 Y -0.035-0.010-0.02/2-0.15*2   Z  -0.035-0.010-0.02/2      D 16 LAY M1 tors pass REFP 14 MRF 104 $
+RF 4 Y -0.035-0.010-0.02/2-0.15*3   Z  -0.035-0.010-0.02/2      D 16 LAY M1 tors pass REFP 14 MRF 104 $
+RF 6 Y +0.035+0.010+0.02/2+0.15*0   Z  -0.035-0.010-0.02/2      D 16 LAY M1 tors pass REFP 13 MRF 104 $ left side
+RF 7 Y +0.035+0.010+0.02/2+0.15*1   Z  -0.035-0.010-0.02/2      D 16 LAY M1 tors pass REFP 13 MRF 104 $
+RF 8 Y +0.035+0.010+0.02/2+0.15*2   Z  -0.035-0.010-0.02/2      D 16 LAY M1 tors pass REFP 13 MRF 104 $
+RF 9 Y +0.035+0.010+0.02/2+0.15*3   Z  -0.035-0.010-0.02/2      D 16 LAY M1 tors pass REFP 13 MRF 104 $
+
+$Web (construction rebars)
+RF 11 Y +0.15-0.060-0.010-0.01/2    Z -0.32                     D  8 LAY M2 tors pass REFP 15 MRF 104 $ right side
+RF 12 Y +0.15-0.060-0.010-0.01/2    Z -0.585                    D  8 LAY M2 tors pass REFP 15 MRF 104 $
+RF 13 Y +0.15-0.060-0.010-0.01/2    Z -0.850                    D  8 LAY M2 tors pass REFP 15 MRF 104 $
+RF 14 Y +0.15-0.060-0.010-0.01/2    Z -0.885                    D  6 LAY M2 tors pass REFP 15 MRF 104 $
+
+RF 15 Y -0.15+0.060+0.010+0.01/2    Z -0.32                     D  8 LAY M2 tors pass REFP 15 MRF 104 $ left side
+RF 16 Y -0.15+0.060+0.010+0.01/2    Z -0.585                    D  8 LAY M2 tors pass REFP 15 MRF 104 $
+RF 17 Y -0.15+0.060+0.010+0.01/2    Z -0.850                    D  8 LAY M2 tors pass REFP 15 MRF 104 $
+RF 18 Y -0.15+0.060+0.010+0.01/2    Z -0.885                    D  6 LAY M2 tors pass REFP 15 MRF 104 $
+
+CS 30
+!*!Label Topping
+POLY TYPE O   MNO  11
+    VERT  20  Y   0  Z   0 REFP TOM
+    VERT  21  Y   0  Z   0 REFP TOR
+    VERT  22  Y   0  Z   0 REFP TUR
+    VERT  23  Y   0  Z   0 REFP TUL
+    VERT  24  Y   0  Z   0 REFP TOL
+
+!*!Label Reinforcement Topping
+$ Oben
+RF 21 Y -0.035-0.012-0.02/2-0.15*0  Z  0.035+0.012+0.02/2       D 20 LAY M3 tors pass REFP 21 MRF 101 $ right side
+RF 22 Y -0.035-0.012-0.02/2-0.15*1  Z  0.035+0.012+0.02/2       D 20 LAY M3 tors pass REFP 21 MRF 101 $
+RF 23 Y -0.035-0.012-0.02/2-0.15*2  Z  0.035+0.012+0.02/2       D 20 LAY M3 tors pass REFP 21 MRF 101 $
+RF 24 Y -0.035-0.012-0.02/2-0.15*3  Z  0.035+0.012+0.02/2       D 20 LAY M3 tors pass REFP 21 MRF 101 $
+RF 25 Y  0                          Z  0.16-0.125+0.020+0.02/2  D 20 LAY M3 tors pass REFP 20 MRF 101 $ Inside Hairpin
+RF 26 Y +0.035+0.012+0.02/2+0.15*0  Z  0.035+0.012+0.02/2       D 20 LAY M3 tors pass REFP 24 MRF 101 $ left side
+RF 27 Y +0.035+0.012+0.02/2+0.15*1  Z  0.035+0.012+0.02/2       D 20 LAY M3 tors pass REFP 24 MRF 101 $
+RF 28 Y +0.035+0.012+0.02/2+0.15*2  Z  0.035+0.012+0.02/2       D 20 LAY M3 tors pass REFP 24 MRF 101 $
+RF 29 Y +0.035+0.012+0.02/2+0.15*3  Z  0.035+0.012+0.02/2       D 20 LAY M3 tors pass REFP 24 MRF 101 $
+
+$$ Unten
+RF 31 Y -0.035-0.012-0.012/2-0.20*0 Z -0.035-0.012-0.012/2      D 12 LAY M4 tors pass REFP 22 MRF 103 $ right side
+RF 32 Y -0.035-0.012-0.012/2-0.20*1 Z -0.035-0.012-0.012/2      D 12 LAY M4 tors pass REFP 22 MRF 103 $
+RF 33 Y -0.035-0.012-0.012/2-0.20*2 Z -0.035-0.012-0.012/2      D 12 LAY M4 tors pass REFP 22 MRF 103 $
+
+RF 34 Y +0.035+0.012+0.012/2+0.20*0 Z -0.035-0.012-0.012/2      D 12 LAY M4 tors pass REFP 23 MRF 103 $ left side
+RF 35 Y +0.035+0.012+0.012/2+0.20*1 Z -0.035-0.012-0.012/2      D 12 LAY M4 tors pass REFP 23 MRF 103 $
+RF 36 Y +0.035+0.012+0.012/2+0.20*2 Z -0.035-0.012-0.012/2      D 12 LAY M4 tors pass REFP 23 MRF 103 $
+
+$---------------------------------------
+!*!Label Schubschnitte                                                                                         $schwächere Steg wegen der Kabel
+CUT 'S0'  YB 0 ZB 0 YE 0 ZE 0 REFA 1 REFE 2 $ Schubschnitt Steg oben - AF
+CUT 'Csc'      ZB 'S'                       $ Steg schwerpunkt
+CUT 'S1'  YB 0 ZB 0 YE 0 ZE 0 REFA 3 REFE 4 $ Schubschnitt Steg unten
+CUT 'S2'  YB 0 ZB 0 YE 0 ZE 0 REFA 5 REFE 6 $ Schubschnitt Steg unten Aufweitung
+
+
+!#!Chapter Section B-B
+SECT NO   21  MNO  1 MRF 101 titl 'Section B-B'
+
+!*!Label Stress points
+$ Topping oben
+SPT TOL  Y -1.20/2 Z 0 MNO 11
+SPT TOM  Y  0.00   Z 0 MNO 11
+SPT TOR  Y +1.20/2 Z 0 MNO 11
+$ Topping unten
+SPT TUL  Y -1.20/2 Z 0.16 MNO 11
+SPT TUM  Y +1.20/2 Z 0.16 MNO 11
+SPT TUR  Y +1.20/2 Z 0.16 MNO 11
+$ Steg oben
+SPT SOL  Y -0.30/2+0.02 Z #H-0.163-0.047-0.082-0.608-0.01 MNO 1
+SPT SOR  Y +0.30/2-0.02 Z #H-0.163-0.047-0.082-0.608-0.01 MNO 1
+$ Steg unten über Aufweitung
+SPT S1L  Y -0.30/2 Z #H-0.163-0.047-0.082 MNO 1
+SPT S1R  Y +0.30/2 Z #H-0.163-0.047-0.082 MNO 1
+$ Steg unten Aufweitung
+SPT S2L  Y -0.30/2-0.078 Z #H-0.163-0.047 MNO 1
+SPT S2R  Y +0.30/2+0.078 Z #H-0.163-0.047 MNO 1
+$ Unterkante FT
+SPT UKL  Y -1.18/2 Z #H MNO 1
+SPT UK   Y  0.00   Z #H MNO 1
+SPT UKR  Y +1.18/2 Z #H MNO 1
+
+!*!Label Prefab
+CS 1
+POLY TYPE O   MNO  1
+    VERT   1  Y   0     Z   0       REFP SOL
+    VERT   2  Y   0     Z   0       REFP SOR
+    VERT   4  Y   0     Z   0.02    REFP SOR
+    VERT   6  Y   0.02  Z   0.02    REFP SOR
+    VERT   8  Y   0     Z   0       REFP S1R
+    VERT  10  Y   0     Z   0       REFP S2R
+    VERT  12  Y   0     Z  -0.163   REFP UKR
+    VERT  14  Y   0     Z   0       REFP UKR
+    VERT  15  Y   0     Z   0       REFP UK
+    VERT  13  Y   0     Z   0       REFP UKL
+    VERT  11  Y   0     Z  -0.163   REFP UKL
+    VERT   9  Y   0     Z   0       REFP S2L
+    VERT   7  Y   0     Z   0       REFP S1L
+    VERT   5  Y  -0.02  Z   0.02    REFP SOL
+    VERT   3  Y   0     Z   0.02    REFP SOL
+
+!*!Label Reinforcement Prefab
+
+$ Bottom
+RF 1 Y -0.035-0.010-0.02/2-0.15*0   Z  -0.035-0.010-0.02/2      D 16 LAY M1 tors pass REFP 14 MRF 104 $ right side
+RF 2 Y -0.035-0.010-0.02/2-0.15*1   Z  -0.035-0.010-0.02/2      D 16 LAY M1 tors pass REFP 14 MRF 104 $
+RF 3 Y -0.035-0.010-0.02/2-0.15*2   Z  -0.035-0.010-0.02/2      D 16 LAY M1 tors pass REFP 14 MRF 104 $
+RF 4 Y -0.035-0.010-0.02/2-0.15*3   Z  -0.035-0.010-0.02/2      D 16 LAY M1 tors pass REFP 14 MRF 104 $
+RF 6 Y +0.035+0.010+0.02/2+0.15*0   Z  -0.035-0.010-0.02/2      D 16 LAY M1 tors pass REFP 13 MRF 104 $ left side
+RF 7 Y +0.035+0.010+0.02/2+0.15*1   Z  -0.035-0.010-0.02/2      D 16 LAY M1 tors pass REFP 13 MRF 104 $
+RF 8 Y +0.035+0.010+0.02/2+0.15*2   Z  -0.035-0.010-0.02/2      D 16 LAY M1 tors pass REFP 13 MRF 104 $
+RF 9 Y +0.035+0.010+0.02/2+0.15*3   Z  -0.035-0.010-0.02/2      D 16 LAY M1 tors pass REFP 13 MRF 104 $
+
+$Web (construction rebars)
+RF 11 Y +0.15-0.060-0.010-0.01/2    Z -0.32                     D  8 LAY M2 tors pass REFP 15 MRF 104 $ right side
+RF 12 Y +0.15-0.060-0.010-0.01/2    Z -0.585                    D  8 LAY M2 tors pass REFP 15 MRF 104 $
+RF 13 Y +0.15-0.060-0.010-0.01/2    Z -0.850                    D  8 LAY M2 tors pass REFP 15 MRF 104 $
+RF 14 Y +0.15-0.060-0.010-0.01/2    Z -0.885                    D  6 LAY M2 tors pass REFP 15 MRF 104 $
+
+RF 15 Y -0.15+0.060+0.010+0.01/2    Z -0.32                     D  8 LAY M2 tors pass REFP 15 MRF 104 $ left side
+RF 16 Y -0.15+0.060+0.010+0.01/2    Z -0.585                    D  8 LAY M2 tors pass REFP 15 MRF 104 $
+RF 17 Y -0.15+0.060+0.010+0.01/2    Z -0.850                    D  8 LAY M2 tors pass REFP 15 MRF 104 $
+RF 18 Y -0.15+0.060+0.010+0.01/2    Z -0.885                    D  6 LAY M2 tors pass REFP 15 MRF 104 $
+
+CS 30
+!*!Label Topping
+POLY TYPE O   MNO  11
+    VERT  20  Y   0  Z   0 REFP TOM
+    VERT  21  Y   0  Z   0 REFP TOR
+    VERT  22  Y   0  Z   0 REFP TUR
+    VERT  23  Y   0  Z   0 REFP TUL
+    VERT  24  Y   0  Z   0 REFP TOL
+
+!*!Label Reinforcement Topping
+$ Oben
+RF 21 Y -0.035-0.012-0.02/2-0.15*0  Z  0.035+0.012+0.02/2       D 20 LAY M3 tors pass REFP 21 MRF 101 $ right side
+RF 22 Y -0.035-0.012-0.02/2-0.15*1  Z  0.035+0.012+0.02/2       D 20 LAY M3 tors pass REFP 21 MRF 101 $
+RF 23 Y -0.035-0.012-0.02/2-0.15*2  Z  0.035+0.012+0.02/2       D 20 LAY M3 tors pass REFP 21 MRF 101 $
+RF 24 Y -0.035-0.012-0.02/2-0.15*3  Z  0.035+0.012+0.02/2       D 20 LAY M3 tors pass REFP 21 MRF 101 $
+RF 25 Y  0                          Z  0.16-0.125+0.020+0.02/2  D 20 LAY M3 tors pass REFP 20 MRF 101 $ Inside Hairpin
+RF 26 Y +0.035+0.012+0.02/2+0.15*0  Z  0.035+0.012+0.02/2       D 20 LAY M3 tors pass REFP 24 MRF 101 $ left side
+RF 27 Y +0.035+0.012+0.02/2+0.15*1  Z  0.035+0.012+0.02/2       D 20 LAY M3 tors pass REFP 24 MRF 101 $
+RF 28 Y +0.035+0.012+0.02/2+0.15*2  Z  0.035+0.012+0.02/2       D 20 LAY M3 tors pass REFP 24 MRF 101 $
+RF 29 Y +0.035+0.012+0.02/2+0.15*3  Z  0.035+0.012+0.02/2       D 20 LAY M3 tors pass REFP 24 MRF 101 $
+
+$$ Unten
+RF 31 Y -0.035-0.012-0.012/2-0.20*0 Z -0.035-0.012-0.012/2      D 12 LAY M4 tors pass REFP 22 MRF 103 $ right side
+RF 32 Y -0.035-0.012-0.012/2-0.20*1 Z -0.035-0.012-0.012/2      D 12 LAY M4 tors pass REFP 22 MRF 103 $
+RF 33 Y -0.035-0.012-0.012/2-0.20*2 Z -0.035-0.012-0.012/2      D 12 LAY M4 tors pass REFP 22 MRF 103 $
+
+RF 34 Y +0.035+0.012+0.012/2+0.20*0 Z -0.035-0.012-0.012/2      D 12 LAY M4 tors pass REFP 23 MRF 103 $ left side
+RF 35 Y +0.035+0.012+0.012/2+0.20*1 Z -0.035-0.012-0.012/2      D 12 LAY M4 tors pass REFP 23 MRF 103 $
+RF 36 Y +0.035+0.012+0.012/2+0.20*2 Z -0.035-0.012-0.012/2      D 12 LAY M4 tors pass REFP 23 MRF 103 $
+
+$---------------------------------------
+!*!Label Schubschnitte                                                                                         $schwächere Steg wegen der Kabel
+CUT 'S0'  YB 0 ZB 0 YE 0 ZE 0 REFA 1 REFE 2 $ Schubschnitt Steg oben - AF
+CUT 'Csc'      ZB 'S'                       $ Steg schwerpunkt
+CUT 'S1'  YB 0 ZB 0 YE 0 ZE 0 REFA 3 REFE 4 $ Schubschnitt Steg unten
+CUT 'S2'  YB 0 ZB 0 YE 0 ZE 0 REFA 5 REFE 6 $ Schubschnitt Steg unten Aufweitung
+
+
+
+
+
+!#!Chapter Section QT
+
+
+
+end

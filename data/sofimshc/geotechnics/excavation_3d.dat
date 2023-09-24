@@ -1,0 +1,128 @@
+!#!Info  Example:       Excavation pit with retaining wall as 3D-model
+!#!Info  Keyword:       volume model ; extrusion to bric-elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2012
+!#!Info  Date:          $Date: 2010-03-26 02:04:38 +0200 (Di, 31 Mrz 2009) $
+
++PROG AQUA URS:2
+head material definition
+norm din 1045-1
+conc 1 C 30
+srec 1 0.5 0.25 mno 1
+end
+
++prog sofimshc urs:1
+head lines and surfaces
+syst SPAC gdiv 50000
+ctrl mesh 1 ; ctrl hmin 2.0
+
+$ some parameters
+let#b  5.0
+let#r1 5.0
+let#r2 5.25
+
+$ points, lines and region of inner circle
+spt 1 x +#r1 +#b 0
+spt 2 x +#r1 -#b 0
+spt 3 x -#r1 -#b 0
+spt 4 x -#r1 +#b 0
+
+sln 1 npa 1 2
+sln 2 npa 2 3 ; slnb nz -1 xm 0 -#b 0
+sln 3 npa 3 4
+sln 4 npa 4 1 ; slnb nz -1 xm 0 +#b 0
+
+sar 1 t 0.0 grp 1 h1 1.0
+sarb out 1,2,3,4
+
+$ points lines and region of second circle
+spt 11 x +#r2 +#b 0
+spt 12 x +#r2 -#b 0
+spt 13 x -#r2 -#b 0
+spt 14 x -#r2 +#b 0
+
+sln 11 npa 11 12 ; slns ref 1
+sln 12 npa 12 13 ; slns ref 2 ; slnb nz -1 xm 0 -#b 0
+sln 13 npa 13 14 ; slns ref 3
+sln 14 npa 14 11 ; slns ref 4 ; slnb nz -1 xm 0 +#b 0
+
+sar 2 t 0.1 grp 2 h1 0.5
+sarb out 11,12,13,14
+sarb in 1,2,3,4
+
+$ third circle
+spt 21 x +25 +25 0
+spt 22 x +25 -25 0
+spt 23 x -25 -25 0
+spt 24 x -25 +25 0
+
+sln 21 npa 21 22
+sln 22 npa 22 23
+sln 23 npa 23 24
+sln 24 npa 24 21
+
+sar 3 t 0.0 grp 3
+sarb out 21,22,23,24
+sarb in 11,12,13,14
+
+end
+
+
++prog sofimsha urs:3
+head extrusion to bric mesh
+syst REST
+
+let#z1 10.0
+let#z2  3.0
+let#z3  5.0
+
+$ structural lines are extruded to quad elements of the retaining wall
+grp 21 ref 21
+quad PROP T 0.2 mno 1
+tran GLN 1,2,3,4 dz #z1 prop X10 dno 50
+tran GLN 51,52,53,54 dz #z2 prop X5
+
+$ quad-layer used for coupling
+grp 22 ref 22
+$ quad PROP T 0.0 nra 0
+tran GLN 11,12,13,14 dz #z1 prop X20 dno 50
+tran GLN 61,62,63,64 dz #z2 prop X5
+
+$ quad elements on the ground level copied to different depths
+grp 4 ; tran QUAD grp 1 dz #z1
+grp 6 ; tran QUAD grp 3 dz #z1
+
+grp 7 ; tran QUAD grp 1 dz #z1+#z2
+grp 8 ; tran QUAD grp 2 dz #z1+#z2
+grp 9 ; tran QUAD grp 3 dz #z1+#z2
+
+grp 10 ; tran QUAD grp 1,2,3 dz #z1+#z2+#z3
+
+$ set default parameter of brics
+bric PROP mno 1
+
+$ quad-elements are extruded to hexahedral mesh
+grp 11
+ tran QUAD grp 4 dz #z2 prop X5
+ tran QUAD grp 7 dz #z3 prop X5
+
+grp 12
+ tran QUAD grp 8 dz #z3 prop X5
+
+grp 13
+ tran QUAD grp 3 dz #z1 prop X10
+ tran QUAD grp 6 dz #z2 prop X5
+ tran QUAD grp 9 dz #z3 prop X5
+
+
+$ interface between retaining wall and soil body
+grp 23 ; spri QREF 21 22 CP 1000.0
+
+$ delete elements for better visualization
+del QUAD 1 2 GRP
+del QUAD 1 21 GRP xmin -30 -30 0 xmax -0.5 +30 20
+del BRIC 11 13 GRP xmin -30 -30 0 xmax -0.5 +30 20
+del SPRI 23 23 GRP xmin -30 -30 0 xmax -0.5 +30 20
+end
+
+

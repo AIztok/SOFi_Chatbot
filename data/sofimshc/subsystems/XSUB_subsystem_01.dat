@@ -1,0 +1,155 @@
+!#!Info  Example:       Extraction of a subsystem from a model
+!#!Info  Keyword:       Subsystems
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2014
+!#!Info  Date:          $Date: 2014-03-24
+
+
++prog aqua urs:3
+head Material and sections
+echo FULL FULL
+norm DIN EN199X-200X
+conc 1 C 35
+srec 1 h 250 250 mno 1
+end
+
+
+!#!Kapitel Main System
++prog sofimshc urs:1
+head Definition main system
+syst 3D gdiv 10000
+
+loop#n 5
+ let#z (#n+1)*-3.0
+
+ $ create slabs
+ sar #n+1 t 300 mno 1 mctl 1
+ sarb out fix MX ; slnb x1 0 0 #z x2 8 0 #z
+ sarb out ; slnb x1 8 0 #z x2 8 6 #z
+ sarb out ; slnb x1 8 6 #z x2 0 6 #z
+ sarb out ; slnb x1 0 6 #z x2 0 0 #z
+
+ $ create walls
+ sar - t 200 mno 1
+ sarb out ; slnb x1 0 0 #z x2 8 0 #z
+ sarb out ; slnb x1 8 0 #z x2 8 0 #z+3
+ sarb out ; slnb x1 8 0 #z+3 x2 0 0 #z+3
+ sarb out ; slnb x1 0 0 #z+3 x2 0 0 #z
+
+ $ fix horizontally
+ spt - x 0 0 #z fix PY
+ spt - x 8 0 #z fix PY
+
+endloop
+
+$ foundation supports
+spt - x 0 0 0 fix PP
+spt - x 8 0 0 fix PP
+spt - x 8 6 0 fix PP
+spt - x 0 6 0 fix PP
+
+$ columns
+sln 1 sno 1 ; slnb x1 0 0 0 x2 0 0 #z
+sln 2 sno 1 ; slnb x1 8 0 0 x2 8 0 #z
+sln 3 sno 1 ; slnb x1 8 6 0 x2 8 6 #z
+sln 4 sno 1 ; slnb x1 0 6 0 x2 0 6 #z
+
+end
+
+
++prog sofimshc urs:10
+head Definition of subsystem and meshing
+syst REST
+ctrl MESH 1
+ctrl HMIN 0.5
+
+$ select members defining the subsystem using a bounding box
+xsub type 3D fixa free free free free cdb "floor_02_xsub_01"
+bbox zmin -6.01 zmax -5.99
+
+$ specify kind of stiffness to be generated for downward connected members
+xcon BELO fixa fix fixl 1.0 fixm 1.0 fixs free
+
+end
+
+
++prog sofiload urs:8
+head Loads
+lc 1 facd 1.0
+area SAR 1,2,3,4,5 type PG 20
+end
+
+
++prog ase urs:4
+head Calculation
+lc ALL
+end
+
+
+
++PROG WING urs:6
+head Principal bending moments
+CTRL OPT INP
+CTRL OPT GSTR VAL DEFA
+CTRL OPT AXIS VAL DEFA
+$ graphics    1 | Picture    1 | Layer    1 : Principal bending moments  LC:    1
+PAGE LANO 1 UNIO 0
+SIZE TYPE URS SC 0 MARG NO FORM STAN
+SIZ2
+AND  POSI 1 POSL 0 POSR 100 POSD 0 POSU 100
+SCH2 DIRE DEFA
+LC   NO 1 DESI 1
+BOX
+VIEW TYPE DIRE X 0 Y -1 Z 0 AXIS POSZ ROTA 0
+BOX  XMIN -0.5 YMIN -0.5 ZMIN -5.8 XMAX 8.5 YMAX 6.5 ZMAX -6.2 TYPE BWIN OPER AND BGRP 0
+$ bounding: BOX XMIN 0.000 YMIN 0.000 ZMIN -10.000 XMAX 8.000 YMAX 6.000 ZMAX -10.000
+VIEW TYPE DIRE X 0 Y 0 Z 1 AXIS POSY ROTA 0
+DEFO TYPE NO EXPO 0 SMOV NO
+SELE NUMB 0 titl 'Main system: '
+QUAD TYPE HM UNIT DEFA SCHH YES STYP NODE FILL NO REPR DVEC AVER NO
+END
+
+
+!#!Kapitel Subsystem Floor 2
+#define projekt="floor_02_xsub_01"
+
++prog sofimshc urs:2
+head Meshing of subsystem
+syst REST
+ctrl MESH 1
+ctrl HMIN 0.5
+end
+
++prog sofiload urs:9
+head Loads
+lc 1 facd 1.0
+area SAR 2 type PG 20
+end
+
++prog ase urs:5
+head Calculation subsystem
+lc ALL
+end
+
+
++PROG WING urs:7
+head Principal bending moments
+CTRL OPT GSTR VAL DEFA
+CTRL OPT AXIS VAL DEFA
+$ graphics    1 | Picture    1 | Layer    1 : Principal bending moments  LC:    1
+PAGE LANO 1 UNIO 0
+SIZE TYPE URS SC 0 MARG NO FORM STAN
+SIZ2
+AND  POSI 1 POSL 0 POSR 100 POSD 0 POSU 100
+SCH2 DIRE DEFA
+LC   NO 1 DESI 1
+BOX
+VIEW TYPE DIRE X 0 Y 0 Z 1 AXIS POSY ROTA 0
+DEFO TYPE NO EXPO 0 SMOV NO
+SELE NUMB 0  titl 'Subsystem: '
+QUAD TYPE HM UNIT DEFA SCHH YES STYP NODE FILL NO REPR DVEC AVER NO
+END
+
+
+
+

@@ -1,0 +1,168 @@
+!#!Info  Example:       Solid Body meshed with hexahedral elements through lofting and extrusion
+!#!Info  Keyword:       Meshing; Brics; Hexahedral elements
+!#!Info  Program:       SOFIMSHC,SOFIMSHA
+!#!Info  Version:       SOFiSTiK 2016
+
+
++prog aqua urs:1
+head Materials
+
+norm 'DIN' '1045-1'
+conc no 1 type 'C' fcn 30
+
+end
+
++prog sofimshc urs:2
+head Guiding Lines and Cross Sections
+syst 3d gdiv -10000 gdir negz
+ctrl mesh 2+64
+ctrl prog 1.25
+ctrl tolg 0.0001
+ctrl deln 0
+
+sto#NS  5         ! number of base / capital sides (>=3)
+sto#R   0.75 0.50 ! min radius at base / capital
+sto#H   8.0       ! column height (excluding base / capital)
+sto#N   6         ! number of column blocks
+sto#SD  100       ! structural element number separator
+sto#DA  180/#NS   ! base - capital rotation
+sto#A   360.0/#NS   ! angle per side
+sto#BF  #R(0)/#R(1) ! base - capital radius ration
+
+
+! Circular cross sections at column
+loop#J #N+1
+  let#ISD #SD*#J                      ! element number base
+  let#IR  #R(0)+(#J/#N)*(#R(1)-#R(0)) ! radius
+  let#IH  (#J/#N)*#H                  ! height
+  let#IDA (#J/#N)*#DA                 ! rotation
+
+! Points
+  loop#I #NS
+    spt no #ISD+#I+1 x #IR*cos(#I*#A+#IDA) y #IR*sin(#I*#A+#IDA) z #IH
+  endloop
+
+! Lines
+  loop#I #NS-1
+    sln no #ISD+#I+1 npa #ISD+#I+1 npe #ISD+#I+2
+    slnb r #IR nx 0 ny 0 nz 1
+  endloop
+  sln no #ISD+#NS npa #ISD+#NS npe #ISD+1
+  slnb r #IR nx 0 ny 0 nz 1
+
+! Area
+  sar no #ISD+1 grp #J+1 mno 1 t 0 mctl auto h1 0.40*#IR h2 0.10*#IR
+  sarb type out nl (#ISD+1 #ISD+#NS 1)
+  if #J>0
+! Generate similar meshes for all Cross Sections
+    sars reft >SAR ref 1
+  endif
+endloop
+
+
+! Polygonal cross sections at base / capital
+loop#J 2
+  let#ISD  #SD*(#N+1+#J) ! element number base
+  let#ISDR #SD*(#J*#N)   ! reference element number base
+  let#IR   2.0*#R(#J)    ! width of base / capital
+  let#IDA  #J*#DA        ! rotation
+
+  if #J==0               ! height
+    let#IH 0-0.75*#IR    ! at base
+  elseif #J==1
+    let#IH #H+0.75*#IR   ! at capital
+  endif
+
+  if #J==0               ! curvature point
+    let#Z3 -0.5*#IR      ! at base
+  elseif #J==1
+    let#Z3 #H+0.5*#IR    ! at capital
+  endif
+
+! Points
+  loop#I #NS
+    spt no #ISD+#I+1 x #IR*cos(#I*#A+#IDA) y #IR*sin(#I*#A+#IDA) z #IH
+  endloop
+
+! Lines
+  loop#I #NS-1
+    sln no #ISD+#I+1 npa #ISD+#I+1 npe #ISD+#I+2
+  endloop
+  sln no #ISD+#NS npa #ISD+#NS npe #ISD+1
+
+! Area
+  sar no #ISD+1 grp #N+#J+1 mno 1 t 0
+  sarb type out nl (#ISD+1 #ISD+#NS 1)
+! Generate similar meshes for all Cross Sections
+  sars reft >SAR ref 1
+
+! Curved guiding lines for lofting
+  loop#I #NS
+    sln no #ISD+#NS+#I+1 npa #ISDR+#I+1 npe #ISD+#I+1 sdiv -12
+    slnb x3 0.5*(#R(#J)+#IR)*cos(#I*#A+#IDA) y3 0.5*(#R(#J)+#IR)*sin(#I*#A+#IDA) z3 #Z3
+  endloop
+endloop
+
+end
+
++prog sofimsha urs:3
+head Volume Mesh
+syst rest
+
+! Column blocks
+loop#J #N
+  let#ISDS #SD*#J     ! source element number base
+  let#ISDT #SD*(#J+1) ! target element number base
+
+  grp #J+1
+  bric prop mno 1
+! Loft between Cross Sections with linear interpolation
+  loft type sar idsc #ISDS+1 idtg #ISDT+1 refs #ISDS+1 reft #ISDT+1 div 6*(#H/#N) ! 6 elements per meter
+endloop
+
+! Base / capital
+loop#J 2
+  let#ISDS #SD*(#J*#N)   ! source element number base
+  let#ISDT #SD*(#N+1+#J) ! target element number base
+
+  grp #N+#J+1
+  bric prop mno 1
+! Loft following guiding structural lines with curvature
+  loft type sar idsc #ISDS+1 idtg #ISDT+1 refs #ISDS+1 reft #ISDT+1 opt 'E'
+
+! Extrusion direction and distance
+  let#IH 0.75*#R(#J)
+  if #J==0
+    let#IH -#IH
+  endif
+! Extrude
+  extr type sar from #ISDT+1 path dir v1 0 v2 0 v3 #IH div 6
+endloop
+
+! Elastic bedding
+grp 101
+sbox a3z -3*0.75*#R(0)-0.001 b3z -3*0.75*#R(0)+0.001
+spri sbox dx  0  0 -1 cp 42000 ct 28000
+
+end
+
++prog sofimsha urs:4
+head Interfaces
+syst rest
+
+loop#J #N+1
+  let#ISD #SD*#J ! element number base
+
+  grp 101+#J+1
+  intf type spri reft sar no #ISD+1 cp 58000 ct 36000 d 0.025
+endloop
+
+end
+
++prog ase urs:5
+head Eccentric Dead Load
+ctrl solv 4
+
+lc 1 dlx 0.5 dlz 1.5
+
+end

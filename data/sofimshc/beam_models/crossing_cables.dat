@@ -1,0 +1,52 @@
+!#!Info  Example:       Two crossing cables within a structural region
+!#!Info  Keyword:       Structural model; line elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 25
+!#!Info  Date:          $Date: 2009-03-31 02:04:38 +0200 (Di, 31 Mrz 2009) $
+
++prog aqua urs:1
+head material and sections
+echo full 0
+norm DIN 1045-1
+conc 1 C 35
+stee 2 S 235
+scit 11 D 0.01  mno 2
+end
+
++prog sofimshc urs:2
+head crossing cables
+syst fram gdiv 1000 POSY
+
+ctrl mesh 2     $ activate mesher
+ctrl hmin 1.0   $ mesh density
+
+$ structural region
+spt no   x  y
+    1   -4   0
+    2   +4   0
+    3   +4  -5
+    4   -4  -5
+
+sln no npa npe fix
+    1   1   2  PP
+    2   2   3  -
+    3   3   4  -
+    4   4   1  -
+
+$ structural region
+sar 1 grp 1 t 0.15 mno 1 mctl 1
+sarb out 1,2,3,4
+
+$ create two crossing cables within the wall
+$ styp C = create cable element
+$ styp Z = create one single element without sections
+$ styp W = do not intersect the structural line with others
+sln 101 npa 1 3 sno 11 grp 2 styp CZW
+sln 102 npa 2 4 sno 11 grp 2 styp CZW
+
+end
+
++prog ase urs:3
+head test calculation
+lc 1 dlx 1.0
+end

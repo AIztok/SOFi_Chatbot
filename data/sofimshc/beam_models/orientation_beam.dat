@@ -1,0 +1,62 @@
+!#!Info  Example:       Orientation of local coordinate systems of beam elements
+!#!Info  Keyword:       Beam elements; Orientation
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 25
+!#!Info  Date:          $Date: 2009-03-31 02:04:38 +0200 (Di, 31 Mrz 2009) $
+
+
++prog aqua urs:2
+head asymmetric section
+norm DIN '1045-1'
+echo sect
+conc 1   C  25
+stee 2 BST 500
+
+sect 01 titl 'asymm_section'
+poly O
+vert 10  Y  0.0   Z  0.0
+     11  Y  0.8   Z  0.0
+     12  Y  0.8   Z  0.4
+     13  Y  0.4   Z  0.4
+     14  Y  0.4   Z  1.5
+     15  Y  0.0   Z  1.5
+     16  Y  0.0   Z  0.4
+     17  Y -0.1   Z  0.4
+     18  Y -0.1   Z  0.0
+cut  1 zb  S
+end
+
+
++prog sofimshc urs:4
+head orientation of beam coordinate systems
+syst spac gdiv 1000 POSZ
+ctrl mesh 1 ; ctrl hmin 1.0
+
+spt 1001 0 0 0 $ structural point
+
+$ local z-axis of beam elements is oriented towards gravity direction
+$ (=POSZ, see SYST GDIR) if no direction is given explicitly
+sln 1 sno 1 styp B sdiv 0.5
+ slnb x1 -5 0 0 x2 +5 0 0  x3 0 -4 0
+
+$ local z-axis of beam elements is explicitly given
+sln 2 sno 1 styp B sdiv 0.5 drx 0 1 2
+ slnb x1 -5 0 -4 x2 +5 0 -4  x3 0 -4 -4
+
+$ structural line, local z-axis aligned with global y-direction
+sln 3 sno 1 styp B sdiv 0.5 kr POSY
+ slnb x1 -5 0 -8 x2 +5 0 -8  x3 0 -4 -8
+
+$ structural line, local z-axis oriented towards given structural point
+sln 4 sno 1 styp B sdiv 0.5 kr 1001
+ slnb x1 -5 0 -12 x2 +5 0 -12  x3 0 -4 -12
+
+$ structural line, local z-axis aligned with global z-direction and rotated by 30 deg
+sln 5 sno 1 styp B sdiv 0.5 kr POSZ drot 30.0
+ slnb x1 -5 0 -16 x2 +5 0 -16  x3 0 -4 -16
+
+end
+
+
+
+

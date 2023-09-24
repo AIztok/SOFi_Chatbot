@@ -1,0 +1,112 @@
+!#!Info  Example:       Modeling of a continuum embedded tunnel with implicit hinges
+!#!Info                 and interface elements (see also examples in talpa.dat)
+!#!Info  Keyword:       Geotechnics; implicit hinges; interface elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 25
+!#!Info  Date:          $Date: 2009-03-31 02:04:38 +0200 (Di, 31 Mrz 2009) $
+
+
++PROG AQUA urs:2
+HEAD Material and working law definition
+NORM DIN 1054
+
+$ working laws
+SFLA   F 18  NO 111 TYPE MY  $ rotational spring
+       $kNm
+
+ECHO SECT
+
+$ tunnel lining
+CONC 1 C 30
+SREC 1 0.25 1.00  MNO 1
+
+$ soil material
+MAT  2 E 100000 MUE 0.2  GAM 18  TITL 'Soil'
+NMAT 2 MOHR P1 20 P2 0 P3 0
+BMAT 2 MREF 2  H 0.2  MUE 0.5  CRAC 0.0
+
+END
+
++PROG SOFIMSHC urs:1
+HEAD System definition
+SYST PAIN GDIV 10000 GDIR POSY
+LET#W 50.0      $ model width
+LET#H 50.0      $ model height
+LET#D 20.0      $ depth tunnel axis
+LET#R  5.0      $ tunnel radius
+
+$ mesh control
+CTRL MESH 2 ; CTRL HMIN 1.5
+
+
+$ define the bulk body
+SPT NO      X     Y
+     1  -#W/2   0.0
+     2   #W/2   0.0
+     3   #W/2   #H
+     4  -#W/2   #H
+
+SLN  1 1 2
+SLN  2 1 4 FIX PX
+SLN  3 2 3 FIX PX
+SLN  4 3 4 FIX PY
+
+SAR  1  MNO 2  T 1.0  GRP 1
+  SARB OUT NL 1,2,3,4
+
+
+$ define the circular tunnel section as attribute area
+$ - the two structural lines bounding the circular section must be given in same
+$   clock-order in order to create interfaces layers on consistent sides.
+
+ SLN 10 SDIV 0.4  SNO 1  FIXA 111 FIXE 111 FIMA 111 FIME 111 GRP 10
+  SLNB  X1 -#R #D   X2 #R #D   X3 0.0  #D-#R
+
+  $ create interface layer to the 'left' side of the line if viewed in curve direction
+  SLNS  GRP 20 REFT -SAR  MNO 2 D 0.2 $ bedding parameters are taken from the material
+  $ SLNS  GRP 30 REFT -SAR D 0.2  CA 1000.0 CL 100.0 $ linear parameters are given directly
+
+SLN 11 SDIV 0.4  SNO 1  FIXA 111 FIXE 111 FIMA 111 FIME 111 GRP 11
+  SLNB  X1 +#R #D   X2 -#R #D   X3 0.0  #D+#R
+
+  $ interface layers:
+  SLNS  GRP 20 REFT -SAR  MNO 2 D 0.2
+  $SLNS  GRP 30 REFT -SAR D 0.2  CA 1000.0 CL 100.0
+
+  $ tunnel section given as property region
+SAR PROP GRP 2 MNO 2 H1 1.0
+  SARB OUT NL 10,11
+
+END
+
++PROG TALPA urs:3
+HEAD Primary State
+SYST PROB NONL
+GRP 1,2   FULL FACD 1.0 K 0.6
+GRP 20,21 LINE FACD 1.0
+LC 1 TITL 'PRIMARY STATE'
+END
+
+-PROG TALPA urs:4
+HEAD Relaxation
+SYST PROB NONL
+CTRL BEAM 3
+PLC 1 TYPE ACTI
+GRP 1     FULL FACD 1.0
+GRP 2     FULL FACD 0.7 FACS 0.7 FACL 0.7
+GRP 20,21 LINE FACD 1.0
+LC 2 TITL 'RELAXATION'
+END
+
+-PROG TALPA urs:5
+HEAD Excavation and Support
+SYST PROB NONL
+CTRL BEAM 3
+CTRL ITER 30
+PLC 2 TYPE FULL
+GRP 1     FULL FACD 1.0
+GRP 10,11 FULL FACD 1.0 PLC -
+GRP 20,21 FULL FACD 1.0
+LC 3 TITL 'EXCAVATION AND SUPPORT'
+END
+

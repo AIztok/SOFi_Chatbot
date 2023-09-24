@@ -1,0 +1,66 @@
+!#!Info  Example:       Bedding of beam elements
+!#!Info  Keyword:       Beam elements; Betting
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 25
+!#!Info  Date:          $Date: 2009-03-31 02:04:38 +0200 (Di, 31 Mrz 2009) $
+
+
++prog aqua urs:2
+head material and sections
+norm DIN '1045-1'
+echo sect
+conc 1   C  25
+stee 2 BST 500
+
+srec 1 H 0.3 B 0.3 ref UM
+end
+
+
++prog sofimshc urs:4
+head bedding on structural lines
+syst spac gdiv 1000 POSZ
+ctrl mesh 1 ; ctrl hmin 1.0
+
+sln 1 grp 1 styp 'B' fix PZ
+ $ rotational bedding in local beam direction
+ slns grp 2 cd 1000.0
+ slnb 0 4 0  0 0 0  $ geometry
+
+sln 2 grp 1
+ $ axial bedding in global X and Y-direction
+ slns grp 3 ca 100.0  drx +1.0
+ slns grp 3 ca 100.0  dry -1.0
+ slnb 0 0 0  6 0 0  $ geometry
+
+sln 3 grp 1
+ $ axial bedding in global Z-direction
+ slns grp 2 ca 1000.0 drz 1.0
+ slnb 6 0 0  6 4 0  $ geometry
+
+sln 4 grp 1
+ $ transversal bedding in global XY-plane
+ slns grp 3 cl 100.0  drz 1.0
+ slnb 0 4 0  6 4 0  $ geometry
+
+sar 1 t 0.2 grp 1 mno 1
+sarb out 1,2,3,4
+
+end
+
++prog sofiload urs:5
+head
+lc 1 ; area GAR 1 Type PG 1.0
+lc 2 ; area GAR 1 Type PY -0.1
+end
+
++prog ase urs:1
+head
+ lc 1,2
+end
+
+
+
+
+
+
+

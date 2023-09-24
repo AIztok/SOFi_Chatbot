@@ -1,0 +1,211 @@
+!#!Info  Example:       Excavation pit with retaining wall as 3D-model
+!#!Info  Keyword:       volume model ; extrusion to bric-elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2016
+!#!Info  Date:          $Date: 2015-03-13 $
+
+
+!#!Kapitel System
+
++prog aqua urs:1
+kopf Material
+echo VOLL VOLL
+norm DIN EN199X-200X
+
+beto 1 C 35
+
+mat  nr    E   mue  gam  gama  bez
+     11  100000 0.3   18   10   "Soil"
+
+nmat nr    art    p1      p2
+     11    mohr   30      10
+
+bmat 11 c 50000 cq 10000 mue 0.5 coh 10
+ende
+
+
++prog sofimshc urs:2
+kopf master ground view
+syst 3D gdiv 100000 POSZ
+steu MESH 1
+steu HMIN 5.0
+steu PROG 1.1
+steu DELN 0
+
+spt 1 x -20 +20 0
+spt 2 x +20 +20 0
+spt 3 x +20 -20 0
+spt 4 x -20 -20 0
+
+let#ds 0.4
+
+spt 11 x -5-#ds +5+#ds 0
+spt 12 x +5+#ds +5+#ds 0
+spt 13 x +5+#ds -5-#ds 0
+spt 14 x -5-#ds -5-#ds 0
+
+spt 21 x -5 +5 0
+spt 22 x +5 +5 0
+spt 23 x +5 -5 0
+spt 24 x -5 -5 0
+
+sln 1,2,3,4 npa 1,2,3,4 npe 2,3,4,1
+sln 11,12,13,14 npa 11,12,13,14 npe 12,13,14,11
+
+sln 21 npa 21 22
+ slns grp 6 ref 11 mnr 11 drx 0 1 0
+
+sln 22 npa 22 23
+ slns grp 6 ref 12 mnr 11 drx 1 0 0
+
+sln 23 npa 23 24
+ slns grp 6 ref 13 mnr 11 drx 0 -1 0
+
+sln 24 npa 24 21
+ slns grp 6 ref 14 mnr 11 drx -1 0 0
+
+$ structural areas as master
+sar 1 t 0 mnr 0 grp 1
+sarb out 1,2,3,4
+sarb in 11,12,13,14
+
+sar 2 t 0 mnr 0 grp 2 h1 1.0
+sarb out 21
+sarb out 22
+sarb out 23
+sarb out 24
+
+$ Extrusion path
+spt 101 x -20 +20 10
+spt 201 x -20 +20 20
+
+sln 101 npa 1 101  sdiv -10
+sln 102 npa 101 201 sdiv -10
+
+ende
+
++prog sofimsha urs:4
+kopf Completion of master view
+syst REST
+
+$ Quads for filling the interface
+grup 3
+quad FIT 11 12 22 21 t 0
+quad FIT 12 13 23 22 t 0
+quad FIT 13 14 24 23 t 0
+quad FIT 14 11 21 24 t 0
+ende
+
++prog sofimsha urs:10
+kopf extrusion to 3D
+syst REST
+
+$ diaphragm wall
+quad PROP mnr 1 t 0.4[m] lage UNTE
+grup 17 ; extr edge von 21 bis 24 path SLN 101
+
+$ soil outside
+bric PROP mnr 11
+grup 11 ; extr quad von GRP 1 path SLN 101
+grup 21 ; extr quad von GRP 1 path SLN 102 sref 1
+
+$ soil inside
+bric PROP mnr 11
+grup 12 ; extr quad von GRP 2 path SLN 101
+grup 13 ; extr quad von GRP 3 path SLN 101
+grup 22 ; extr quad von GRP 2 path SLN 102 sref 1
+grup 23 ; extr quad von GRP 3 path SLN 102 sref 1 $ brics to fill interface
+
+$ interface
+fede PROP mnr 11
+grup 16 ; extr fede von GRP 6 path SLN 101
+
+$ boundary conditions
+mod knot xmin -20.01 xmax -19.99 fix px
+mod knot ymin -20.01 ymax -19.99 fix py
+
+mod knot xmin 19.99 xmax 20.01 fix px
+mod knot ymin 19.99 ymax 20.01 fix py
+mod knot zmin 19.99 zmax 20.01 fix pz
+
+$ delete temporary elements
+del QUAD 3 delt GRP
+
+ende
+
+
+!#!Kapitel Loads
++prog sofiload urs:6
+kopf
+lf 21 ; quad grp 1 typ PZZ 30.0
+ende
+
+
+!#!Kapitel In-situ
++prog ase urs:8
+kopf
+syst prob NONL iter -  nmat ja
+steu solv 4
+
+lf 1 egz 1.0  bez 'in-situ'
+
+grup ALLE NEIN
+grup  nr         wert   faks
+      11,12,13   VOLL   1.0
+      21,22,23   VOLL   1.0
+ende
+
+
+!#!Kapitel Construction stages
+
++prog ase urs:5
+kopf
+$ Verformungen aus in-situ nicht berücksichtigen -> fakv=0
+syst prob NONL iter -  nmat ja  plf 1  fakv 0.0
+steu solv 4
+
+lf 2 egz 1.0 bez 'Installation diaphragm wall'
+
+grup ALLE NEIN
+grup  nr               wert   faks
+     17                VOLL   1.0
+     11,12,13          VOLL   1.0
+     21,22,23          VOLL   1.0
+ende
+
+
++prog ase urs:7
+kopf
+syst prob NONL iter -  nmat ja  plf 2
+steu solv 4
+
+lf 3 egz 1.0 bez 'Live load'
+ lc 21
+
+grup ALLE NEIN
+grup  nr               wert   faks
+     1                 VOLL   1.0
+     17                VOLL   1.0
+     16                VOLL   -
+     11,12             VOLL   1.0
+     21,22,23          VOLL   1.0
+ende
+
+
++prog ase urs:9
+kopf
+syst prob NONL iter -  nmat ja  plf 3
+steu solv 4
+
+lf 4 egz 0 bez 'Excavation'
+ lc 21
+
+grup ALLE NEIN
+grup  nr               wert   faks
+     1                 VOLL   1.0
+     17                VOLL   1.0
+     16                VOLL   -
+     11                VOLL   1.0
+     21,22,23          VOLL   1.0
+
+ende

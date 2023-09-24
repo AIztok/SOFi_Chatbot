@@ -1,0 +1,170 @@
++prog aqua
+head Hollow Circular Cross-Section Plastic Analysis
+NORM DC EN 199x-200x
+STEE 1 S 235 FYC 240 FY 240
+ECHO MAT
+ECHO SECT EXTR
+
+CTRL SINT 3    !GAUSS-LOBATTO INTEGRATION SCHEME
+CTRL STYP FEMX !SAVE THE MESH IN A SEC CDB
+CTRL PLAS 2    !ACTIVATE SPECIAL PLASTIC METHOD
+$CTRL HDIV 0.5[-] !REFINE MESH BY A FACTOR
+
+let#a 100. $ mm  outer radius
+let#b 50.  $ mm  inner radius
+
+SECT 3 MNO 1 LTAU 100
+POLY TYPE O
+  loop#1 61
+  vert #1+1 -cos(#1*360/60)*#a -sin(#1*360/60)*#a
+  endloop
+POLY TYPE O mno 0
+  loop#1 61
+  vert #1+1 -sin(#1*360/60)*#b -cos(#1*360/60)*#b
+  endloop
+
+END
+
+-prog template
+head  Reference Mtpl : Hollow Circular Cross-Section
+<text>
+Reference:
+Finite Element Analysis of Saint-Venant Torsion Problem with Exact Integration of the
+Elastic-Plastic Constitutive Equations
+Published in: Comp. Meth. In Appl. Mech. Engng., 190 2001, p. 3831-3848
+
+ Results:
+
+   hdiv[-]     Mtpl(PLAS 2)[kNm]  Mtpl (PLAS 1)[kNm]
+   --------------------------------------------------------------
+   1.0              253.24           253.24
+   0.5              253.24           253.24
+   reference        253.93
+
+</text>
+end
+
++prog aqua
+head Rectangular Cross-Section Plastic Analysis
+NORM DC EN 1993-2005
+STEE 1 S 235 FYC 240 FY 240
+ECHO MAT
+ECHO SECT EXTR
+
+CTRL SINT 3    !GAUSS-LOBATTO INTEGRATION SCHEME
+CTRL STYP FEMX !SAVE THE MESH IN A SEC CDB
+CTRL PLAS 2    !ACTIVATE SPECIAL PLASTIC METHOD
+$CTRL HDIV 0.5[-] !REFINE MESH BY A FACTOR
+
+SECT 4 MNO 1 LTAU 100
+POLY TYPE O
+ VERT 1   25.  -50.
+      2  -25.  -50.
+      3  -25.   50.
+      4   25.   50.
+
+END
+
+-prog template
+head  Reference Mtpl : Rectangular Cross-Section
+<text>
+Reference:
+Finite Element Analysis of Saint-Venant Torsion Problem with Exact Integration of the
+Elastic-Plastic Constitutive Equations
+Published in: Comp. Meth. In Appl. Mech. Engng., 190 2001, p. 3831-3848
+
+ Results:
+
+   hdiv[-]     Mtpl(PLAS 2)[kNm]     Mtpl (PLAS 1)[kNm]
+   --------------------------------------------------------------
+   1.0              14.16                 17.51
+   0.5              14.00                 17.50
+   reference        14.43
+
+</text>
+end
+
++prog aqua
+head  Triangular Cross-Section Plastic Analysis
+NORM DC EN 1993-2005
+STEE 1 S 235 FYC 240 FY 240
+ECHO MAT
+ECHO SECT EXTR
+
+CTRL SINT 3    !GAUSS-LOBATTO INTEGRATION SCHEME
+CTRL STYP FEMX !SAVE THE MESH IN A SEC CDB
+CTRL PLAS 2    !ACTIVATE SPECIAL PLASTIC METHOD
+$CTRL HDIV 0.5[-] !REFINE MESH BY A FACTOR
+
+let#a 100. $ mm
+let#h 0.5*SQR(3)*#a
+SECT 5 MNO 1  LTAU 100
+POLY TYPE O
+vert no     y      z
+      1    0.      0.
+      2    50.     0.
+      3    25.  -1/2*#h
+      4    0.     -#h
+      5   -25.  -1/2*#h
+      6   -50.     0.
+
+END
+
+-prog template
+head  Reference Mtpl : Triangular Cross-Section
+<text>
+Reference:
+Finite Element Analysis of Saint-Venant Torsion Problem with Exact Integration of the
+Elastic-Plastic Constitutive Equations
+Published in: Comp. Meth. In Appl. Mech. Engng., 190 2001, p. 3831-3848
+
+
+ Results:
+
+   hdiv[-]     Mtpl(PLAS 2)[kNm]     Mtpl (PLAS 1)[kNm]
+   --------------------------------------------------------------
+   1.0              11.40                  14.52
+   0.5              11.29                  14.32
+   reference        11.55
+
+</text>
+end
+
++prog aqua
+head  HEM 300 Cross-Section
+NORM DC EN 1993-2005
+STEE 1 S 235 FYC 240 FY 240
+ECHO MAT
+ECHO SECT EXTR
+
+CTRL SINT 3    !GAUSS-LOBATTO INTEGRATION SCHEME
+CTRL STYP FEMX !SAVE THE MESH IN A SEC CDB
+CTRL PLAS 2    !ACTIVATE SPECIAL PLASTIC METHOD
+$CTRL HDIV 0.5[-] !REFINE MESH BY A FACTOR
+
+SECT 6 MNO 1  LTAU 100
+PROF 1 TYPE HEM 300 MNO 1
+
+END
+
+-prog template
+head  Reference Mtpl : HEM 300 Cross-Section
+<text>
+Reference:
+Finite Element Analysis of Saint-Venant Torsion Problem with Exact Integration of the
+Elastic-Plastic Constitutive Equations
+Published in: Comp. Meth. In Appl. Mech. Engng., 190 2001, p. 3831-3848
+
+
+ Results:
+
+   hdiv[-]     Mtpl(PLAS 2)[kNm]     Mtpl (PLAS 1)[kNm]
+   --------------------------------------------------------------
+   1.0              73.43                   104.41
+   0.5              72.14                   106.37
+   reference        75.93
+
+</text>
+end
+
+

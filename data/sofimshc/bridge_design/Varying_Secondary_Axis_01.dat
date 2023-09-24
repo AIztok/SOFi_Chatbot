@@ -1,0 +1,76 @@
+!#!Info  Example:       Definition of variables along an axis
+!#!Info  Keyword:       Alignment axes; Bridge-Design; Variables
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2014
+
+
++PROG AQUA URS:1
+head material and sections
+norm DIN EN199X-200X
+ctrl STYP 0
+conc 1 C 35
+stee 2 B 500A
+
+$ user defined cross section
+sect 1 btyp 'BEAM' titl 'section'
+poly O $ polygonal definition of shape
+vert 11     0    0
+     12  3500    0
+     13  3500  200
+     14  1500  300
+     15  1500 1500
+     16 -1500 1500
+     17 -1500  300
+     18 -3500  200
+     19 -3500    0
+     20     0    0
+cut  1 zb S  $ shear cut
+
+$ rectangular section
+srec 10 H 1600 B 1000 REF UM
+
+end
+
+
++prog sofimshc urs:4
+head definition of axis with variables
+syst 3D gdiv 1000 POSZ
+echo GEOM FULL
+
+$ axis in plan view
+gax A1 type LANE titl "central axis"
+ gaxa S  0.0  X 0 0 SX 1 0 L 50.0   $ straight line
+
+let#S_ACT 0.0 $ station variable
+
+$ definition of different variable distributions (see Results output in Ursula)
+gaxv A1 NAME VAR1 S 0.0 V '=1.00+#S_ACT/50' TYPE FUNC  $ linear distribution
+gaxv A1 NAME VAR2 S 0.0 V '=#S_ACT*(#S_ACT-50)/62.5+3' TYPE FUNC  $ quadratic parabola
+
+end
+
+
++prog sofimshc urs:5
+head example: usage of variable
+syst REST
+ctrl TOPO GAXP 1+2  $ generate structural points & lines along placements
+ctrl MESH 1   $ activate meshing of structrual system into beam elements
+ctrl HMIN 2.0 $ mesh size: maximum length of beam elements
+
+$ the quadratic parabola is used to define two secondary axes
+gaxs A1 ids A Y +4.0 Z VAR2 spt 10
+gaxs A1 ids B Y -4.0 Z VAR2 spt 20
+
+$ main girder is created by defining two placements at start and end
+gaxp 'A1' S   0.0 type 'S' ncs 1
+gaxp 'A1' S  50.0 type 'S'
+
+$ placements at start and end of the two secondary axes
+gaxp 'A1' ids + S   0.0 type 'S' ncs 10
+gaxp 'A1' ids + S  50.0 type 'S'
+
+end
+
+
+
+

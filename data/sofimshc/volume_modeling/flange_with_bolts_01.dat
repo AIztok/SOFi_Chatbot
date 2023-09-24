@@ -1,0 +1,146 @@
+!#!Info  Beispiel:      Modellierung eines kreisförmigen Flansches mit Bolzenöffnungen
+!#!Info  Schlagwort:    Geometriemodellierung; Volumenelemente
+!#!Info  Program:       SOFIMSHC,SOFIMSHA
+!#!Info  Version:       SOFiSTiK 2016
+
+
++prog aqua urs:1
+head material
+page UNII 7
+norm DIN 18800
+stee 1 S 355
+end
+
+
++prog sofimshc urs:3
+head master section and extrusion axes
+syst 3D gdiv 20000 gdir NEGZ
+page UNII 7
+ctrl TOLG 0.001
+ctrl MESH 1
+ctrl HMIN 3[mm]
+ctrl DELN 0
+
+let#R1 150/2    $ inner radius of flange
+let#R2 155/2
+let#R3 180/2
+let#R4 250/2    $ outer radius of flange
+let#R5 #R4-15   $ radius at bolt axis
+let#RB 5        $ radius of bolts
+
+let#H1 40 $ heights
+let#H2 35
+let#H3 15
+
+
+$ structural points defining the section
+spt 1 x #R1 z #H1
+spt 2 x #R2 z #H1
+spt 3 x #R2 z #H2
+spt 4 x #R3 z #H3
+spt 5 x #R4 z #H3
+spt 6 x #R4 z 0
+spt 7 x #R3 z 0
+spt 8 x #R1 z 0
+
+spt 101 x #R1*cos(45) #R1*sin(45) #H1
+spt 104 x #R3*cos(45) #R3*sin(45) #H3
+spt 105 x #R4*cos(45) #R4*sin(45) #H3
+
+spt 201 x (#R5-#RB)*cos(45/2) (#R5-#RB)*sin(45/2) #H3
+spt 202 x (#R5+#RB)*cos(45/2) (#R5+#RB)*sin(45/2) #H3
+
+$ structural lines
+sln 1 npa 1 2
+sln 2 npa 2 3
+sln 3 npa 3 4
+sln 4 npa 4 5
+sln 7 npa 7 8
+sln 8 npa 8 1
+sln 9 npa 4 7
+
+sln 101 npa 1 101 ; slnb xm 0 0 #H1
+sln 104 npa 4 104 ; slnb xm 0 0 #H3
+ slns ref 101 $ enforce common subdivision
+
+sln 114 npa 104 105 ; slns ref 4 $ enforce common subdivision
+
+sln 201 npa 201 202
+ slnb xm #R5*cos(45/2) #R5*sin(45/2) #H3 nz 1
+
+sln 202 npa 202 201
+ slnb xm #R5*cos(45/2) #R5*sin(45/2) #H3 nz 1
+
+$ structural areas
+sar 1 t 0 titl "sectional area"
+sarb out 1,2,3,7,8,9
+
+sar 2 t 0 titl "upper face"
+sarr ROTA 4 x 0 0 nz 1 vmin 0 vmax 45
+
+sar VOID titl "bolt opening"
+sarb out 201,202
+
+end
+
+
++prog sofimsha urs:4
+head extrusion & copying
+syst REST
+
+quad PROP t 0 kr NEGZ
+
+grp 1
+ extr QUAD from SAR 1 path SLN 104 opt R
+ extr QUAD from SAR 2 path SLN 9
+ tran BRIC GRP 1 phiz 45
+
+grp 2
+ quad PROP t 0
+ extr EDGE from 201 to 202 path SLN 9
+ tran QUAD grp 2 phiz 45
+
+grp 3
+ extr EDGE 8 path SLN 101 opt R
+ tran QUAD grp 3 phiz 45
+
+grp 11
+ tran BRIC GRP 1 phiz 90
+
+grp 12
+ tran QUAD grp 2 phiz 90
+
+grp 13
+ tran QUAD grp 3 phiz 90
+
+grp 21
+ tran BRIC grp 1,11 phiz 180
+
+grp 22
+ tran QUAD grp 2,12 phiz 180
+
+grp 23
+ tran QUAD grp 3,13 phiz 180
+
+$ fix quad elements at bolts
+$ mod QUAD from 2,12,22 inc GRP fix PP
+spri QGRP 2,12,22 CP 1000.0 CT 100.0
+
+end
+
++prog sofiload urs:2
+head loads
+lc 1 titl "tangential loads" ; area QGRP 3,13,23 type PX 0.1
+lc 2 titl "vertical loads"   ; area QGRP 3,13,23 type PY 0.1
+end
+
++prog ase urs:5
+head linear loadcase
+lc ALL
+end
+
+
+
+
+
+

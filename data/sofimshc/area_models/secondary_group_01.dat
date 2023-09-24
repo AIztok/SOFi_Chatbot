@@ -1,0 +1,76 @@
+!#!Info  Example:       Definition of secondary groups
+!#!Info  Keyword:       Secondary group
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 2010
+!#!Info  Date:          $Date: 2011-08-05 $
+
++prog aqua urs:1
+head material
+norm DIN EN199X-200X
+conc 1 TYPE C 35
+srec 1 H 350 B 350 mno 1
+end
+
++prog sofimshc urs:4
+head system definition
+syst SPAC gdiv -1000
+ctrl MESH 1 ; ctrl HMIN 0.5
+
+spt 1 x -4 -4  0 fix PP
+    2 x +4 -4  0 fix PP
+    3 x +4 +4  0 fix PP
+    4 x -4 +4  0 fix PP
+
+sln 1 npa 1 grp 1 sno 1 ; slnb x2 -4 -4  -10
+sln 2 npa 2 grp 1 sno 1 ; slnb x2 +4 -4  -10
+sln 3 npa 3 grp 1 sno 1 ; slnb x2 +4 +4  -10
+sln 4 npa 4 grp 1 sno 1 ; slnb x2 -4 +4  -10
+
+sar 1 t 300 mno 1
+ sarb out ; slnb x1  -4 -4 -2  x2 +4 -4  -2
+ sarb out ; slnb x1  +4 -4 -2  x2 +4 +4  -2
+ sarb out ; slnb x1  +4 +4 -2  x2 -4 +4  -2
+ sarb out ; slnb x1  -4 +4 -2  x2 -4 -4  -2
+
+sar 2 t 300 mno 1
+ sarb out ; slnb x1  -4 -4 -6  x2 +4 -4  -6
+ sarb out ; slnb x1  +4 -4 -6  x2 +4 +4  -6
+ sarb out ; slnb x1  +4 +4 -6  x2 -4 +4  -6
+ sarb out ; slnb x1  -4 +4 -6  x2 -4 -4  -6
+
+sar 3 t 300 mno 1
+ sarb out ; slnb x1  -4 -4 -10  x2 +4 -4  -10
+ sarb out ; slnb x1  +4 -4 -10  x2 +4 +4  -10
+ sarb out ; slnb x1  +4 +4 -10  x2 -4 +4  -10
+ sarb out ; slnb x1  -4 +4 -10  x2 -4 -4  -10
+
+
+grp 'BX1' titl 'Spacial selection'
+ bbox zmin -6.1 zmax -5.9
+
+grp 'LN12' titl 'Two structural lines'
+ sln 1
+ sln 2
+
+grp 'ARLN' titl 'Areas and lines'
+ sar 3
+ sln 3
+
+end
+
+
++prog sofiload urs:2
+head loads
+
+lc 1 titl 'PG on group BX1'
+quad GRP 'BX1' type PG 100.0
+
+lc 2 titl 'MX on group LN12'
+beam GRP 'LN12' type MX 10.0
+
+lc 3 titl 'PY on group ARLN'
+quad GRP 'ARLN' type PXX 1.0
+beam GRP 'ARLN' type PXX 1.0
+
+end
+

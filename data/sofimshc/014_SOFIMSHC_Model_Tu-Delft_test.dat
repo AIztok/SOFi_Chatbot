@@ -1,0 +1,65 @@
+!#!Chapter Model
++prog sofimshc urs:4
+head definition of axis with variables
+page unii 0 unio 0
+syst 3d gdiv 1000 gdir posz
+echo full  extr
+ctrl mesh 1 ; ctrl hmin 0.1  $ meshing parameters
+ctrl tolg 0.0001
+
+!*!Label Punkte
+spt 10 x #L(0)  ! FT-Ende Links
+spt 11 x #L(1)  ! P2 Punkt
+spt 12 x #L(2)  ! QT-Kante links
+spt 13 x #L(3)  ! Auflager
+spt 14 x #L(4)  ! FT-Ende rechts
+spt 15 x #L(5)  ! FT-Ende links
+spt 16 x #L(6)  ! Auflager
+spt 17 x #L(7)  ! QT-Kante rechts
+spt 18 x #L(8)  ! P1 punkt
+spt 19 x #L(9)  ! links Auflagerbereich
+spt 20 x #L(10) ! Auflager
+spt 21 x #L(11) ! FT-Ende rechts
+
+!*!Label Auflager
+spt 110 ref pt nref 10 x 0 y 0 z #H fix mxpy
+    spts grp 10 cp #cpz dx 0 0 1 $ Lager Z-Richtung
+    spts grp 11 cp #cpx dx 1 0 0 $ Lager X-Richtung
+    sptp kf ref 10 grp 10 $ kopplung zu OK QS
+
+spt 113 ref pt nref 13 x 0 y 0 z #H fix mxpy
+    spts grp 20 cp #cpz dx 0 0 1 $ Lager Z-Richtung
+    spts grp 21 cp #cpx dx 1 0 0 $ Lager X-Richtung
+    sptp kf ref 13 grp 20  $ kopplung zu OK QS
+
+spt 116 ref pt nref 16 x 0 y 0 z #H fix mxpy
+    spts grp 30 cp #cpz dx 0 0 1 $ Lager Z-Richtung
+    spts grp 31 cp #cpx dx 1 0 0 $ Lager X-Richtung
+    sptp kf ref 16 grp 30 $ kopplung zu OK QS
+
+spt 120 ref pt nref 20 x 0 y 0 z #H fix mxpy
+    spts grp 40 cp #cpz dx 0 0 1 $ Lager Z-Richtung
+    spts grp 41 cp #cpx dx 1 0 0 $ Lager X-Richtung
+    sptp kf ref 20 grp 40 $ kopplung zu OK QS
+
+!*!Label Stäbe
+$ FT Links
+sln 10 npa 10 npe 11 grp 100 sno 10  $ Ende - P2
+sln 11 npa 11 npe 12 grp 100 sno 10  $ P2 - QT-Kante
+sln 12 npa 12 npe 13 grp 100 sno 10  $ QT-Kante - Auflager
+sln 13 npa 13 npe 14 grp 100 sno 10  $ Auflager - FT Ende
+
+$ QT Ortbeton
+sln 30 npa 14 npe 15 grp 300 sno 21  $ FT Links - FT rechts
+
+$ FT rechts
+sln 20 npa 15 npe 16 grp 200 sno 21  $ FT Ende - Auflager
+sln 21 npa 16 npe 17 grp 200 sno 21  $ Auflager - QT-Kante
+sln 22 npa 17 npe 18 grp 200 sno 21  $ QT-Kante - P1
+sln 23 npa 18 npe 19 grp 200 sno 21  $ P1 - Auflagerbereich
+sln 24 npa 19 npe 20 grp 200 sno 21  $ Auflagerbereich - Auflager
+sln 25 npa 20 npe 21 grp 200 sno 21  $ Auflager - FT-Ende
+
+
+end
+

@@ -1,0 +1,86 @@
+!#!Info  Example:       Modeling of two touching slabs
+!#!Info  Keyword:       Structural model; area elements
+!#!Info  Program:       SOFIMSHC
+!#!Info  Version:       SOFiSTiK 25
+!#!Info  Date:          $Date: 2009-04-22 02:04:38 +0200 (Di, 31 Mrz 2009) $
+
++prog aqua urs:1
+head material and sections
+norm DIN 1045-1
+conc 1 C 35
+stee 2 S 235
+srec 1 0.5 0.2 mno 1
+scit 5 D 0.01  mno 2
+end
+
++prog sofimshc urs:4
+head two connected slabs
+syst fram gdiv 1000 $ 2D Frame system
+
+$ this first example shows two slabs which are adjacent at the common
+$ boundary between point 0 -5 0 and 5 -5 0.
+$ As the lines are defined on an entirely geometrical basis, they will
+$ be merged at the common boundary, thus both regions will be connected.
+sln 11          ; slnb x1 0 -5 0  x2 5 -5 0
+sln 12          ; slnb x1 5 -5 0  x2 5  0 0
+sln 13          ; slnb x1 5  0 0  x2 0  0 0
+sln 14 fix PP   ; slnb x1 0  0 0  x2 0 -5 0
+
+sar 11 grp 1 t 0.2 mno 1
+sarb out 11,12,13,14
+
+
+sln 21          ; slnb x1  0 -5 0  x2 10 -5 0
+sln 22 fix PP   ; slnb x1 10 -5 0  x2 10  0 0
+sln 23          ; slnb x1 10  0 0  x2  5  0 0
+sln 24          ; slnb x1  5  0 0  x2  5 -5 0
+
+sar 21 grp 1 t 0.2 mno 1
+sarb out 21,22,23,24
+end
+
++prog sofimshc urs:2
+head two separated slabs
+syst rest       $ keep previously created system
+ctrl mesh 2     $ create quadrilateral elements
+ctrl hmin 0.5   $ mesh density
+
+$ In order to separate the two structural regions at their common boundary
+$ between point 5 -5 0 and 5 0 0the endpoints of the two adjacent lines
+$ must be created separately.
+$ Two explicitly defined structural points at the same location will not be
+$ merged by SOFiMSHC.
+spt 101 5 +1 0
+spt 102 5 +6 0
+
+spt 201 5 +1 0
+spt 202 5 +6 0
+
+
+$ As the two lines at the boundary have different endpoints they will be treated
+$ as different lines in SOFiMSHC and thus the two structural regions will not
+$ be connected.
+sln 51  npe 101  ; slnb x1 0 +1 0
+sln 52  npa 101 102
+sln 53  npa 102  ; slnb x2 0 +6 0
+sln 54  fix PP   ; slnb x1 0 +6 0 x2 0 +1 0
+
+sar 51 grp 1 t 0.2 mno 1
+sarb out 51,52,53,54
+
+sln 61 npa 201 ; slnb x2 10 +1 0
+sln 62 fix PP  ; slnb 10 +1 0  10 +6 0
+sln 63 npe 202 ; slnb x1 10 +6 0
+sln 64 npa 202 201
+
+sar 61 grp 1 t 0.2 mno 1
+sarb out 61,62,63,64
+end
+
++prog ase urs:3
+head test calculation
+lc 1 dly 1.0
+end
+
+
+
