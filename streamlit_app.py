@@ -7,7 +7,7 @@ from llama_index import SimpleDirectoryReader
 st.set_page_config(page_title="Chat with a SOFiSTiK database of Teddy/Cadinp files, powered by LlamaIndex", page_icon="🦙", layout="centered", initial_sidebar_state="auto", menu_items=None)
 openai.api_key = st.secrets.openai_key
 st.title("Chat with a SOFiSTiK database of Teddy/Cadinp files, powered by LlamaIndex 💬🦙")
-st.info("The database consist of autors examples and examples prepared by SOFiSTiK [for more information on the Software visit](https://www.sofistik.de/)", icon="📃")
+st.info("The database consist of autors examples and examples prepared by SOFiSTiK. For more information on the Software visit [Sofistik.de](https://www.sofistik.de/)", icon="📃")
          
 if "messages" not in st.session_state.keys(): # Initialize the chat messages history
     st.session_state.messages = [
@@ -25,7 +25,8 @@ def load_data():
 
 index = load_data()
 # chat_engine = index.as_chat_engine(chat_mode="condense_question", verbose=True, system_prompt="You are an expert on the Streamlit Python library and your job is to answer technical questions. Assume that all questions are related to the Streamlit Python library. Keep your answers technical and based on facts – do not hallucinate features.")
-chat_engine = index.as_chat_engine(chat_mode="condense_question", verbose=True)
+# chat_engine = index.as_chat_engine(chat_mode="condense_question", verbose=True) # Always queries the knowledge base. Can have trouble with meta questions like “What did I previously ask you?”
+chat_engine = index.as_chat_engine(chat_mode="react", verbose=True) # Chooses whether to query the knowledge base or not. Its performance is more dependent on the quality of the LLM. You may need to coerce the chat engine to correctly choose whether to query the knowledge base.
 
 if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
