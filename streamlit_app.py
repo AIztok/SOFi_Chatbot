@@ -3,6 +3,7 @@ from llama_index import VectorStoreIndex, ServiceContext, Document
 from llama_index.llms import OpenAI
 import openai
 from llama_index import SimpleDirectoryReader
+from llama_index.memory import ChatMemoryBuffer # for the context chat engine
 
 st.set_page_config(page_title="Chat with a SOFiSTiK database of Teddy/Cadinp files, powered by LlamaIndex", page_icon="🦙", layout="centered", initial_sidebar_state="auto", menu_items=None)
 openai.api_key = st.secrets.openai_key
@@ -24,8 +25,11 @@ def load_data():
         return index
 
 index = load_data()
+memory = ChatMemoryBuffer.from_defaults(token_limit=1500) # for the context based chat engine
+
 # chat_engine = index.as_chat_engine(chat_mode="condense_question", verbose=True, system_prompt="You are an expert on the Streamlit Python library and your job is to answer technical questions. Assume that all questions are related to the Streamlit Python library. Keep your answers technical and based on facts – do not hallucinate features.")
-chat_engine = index.as_chat_engine(chat_mode="condense_question", verbose=True) # Always queries the knowledge base. Can have trouble with meta questions like “What did I previously ask you?”
+# chat_engine = index.as_chat_engine(chat_mode="condense_question", verbose=True) # Always queries the knowledge base. Can have trouble with meta questions like “What did I previously ask you?”
+chat_engine = index.as_chat_engine(chat_mode="context", verbose=True, memory=memory) # Always queries the knowledge base. Can have trouble with meta questions like “What did I previously ask you?”
 # chat_engine = index.as_chat_engine(chat_mode="react", verbose=True) # Chooses whether to query the knowledge base or not. Its performance is more dependent on the quality of the LLM. You may need to coerce the chat engine to correctly choose whether to query the knowledge base.
 
 if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
