@@ -1,0 +1,3200 @@
+SOFiMSHC
+Geometric Modelling
+SOFiSTiK | 2023SOFiMSHC
+GeometricModelling
+SOFiMSHCManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|SOFiMSHC
+Contents
+Contents i
+1 General 1-1
+1.1 Limitations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-2
+2 Theoretical background 2-1
+2.1 Coordinate systems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.2 Curves and alignment axes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.2.1 Alignment axes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.2.2 Freeform curves . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-4
+2.3 Regions and geometric surfaces. . . . . . . . . . . . . . . . . . . . . . . . . . 2-4
+2.3.1 Rotational and sweep surfaces . . . . . . . . . . . . . . . . . . . . 2-4
+2.4 Structural elements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-5
+2.5 Mesh generation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-5
+2.6 Support conditions and kinematic couplings . . . . . . . . . . . . . . . . . . 2-6
+2.6.1 Support conditions . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-6
+2.6.2 Kinematic couplings . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-6
+2.6.3 Special couplings. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-8
+3 General program control 3-1
+3.1 Input language . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.2 Units . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.3 Input records . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-2
+3.4 SYST – Global System Definition . . . . . . . . . . . . . . . . . . . . . . . . . 3-3
+3.5 CTRL – Control of analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-6
+3.5.1 Analysis and generation of structural model . . . . . . . . . . . . 3-7
+3.5.2 Geometry healing . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-9
+3.5.3 Meshing control. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-9
+3.5.4 Element generation and boundary conditions . . . . . . . . . . . 3-10
+3.5.5 Optimization of equation numbers . . . . . . . . . . . . . . . . . . 3-11
+3.5.6 Initialisation, warnings. . . . . . . . . . . . . . . . . . . . . . . . . . 3-12
+3.6 GRP – Group control . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-13
+3.6.1 Primary group number . . . . . . . . . . . . . . . . . . . . . . . . . 3-13
+3.6.2 Secondary groups . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-14
+3.7 IMPO – Import of data . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-15
+3.8 EXPO – ANSI export of data . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-16
+3.9 ECHO – Control of output . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-17
+3.10 COOR – User defined coordinate system . . . . . . . . . . . . . . . . . . . . 3-18
+3.11 XSUB – Extraction of subsystems . . . . . . . . . . . . . . . . . . . . . . . . . 3-20
+3.12 XCON – Stiffness of connected elements . . . . . . . . . . . . . . . . . . . . 3-22
+SOFiSTiK2023 iSOFiMSHC|Contents
+4 Definition of geometric elements. 4-1
+4.1 Input records . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.2 GAX – Geometric curve or axis . . . . . . . . . . . . . . . . . . . . . . . . . . 4-2
+4.3 GAXA – Axis plan view . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-4
+4.4 GAXH – Axis heights . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-7
+4.5 GAXB – Straights and circular arcs in 3D . . . . . . . . . . . . . . . . . . . . 4-8
+4.6 GAXC – 3D curve point data . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-10
+4.7 GAXN – Knot value of a NURBS-curve . . . . . . . . . . . . . . . . . . . . . 4-12
+4.8 GAXP – Axis placements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-13
+4.9 GAXS – Secondary axis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-16
+4.10 GAXV – Variables along axis . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-17
+4.11 GAR – Geometric surface . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-18
+4.12 GARA – Plane, rotational and sweep surfaces . . . . . . . . . . . . . . . . . 4-19
+4.13 GARC – Coons surface . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-21
+4.14 GARS – Area by points. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-22
+5 Definition of structural elements 5-1
+5.1 Input Records. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-1
+5.2 SPT – Structural point . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-3
+5.3 SPTP – Structural point properties . . . . . . . . . . . . . . . . . . . . . . . . 5-6
+5.4 SPTS – Spring element at point . . . . . . . . . . . . . . . . . . . . . . . . . . 5-8
+5.5 SPTH – Halfspace pile at point . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-11
+5.6 SLN – Structural line . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-12
+5.6.1 Local coordinate system . . . . . . . . . . . . . . . . . . . . . . . . 5-13
+5.6.2 Support and coupling conditions . . . . . . . . . . . . . . . . . . . 5-14
+5.6.3 Element generation . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-14
+5.6.4 Hinge conditions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-15
+5.6.5 Intersection properties . . . . . . . . . . . . . . . . . . . . . . . . . 5-15
+5.7 SLNB – Straights and circular arcs . . . . . . . . . . . . . . . . . . . . . . . . 5-17
+5.8 SLNP – 3D curve point data . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-18
+5.9 SLNN – Knot value of a NURBS-curve . . . . . . . . . . . . . . . . . . . . . . 5-19
+5.10 SLNS – Supports and kinematic couplings on a SLN. . . . . . . . . . . . . 5-20
+5.10.1 Supports and coupling conditions . . . . . . . . . . . . . . . . . . 5-21
+5.10.2 Elastic beddings and spring elements. . . . . . . . . . . . . . . . 5-21
+5.10.3 Orientation of the elements . . . . . . . . . . . . . . . . . . . . . . 5-22
+5.10.4 Interface-elements . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-23
+5.11 SLSC – Explicit sections on structural line . . . . . . . . . . . . . . . . . . . 5-24
+5.12 SAR – Structural area . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-25
+5.13 SARB – Structural area boundaries and constraints . . . . . . . . . . . . . 5-30
+5.14 SARR – Rotational and sweep surfaces . . . . . . . . . . . . . . . . . . . . . 5-32
+5.15 SARP – 3D Surface data point . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-34
+5.16 SARC – Coons-Patch surfaces. . . . . . . . . . . . . . . . . . . . . . . . . . . 5-35
+5.17 SARS – Support and coupling of structural areas . . . . . . . . . . . . . . . 5-36
+5.17.1 Boundary conditions. . . . . . . . . . . . . . . . . . . . . . . . . . . 5-36
+5.17.2 Coupling of structural areas . . . . . . . . . . . . . . . . . . . . . . 5-37
+5.18 SVO – Structural volume. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-38
+5.19 SVOB – Boundary surfaces of a structural volume . . . . . . . . . . . . . . 5-39
+5.20 GUID – Globally Unique Identifier . . . . . . . . . . . . . . . . . . . . . . . . . 5-40
+5.21 BBOX – Bounding box . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-41
+ii SOFiSTiK2023Contents|SOFiMSHC
+5.22 SLVL – Storey levels . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-42
+5.23 SRES – Predefined Result Sets . . . . . . . . . . . . . . . . . . . . . . . . . . 5-43
+5.23.1 BEAR - Elastic Bearing at Node . . . . . . . . . . . . . . . . . . . 5-43
+Bibliography 5-45
+SOFiSTiK2023 iiiSOFiMSHC|Contents
+iv SOFiSTiK2023General |SOFiMSHC
+1 General
+SOFiMSHC is a tool for creating and processing geometric models and finite element struc-
+tures. SOFiMSHC can be used as stand-alone program within Teddy and is integrated as
+geometry processing module in the SOFiSTiK programs SOFiPLUS, Extensions for Revit and
+Rhinoceros Interface.
+Basis and starting point of SOFiMSHC is an abstract structural model similar to a CAD model
+which includes all relevant geometric and structural information necessary for describing a
+calculation model. After this model is read from database or entered by the user via CADINP,
+SOFiMSHC analyzes and processes it and creates as result a finite element mesh consisting
+ofbeam,areaand/orvolumeelements. Inadditiontoclassicalbuildingstructures,SOFiMSHC
+alsoprovidesarichsetofinputfacilitiesforthedefinitionofalignmentaxesandbridgesystems.
+SOFiMSHC basically differentiates between geometric entities carrying geometry related data
+and structural elements containing all further information needed for definining a calculation
+model. As for the geometric entities following types are supported:
+Geometric axes:
+• straight lines
+• circles and circular arcs in space
+• alignment axes for road design defined separately in plan view and elevation
+• polygonal lines
+• cubically interpolating splines
+• Hermite interpolation with defined tangents
+• arbitrary NURBS curves (Non Uniform Rational B-Splines)
+Geometric surfaces:
+• flat surfaces
+• surfaces of revolution
+• sweep surfaces
+• bicubically interpolating surfaces
+• arbitrary NURBS surfaces
+The basic geometric elements are usually defined independently from the overall structural
+model and should be used in as comprehensive units as possible. A bridge with multiple
+spans, for example, can be defined with one single axis along its whole length. The individual
+spansandalladditionalsuperstructures,however,aremodeledwithstructuralelementswhich
+inherit their geometry from the underlying axis definition. Once the geometry is changed the
+structural system will be automatically readjusted.
+The static system itself with all mutual topological relationships comprises the following set of
+basic structural elements:
+Structural Points are defined at a specific position in space and may have Column
+Heads, Punching periphery and haunches assigned as structural properties.
+SOFiSTiK2023 1-1SOFiMSHC|General
+Structural Lines connect two structural points and may have a geometric curve as-
+signed. Structural data includes supports and section definitions, for example.
+Structural Regions are defined by a closed set of inner and outer boundary curves
+and may also have a geometric surface description assigned. Structural properties
+contain thickness, element formulation etc.
+Structural Volumes are defined by a set of enclosing structural regions and can be
+meshed either unstructured with tetrahedral elements or structured by extrusion or
+rotation with hexahedral elements.
+A number of possibilities are provided within the SOFiSTiK program environment, to access
+and define the input of SOFiMSHC:
+• Definition using CADINP-ASCII-Files (Teddy + SOFiMSHC)
+• Input of structural systems using SOFiPLUS (AutoCAD)
+• Transfer of models from Autodesk Revit Structural (SOFiSTiK Extensions for Revit)
+• Modeling in McNeel Rhinoceros (SOFiSTiK Rhinoceros Interface)
+• Interface to the CDBASE for third party developers and for the import of building infor-
+mation models (e.g. IFC).
+SOFiMSHC is both used as stand-alone batch program and as backend module in the above
+mentioned CAD-programs. It contains interfaces to mesh-generators from the University of
+Munich (DOMESH) and the University of Linz (NETGEN) and to mesh-partitioning software
+(METIS).
+1.1 Limitations
+The following limits can not be exceeded in principle:
+Number of nodes : 9 999 999
+Largest node number : 9 999 999
+Largest element number : 9 999 999
+Structural points SPT : 99 999
+Structural lines SLN : 99 999
+Structural regions SAR : 99 999
+Structural volumes SVO : 99 999
+Basically, the numbers of structural elements should not be selected with a unreasonably high
+value. The program needs to allocate unnecessary amounts of memory, which might increase
+the overall running time of the program.
+Attention should be paid to the fact that only numbers below 1 Mio can be entered and ac-
+cessed within CADINP. This means that even though element numbers above 1 Mio can be
+created in SOFiMSHC, these elements cannot be accessed from CADINP in order to set ad-
+ditional properties or apply loads etc. Thus, the group divisor setting the base number of the
+elements created within a group should be set to a reasonably small value.
+1-2 SOFiSTiK2023Theoreticalbackground |SOFiMSHC
+2 Theoretical background
+2.1 Coordinate systems
+Global as well as local coordinate systems are described in SOFiMSHC as cartesian right-
+handed system X-Y-Z. Rotations are applied in a mathematical positive sense. Within record
+SYST a global gravity direction can be specified at parameter GDIR. This global gravity or
+’downward’ direction affects the default orientation of loads, supports and other geometric at-
+tributesofstructuralitemswithinthemodelifnotspecifieddifferentlyattherespectivelocation.
+Y
+X
+Phi
+Z
+Figure2.1: Coordinatesystem
+Iftheobserverislookingfromthebirdseyeviewhewillbelievetoseearightorlefthanded2D
+coordinate system depending on the orientation of the vertical axis . We use the designation
+of the ”first” and the ”second” horizontal axis in the counter clock wise orientation.
+Each geometric or structural object in SOFiMSHC possesses a local orientation or a local
+coordinate system, which affects the direction of loads, cross-sections or support conditions:
+• Points, for example, have a local coordinate system which defines primarily the local di-
+rection of supports and kinematic couplings. If no coordinate system is given explicitly the
+local z-direction defaults to the globally defined gravity direction or, if the point lies within a
+region or on a structural line, to the local coordinate system defined there.
+• For structural lines, up to three different local coordinate systems can be identified. A first
+coordinate system is related to the underlying geometric curve and is primarily used to de-
+finetheorientationofcirculararcsoralignmentaxes. Onthestructuralline,anindependant
+coordinate system can be defined which sets the orientation of cross-sections and beam
+elements. A third coordinate system may be specified in order to set the local direction of
+supports, springsorkinematiccouplingsconnectedtoaline. Ifoneofthethreementioned
+directions is not explicitly set by the user, it defaults to the previously defined system. If no
+coordinatesystemisdefinedatall,theglobalgravitydirectionisused. Thelocalcoordinate
+system of a structural line is normally specified by the user by setting the direction of the
+local z-axis. As the local x-axis always points into the direction of the curve tangent, the
+local y-axis is defined automatically.
+• Geometric surfaces and structural regions have a local coordinate system assigned which
+normally varies within the surface for curved shapes. The z-axis of the coordinate system
+alwaysremainsperpendicularonthesurface. Thecoordinatesystemofastructuralregion
+defines, for example, the clock-order of outer boundary edges and the local orientation of
+the quadrilateral finite elements created on the surface.
+• Forvolumestheremightbeadirectionoforthotopicmaterialproperties,butthereisnolocal
+coordinate system. However all surfaces describing the volume will have a unique interior
+SOFiSTiK2023 2-1SOFiMSHC|Theoreticalbackground
+and exterior side. Thus a separating surface between two volumes will have a different
+orientation for the two cases.
+2.2 Curves and alignment axes
+CurvesinSOFiMSHCaredefinedasparametercurvesinthreedimensionalspace. Parameter
+curvesarebasicallydefinedbyalocalparameterswhichrunsalongthecurvefromitsstartto
+its endpoint. A ’curve function’ c(s) maps this local parameter s to global xyz-coordinates and
+therefore describes the curve in space when s is changed from smin to smax:
+ 
+(s)
+s(cid:55)→c(cid:126)(s)= y(s)  s=[s mn,s m], (2.1)
+ 
+z(s)
+Apart from its shape other parameters might also be specified along a given curve as a func-
+tion of s, like for example the orientation, the size or the shape of varying cross-sections.
+SOFiMSHC also allows to define so-called secondary lines, which are connected to a basis
+curve and whose distance is defined as a function of s.
+2.2.1 Alignment axes
+As a special type of curve SOFiMSHC allows to define alignment axes as primarily used in
+roadandrailwaydesign. Thesecurvestypicallyconsistofasequenceofstraightsandcircular
+arcs with transition elements in between. In order to avoid sudden changes in curvature tran-
+sitioncurves(oreasementcurves)areplacedbetweensectionswithdifferentradiiprovidinga
+gradual change of curvature from one section to another. Depending on the characteristics of
+the curvature gradient different types of transition elements can be identified:
+• Clothoid: Curvature varies linearly with distance s along the track
+1 s s
+κ(s)= = = (2.2)
+r(s) R·L A2
+• Bloss-Curve: Curvature varies cubically with distance s
+1 3·s2 2·s3
+κ(s)= = − (2.3)
+r(s) R·L2 R·L2
+• Sinusoidal transition curve:
+1 2πs−sn(2πs)
+κ(s)= = L (2.4)
+r(s) 2πLR
+• Cosinusoidal transition curve:
+1 1−cos(πs)
+κ(s)= = L (2.5)
+r(s) 2R
+Above formulas apply for a transition curve of length L which starts from curvature=0 (straight
+axis)toacirculararcwithradiusR(curvature=1/R).Fortransitionsbetweensectionswithdif-
+ferentradii(e.g. reversingclothoid,egg-shapedclothoid),theyhavetobemodifiedaccordingly.
+SOFiMSHC supports all variants.
+2-2 SOFiSTiK2023Theoreticalbackground |SOFiMSHC
+The definition of alignment axes in SOFiMSHC is carried out separately in plan view and el-
+evation. In plan view, sections consisting of straights, circular arcs and transition curves are
+combined into a sequence defining a two-dimensional curve in x,y-coordinates. The elevation
+of the curve can be defined independently from the plan view by setting height values and
+elevation radii. Curvatures in the elevation are applied as parabolas.
+The following two pictures show an alignment axis in ground view and elevation. The axis
+consistsinthegroundviewofacirculararcsegmentandareversingclothoidwithastartradius
+of RA = -100m and an end radius RE = +50m. In the elevation view the curve is rounded off
+parabolically with a radius of 100m.
+Figure2.2: Axis
+Figure2.3: Elevationview
+SOFiSTiK2023 2-3SOFiMSHC|Theoreticalbackground
+2.2.2 Freeform curves
+For defining freeform curves SOFiMSHC provides an implementaton of NURBS based on the
+openNURBS library. NURBS (Non-Uniform Rational B-Splines) comprise a special class of
+curves widely used in computer aided design or computer graphics for modelling curves and
+surfaces of arbitrary shapes. Mathematically, they consist of piecewise rational polynomials of
+agivenorderwhichareconnectedtogetherunderconsiderationofcertaincontinuityconditions
+(e.g. tangentially continuous, curvature continuous). Due to their construction using rational
+polynomials, NURBS are also capable of representing circles, ellipses or hyperbolas mathe-
+maticallyexact. AdefinitionofNURBS-curvesbasicallyinvolvesthefollowingsetofproperties
+and elements:
+• Degree
+The degree decribes the highest polynomial exponent of the NURBS basis functions. De-
+gree1iscalledlinear,degree2quadratic,3cubicetc. Acubicdegreeisgenerallysufficient,
+but curves with degrees up to 32 may be defined and used.
+• Control points
+Control points are the basic construction points of a NURBS curve or surface. With ex-
+ception of the first and the last point they are not necessarily located directly on the curve
+but will stay close to it. Since NURBS curves are constructed using piecewise polyno-
+mials, the position of a single control point only changes the shape of its adjacent basis
+polynoms. This so-called ’local property’ of Nurbs - in contrast to pure polynomial curves
+- allows to modify a curve locally without affecting the whole shape of the curve. In addi-
+tion to its xyz-coordinates a control points may also have a weight assigned. By changing
+the control-point weights to values < > 1.0 the basis functions convert to rational polynoms
+which offers the possibility to model also circular arcs, hyperbolas or ellipses with NURBS.
+• Knots
+Basically, a single knot-value defines the location on a curve where two Nurbs basis func-
+tionsareconnected. ForagivenNURBScurvewithNcontrolpointstheyareusuallystored
+internally as monotone list of size (degree+N-1). The knot-vector may be defined by the
+user in order to set the local curve parametrisation explicitly. In general cases however
+there is no need to define the knots by the user as SOFiMSHC creates an appropriate
+distribution automatically. Knots can also be defined repeatedly at the same location. This
+knot multiplicity changes the default transition condition at the interface between two basis
+functions such that also kinks and even jumps could be modeled within one single curve.
+2.3 Regions and geometric surfaces
+SOFiMSHC supports different types of geometric surfaces which can be referenced in order
+to describe the shape of a structural region which is to be meshed. If no geometry is defined
+explicitly, SOFiMSHC tries to create the shape of a surface from its boundary description.
+This works, of course, for all plane surfaces and normally also for curved shapes with a less
+complex boundary description (e.g. four boundary edges in a rectangular like pattern). For
+complex shapes however, it is more reasonable to specify the geometric shape of a region
+explicitly.
+2.3.1 Rotational and sweep surfaces
+The general idea of these type of surfaces is that a surface is defined by moving an arbitrary
+curve in space. In case of a surface of revolution a curve c(v) is rotated around a straight axis.
+2-4 SOFiSTiK2023Theoreticalbackground |SOFiMSHC
+The parametric description of the surface s(u,v) is given by
+s(,)=M()·c() (2.6)
+where the matrix M(v) defines rotation around an arbitrary axis in space. The parameter v
+denotestherotationangleinradians. Asweepsurfaceisdefinedbymovingacurvec(u)along
+a traction curve t(v). The general form of a sweep surface s(u,v) is given by
+s(,)=t()+M()·c() (2.7)
+The curve c(u) may also be rotated by M(v) within the local coordinate system of the traction
+curve after moving it along t. In most cases however, c(v) is only translated along t(v) without
+rotation. The rotation matrix M defaults to the unity-matrix then.
+2.4 Structural elements
+As previously mentioned SOFiMSHC basically distinguishes between geometric entities and
+structural objects. Geometric elements primarily define the shape and the position of objects
+in space. Structural objects are referencing the shape of the geometry elements and fur-
+thermore contain all relevant structural information together with necessary mutual topologi-
+cal relationships. The structural model within SOFiMSHC corresponds to a classical B-Rep
+(boundary representation) data model which can be found in a similar form in other common
+CAD-systems. B-rep models describe objects in space by describing the boundary of the ob-
+jects. Structural lines, for example, are bounded by their endpoints and structural regions are
+bounded by a closed sequence of structural edges. Structural regions may also have internal
+boundaries forming openings inside the region.
+2.5 Mesh generation
+The2D-meshgenerationisbasedontheworkbyRanketal. forunstructuredmeshgeneration
+for pure quadrilateral meshes. [ 1] . The first step is to generate a triangular mesh which is
+then divided into a quadrilateral mesh. This is the reason why along all edges the number of
+sections will be even.
+However there are specific macros for supports like columns modifying the basic generated
+mesh in a post processing step.
+The3D-meshgenerationiseitherdoneasastructuredmappedmeshgenerationbasedonthe
+surfaces generated before, or a unstructured mesh generation for pure Tetrahedron meshes.
+ThisisadoptedfromameshgeneratordevelopedattheUniversityofLinz [ 2] . Asthequality
+ofTetrahedronissignificantlylessthanthatofHexahedronwehavetogenerateamoredense
+element mesh. Both methods may be mixed within one system. E. Rank [1], Schöberl [2],
+Farin [3], and Piegl and Tiller [4]
+SOFiSTiK2023 2-5SOFiMSHC|Theoreticalbackground
+2.6 Support conditions and kinematic couplings
+2.6.1 Support conditions
+In SOFiMSHC, support conditions can be defined for structural points, structural lines and
+structural regions. The support conditions can be specified in global directions as well as in
+directions aligned to the local coordinate system of the respective structural entity.
+Support conditions are defined by a set of literals,
+PX Clamped support of displacements in X-direction
+PY Clamped support of displacements in Y-direction
+PZ Clamped support of displacements in Z-direction
+MX Clamped support of rotations about the X-axis
+MY Clamped support of rotations about the Y-axis
+MZ Clamped support of rotations about the Z-axis
+MB Clamped support of warping
+which can also be combined. As an example, the following CADINP statement
+SPT 1 X 0 0 0 FIX PXPY
+defines a structural point at coordinate (0,0,0) whose displacement in the global XY-plane are
+suppressed, i.e. only displacements in Z-direction are allowed. By prepending the literal ’L’
+(e.g. ’LPXPY’) the support conditions will be aligned according to the local coordinate system
+of the structural entity, e.g.:
+SPT 1 X 0 0 0 NX 0 1 1 FIX LPZ
+Additionally,thefollowingliterals,whichcombinemultipledisplacementdirections,canalsobe
+used for defining supports:
+XP = PY + PZ
+YP = PX + PZ
+ZP = PX + PY
+PP = PX + PY + PZ
+XM = MY + MZ
+YM = MX + MZ
+ZM = MX + MY
+MM = MX + MY + MZ + MB
+F = PP + MM
+2.6.2 Kinematic couplings
+While support conditions basically suppress certain degrees of freedom, coupling conditions
+define relationships between degrees of freedom of different nodes. As an example,
+2-6 SOFiSTiK2023Theoreticalbackground |SOFiMSHC
+SPT 5 X 0 0 0 FIX PXPY->1
+createsastructuralpoint,whosedisplacementsu anduy arecoupledtothedisplacementsof
+structuralpointno. 1,calledthereferencepoint. Inthesimplestcase,thedisplacementsofthe
+base point will be set equal to the displacements of the reference point. However, also more
+complexrelationshipsarepossible,whichareusuallymotivatedbymechanicalconstraintsand
+which will be described further down.
+Couplings can be either defined as previously shown by adding a reference ’-> no’ to the
+support literal or by using special input records (e.g. SPTP, SLNS), which provide additional
+options for defining group membership of the constraint or a particular direction, e.g.:
+SPT 5 X 0 0 0
+SPTP KP REF 1 GRP 4
+Depending on the type of the coupling condition, certain degrees of freedom   of the coupled
+node are defined as a function of degrees of freedom  R of the reference or ’master’ node.
+For standard couplings, the following relationships apply:
+PX Coupling of x-displacements
+  = R+ϕ yR·(p zR−p z)−ϕ zR·(p yR−p y) (2.8)
+PY Coupling of y-displacements
+ y = yR+ϕ zR·(p R−p )−ϕ R·(p zR−p z) (2.9)
+PZ Coupling of z-displacements
+ z = zR+ϕ R·(p yR−p y)−ϕ yR·(p R−p ) (2.10)
+MX Coupling of rotations about the x-axis (ϕ  =ϕ R)
+MY Coupling of rotations about the y-axis (ϕ y =ϕ yR)
+MZ Coupling of rotations about the z-axis (ϕ z =ϕ zR)
+The formulation of the displacement conditions in equation 2.8 to 2.10 basically consider also
+the distance between the coupled nodes d = (p R−p , p yR−p y, p zR−p z). For example, the
+displacement   of a coupled node is dependant on the displacements of the reference node
+ R plus an additional displacement defined by the rotation of the reference node times the
+distance between the nodes (lever arm). By considering the lever arm in the formulation, the
+coupling condition acts like an infinitely stiff beam member yielding a mechanically consistent
+system which ensurs equilibrium of forces.
+Similartothesupportconditionsthecouplingconditionscanalsobereferredtothelocalcoor-
+dinate system of the coupled node by preceding a literal ’L’, for example:
+SPT 5 X 0 0 0 SX 1 1 0 NX 0 0 1
+SPTP LPYPZ REF 1 GRP 4
+Additionally the literals can be combined:
+SOFiSTiK2023 2-7SOFiMSHC|Theoreticalbackground
+PP = PX + PY + PZ:
+Coupling of all displacements, denoted in vector notation:
+= +ϕ ×d
+R R
+Mechanically this coupling type defines a rigid connection with a rotational hinge in
+the coupled node and clamped condition in the reference node.
+KF = KP + MM:
+= +ϕ ×d
+R R
+ϕ=ϕ
+R
+Mechanically, this coupling type defines a rigid connection with clamped condition in
+both nodes.
+MM = MX + MY + MZ
+Theexplanationsabovealsoholdforcouplingsbetweenstructurallinesandstructuralareas. In
+these cases, each node on the element will be coupled with the nodes of the master element.
+For more information, see the dedicated coupling records SLNS and SARS.
+Basically, coupling conditions can be defined in any order and any arbitrary combination. A
+pointcanbecoupledtodifferentreferencenodes,forexamplewhenthecouplingsareassigned
+to different groups or different acting directions, as well as multiple points can be coupled to
+a single master node. The mutual dependencies will be analyzed and resolved when the
+equation system is set up in the calculation kernels.
+Hint
+However,theactingdirectionbetweenthecouplednodeandthereferencenodemustbe
+basically considered and cannot be exchanged. With exeption of a rigid coupling of type
+’F’, coupling a node ’A’ to node ’B’ is mechanically not equivalent to a coupling of node
+’B’ to ’A’. (See, e.g. equations 2.8, 2.9, 2.10)
+2.6.3 Special couplings
+Additional types of coupling conditions will be provided for special cases which will be de-
+scribed below.
+As explained above, couplings will be defined in SOFiSTiK by default under consideration of
+the lever arm between the two nodes, ensuring a mechanically consistent system. However
+thisbehaviourmightbeundesirableinsomecases,forexamplewhencertainboundarycondi-
+tions must be applied. The following special literals allow to couple the displacements without
+consideration of the lever arm:
+KPX0 Coupling of x-displacement
+ =
+ R
+2-8 SOFiSTiK2023Theoreticalbackground |SOFiMSHC
+KPY0 Coupling of y-displacement
+ =
+y yR
+KPZ0 Coupling of z-displacement
+ =
+z zR
+Couplingconditionscanalsobedefinedinradialandtransversaldirection. Inthesecases,the
+conditions do not refer to a full coordinate system with three coordinate axes, but to a single
+direction n=(n ,n y,n z). There,theterm’radial’referstoadirectiontangentiallytothisvector
+and ’transversal’ to a plane perpendicular to n. If this direction is not explicitly specified by the
+user, the distance between the two coupled nodes is used, i.e. n=d.
+The formulation for the coupling conditions KPR and KPT for radial and transversal couplings,
+repectively,aswellastheircounterpartsfortherotationalconstraintsaredenotedimplicitlyand
+not in explicit form any more. The program automatically converts them into an appropriate
+explicit form.
+KPR Coupling of displacements in the given direction n (=radial).
+(− )·n=0
+0
+→( − )·n +( − )·n +( − )·n =0
+ R  y yR y z zR z
+KPT Coupling of all displacements in a plane perpendicular to the given direction n
+(=transversal)
+(− )=α·n, α∈R
+R
+ −  −  −
+ R y yR z zR
+→ = =
+n n n
+ y z
+KMR Coupling of rotations about the radial axis
+KMT Coupling of all rotations in the transversal plane
+KL = KP + KMT
+KQ = KP + KMR
+Additionally, the following special type of coupling allow to define symmetry and antisymmetry
+constraints:
+SYM Symmetry constraint relative to a plane defined by the given normal direction and
+located with its origin in the mid between the coupled nodes
+·n=− ·n
+R
+ANTI Antisymmetry constraints with respect to the same plane as for the symmetry con-
+SOFiSTiK2023 2-9SOFiMSHC|Theoreticalbackground
+straint
+·n=+ ·n
+R
+2-10 SOFiSTiK2023Generalprogramcontrol |SOFiMSHC
+3 General program control
+3.1 Input language
+TheinputinSOFiMSHCisgenerallycarriedoutinCADINPlanguage. Moreinformationonthis
+can be found in the general SOFiSTiK manual ’FEA / STRUCTURAL Installation and Basics’.
+3.2 Units
+SOFiSTiK programs offer the possibility to carry out all input and output of data in engineering
+units. A number of unit sets are provided for this purpose, which are preset according to
+the design code used in the given project. This default can additionally be changed for each
+program run separately using the keyword PAGE. More information about unit sets can be
+found in the general SOFiSTiK manual, section ’Units’.
+The description of the input values in this manual will always contain the unit, in which a given
+record is expected to be given. It shows also, if the input record follows a predefined unit set.
+Three categories of units are distinguished:
+mm Fixed unit. Input is always required in the specified unit.
+[mm] Explicit unit. Input defaults to the specified unit. Alternatively, an explicit as-
+signment of a related unit is possible (eg. 2.5[m] ).
+[mm] Implicit unit. Implicit units are categorised semantically and denoted by a cor-
+1011
+responding identity number (shown in green). Valid categories referring to the
+unit ”length” are, for example, geodetic elevation, section length and thickness.
+Thedefaultunitforeachcategoryisdefinedbythecurrentlyactive(designcode
+specific) unit set. This input default can be overridden as described above. The
+specified unit in square brackets corresponds to the default for unit set 5 (Eu-
+rocodes, NORM UNIT 5).
+SOFiSTiK2023 3-1SOFiMSHC|Generalprogramcontrol
+3.3 Input records
+Record Items
+SYST TYPE GDIV GDIR FIX XREF YREF ZREF
+T11 T12 T13 T21 T22 T23 T31
+T32 T33
+GRP NO REF BASE TITL
+CTRL OPT VAL V2 V3 V4
+IMPO OPT FROM PASS
+EXPO OPT VAL TO PASS
+ECHO OPT VAL
+COOR TYPE ID IDP S X Y Z
+T11 T12 T13 T21 T22 T23
+XSUB TYP FIXA FIXL FIXM CD
+Records HEAD, END and PAGE are described in the general manual SOFiSTiK: ’Basics’.
+3-2 SOFiSTiK2023Generalprogramcontrol |SOFiMSHC
+3.4 SYST – Global System Definition
+Seealso: GRP,COOR
+SYST
+Item Description Unit Default
+TYPE The type of the system may be defined: LT !
+3D spatial structures
+2D Plane frame or pannel
+2DSS Plane stress
+2DSN Plane strain
+2DAX Axial symmetric system
+2DSL Plane girder or plate bending
+2DPS Prestressed plate system
+SECT sectional system
+REST Keep current system type
+INIT Delete the system, however, keep the sys-
+tem info
+This literal in combination with the GDIR defines the
+orientation of the coordinates. The former Literals
+(SPAC etc.) are still valid and are described in the
+remarks.
+GDIV Group divisior − 0
+GDIR Direction of gravity LT *
+POSX,POSY,POSZ
+NEGX,NEGY,NEGZ
+FIX Global default constraints LT -
+SYST defines the global parameters of the system. A definition of TYPE other than REST will
+delete the system information. With SYST REST it is possible to modify or extend an existing
+system. In General all results will be deleted in that case! Some exceptions are possible and
+may be controlled with CTRL REST.
+Thecoordinatesystemisalwaysaright-handedcoordinatesystem. Theoriginshouldbewithin
+the system for numerical reasons.
+There exist different conventions about the orientation of the coordinate axes. While the Ger-
+man Code (DIN 1080) proposes the z axis to be associated with the gravity direction, the
+international usage of coordinate systems often has a classical coordinate system with the z
+axis upwards. In 3D you may select your convention freely by selecting the gravity direction.
+SOFiSTiK2023 3-3SOFiMSHC|Generalprogramcontrol
+Theglobalgravitydirectionisneededfortheorientationofthelocalcoordinatesystems,special
+loadtypesandboundaryconditionsaswellasforthedefaultorientationofallgraphicaloutput.
+By a cyclic permutation we obtain in the 3D space the first and the second horizontal axis:
+GDIR POSZ / NEGZ: X = first horizontal axis
+Y = second horizontal axis
+GDIR POSX / NEGX: Y = first horizontal axis
+Z = second horizontal axis
+GDIR POSY / NEGY: Z = first horizontal axis
+X = second horizontal axis
+For axissymmetric systems only the gravity direction POSX/NEGX may be used which is also
+the rotational axis.
+The recent system definitions are still supported, this is SPAC for 3D and some 2D variants
+distinguished by the view direction:
+• SOFiSTiKCoordinateSystem(zaxispointsinviewdirection): FRAM,PAIN,PESS,AXIA,
+GIRD and PGIR
+• WordCoordinateSystem(zaxisisopposedtoviewdirection): WPAI,WPES,WAXI,SLAB
+and PSLA
+This differentiation becomes obsolete with the new input options; choice of general system
+type and gravity direction uniquely define the orientation of the coordinate axes:
+3-4 SOFiSTiK2023Generalprogramcontrol |SOFiMSHC
+SCS= WCS=
+zaxisinviewdir. zaxisopposedtoviewdir.
+YX-plane(DIN1080) Internat.-XY-plane
+2D Planeframe GDIRNEGX/POSY (FRAM) GDIRPOSX/NEGY (WFRA)
+2DSN Planestrain (PAIN) (WPAI)
+2DSS Planestress (PESS) (WPES)
+2DAX Axialsymm.system GDIRNEGX (AXIA) GDIRPOSX (WAXI)
+(Xisrotationaxis)
+2DSL Girder/slabsystem GDIRPOSZ (GIRD) GDIRNEGZ (SLAB)
+2DPS Prestr.platesystem (PGIR) (PSLA)
+Inthecaseofplanarstructuresonlyabouthalfoftheglobalunknownsareusedsuchsuppress-
+ingout-of-planeorin-plane-deformationsandstress-resultants. Beamswithprincipalaxesnot
+coinciding with the global reference system can be analyzed in three dimensions only.
+For the description of sections as FE-systems there are three additional types of systems
+SECT for sections, which are not supported by SOFiPLUS so far:
+POSS Y-Z-coordinate system of positive face (X-Axis against the view direction)
+NEGS Y-Z-coordinate system of negative face (X-Axis anlog the view direction)
+SECT any planar coordinate system
+The group divisor is needed to separate the elements in groups. For further details see record
+GRP.
+The group divisor GDIV sets the mode how element numbers are assigned to groups. Further
+information can be found in the description of record GRP. The default of 0 deactivates all
+group selection possibilities.
+SOFiSTiK2023 3-5SOFiMSHC|Generalprogramcontrol
+3.5 CTRL – Control of analysis
+Seealso: SPT,SLN,SAR,SVO
+CTRL
+Item Description Unit Default
+OPT A literal from the following list: LT !
+TOPO Topological decomposition LT/− ON
+ON − 0
+OFF
+DEL − -
+GAXP − +3
+SARB − +8
+XFLG − +1
+TOLG Intersection tolerance [m] -0.01
+1001
+NODE Start index of automatically assigned num- − 1000
+bers
+DELN Deletion of unused elements − 1
+HEAL Geometry healing LT !
+JOIN [m] 1.0
+1001
+(cid:2)m2(cid:3)
+DELO 1.0
+1002
+MESH Start of mesh generation − 0
+HMIN Mesh size [m] 1.0
+1001
+FINE Refinement at nodes [m] HMIN
+1001
+EFAC Refinement at short edges − 1.4
+PROG Progression factor − 1.5
+BSEC Generation of design sections − 0
+LOCA Local coordinate systems − 1
+TOLN geom. tolerance detection of identical FE- − 1.e-6
+nodes
+PSUP Point support modelling − 0
+LSUP Line support modelling − 1
+OPTI Renumbering optimisation − 49
+SUB No of subdomains − -
+PART Controls mesh-partitioning − -
+Tablecontinuedonnextpage.
+3-6 SOFiSTiK2023Generalprogramcontrol |SOFiMSHC
+Item Description Unit Default
+POST Activate Postprocessing − -
+INIT Controls initialization of system − +12
+WARN Suppress warning message − -
+VAL Value of control − -
+V2 Second value if needed − -
+V3 Third value if needed − -
+V4 Fourth value if needed − -
+This record is used to set global program control options. They can be classified as follows:
+3.5.1 Analysis and generation of structural model
+In afirst processingstep priorto meshing, SOFiMSHC readsin the modelentered bythe user
+or given by CAD and intersects all elements with each other in order to obtain a mechanically
+consistent structural system. The general behaviour during this process can be controlled
+using the following options.
+TOPO ON V2
+Stores the input model entered by the user at a reference key given at parameter
+V2 and activates analysis and intersection of the structural system.
+TOPO OFF
+Deactivates import and analysis of the structural system entirely, even if meshing
+of the structure has been activated (CTRL MESH usually activates CTRL TOPO
+ON by default). This setting is primarily needed for debugging purposes. The
+model must have been already imported and analyzed in a previous run.
+TOPO DEL V2
+Deletes the structural elements stored at the given reference key. Under normal
+circumstances, the database will be properly initialized and structural elements
+deleted,whensettingthesystemtypeinternally(seeSYST).Hencethisoptionis
+usually only necessary in order to analyze failed program runs.
+TOPO GAXP V2
+Controlsthegenerationofstructuralelementsbetweenplacementsonageomet-
+ricaxis. IfusingthedefaultsettingSOFiMSHCautomaticallygeneratesstructural
+pointsandstructurallinesbetweenplacementsonamainand/orsecondaryaxis.
+The numbering of the points as well as grouping and sectional information can
+be controlled at the respective records GAXS and GAXP. For the global control
+variable, following options are possible (bit-mask):
++1 Generate structural points at placements
++2 Generate structural lines beween placements if a section is defined at the
+placement
++4 Generate structural lines beween placements in any case, even if no sec-
+tions are defined. These lines can be used, e.g. to define structural areas
+SOFiSTiK2023 3-7SOFiMSHC|Generalprogramcontrol
+afterwards.
+TOPO SARB V2
+Controls the definition and processing of boundary edges of structural regions.
+Following options available (bit-mask):
++1 Boundary edges are always given in sorted order. Usually the case when
+importing from CAD and can be set to avoid unnecessary and extensive
+tests
+In some cases, especially when importing data from external CAD systems, the
+type of the boundary edges is not clearly specified. Following bitmask allows to
+control edges, which are internal to a region and which has not been explicitly
+defined as opening (SARB IN) or constraining edges (SARB CONS):
++4 edges will be classified as boundary of an opening
++8 edges will be classified as edges of a separate internal region
++12 edges will be classified as constraining edges
+TOPO XFLG V2
+This parameter controls the structural element intersection process on a global
+level. Following options (bit-mask) are available:
++1 Structural points, which have been defined explicitly by the user (i.e. both
+havebeenassignedanumber)willnotbemerged,eveniftheyarelocated
+at the same position in space
+In addition to that, the intersection of elements can also be controlled for each
+structural element individually. See parameter XFLG in records SPT, SLN and
+SAR, respectively.
+TOLG Thisparametersetsthetoleranceusedduringintersectionofstructuralelements.
+Elements (structural points, lines and areas) with a distance below the given
+tolerance will be merged. The tolerance can be given in absolute or relative
+lengths:
+TOLG>0 absolute length in m
+TOLG<0 relative factor which will be scaled by characteristic lengths of the
+model. Default setting is TOLG = -0.01
+NODE Thisparametersetsthestartindexforthenumbersofautomaticallycreatedstruc-
+tural elements and FE-nodes. During analysis of the input model, new structural
+elements can be created, which will be assigned a number automatically. Es-
+pecially when working with multiple SOFiMSHC input blocks within one project,
+it is recommended to set this parameter to a higher value in order to separate
+automatically assigned from explicitly defined numbers.
+DELN Deletion of unused structural points and lines.
+Basically,SOFiMSHCdeletesstructuralpointsandlineswhicharenotconnected
+with the model and which have no stiffness properties:
+0 Unused structural points and lines will not be deleted
+3-8 SOFiSTiK2023Generalprogramcontrol |SOFiMSHC
+1 Unused structural points and lines will be deleted (default)
+3.5.2 Geometry healing
+Models from external CAD-systems or files often exhibit geometric inconsistencies resulting
+in failed meshing runs or poor element quality. SOFiMSHC provides a number of options for
+correction of geometry:
+HEAL JOIN V2[ m] V3[ deg]
+Insomecasesbasicallyconnectedcurveorlinesequenceswillbeexportedfrom
+externalsystemsfragmentedintomultipleshortstructurallines. Alargenumberof
+suchshortstructurallinesmightincreasethenumberofelementsintheresulting
+finite element mesh unnecessarily. This options allows to join adjacent structural
+lines of similar type to single edges.
+Two neighboring lines will be connected, if the following requirements are met:
+- The length of the adjacent lines lies below the given parameter V2
+- The angle between the two lines is lower than V3
+- There is no other edge connected (no Y-joint)
+- Boundary and cross-section properties do not change.
+HEAL DELO V2
+This options deletes openings with a surface area below the given value V2.
+3.5.3 Meshing control
+MESH This parameter activates the mesh generation for the defined model. Following
+options exist:
+0 deactivate meshing
+1 meshing of beam structures
+2 meshing of beam and shell structures
+3 meshing of beam, shell and/or volumes
+In addition to the basic options 1-3 one may add the following values:
++16 keep explicit old elements
++32 triangular elements only
++64 quadrilateral elements only
++96 mixed element shapes allowed
++128 disable dupl. run with background mesh
++256 post-processing only (partitioning, optim.)
+A CTRL MESH automatically activates the topological analysis and intersection
+of structural elements (STEU TOPO 0)
+HMIN Parameter HMIN controls globally the element size of the resulting finite element
+mesh. It defines the maximum allowed length of a beam and/or the edge of a
+shell or volume element. Please note, that the mesh density defines only an
+upper bound for the element size. Local geometric features or other constraints
+might require a smaller element size.
+In addition to the global setting, the mesh size can be overwritten individually for
+SOFiSTiK2023 3-9SOFiMSHC|Generalprogramcontrol
+single structural objects (structural points, lines, regions).
+FINE Parameter FINE controls the mesh size at the corners of a structural area. Re-
+ducing the mesh size towards the corners usually lead to better element quality.
+The parameter allows two input options:
+V2>0.0 Mesh density in [ m]
+V2<0.0 Factor to general mesh density at HMIN
+EFAC This parameter controls the mesh density in the vicinity of short structural edges.
+In the neighborhood of short structural edges, whose length are below the global
+elementsizeHMIN,themeshdensityisreducedlocallyinordertoavoiddistorted
+quad elements with highly different edge lengths. The parameter describes the
+factor
+"Local mesh size" / "Length of short edge"
+Default setting is a factor of EFAC=1.40. For models containing many small
+edges, however, this setting might result in meshes with many local refinements,
+which increase the total number of elements considerably. In order to avoid the
+local refinements, this factor should be increased with the disadvantage, that
+the element quality might be reduced. On the other hand, if a model contains
+relativelylongandsmallstructuralareas,whosewidthliesbelowtheglobalmesh
+density, it is recommended to deactivate this parameter entirely (EFAC = 0). This
+avoidsthereductionofthemeshdensitytotheendsoftheareaswhichresultsin
+a more regular mesh.
+PROG This parameter defines the rate, how the mesh density is increased from a local
+refinement to the global part. It describes basically the maximum allowed ratio
+of the edge size between two adjacent quad elements. Standard setting is a
+progression factor of PROG = 1.5.
+3.5.4 Element generation and boundary conditions
+BSEC Controlstheautomaticgenerationofdesignsections. Thisoptionallowstogener-
+ateadditionalbeamsectionswhichwillbeevaluatedduringbeamdesigninAQB.
+For example, design sections can be generated at support faces to allow for a
+rounding of the design moment at supports. Following options exist:
+0 Deactivate generation of design sections
+1 Generate design sections at support faces along beam girders. A support
+willbeassumedatalllocationswherethegirderisconnectedtoacolumn
+lying below, a wall crossing the girder or at structural points containing
+dimensions defined at BX,BY.
+LOCA Controls the definition of the local coordinate-system of beam elements.
+0 local z-axis points into gravity direction resp. the local y-axis into the first
+global horizontal axis if the former is not possible (i.e. beam axis parallel
+to gravity). User defined orientations are applied to the local y-axis.
+1 localz-axispointsintogravitydirectionresp. intothefirstglobalhorizontal
+axis if the former is not possible (i.e. beam axis parallel to gravity). User
+defined orientations are applied to the local z-axis.
+3-10 SOFiSTiK2023Generalprogramcontrol |SOFiMSHC
+2 local z-axis points into global Z resp. into global X if the former is not
+possible(i.e. beamaxisparalleltoglobalZ).Userdefinedorientationsare
+applied to the local z-axis. (Default in Industry Foundation Classes, IFC)
+3 local z-axis points into global Z resp. into global Y if the former is not
+possible. Userdefinedorientationsareappliedtothelocaly-axis(GENF).
+TOLN This parameter controls the detection of double finite element nodes. FE-nodes
+whose distance lies below the given tolerance are intersected and replaced. The
+parameter is given as relative factor which will be scaled internally by model di-
+mensions.
+PSUP Forpointsupportsorbeddingsspecialmeshmacroswhichreflectthegeometryof
+the supporting column can be activated. This parameter controls this generation
+as follows:
+-1 no special action
+0 generate 4 rectangular quad elements (default)
+1 increase thickness of elements at support
+2 cinematic constraints of mid points
+4 cinematic constraints of corner points
+8 additional centre node for constraints
+16 deactivate the correction of minimum mesh size
+The kind of point support (dimensions, voute) can be set locally at the structural
+point property parameter SPTP.
+LSUP controls the generation of boundary elements (= supporting lines) on structural
+lines:
+0 create boundary elements if the line has an elastic support or contains
+only a group nr > 0 without a section nr.
+1 create boundary elements also for structural lines with rigid support in
+gravity direction (default setting)
+2 create boundary elements if any type of support is given.
+3 create boundary elements for all edges.
+4-15 reserved for internal tests.
++16 create elastic springs instead of boundary elements.
+3.5.5 Optimization of equation numbers
+Inordertosolvetheresultingequationsysteminthecomputingkernelsefficiently,theequation
+numbers must be given in an optimized sequence. At SOFiSTiK, this optimization step is
+carriedoutduringsystemgenerationonbasisofthenodenumbers. Dependingonthetypeof
+equation solver used, different kind of optimization algorithms like band-width optimization or
+fill-in reducing optimization are applied.
+OPTI Creates an internal numbering which allows efficient storage and solution of the
+resulting finite element equation system. Following options are available:
+0 deactivate optimization
+1 standard band-width optimization
+SOFiSTiK2023 3-11SOFiMSHC|Generalprogramcontrol
+2 extensive band-width optimization
++49 Fill-in reducing ordering (default)
+The type of optimization should be adapted to the equation solver to be used.
+An improper setting may have adverse effects. Following list shows the recom-
+mended settings.
+CTRL SOLV 1 band-width optimization (CTRL OPTI 1,2)
+CTRL SOLV 2 band-width optimization (CTRL OPTI 1)
+CTRL SOLV 3 Fill-in reducing ordering (CTRL OPTI 49)
+CTRL SOLV 4 no optimization required (CTRL OPTI 0)
+3.5.6 Initialisation, warnings
+INIT Controlstheinitialisationofthesystem. OnstartupofSOFiMSHC,withtheexcep-
+tion of SYST REST, the model stored in the database is deleted and initialised.
+The amount of data to be deleted can be controlled using this parameter (bit-
+mask):
++1 delete stored geometric axes (GAX)
++2 delete stored geometric areas (GAR)
++4 delete stored structural elements (SPT,SLN,SAR,...)
++8 delete stored storey level information (SLVL)
++16 delete stored design elements (DECREATOR:DSLN)
++32 delete stored secondary groups
+WARN The given warning will be supressed.
+3-12 SOFiSTiK2023Generalprogramcontrol |SOFiMSHC
+3.6 GRP – Group control
+Seealso: SYST
+GRP
+Item Description Unit Default
+NO Group number −/LT !
+REF Span, reference or sequence number − 0
+BASE Base number for this group − *
+ICS Construction stage number of activation − -
+ICE Construction stage number of deactivation − -
+TITL Title of the group Lt32 -
+Elementgroupsareanimportantaidforthedefinitionofconstructionstagesortheassignment
+of loads, for example. Structural lines, areas and volumes defined in SOFiMSC can be as-
+signed to different groups. Thereby it must be distinguished between primary and secondary
+groups:
+3.6.1 Primary group number
+Theprimarygroupnumberisuniquelydefinedforeachelement. Eachgroupisassociatedwith
+a range of element numbers which easily allows to reconstruct the group id from the element
+id. SOFiMSHC provides different methods for the assigment of element numbers to a group.
+ThekindofassignmentisspecifiedbythegroupdivisorGDIVinthemainsystemrecordSYST.
+• GDIV > 0
+The group number of a single element is defined by the integer division of the element
+number by the group divisor. Example:
+Group number Group divisor Element numbers
+0 1000 0 - 999
+1 1000 1000 - 1999
+2 1000 2000 - 2999
+2 5 10 - 14
+• GDIV=0
+All groups must be assigned an individual base number in increasing order. An element
+number within one of the intervals defines the membership to the respective group. Exam-
+ple:
+Group Base Element number
+0 1 1-99999
+1 100000 100000-199999
+2 200000 200000-249999
+SOFiSTiK2023 3-13SOFiMSHC|Generalprogramcontrol
+Group Base Element number
+3 250000 250000-259999
+4 260000 from 260000
+• GDIV < 0
+The base values of all groups will be defined automatically after all elements have been
+generated. Itisthusnotanylongernecessarytodefinebasevaluesindividually. Thevalue
+at GDIV < 0 defines the lowest common multiple from which the element numbers of the
+nexthighergroupwillbeassignedto. Thecurrentlimitforelementswithinagroupissetto
+1 Million.
+For all cases, the maximum group number is 999. The base number and designation is iden-
+tical for all elements within a group. Large element numbers will be splitted into its group and
+element part in print outputs in order to support better readability. It is therefor also recom-
+mended to use base numbers which are a multiple of 100, 1000 or 10 000.
+3.6.2 Secondary groups
+In addition to their primary group number, elements can be assigned to any number of so
+called secondary groups. Secondary groups are labeled using a text string of maximum four
+characters (e.g. ’GR1’). The assignment of elements to secondary groups is done separately
+after definition of the structural system. Subsequently to the definition of the secondary group
+using this record any number of selection records can be given. Following type of selections
+are possible:
+SLN NO selection of a structural line
+SAR NO selection of a structural area
+GUID ID selection using the Globally Unique Identifier of a structural element (usually
+defined in a CAD-system)
+BBOX selection using a rectangular bounding box.
+Example:
++PROG SOFIMSHC
+HEAD
+...
+GRP NO 'GR1'
+SLN NO 1,2,3
+SAR NO 5
+...
+END
+defines a secondary group labeled ’GR1’, which contains all beam and area elements created
+on the structural lines 1, 2 and 3 and structural area 5.
+Apart from this selection mechanism, elements can also be assigned to a secondary group
+using attribute regions. For more information please see at the description of attribute regions
+at record SAR.
+3-14 SOFiSTiK2023Generalprogramcontrol |SOFiMSHC
+3.7 IMPO – Import of data
+IMPO
+Item Description Unit Default
+OPT Special options − 0
+0 no special options
+1 convert xyz to yzx system
+2 convert xyz to zxy system
+4 Set origin pointer to elementno
+8 Set origin pointer to elementno without
+group number
+16 do not extrude support conditions
+256 UseGroupinsteadofgeometrynumbersfor
+selections
+FROM Name of a database Lt96 *
+PASS Password of database Lt16 -
+With the record IMPO you may select for the 3D-extrusions the meshes to be used for the
+extrusionfromadifferentdatabase. Thisrecordmaybedefinedonlyonceandisthenvalidfor
+all extrusions.
+SOFiSTiK2023 3-15SOFiMSHC|Generalprogramcontrol
+3.8 EXPO – ANSI export of data
+EXPO
+Item Description Unit Default
+OPT Data to be exported LT RAW
+GAX Geometric axis
+GAR Geometric surface
+RAW Basic structural model
+VAL ID of axis, surface (optional) Lt4 -
+TO Name of a file to write to Lt96 *
+PASS Password of database Lt16 -
+UsingrecordEXPOgeometricorstructuralelementswithinthedatabasecanbeexportedinto
+aninputfileforSOFiMSHC.Thiscanbeusefulwhenanalyzingthedataafteranerroroccured
+or to make further use of the data in different settings.
+IfanIdentifierisgivenadditionallyatGAXorGAR,onlytheselectedgeometricaxisorsurface
+is exported to the file, otherwise all elements of the given type are exported. When using
+option RAW, an additional literal ’FULL’ may be added which allows to extend the export also
+to internally used datatypes. In this case for example, globally uniqe identifier (GUID) of the
+structural elements, which will be used for idenfication of structural objects in different CAD-
+systems, will be exported to the input file.
+If no file name is specified the data will be exported to a file named project_MEX.dat.
+The units of the values will be set to the current setting of UNIE from record PAGE. The lan-
+guage of the new file will be the same as the current CADINP input file.
+3-16 SOFiSTiK2023Generalprogramcontrol |SOFiMSHC
+3.9 ECHO – Control of output
+Seealso:
+ECHO
+Item Description Unit Default
+OPT A literal from the following list: LT FULL
+MAT Material data
+SECT Section for beams
+GEOM Geometric items
+NODE Generated nodes
+QUAD Generated quadrilaterals
+BRIC Generated volume elements
+BEAM Generated beam elements
+BOUN Generated elastic supports
+SYST System summary
+STAT Analysis statistics
+FULL all the above options
+VAL Value of output option LT FULL
+NO no output
+YES regular output
+FULL extensive output
+EXTR extreme output
+The name (ECHO) of this record must be repeated every time the command is being used,
+otherwise it may be confused with other records with the same name.
+SOFiSTiK2023 3-17SOFiMSHC|Generalprogramcontrol
+3.10 COOR – User defined coordinate system
+Seealso: GAXP,SPT,SLN,SAR
+COOR
+Item Description Unit Default
+TYPE Type / reference of coordinate system LT WRLD
+WRLD world coordinate system
+SPT reference to structural point
+AXIS reference to axis
+GAXP reference to placement
+CYLI cylindrical coordinate system
+SPHE spherical coordinate system
+ID Number / ID of reference item −/Lt8 -
+IDP ID of placement (Type GAXP) Lt4 -
+S Parameter on axis (Typ AXIS, GAXP) − -
+X Coordinate of origin [m] 0.0
+1001
+Y (Type WRLD, CYLI, SPHE) [m] 0.0
+1001
+Z [m] 0.0
+1001
+T11 Direction first axis − 1.0
+T12 − 0.0
+T13 − 0.0
+T21 Direction second axis − 0.0
+T22 − 1.0
+T23 − 0.0
+This record sets a new reference coordinate system for position and direction input in
+SOFiMSHC. After setting the coordinate system, all succeding input of a position or a direc-
+tion in any structural record will be interpreted according to the given coordinate system. The
+coordinate system can be changed within a data record as often as desired. Setting COOR
+WRLD resets the coordinate system to the default, an euclidian coordinate system with origin
+at (0,0,0).
+This record affects only the definition of structural element records (SPT,SLN,SAR) and their
+property records. The coordinate system of geometry input (Record GAX,GAR) cannot be
+changed.
+Different types are provided to set the coordinate system:
+• WRLD: world coordinate system
+This type defines an euclidian (orthogonal) coordinate system with origin given at X,Y,Z.
+The orientation of the coordinate system can be set using the paramters T11 to T23.
+3-18 SOFiSTiK2023Generalprogramcontrol |SOFiMSHC
+They define the first local direction T1 (T11,T12,T13) and the second local direction T2
+(T21,T22,T23). Thethirddirectionisderivedfromthecrossproductofthefirstandsecond
+axis. In the case that the second direction is not orthogonal to the first, it will be orthogo-
+nalized.
+• SPT: Reference to structural point
+By setting a structural point number at ID, the coordinate system will be moved to the local
+coordinate system of an already defined structural point.
+• AXIS: Reference to structural line/axis at station S
+The coordinate system will be moved to the respective station S of an axis or a structural
+line and rotated according to the local coordinate system of the axis. The axis or structural
+line resp. is given at ID. It is also possible to reference secondary axes (e.g. ID ’A1.B’).
+• GAXP: Reference to placement
+Thecoordinatesystemismovedtothelocationofaplacement,whichhasbeendefinedus-
+ing GAXP at an axis. The second and third direction of the coordinate system (local y and
+local z) will be aligned according to the cut-plane of the placement (local z usually points
+into gravity direction). The axis is given at parameter ID. The placement can be identified
+by its parameter position at S or its identifier given at IDP.
+When defining a coordinate system using GAXP, all beam elements will be aligned per-
+pendicular to the placement plane, i.e. the local z-axis of the beams or structural lines is
+oriented towards the first axis of the coordinate system (x).
+• CYLI: Cylindrical coordinate system
+By indicating an origin at X,Y,Z and two direction vectors at T1 (T11,T12,T13) and T2
+(T21,T22,T23), a cylindrical coordinate system can be defined.
+All succeding input of a position (X,Y,Z) or a direction (DX,DY,DZ) will be interpreted ac-
+cording to the following scheme:
+X: Radius (distance) from rotational axis
+Y: Azimut angle in rotational plane
+Z: Height along rotational axis
+• SHPE: Spherical coordinate system
+By indicating an origing at X,Y,Z and two direction vectors at T1 (T11,T12,T13) and T2
+(T21,T22,T23), a spherical coordinate system can be defined.
+All succeding input of a position (X,Y,Z) or a direction (DX,DY,DZ) will be interpreted ac-
+cording to the following scheme:
+X: Radius (distance) from origin
+Y: Azimut angle ’phi’ in equatorial plane
+Z: Inclination from equatorial plane
+SOFiSTiK2023 3-19SOFiMSHC|Generalprogramcontrol
+3.11 XSUB – Extraction of subsystems
+Seealso: XCON,GUID,BBOX
+XSUB
+Item Description Unit Default
+TYPE Systemtype of Submodel Lt4 SPAC
+3D spatial system
+SLAB 2D plate/girder system
+Control of stiffness of connected elementes
+FIXA Type or factor of axial stiffnes −/Lt FIX
+FIXL Type or factor of lateral stiffness −/Lt 1.0
+FIXM Type or factor of rotational stiffness −/Lt 0.0
+FIXS Type or factor of shear stiffness −/Lt 1.0
+CDB Name of File to be created LT
+This records allows to extract a partial system from a general structural model for a detailed
+analysis. Theextractedmodelwillbestoredinanewdatabaseasplanarslaboragainasnew
+spacial system, which can be then meshed and calculated in a separate independent project.
+In the case, that the partial model will be extracted as plate system (TYPE SLAB) all selected
+structural elements will be projected onto the xy-plane at coordinate z=0.0.
+All structural elements connected to the partial model which will be cut during the extraction,
+like adjacent columns or walls, will be replaced by linear elastic spring elements or fixed sup-
+ports approximating the stiffness at the connection. The generation of these boundary condi-
+tions can be controlled using the parameters FIXA to FIXS. The four parameters distinguish
+between axial, lateral, rotational and shear stiffness components.
+• FIXA: Control of axial stiffness
+The bedding component in axial direction of connected elements will be calculated as fol-
+lows:
+Connected Structural line c = E*A/l
+Structural area: c = E*b/h
+’A’ denotes the cross section area and ’l’ the length of the connected structural line (e.g.
+column). For adjacent structural areas the linear elastic distributed bedding replacing the
+areawillbecalculatedfromthethicknessbandtheaverageheight/widthhoftheconnected
+wall/slab.
+• FIXL: Control of lateral stiffness
+The stiffness in transversal direction will be calculated under the assumption, that the con-
+nected building element has hinged support at the bottom:
+Structural line: c = 3 * E Iy / l3 (bzw. 3 * E Iz / l3)
+Structural area: c = 3 * E iy / h3
+3-20 SOFiSTiK2023Generalprogramcontrol |SOFiMSHC
+For an adjacent structural line two spring elements will be created for the stiffness in the
+direction of the local y- and z-axis of the cross section. For a connected structural region,
+the lateral bedding is calculated by the distributed moment of intertia iy = b3 / 12 and the
+medial height/width of the region.
+• FIXM: Control of rotational stiffness
+For the computation of the rotational stiffness, it is again assumed, that the connected
+building element has hinged support at the bottom:
+Structural line: cr = 3 * E Iy / l (bzw. 3 * E Iz / l)
+Structural area: cr = 3 * E iy / h
+• FIXS: Control of shear stiffness
+For adjacent walls or slabs the shear stiffness will be calculated as follows:
+Structural area ks = G * b / h
+The stiffness is applied in longitudinal direction along the connected boundary edge.
+In all four cases, a numerical value > 0.0 or one of the two literals FIX or FREE can be given
+at FIXA to FIXS. In the case, that a numerical value is given, it will be interpreted as factor
+multiplying the default stiffness values calculated as given above. The literal ’FIX’ creates a
+fixed support and the literal ’FREE’ releases the respective degrees of freedom entirely.
+The elements of the partial system are selected by entering subsequent records directly after
+XSUB:
+• SLN: Selection of a structural line with number NO
+• SAR: Selection of a structural region with number NO
+• GUID: Selection using a Globally Unique Identifier (GUID) A GUID uniquely identifies a
+structural element and will be usually set when exporting the model from a CAD system
+(e.g. SOFiPLUS, Extensions for Revit).
+• BBOX: Selection using a rectangular bounding box This option is especially suitable for
+selecting all structural elements on a specified floor level (e.g. BBOX z1 9.5 z2 10.5).
+The selection records given above can be defined in any number and any order.
+SOFiSTiK2023 3-21SOFiMSHC|Generalprogramcontrol
+3.12 XCON – Stiffness of connected elements
+Seealso: XSUB
+XCON
+Item Description Unit Default
+SEL Selektion Lt4 -
+ABOV Building members lying above the subsys-
+tem
+BELO below the subsystem
+FIXA Type or factor of axial stiffnes −/Lt FIX
+FIXL Type or factor of lateral stiffness −/Lt 1.0
+FIXM Type or factor of rotational stiffness −/Lt 0.0
+FIXS Type or factor of shear stiffness −/Lt 1.0
+When performing a subsystem extraction, this record allows to control in detail the generation
+ofsupportconditionsatconnectedelements. Thisrecordreferstoapriorsubsystemdefinition
+at XSUB and defines the support conditions for the following element selection.
+Example:
++PROG SOFIMSHC
+HEAD
+...
+XSUB 3D CDB "subsystem.cdb"
+SAR 1
+XCON FIXA FIX FIXL 1.0 FIXM 1.0 FIXS FREE
+SLN 1,2,3,4
+XCON SEL ABOV FIXA FREE FIXL FREE FIXM FREE FIXS FREE
+...
+END
+The given CadInp sequence extracts a subsystem consisting of the structural area no. 1. The
+columnswithstructurallinenumbers1,2,3and4connectedwiththeareawillbereplacedbya
+supportinaxisdirectionofthecolumn(FIXA)aswellaselasticspringsmodelingthelateraland
+rotationalstiffnessofthecolumns. Allmemberslyingabovethesubstructurewillbecompletely
+released and thus not considered for generating support conditions.
+The computation of the support conditions can be controlled with the same parameter as in
+record XSUB separated into axial, lateral, rotational and shear stiffness (the latter only for
+connected walls and slabs). In the case that connected elements are not specified within
+XCON, their stiffnesses will be calculated according to the settings in XSUB.
+The elements can be selected in the same way as the elements of the subsystem at record
+XSUBusingtheirstructuralelementnumber,theirGloballyUniqueIdentifierGUIDorabound-
+3-22 SOFiSTiK2023Generalprogramcontrol |SOFiMSHC
+ing box BBOX.
+Elements which are not connected with the subsystem will not be considered, even if they are
+listed in the selection.
+SOFiSTiK2023 3-23SOFiMSHC|Generalprogramcontrol
+3-24 SOFiSTiK2023Definitionofgeometricelements.|SOFiMSHC
+4 Definition of geometric elements.
+This chapter describes the definition of general geometrical elements like geometric axes or
+surfaces.
+4.1 Input records
+Record Items
+GAX NO TYPE ID2 ID3 ID4 ID5 REF
+SUR1 SUR2 TYPC DEG TITL
+GAXA S X Y SX SY L R
+RA RE LA LE TYPS
+GAXH S H R
+GAXB R XM YM ZM NX NY NZ
+X1 Y1 Z1 X2 Y2 Z2 X3
+Y3 Z3
+GAXC X Y Z W NX NY NZ
+ALFX ALFY ALFZ
+GAXN S MUL DIV
+GAXP ID IDS S TYPE GPT GRP NCS
+Y Z ALF ALFX ALFY ALFZ INCR
+INCL
+GAXS ID IDS GPT GRP Y Z TITL
+GAXV ID NAME S V DV TYPE
+GAR NO TYPE DEGU DEGV M N TITL
+GARA NO TYPE GIDI GID2 X Y Z
+NX NY NZ SMIN SMAX TMIN TMAX
+M N TITL
+GARC NU0 NU1 NV0 NV1 XUV1 YUV1 ZUV1
+XUV4 YUV4 ZUV4
+GARS M N X Y Z W T
+SOFiSTiK2023 4-1SOFiMSHC|Definitionofgeometricelements.
+4.2 GAX – Geometric curve or axis
+Seealso: GAXA,GAXH,GAXB,GAXC,GAXN,GAXP,GAXS,GAXV
+GAX
+Item Description Unit Default
+ID Axis identifier Lt4 !
+TYPE Type of axis LT LANE
+DEL delete this entry
+NONE no specific type
+AXIS system axis (e.g. A-A)
+BEAM axis of beam sequence
+LANE traffic lane
+TEND tendon axis
+ID2 Reserved for export of additional data − -
+ID3 Reserved for export of additional data − -
+ID4 Reserved for export of additional data − -
+ID5 Reserved for export of additional data − 1
+REF Reference to a master axis Lt4 -
+SUR1 Number of a geometric surface Lt4 -
+SUR2 Number of a second geometric surface Lt4 -
+*
+*
+TYPC Type of curve to be generated LT
+DEGR Degree of spline curve (see GAXC) −
+TITL Designation of axis Lt32 -
+This record defines alignment axes for road design or arbitrary geometric curves which are
+generallyidependentfromstructuralelements. InSOFiMSHC,geometryaxesrepresentmainly
+general data structures allowing to define fully parametrc input data sets. One important ap-
+plication area, for example, is bridge design, where all elements of a bridge can be defined
+relatively to this central axis. Once the geometry of the axis is changed, all dependent struc-
+tures will be adapted automatically. In addtition, arbitrary variable distributions can be defined
+for a geometry axis, which can be used, for example, to describe varying sections, additional
+load lines or secondary girders.
+As axis identifier at ID only literals consisting of maximum four characters are allowed, for
+example GAX ID ’AX1’.
+4-2 SOFiSTiK2023Definitionofgeometricelements.|SOFiMSHC
+For defining the geometry SOFiMSHC provides a number of possibilities (parameter TYPC).
+The geometry of an axis is defined by subsequent records of following types:
+AXIS (GAXA / GAXH) Alignment axes in plan view and elevation
+ARC (GAXB) Straight lines and circular arcs in 3D
+POLY (GAXC) Polygonal line
+SPLI (GAXC) Cubic B-Spline Interpolation
+HINT (GAXC) Hermite-Interpolation
+NURB (GAXC / GAXN) Arbitrary Freeform Curves (B-splines, NURBS)
+In addition to its geometric shape the following records allow to define additional dependant
+parameters and properties:
+GAXS Secondary axes
+GAXP Placements: special positions along an axis
+GAXV Definition of variables along an axis
+Freeform curves of type GAXC can also be defined relatively to an other axis.If a previously
+defined curve is given at record REF, all following coordinates are interpreted relatively to the
+curve. This allows to define offset curves or to create an identical copy of an axis.
+It is also possible to project curves onto a surface or to create a curve by intersecting two
+arbitrary surfaces:
+• If a single surface is given at SUR1, the curve will be projected onto the given surface.
+• In the case that two surfaces are defined at SUR1 and SUR2, the generated curve is the
+intersection of the two given surfaces.
+SOFiSTiK2023 4-3SOFiMSHC|Definitionofgeometricelements.
+4.3 GAXA – Axis plan view
+Seealso: GAX,GAXH,GAXP,GAXS,GAXV
+GAXA
+Item Description Unit Default
+S Station value − *
+X Coordinates of startpoint / tangential m *
+Y intersection point m *
+SX Direction of tangent − *
+SY − *
+L Length of section m *
+R Radius m *
+RA Radius of the axis at start m R
+RE Radius of the axis at end m R
+LA Length of first transition element or m *
+< 0 for Clothoidal parameter (R*L=A2)
+LE Length of second transition element or m LA
+< 0 for Clothoidal parameter (R*L=A2)
+TYPS Type of transition curve LT CLOT
+The given record GAXA defines sections of an alignment axis in plan view. This record is a
+property record and refers to the preceding axis definition at GAX. For defining an alignment
+axis SOFiMSHC provides two different possibilities:
+Length based definition:
+Figure4.1: Axis
+Inthelengthbaseddefinition,theaxisstartsbydefiningastartpoint(station+coordinate)and
+a tangential direction, e.g.
+GAXA S 250.0 X 0.0 Y 0.0 SX 1.0 SY 0.0
+Following, segments are defined with their length and optional start and end radius:
+4-4 SOFiSTiK2023Definitionofgeometricelements.|SOFiMSHC
+GAXA L 50.0 RA 0.0 RE 200.0
+GAXA L 50.0 R 200.0
+GAXA L 50.0 RA 200.0 RE 0.0
+GAXA L 50.0
+For segments with different radius between start and end, a transition curve is inserted. A
+radius with positive value causes a curvature to the right-hand side, while a negative radius
+creates a segment with a curvature to the left-hand side. Using the input above, a sequence
+consisting of a transition element, a circular arc, a transition element and a straight segment
+at the end will be created, for example.
+Tangentially based definition
+Pi
+PC
+Pi−1
+R R
+RA
+RE
+Figure4.2: Transitioncurve
+Here,theuserdefinestheintersectionsofcurvetangentstogetherwithacurvatureradiusand
+different length parameters, for example:
+GAXA X 0.0 Y 0.0
+GAXA X 30.0 Y 10.0 R 40.0 LA 10.0 LE 10.0
+GAXA X 60.0 Y 0.0
+Using this parameters SOFiMSHC inserts a curve sequence such, that its end points fits tan-
+gentially to the predefined polygon. For the parameter following possibilities exist:
+• The minimum radius at R and the total length of the curve sequence is given at L. In this
+case, a curve sequence is inserted under consideration of the symmetry condition A1=A2.
+This is called a ”symmetric standard sequence”.
+• TheminimumRadiusRandthelengthofthetwotransitionsegmentsLAandLEaregiven.
+This case defines a so called ”asymmetric standard sequence”. The length of the circular
+segmentiscalculatedautomatically. TheusermayalsodefineastartradiusRAandanend
+radius RE. In this case, the curve sequence does not any longer fit curvature continuously
+to the tangents.
+• If no radius is given at all, a polygonal axis with kinks is created.
+Inthecasethattheparametersofthetransitionelementsdefineashorterlengththanneeded,
+astraightsegmentwillbeinsertedbeforethestandardcurvesequenceandthepositionofthe
+tangent points will be adjusted accordingly.
+InsteadofaClothoid,alsoacubicparabola(TYPSCUBI)(notrecommended)oraBlossCurve
+SOFiSTiK2023 4-5SOFiMSHC|Definitionofgeometricelements.
+(TYPS BLOS) may be used as transition element. And finally, SOFiMSHC also allows to use
+sinusoidal (TYPS SIN) and cosinusoidal (TYPS COS) transition elements.
+4-6 SOFiSTiK2023Definitionofgeometricelements.|SOFiMSHC
+4.4 GAXH – Axis heights
+Seealso: GAX,GAXA,GAXP,GAXS,GAXV
+GAXH
+Item Description Unit Default
+S Station value − *
+H Height m *
+R Radius of elevation m *
+GAXH defines the elevation of an alignment axis defined previously at GAX. According to the
+convention used in road design positive height values will be placed in a direction opposite to
+thegloballydefinedgravitydirection(POSZ,NEGZ).Curvatureradiiwillbeappliedasquadratic
+parabolas.
+P2
+P4
+R
+P1
+P3
+Figure4.3: Curvatureradii
+SOFiSTiK2023 4-7SOFiMSHC|Definitionofgeometricelements.
+4.5 GAXB – Straights and circular arcs in 3D
+Seealso: GAX,GAXA,GAXH,GAXP,GAXS,GAXV
+GAXB
+Item Description Unit Default
+R Radius [m] -
+1001
+XM Coordinates of center [m] -
+1001
+YM [m] -
+1001
+ZM [m] -
+1001
+NX Direction of normal to circle plane − -
+NY − -
+NZ − -
+X1 Startpoint of circular arc / straight [m] -
+1001
+Y1 [m] -
+1001
+Z1 [m] -
+1001
+X2 Endpoint of circular arc / straight [m] -
+1001
+Y2 [m] -
+1001
+Z2 [m] -
+1001
+X3 Third point on circular arc [m] -
+1001
+Y3 [m] -
+1001
+Z3 [m] -
+1001
+S1 Parameter at start (optional) − 0.0
+S2 Parameter at end (optional) − -
+Records of type GAXB can be used to define straight lines, circles and circular arcs in space.
+Records of this type always refer to the previously defined axis at GAX. Multiple segments are
+allowed to be entered in order to define polycurves. For the definition of a single segment
+following possibilities exist:
+• A straight line is defined by its start- and endpoint at (x1,y1,z1) and (x2,y2,z2).
+• A full circle can be defined by its center (xm,ym,zm), the radius and the normal on the
+circular plane (n,ny,nz).
+• Acirculararccanbedefinedbyitsstart-andendpointat(x1,y1,z1)und(x2,y2,z2),aradius
+and the normal or by entering the start-, the endpoint and the center.
+• In addition, circular arcscan alsobe definedby entering threepoints onthe arc. (x1,y1,z1)
+und (x2,y2,z2) describe the start- and the endpoint, (x3,y3,z3) a third point on the arc.
+When multiple segments are defined, the transition between two segments should be mod-
+eled with continuous tangents. Kinks are possible but should be avoided as they can lead to
+incorrect or erroneous meshes. In order to define kinks it is better to define two curves with a
+4-8 SOFiSTiK2023Definitionofgeometricelements.|SOFiMSHC
+structural point in between.
+Using the parameters S1 and S2 the chainage (or parametrisation) of the curve can be set
+explicitly. If nothing is given at S1 and/or S2 the parametrisation is defined according to the
+true (arc) length of the curve.
+SOFiSTiK2023 4-9SOFiMSHC|Definitionofgeometricelements.
+4.6 GAXC – 3D curve point data
+Seealso: GAX,GAXN,GAXP,GAXS,GAXV
+GAXC
+Item Description Unit Default
+X 3D coordinates [m] 0.0
+1001
+Y [m] 0.0
+1001
+Z [m] 0.0
+1001
+W Weight of control point (NURBS) − 1.0
+S Station on point (for interpolation) − -
+DX Tangential direction (Type HINT) − -
+DY − -
+DZ − -
+NX Direction of local z-axis (not available) − -
+NY − -
+NZ − -
+The geometry of arbitrary freeform curves can be defined with this record by entering charac-
+teristic data points. Each record GAXC defines a single coordinate in 3D. The points always
+refertothedirectlyprecedinggeometryaxis. Thetypeandthedegreeofthecurveisspecified
+by the parameters TYPC and DEG within the main record GAX:
+• POLY: Interpolation as polygonal sequence
+The given points will be connected to a polygonal line.
+• SPLI: Spline interpolation
+ThegivendatapointswillbeinterpolatedusingacubicB-Spline. Theinterpolationiscarried
+out curvature continuous at the definition points (C2-continuity).
+The chainage (parametrisation) of the curve can be set explicitly at each datapoint using
+the parameter S. If no parameter values are given, SOFiMSHC assigns a parametrisation
+automatically. The end chainage corresponds to the geometric length of the axis in this
+case.
+• HINT: Hermite interpolation
+The given datapoints will be interpolated using piecewise cubic B-Spline segments. The
+interpolation is carried out tangentially continuous at the definition points (C1-continuity).
+Using the parameters DX,DY,DZ, the tangential direction at certain points can be defined
+explicitly by the user. Similar to the spline interpolation, the parametrisation (chainage)
+along the curve can be set using the parameter S.
+• NURB: NURBS-curve
+A NURBS (Non Uniform Rational B-Spline) curve can be defined by entering the euclidian
+coordinatesofthecontrol-pointsatX,Y,Z.Ifweights<>1.0aregiven,theinputresultsina
+true’rational’NURBScurve,which,forexample,allowstodescribealsocircleandellipses.
+ThedegreeoftheNURBScurvecanbesetinrecordSLNN,whendefiningtheknotvector.
+4-10 SOFiSTiK2023Definitionofgeometricelements.|SOFiMSHC
+It is also possible to create curves relatively to an existing axis. If a reference axis REF is
+given in the main record GAX, the X-values are then interpreted as station value S on the
+reference axis and the values Y and Z as distances relatively to the local coordinate system of
+the referenced axis. The thus defined points are then interpolated by a cubic B-spline (TYPC
+SPLI). Contrary to secondary axes at GAXS, the reference is resolved explicitly, i.e. a new
+independent geometry is calculated based on the definition of the data points.
+AtNX,NY,NZauserdefinedorientationofthelocalz-axiscanbesetforeachpointonthecurve
+independantly. This allows to define, for example, arbitrarily oriented cross-sections along a
+curveoranaxis. Ifnodirectionsaregivenatall,thelocalz-axisisorientedtowardstheglobally
+defined gravity direction.
+SOFiSTiK2023 4-11SOFiMSHC|Definitionofgeometricelements.
+4.7 GAXN – Knot value of a NURBS-curve
+Seealso: GAX,GAXA,GAXH,GAXC,GAXP,GAXS,GAXV
+GAXN
+Item Description Unit Default
+S Knot value − !
+MUL Multiplicity − 1
+DEGR degree of Nurbs − 1
+Records of type GAXN are used to define the knot vector of NURBS-curves or to explicitly
+set the parametrization of interpolation curves. For each knot value of a NURBS or parameter
+value a single record GAXN is to be entered which refers to the previously defined geometry
+axisatGAX.Multipleknot-values(e.g. attheendsofacurve)canbeenteredinasinglerecord
+using multiplicities > 1. Within the first record the polynomial degree of a NURBS-curve can
+be set using parameter DEGR.
+When NURBS-curves are defined in SOFiMSHC knot vectors must always be given with mul-
+tiple knots at the ends (”clamped ends”) with a multiplicity equal to the degree of the curve.
+In the case that no knot-vector is given by the user at all, a uniform distribution is assumed
+internally.
+4-12 SOFiSTiK2023Definitionofgeometricelements.|SOFiMSHC
+4.8 GAXP – Axis placements
+Seealso: GAX,GAXS,GAXV
+GAXP
+Item Description Unit Default
+ID Ident of primary axis Lt4 -
+IDS Selection of secondary axes LT *
+0 = primary, A-Z for secondary,
+’*’ = all,
+’+’ = only secondary axes
+S Station value −/Lt !
+TYPE Type of placement as combination of Lt8 -
+’S’ support
+’J’ construction joint
+’A’ startface
+’E’ endface
+’H’ horizontal connection
+SPT Number of structural point to be created at the place- − -
+ment
+GRP Group number of the following section − 0
+NCS Cross-section number of the subsequent section or −/Lt 0
+number before / after the placement in the form
+’ncs1.ncs2’
+IDP Identificator of placement Lt4 -
+Y additional explicit transverse offset m 0.0
+Z additional explicit transverse offset m 0.0
+ALF Alignment about the global Z direction deg -
+ALFX Skew about the local x-axis deg 0.0
+ALFY Skew about transverse y-axis deg 0.0
+ALFZ Skew about vertical z-axis deg 0.0
+INCR Cross fall to the right (+y) − 0.0
+INCL Cross fall to the left (-y) − -INCR
+TITL Title of placement Lt32 -
+GAXPisusedtodefineimportantsectionsandpoints,socalledplacements,alongageometry
+axis GAX at a specific station S. A placement can be defined exclusively for the main axis or
+foroneofthesecondarylines,butcanalsobeassignedtoallorallsecondarylinessimultane-
+SOFiSTiK2023 4-13SOFiMSHC|Definitionofgeometricelements.
+ously. Acombinationofliterals(e.g. ’SJ’)canbesetatTYPforclassificationoftheplacement.
+In order to avoid ambiguous input it is recommended to enclose the literals in apostrophes.
+Each Placement can be assigned a uniqe identificator at IDP, which allows to reference the
+placement in a later calculation step (see e.g. Record COOR).
+Based on the placement definitions SOFiMSHC can create a structural system consisting of
+beamelementsalongtheaxis. Foreachplacementastructuralpointwillbecreatedontheaxis
+whosenodenumbercanbesetatSPT.Inbetweenstructurallineswillbecreated,whichgetthe
+numberoftheirprecedingpointassigned. Theusermayspecifyagrouporsectionnumberfor
+aspecificplacementontheaxiswhicharethenusedforallsubsequentbeamelementscreated
+unlessoneofthenumberischanged. Thegenerationofthestructuralelementsbasicallystarts
+at the first placement which has a cross-section number assigned and ends at the end of the
+axis or if a placement is of type ’E = endface’.
+In order to facilitate the organization of point and group numbers the user may define offset
+numbersatsecondaryaxesGAXSwhicharethenusedtosettherespectivegroupandpoints
+numbersoftheplacementsonsecondarylines. Ifnopointnumberisgivenataspecificplace-
+ment,SOFiMSHCassignesanumberautomaticallystartingfromSPT=1000inintervalsof100
+alongtheaxis. Inordertopreventunintendedinterferenceofuserdefinedandautomaticnum-
+bers,itisrecommendedtosetthestartindexofautomaticallyassignednumberinSOFiMSHC
+at parameter CTRL NODE from 1000 to a sufficiently higher value.
+A placement basically defines an infinite plane at a given station S perpendicular to the axis
+tangent. Structural points and other placement properties on secondary axes will then be
+created at the intersection of this plane with the axis. This infinite plane can be further rotated
+about the three local axis coordinates by setting ALFZ, ALFY and ALFX or may be aligned
+within the global X-Y coordinate plane by setting an angle at ALF = { 1-360 deg} . When
+S2
+S1 S4
+GAXS
+ALFZ
+S3
+ALF
+GAXP
+GAXP
+GAXP
+GAXP
+Figure4.4: Secondaryaxisrelativetoaxis
+placements of type support, start or endface (Type ’S’, ’A’ and ’E’) are defined, an internal
+variablearrayS_XI()isautomaticallysetupwhichprovidesthecurveparameterSwithrespect
+tospanlengthsbetweensupports. Forexample,S_XI(0)providestheS-parameterofthestart
+face, S_XI(1) the location of the first support, S_XI(1.5) the mid of the first span and so on.
+Instead of the station value S the user may also enter the name of a variable. In this case
+placements of the given type will be created for each base-point of the variable.
+Further we have two values for the cross fall. The sign of the inclination is defined that an
+increase of height in the direction outward is positive,
+Δz Δz
+NCR=− ;NCL=+ (4.1)
+Δy Δy
+4-14 SOFiSTiK2023Definitionofgeometricelements.|SOFiMSHC
+−INCL Y
+−INCR
+Z
+Figure4.5: Inclination
+Forusingtheinclinationtwovariables#INCRand#INCLmaybeused(e.g. foradirectionofan
+edgewithinasection). However,thisvariablecontainsnotthetangentvalue,buttheclockwise
+angle in radians about the X-axis defined by the inclination. The value of 0 is the direction of
+the Y-axis to the right.
+SOFiSTiK2023 4-15SOFiMSHC|Definitionofgeometricelements.
+4.9 GAXS – Secondary axis
+Seealso: GAX,GAXP,GAXV
+GAXS
+Item Description Unit Default
+ID Ident of Primary axis Lt4 *
+IDS Ident of secondary axis (A to Z) LT 0
+SPT offset for structural point numbers − 1
+GRP offset for group numbers of GAXP − 0
+Y offset in transverse direction m/Lt16 0.0
+Z offset in vertical direction m/Lt16 0.0
+TITL Designation of continuous beam Lt32 -
+GAXS defines a secondary axis relatively to a primary axis. The distance may be defined
+either by a constant value in local y- and z-direction or dependend on a axis variable specified
+with GAXV.
+It is further possible to specify an offset for point and group numbers used in GAXP place-
+ments.
+4-16 SOFiSTiK2023Definitionofgeometricelements.|SOFiMSHC
+4.10 GAXV – Variables along axis
+Seealso: GAX,GAXP,GAXS
+GAXV
+Item Description Unit Default
+ID Id of axis Lt4 *
+NAME Name of variable Lt16 !
+S Value / formula for station Lt20 0.0
+V Value / formula for Variable Lt40 0.0
+DV Value / formula for derivative of Variable Lt40 0.0
+TYPE Properties of data point LT POLY
+POLY Value only
+D- Inclination before
+D+ Inclination behind
+D* Inclination before and behind
+SPLI Intermediate spline point
+FUNC funktion
+In SOFiMSHC an arbitrary number of additional variables can be defined along a geometry
+axis,whichcanbeused,forexample,todefinevaryingcrosssectionsortodescribetheshape
+of a secondary axis. A variable distribution can be either defined by a number of base points
+andtangentdirectionswhichareinterpolatedordirectlybyenteringaformulaexpressionatV.
+Following example shows the definition of a quadratic parabola by three base points. The
+point in the middle is assigned a horizontal tangent and the type ’D*’, which ensures that both
+sections on the left and the right hand side of the point are connected horizontally:
+GAXV AX1 NAME VAR2 S 0.0 V +3.0
+GAXV AX1 NAME VAR2 S 25.0 V -7.0 DV 0.0 TYPE D*
+GAXV AX1 NAME VAR2 S 50.0 V +3.0
+The same result could also be obtained by entering one single formula expression:
+LET#S_ACT 0
+GAXV AX1 VAR2 S 0 V '=#S_ACT*(#S_ACT-50)/62.5+3' TYPE FUNC
+Itisimportanttonote,thattheformulaexpression,whichistobeevaluateddynamically,hasto
+be specified within apostrophes and with a leading ’=’. The expression is valid from the start-
+parameter given at S (here: S=0.0) until the next base point of the variable or, if no additional
+recordGAXVisgiven,untiltheendoftheaxis. Thecontrolvariablemustalwaysbenamedby
+#S_ACT and must also be defined prior to its first usage.
+SOFiSTiK2023 4-17SOFiMSHC|Definitionofgeometricelements.
+4.11 GAR – Geometric surface
+Seealso: GARA,GARC,GARS
+GAR
+Item Description Unit Default
+NO Area identifier Lt4 !
+TYPE Type of area LT *
+DEL deletes given record
+Ruled surfaces
+PLAN planar surface
+ROTA surface of revolution
+SWEE sweep surface
+Coons Patches:
+BLIN bilinear Coons Patch
+COON bicubic Coons Patch
+Freeform-surface:
+SPLI bicubic interpolation of points
+NURB NURB control points
+DEGU Degree of Nurb in u direction − *
+DEGV Degree of Nurb in v direction − *
+TITL Designation Lt32 -
+This record GAR defines a raw geometric surface without any structural information. This
+surface can then be referenced as ’background geometry’ by a structural area SAR or can be
+used to create an intersection curve with another surface, for example.
+The type of the geometry to be created can be set at parameter TYPE. The geometry itself is
+then defined using one of the following records:
+• GARA: Definition of rotational and sweep-surfaces (default: ROTA)
+• GARC: Definition of so-called Coons Surfaces (default: BLIN)
+• GARS: Definition of a freeform surface using interpolation points or NURBS control points
+(default: SPLI)
+The geometry definition records must be given directly after the record GAR. For the records
+GARA and GARC, only one succeding entry is allowed. For the record GARS any number of
+items can be given.
+4-18 SOFiSTiK2023Definitionofgeometricelements.|SOFiMSHC
+4.12 GARA – Plane, rotational and sweep surfaces
+Seealso: GAR,GAX
+GARA
+Item Description Unit Default
+GID1 Ident of first generating axis Lt4 -
+GID2 Ident of second generating axis Lt4 -
+X Reference point [m] 0.0
+1001
+Y [m] 0.0
+1001
+Z [m] 0.0
+1001
+NX Direction vector − *
+NY − *
+NZ − *
+UMIN Start parameter in meridian direc. (GID1) − *
+UMAX End parameter in meridian direction − *
+VMIN Start angle of rotation − 0
+VMAX End angle of rotation − *
+TITL Designation Lt32 -
+Using this record GARA planar, rotational or sweep-surfaces can be defined:
+PLAN: Planar Surface
+Aplaneisdefinedbyapointinspace(X,Y,Z)andanormalvector(NX,NY,NZ).Inordertoavoid
+numericalproblems,thedimensionsoftheplaneshouldberestrictedtotherequredextensions
+usingtheparametersUMINtoVMAX.Ifnosizesarespecified,adefaultsizeof-100to+100m
+is set in both directions.
+ROTA: Surface of revolution
+A geometric curve GID1 is rotated about a straight axis in space. The rotation axis is defined
+by a point at X,Y,Z and a directionvector at NX,NY,NZ.
+TheparametersUMINandUMAXdefinetheextendsofthesurfaceinmeridiandirectionalong
+the generating curve GID1. If nothing is given, the whole curve GID1 is taken.
+The extend of the rotation angle in degree is defined using the paramters VMIN and VMAX. If
+nothing is given, the parameters default to an angle from 0 to 180 degree.
+Important: In order to avoid ambiguity in numerical operations, surfaces of revolution should
+never be defined as closed surface with a rotation angle from eg. 0 to 360 degree. In these
+cases it is recommended to create two halfshells with angles from 0 to 180 degree and 0 to
+-180 degree respectively.
+SOFiSTiK2023 4-19SOFiMSHC|Definitionofgeometricelements.
+SWEE: Sweep-Surface
+AcurveGID1issweptalongasocalledtrajectorycurveGID2. Insteadofthetrajectorycurve,
+adirectionvectorcanbegivenatNX,NY,NZalongwhichthegeneratingcurveGID1ismoved.
+The parameters UMIN and UMAX define the extend of the surface along the generating axis
+GID1. If nothing is given here, the whole curve is used.
+The parameters VMIN and VMAX define the range on the trajectory axes or the length on the
+directon vector respectively.
+4-20 SOFiSTiK2023Definitionofgeometricelements.|SOFiMSHC
+4.13 GARC – Coons surface
+Seealso: GAR
+GARC
+Item Description Unit Default
+NU0 Axis for Coons Patch bei u=0.0 t4 !
+NU1 Axis for Coons Patch bei u=1.0 t4 !
+NV0 Axis for Coons Patch bei v=0.0 t4 !
+NV1 Axis for Coons Patch bei v=1.0 t4 -
+XUV1 Twist (d2x/du/dv) at corner 1 ∗ 0.0
+YUV1 ∗ 0.0
+ZUV1 ∗ 0.0
+...
+XUV4 Twist (d2x/du/dv) at corner 4 ∗ 0.0
+YUV4 ∗ 0.0
+ZUV4 ∗ 0.0
+GARC defines an area by four boundary curves, where an interpolation between opposite
+curves will take place. This may yield a C0-continuity with a bilinear BLIN or a C1-continuity
+with a bicubic blending function COON. For the latter we need not only properly defined local
+y-coordinate directions of the curves, but also the twist values at the corners of the patch. As
+the twist values are not derivable from the curves itself, the user may specify them explicitly. If
+notdefined, theareawill becomeflatat thecorners. The curvesmay belongerthan thepatch
+region as long as the intersections may be calculated properly.
+v=1.0
+NV1
+u=1.0
+NU1
+u=0.0
+NU0 v=0.0
+NV0
+Figure4.6: todotodo
+SOFiSTiK2023 4-21SOFiMSHC|Definitionofgeometricelements.
+4.14 GARS – Area by points
+Seealso: GAR
+GARS
+Item Description Unit Default
+M Raster (1-max) in local u direction − *
+N Raster (1-max) in local v direction − *
+X Point coordinates m 0.0
+Y m 0.0
+Z m 0.0
+W Weight for NURBS − 1.0
+This record defines points on the surface or NURBS control points of a general freeform sur-
+face. The points must be given in a regular a m times n grid.
+Knots of a general NURBS-surface are also defined with this record in that way that only M or
+N is defined, then we have:
+Definition of number M, value X and multiplicity W for the u direction, definition of number N,
+value Y and multiplicity W for the v direction. Missing values will be interpolated.
+4-22 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+5 Definition of structural elements
+This chapter describes the definition of structural elements. Structural elements define the
+calculation system and contain a geometrical description as well as structural information
+like cross-sections, material or support conditions which are needed to set up the calculation
+model. SOFiMSHC supports structural points, structural lines, structural areas and structural
+volumes. Thestructuralmodelcanthenbemeshedtocreateafiniteelementmodelconsisting
+of beam, shell and/or volume elements.
+5.1 Input Records
+Record Items
+SPT NO X Y Z REF NREF FIX
+BX BY T NX NY NZ SX
+SY SZ XFLG TITL
+SPTP TYPE X Y REF VAL VALQ VALM
+GRP MNO
+SPTS NO REF TYPE CP CQ CM DX
+DY DZ GRP MNO AR PRE GAP
+CRAC YIEL MUE COH DIL
+SPTH NCS L PSKN LSKN MXSK MXPF
+SLN NO NPA NPE REF FIX SDIV GRP
+NCS NP KR DRX DRY DRZ DROT
+EXA EYA EZA EXE E EZE FIXA FIXE
+FIMA FIME XFLG TITL
+SLNB X1 Y1 Z1 X2 Y2 Z2 R
+NX NY NZ XM YM ZM X3
+Y3 Z3
+SLNP X Y Z W NX NY NZ
+SLNN S MUL DIV DEG
+SLNS GRP FIX REFT REF CA CL CD
+CXX CYY CZZ DXX DYY DZZ BFIX
+FCTA FCTE
+SAR NO FIX GRP MNO MRF REF NX
+NY NZ NRA QREF KR DRX DRY
+DRZ DROT T TX TY TXY TT
+CB CT XFLG H1 H2 H3 CHK4
+CHK5 CHK6 CHK7 TITL
+SARB TYPE NL NP NA NE T MNO
+Tablecontinuedonnextpage.
+SOFiSTiK2023 5-1SOFiMSHC|Definitionofstructuralelements
+Record Items
+FIX DFIX CA CL CD
+SARR TYPE GID1 GID2 X Y Z NX
+NY NZ UMIN UMAX VMIN VMAX
+SARP TYPE M N X Y Z W
+T
+SARN S T DEGS DEGT
+SARC TYPE NU0 NU1 NV0 NV1
+SVO NO FIX MNO MRF TYPE TITL
+SVOS NAR ACT NO T FAC0 FAC1 TFAC
+TFA1 TREF PHI0 PHI DPHI REF DX
+DY DZ XX YY ZZ NARA NARE
+MNO
+5-2 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+5.2 SPT – Structural point
+Seealso: SPTP,SPTS
+SPT
+Item Description Unit Default
+NO Point number − -
+X Point coordinates [m] 0.0
+1001
+Y [m] 0.0
+1001
+Z [m] 0.0
+1001
+REF Relative to / projection on LT -
+PT, PCYL, PPOL
+AX, AXYZ, AXZX, AXXY
+AR, ARYZ, ARZX, ARXY
+AXAX,AXAR
+NREF Identifier of projection target −/Lt4 -
+FIX Support condition Lt16 -
+BX Width of support / mesh in local x [m] -
+1001
+BY Width of support / mesh in local y [m] -
+1001
+T Plate thickness if lying inside a SAR [mm] -
+1010
+NX z-axis of the local coordinate system − *
+NY − *
+NZ − *
+SX x-axis of the local coordinate system − *
+SY − *
+SZ − *
+XFLG Prevent automatic superposition LT -
+MREF 2nd reference (REF AXAX, AXAR) −/Lt4 -
+TITL Title of point Lt32 -
+AstructuralpointinSOFiMSHCisdefinedbyitscoordinatesandalocalcoordinatesystemwith
+local x-, y- and z-axis. If not otherwise specified, the coordinate system of the point aligned
+with its z-axis in gravity direction. In the case that no point number is given, a new point with a
+newnumberwillbecreatedonlyifthereisnootherpointatthegivenXYZ-position. Otherwise,
+thegivenpropertieswillbemergedwiththeexistingpoint. Onemayalsochangethedefinition
+of an already existing point by entering a negative number at NO. The definition of a structural
+point may be enhanced by immediate consecutive property records of type SPTP and SPTS.
+Structuralpointscanbeprojectedontoanexistingline/axisorastructuralregionbyspecifying
+one of the literals AX or AR at REF and the axis or region id at NREF. Specialized options
+(e.g. AXXY, ARXY) allow to restrict the projection to the global YZ, ZX or XY-plane. For
+SOFiSTiK2023 5-3SOFiMSHC|Definitionofstructuralelements
+example, using REF AXXY GAX1 a structural point can be projected within plan view onto the
+the geometric axis ’GAX1’.
+In addition to projection, structural points can also be created directly on the referenced
+line/axis or surface by specifying the local parameters at SX or SX and SY respectively. If
+also SY and SZ are given for a structural line, the point can be placed relatively to the line at
+SX with the given distance in Y- and Z-coordinates. In all cases the local coordinate system of
+thestructuralpointissetaccordingtothecoordinatesystemofthelineorthestructuralregion.
+Furthermore, structural points can be created at the intersection between two axes (REF
+AXAX) or between an axis and a geometric area (REF AXAR). In both cases, the identifier
+of the first axis must be given at parameter NREF. The second axis resp. the area in case of
+REF AXAR must be given at parameter MREF. Instead of an axis or a geometric region, it is
+also possible enter the id of a structural line (SLN) or a structural region (SAR).
+Coordinates of a structural point can also be defined relatively to another point at NREF. The
+relative distance can be given in euclidian, cylindrical or spherical coordinates. Therefor, one
+of the following types can be set at REF:
+PT euclidian (rectangular) coordinate-system
+X,Y,Z relative to the reference point
+PCYL cylindrical coordinate system
+X = radius, Y = rotation angle (deg) , Z = height
+PPOL polar coordinate system
+X = radius, Y = azimut (deg), Z = polar angle (deg)
+Example: SPT 5 REF PT 101 X 10.0 creates a new point with number 5 at a x-distance of
+10.0m relatively to point 101.
+The coordinates at XYZ are always defined relatively in the local coordinate system of the ref-
+erence point. The new point will also get the coordinate system of the reference point. This
+option is especially useful to define single structural points relatively to another. Considerable
+more possibilities are provided by the special record COOR, which allows to define a user co-
+ordinatesystemforallgeometryinput. Therealsocylindricalandsphericalcoordinatesystems
+can be defined.
+Support conditions can be defined at parameter FIX by combining support condition literals
+(e.g. FIX PXPY) as described in section 2.6.1.
+Apreceding ”L” switchestolocaldirectionsforthefollowingLiterals,a ”G” restorestheglobal
+direction reference. If nothing is given, the support will be aligned according to global coordi-
+nate directions. If the literal at FIX contains the character sequence ”->”, the following number
+refers to the number of a coupled point. In this case, the referenced node will be connected
+with the respective kinematic constraints. For example, a definition of PXPY->4 sets the dis-
+placements in X and Y direction of the current node to those of node number 4. Coupling
+of kinematic constraints can also be defined using additional point property records SPTP.
+Additional information about kinematic constraints can be found in section 2.6.2.
+Option XFLG allows to prevent the automatic superposition of the given structural point with
+other structural elements. Following options are provided, which can also be combined:
+• ’P’ The given structural point will not be replaced by other structural points.
+5-4 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+• ’L’ The structural point will not subdivide other structural lines.
+• ’A’Thestructuralpointwillnotbeembeddedwithinastructuralregionasconstrainingpoint.
+Ifthisoptionisset,itoverwritesthedefaultsettingwheretwopointswillnotbereplacedifboth
+have been created explicitly (with a positive number). The option XFLG also applies to implicit
+points which had not been assigned a number.
+SOFiSTiK2023 5-5SOFiMSHC|Definitionofstructuralelements
+5.3 SPTP – Structural point properties
+Seealso: SPT
+SPTP
+Item Description Unit Default
+TYPE Type of property LT !
+SUPP Periphery of support
+(column head)
+VOUT Periphery of haunches
+PNCH Periphery of punching
+KPPX, KPPY etc. coupling condition
+(see explanation)
+X Local dimensions [m] 0.0
+1001
+Y only SUPP/VOUT/PNCH [m] 0.0
+1001
+Z [m] 0.0
+1001
+REF Reference to − -
+coupled strutural point
+VAL Property value (e.g. Plate thickness) 0.0
+GRP Group number − 0
+This record defines additional geometric properties, kinematic constraints or coupling condi-
+tions on a structural point.
+Support andcoupling conditionscan bedefined atparameter TYPEwith theliterals described
+in sections 2.6.1 and 2.6.2. In case of a coupling, the number of a reference point must be
+given at parameter REF. Support conditions as well as couplings can be assigned to a group.
+ItsalsopossibletodefinemultiplerecordsoftypeSPTSwithdifferentgroupassignments. The
+direction of the support or the coupling can be set independantly from the local coordinate
+system of the point at the parameters X,Y,Z.
+Using the parameters SUPP, VOUT and PNCH details of a column head supporting the struc-
+tural point (in a slab) can be modeled:
+TYP SUPP describes the dimensions of the column head
+TYP VOUT describes the dimensions of a voute
+TYP PNCH opionally describes dimensions for punching design
+The dimensions of the rectangular column head can be given at the parameters X and Y.
+The support of the slab may be done by different approaches, which can be selected with the
+number of additional asterixes ”*” at FIX and the CTRL option PSUP.
+5-6 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+Figure5.1: Hauncharea
+no Use the value of CTRL PSUP
+* increase thickness for centre (CTRL PSUP 1)
+= monolithic support
+** do not increase thickness for centre (CTRL PSUP 0)
+= hinged or elastic support
+*** add kinematic constraints
+(only for special purpose, CTRL PSUP 2 / 4)
+The generation of such a mesh macro is currently only possible for supports within the slab
+and only if the central point is not to close to any other structural edge. If this is not the case,
+the point will become only a single node in the generated FE-mesh. This behaviour may also
+be enforced with definition of CTRL PSUP -1.
+SOFiSTiK2023 5-7SOFiMSHC|Definitionofstructuralelements
+5.4 SPTS – Spring element at point
+Seealso: SPT
+SPTS
+Item Description Unit Default
+NO Spring number − -
+REF number of 2nd reference point _ -
+TYPE Type / direction of spring LT C
+CX, CY, CZ local X, Y, Z
+CXX, CYY, CZZ global X, Y, Z
+C explicit direction (DX, DY, DZ)
+or direction to reference point
+(cid:2)kN/m3(cid:3)
+CP stiffness in axial direction 0.
+1097
+(cid:2)kN/m3(cid:3)
+CQ transversal stiffness 0.
+1097
+CM rotational stiffness [kNm/rd] 0.
+1098
+DX X-component of explicit direction − -
+DY Y-component of explicit direction − -
+DZ Z-component of explicit direction − -
+GRP group number − -
+MNO number of stress-strain curve / material − -
+(cid:2)m2(cid:3)
+AR reference area -
+1002
+PRE prestress force [kN] -
+1028
+GAP spring gap (slip) [m] -
+1001
+(cid:2)kN/m3(cid:3)
+CRAC spring failure load -
+1097
+(cid:2)kN/m3(cid:3)
+YIEL spring yield load -
+1097
+MUE friction coefficient for lateral spring − -
+(cid:2)kN/m2(cid:3)
+COH cohesion value for lateral spring -
+1097
+DIL dilatation value for lateral spring -
+This record defines beddings or spring elements on a structural point. For a given structural
+point SPT multiple subsequent records of type SPTS can be entered allowing to create an
+arbitrary number of springs, which, for example, can be assigned to different groups. Spring
+elementscanbedefinedasbeddingstoafixedsupportorrelativelytoanotherstructuralpoint.
+The stiffness of a spring element can be basically defined with three parameters: CA to CM.
+The first parameter CA describes an axial stiffness along the principal direction of the spring.
+The second parameter CQ describes a stiffness component acting in the whole plane per-
+pendicular to the axial direction. Mechanically, this stiffness corresponds to two identical axial
+5-8 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+springs lying orthogonal to each other within the plane. Since the direction of these springs
+inside the plane can be chosen arbitrarily, this component is also denoted as isotropic lateral
+spring stiffness. The third parameter CM describes the rotational stiffness about the principal
+spring axis.
+In SOFiSTiK, the stiffness of a spring is basically defined in the unit ’Stiffness / Area’
+kN/m/m2 = kN/m3. For a spring at a point, as defined in this record, this stiffness is then
+scaled with the reference area given at AR:
+CP:=Cb·AR[kN/m=kN/m3·m2]
+CQ:=Cq·AR
+If AR is not given, it defaults to 1.0m2. This means, the stiffness values given at CP and CQ
+are then equivalent to a standard stiffness at a singular point given in unit kN/m.
+The axial and lateral spring stiffness as well as the nonlinear parameters CRAC, YIEL and
+COH are given as bedding stiffness per area (e.g. kN/m/m2). These stiffness values will be
+scaledbythegivenreferenceareaAR,resultinginaspringelementwithpointsupportstiffness
+(kN/m). If nothing is given for AR the stiffness values will be directly taken as point stiffness
+value.
+A spring can have a number and can be assigned to a group. If the identifier of a second
+structural point is given at REF the spring is created between the given and the referenced
+structural point.
+The direction of the spring can be defined as follows:
+• Along the local coordinate system of the structural point Each structural point contains a
+local coordinate system, which can be set explicitly at the structural point record SPT. By
+setting CX, CY, or CZ at parameter TYPE, the spring can be aligned to one of this local
+coordinate directions.
+• Along one of the global X,Y,Z - coordinate axes If CXX, CYY or CZZ is given at TYPE, the
+spring is oriented, indepenently of the structural point, toward one of the global X, Y, or
+Z-coordinate axes, respectively.
+• Along an explicitly given direction vector at DX, DY, DZ A spring can also be aligned arbi-
+trarily by setting a direction at DX, DY, DZ.
+• Distance between pointand referencepoint Fora spring, connecting thepoint witha refer-
+ence point, the direction to the reference point is taken as axial direction in the case, that
+no different settings have been given.
+In the case that no direction is given at all, the spring is aligned with the local z-axis of the
+structural point.
+Different stiffness values in lateral direction cannot be defined within one single record of type
+SPTP.However,multiplerecordscanbegiveninordertocreatespringsalignedperpendicular
+to each other. Using value lists, CADINP allows to handle this case efficiently. For example:
+SLNS TYPE CX,CY,CZ CP 1000.0, 2000.0, 3000.0 creates three orthogonal springs having
+each different stiffness values of 1000.0, 2000.0 and 3000.0, respectively.
+Using the parameter PRE, prestress can be activated within the spring. In its initial position
+SOFiSTiK2023 5-9SOFiMSHC|Definitionofstructuralelements
+at rest, the spring already exerts a force or a moment (if only CM is given) into or about its
+direction. Prestress for the lateral component CQ cannot be defined.
+At the parameters GAP, CRAC, YIEL, MUE, COH, DIL values like crack-, yield load or friction
+coefficients can be given in order to activate non-linear effects:
+• Prestress: The failure and yield loads are shifted by the amount of the prestress.
+• Gap: Thespringtransmitsforcesalongitsaxisonlyafteritsdeformationhasexceededthe
+gap.
+• Failure load: Upon reaching the failure load the spring fails in both the axial and the lateral
+direction. The failure load is always a tensile force or a positive moment.
+• Yield load: Upon reaching the yield load, the deformation component of the spring in-
+creases in its direction, without a corresponding increase of the spring force.
+• Friction coefficient: If a friction coefficient and/or a cohesion are input, the lateral spring
+can not sustain forces greater than:
+Frcton_coeƒƒ.·Compresse_ƒorce+Coheson
+For large tension forces or a failed axial spring (CRAC) the lateral force acts only if 0.0 has
+been input for both the friction coefficient and the cohesion.
+General non-linear effects can be activated by referencing an arbitrary work-law or a non-
+linear material at MNO. A non-linear work-law, which is described by a force-displacement
+or a moment-rotation curve, must be defined in advance in AQUA (AQUA: SLFA). On the
+other hand, also non-linear materials may be referenced (AQUA: NMAT) at MNO, from which
+the respective non-linear spring stiffness values are derived. If a work-law and a non-linear
+material is given with the same number in a project, the work-law takes precedence. This
+setting can be overwritten by entering a negative number in order to reference a material in
+this case. If a reference area is defined for the spring at AR, the work-law as well as the
+non-linear parameters derived from the material will be scaled accordingly.
+In the case that a dilatation value (DIL) is defined, a displacement in the lateral direction will
+generate a component in the axial direction.
+The record SPRI in program SOFiMSHA allows to create spring elements with advanced pos-
+sibilities. SOFiMSHA can be restarted on a database created by SOFiMSHC existing springs
+can be modified or to new ones created.
+5-10 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+5.5 SPTH – Halfspace pile at point
+Seealso: SPT
+SPTH
+Item Description Unit Default
+NCS Cross-section number − 0
+L Length of pile in gravity direction [m] 0.0
+1001
+PSKN percentageoftotalpileloadtransferedbyskinfriction − 50
+LSKN percentage of inactive skin length −
+MXSK maximum load transferable by skin friction [kN] -
+MXPF maximum load transferable in pile foot [kN] -
+Thisrecordsdefinespropertiesofahalfspace-pileconnectedtothepreviouslygivenstructural
+point. Information about the parameters can be found in the manual of HASE in record PILE.
+SOFiSTiK2023 5-11SOFiMSHC|Definitionofstructuralelements
+5.6 SLN – Structural line
+Seealso: SLNB,SLNP,SLNS,SPT
+SLN
+Item Description Unit Default
+NO Line number − -
+NPA Point at start of line − -
+NPE Point at end of line − -
+REF Reference to a geometry at GAX −/LT -
+FIX Boundary conditions along the line Lt16 -
+SDIV >0: Mesh density used for subdivision [m] -
+1001
+<0: Number of elements to be generated − -
+GRP Group number − -
+STYP Element type, subdivision LT SE
+SNO Number of cross section −/Lt12 -
+NP Number of bore / bedding profile -
+KR Direction identifier or LT -
+DRX explicit direction vector of the local − 0.
+DRY beam coordinate system − 0.
+DRZ − 0.
+DROT Additional rotation about beam axis deg 0.
+EXA Eccentricity in global coordinates [m] 0.
+1001
+EYA at start [m] 0.
+1001
+EZA [m] 0.
+1001
+EXE Eccentricity in global coordinates [m] 0.
+1001
+EYE at end [m] 0.
+1001
+EZE [m] 0.
+1001
+FIXA Hinge conditions at start −/Lt16 -
+FIXE Hinge conditions at end −/Lt16 -
+FIMA Hinge conditions at all interior starts −/Lt16 -
+FIME Hinge conditions at all interior ends −/Lt16 -
+XFLG Intersection properties LT -
+TITL Title of Line Lt32 -
+Thisrecorddefinesastructuralline. Startandendpointsofthelinemaybespecifiedexplicitly
+5-12 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+by referencing structural points which have been previously defined at SPT or implicitly using
+subsequent geometry records of type SLNB / SLNP . In the latter case, it will be checked if a
+structuralpointalreadyexistsattherespectiveendcoordinateofthelineandcreatesoneifnot.
+IfnonumberisgivenforthestructurallineatNR,anewnumberwillbeassignedautomatically.
+By entering a negative number at NO the properties of a previously defined structrual line can
+bechanged. Forexample: SLN-10SNO1changesthecross-sectionnumberoflineno10. All
+otherpropertiesofthelineremainunchanged. IfanadditionalpropertyrecordoftypeSLNSis
+given when a line is being changed, it will be added to all previously defined property records
+of the line.
+ThegeometryofalinecanbedescribedbyaddingsubsequentrecordsoftypeSLNBorSLNP.
+SLNBallowstodefinestraightlinesandcirculararcswhereasSLNPisusedtocreatefreeform
+curves. A third possibility is to set the geometry by referencing a previously defined axis GAX
+atREF.Ifnogeometryisdefinedatall,astraightlinebetweenstart-andendpointisassumed.
+5.6.1 Local coordinate system
+Allbeamelementswhichwillbecreatedalongthestructurallinehavealocalcoordinatesystem
+assigned whose local x-axis is always aligned parallel to the structural line. For curved edges
+thiscoordinatesystemmayvaryalongtheline. Thislocalbeam-coordinatesystemdetermines
+the orientation of cross sections and, if not otherwise specified at record SLNS, the direction
+of local supports and kinematic couplings. The orientation of the local z-axis perpendicular to
+the line can be specified using special literals at KR or directly by entering direction vector at
+DRX,DRY,DRZ. Following possibilities exist:
+• Explicit direction vector at DRX,DRY,DRZ
+The entries DRX,DRY,DRZ define a direction vector according to which the local z-axis
+of the beam coordinate system is aligned. The local x-axis (= tangent) of the coordinate
+system remains always parallel to the structural line.
+Which of the two local directions y or z is aligned is basically determined by the global
+variable CTRL LOCA. If nothing is given, the local z-axis is used.
+• Predefined directions using a literal at KR Instead of an explicit direction, the user may
+also enter one of the literals POSX, POSY, POSZ, NEGX, NEGY or NEGZ at KR in order
+to align the local x-axis with one of the given global directions.
+Moreover, the local x-axis may also be aligned within one of the global coordinate planes
+by entering:
+KR = XY, YX: align x within global XY-plane in X- resp. Y-direction
+KR = YZ, ZY: align x within global YZ-plane in Y- resp. Z-direction
+KR = ZX, XZ: align x within global ZX-plane in Z- resp. X-direction
+• Align to other structural element KR { PT,LN,AR} NO Using this option, the local z-
+(or y-) axis of the beam elements along the structural line can be aligned towards another
+structural element. Following possibilities exist:
+KR PT: align towards a structural point
+KR LN: align towards a structrual line
+KR AR: align towards a structural area
+Thedirectionofeachbeamelementisdeterminedindividuallybycalculatingtheprojection
+onto the referenced structural item. If no projection exist, i.e. the distance is zero, the
+SOFiSTiK2023 5-13SOFiMSHC|Definitionofstructuralelements
+coordinate system of the referenced item is taken directly.
+• additional rotation about beam axis at DROT By indicating an angle for DROT the local
+coordinatesystemwillbeadditionallyrotatedaboutthebeamaxis. Theangleistobegiven
+in degrees.
+5.6.2 Support and coupling conditions
+The definition of boundary or coupling conditions can be carried out by specifying one of the
+literals described in section 2.6.1 and 2.6.2 at FIX. If the Literal at FIX contains the character
+string”->”,thefollowingnumberistreatedasthenumberofareferenceline. Referencedlines
+will subdivided with the same number of elements and the pairwise corresponding nodes will
+be connected with kinematic constraints. For example, an definition of PZ->4 sets all nodal
+displacementsinz-directioninrelationtothoseofthereferencedlinenr4. Forthedefinitionof
+extended coupling and interface conditions a special record SLNS is provided, which may be
+better used.
+5.6.3 Element generation
+SDIV defines the maximum edge-length of beam or plane elements to be created along the
+structuralline. IfnomeshsizeisgivenatSDIV,thesizeofpossiblyconnectedstructuralregions
+or the global setting at CTRL HMIN is taken. A negative (integer) value at SDIV defines the
+exact number of elements to be generated along the edge.
+A set of literals at parameter STYP allows to control the generation of beam elements and the
+intersection behaviour of the structural line:
+• Type of beam elements to be generated:
+’N’ = centric beam (section at barycenter)
+’B’ = beam with reference axis (section at origin)
+’O’ = centric column (section at barycenter)
+’L’ = column with reference axis (section at origin)
+’T’ = truss element
+’C’ = cable element
+’S’ = use type defined at section (default)
+• Kind of subdivision applied:
+’E’ = sudivide structural line in single elements (default)
+’X’ = subdivideinelementswithoutconnectingtheelementswithasurroundingFE-mesh
+’Y’ = create one single element with beam sections
+’Z’ = create one single element without beam sections
+If the type of beam element is set to ’truss-element’ (STYP ’T’) SOFiMSHC automatically ac-
+tivates option ’Z’ = ’create one element without sections’. In case of cable elements (STYP
+’C’)theintersectionwithotherstructuralelementsispreventedbydefault(seeoptionXFLG)in
+addition. Inbothcasesthesedefaultsettingscanbeoverwrittenbytheuserifanyotheroption
+is given at STYP.
+Beams with linearly varying sections can be defined by entering two section numbers sepa-
+5-14 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+rated by a dot at NCS (i.e. ’1.2’ ). The sections at internal element nodes have to be created
+by running AQUA afterwards with option INTE 0.
+5.6.4 Hinge conditions
+Hingeconditionscanbespecifiedforthestartandtheendofastructurallineindividuallyusing
+the parameters FIXA and FIXE. In addition to that, the options FIMA and FIME allow to define
+hinge conditions at all nodes created along the structural line (e.g. hinged chain). Following
+literals are possible:
+N,VY,VZ normal-, transverse forces
+MT,MY,MZ moments
+MB warping
+PP = NVYVZ
+MM = MTMYMZ
+The literals define the hinge condition which is to be released. The options can also be arbi-
+trarily combined (e.g. MYMZ), in order to release multiple degrees of freedom.
+ByenteringanumberatFIXAtoFIMEitspecifiestherespectivenumberofanon-linearforce-
+work law defined in program AQUA (see AQUA: record SFLA).
+5.6.5 Intersection properties
+Using option XLFG allows to control the behaviour, when a structural line is intersected with
+other structural elements. By default, structural lines which cross or lie parallel to another
+structural elements will be rigidly connected with the adjacent element or subdivided in case
+of a transversal intersection. This default behaviour can be changed using parameter XFLG.
+Thereby, two possibilities exist:
+Deactivate intersection
+Using one or a combination of the following literals allows to disable the intersection with the
+respective structural element types:
+• ’P’: The given structural line will no longer be subdivided by structural points.
+• ’L’: The structural line will no longer be subdivided nor replaced by other structural lines.
+• ’A’:Thestructurallinewillnolongerbesubdividedbycrossingstructuralareasandwillalso
+not be embedded within a structural region as constraining line.
+For example, the following input
+SLN 1 NPA 1 2 SNO 1 XFLG PLA
+deactivates all intersections of the structural line with other elements. I.e. the structural line
+no. 1 will not be subdivided. The line will also not be replaced by other lines or embedded in a
+structural area as constraining line.
+Pleasenotethattheintersectionoptionsonlyapplytothetopologicallyinternalofthestructural
+line. They will not apply to the endpoints. In the case that the user also wants to prevent an
+SOFiSTiK2023 5-15SOFiMSHC|Definitionofstructuralelements
+intersection at the ends of the structural line, the endpoints must be defined explicitly with the
+respective intersection option set there.
+Hinge condition to adjacent member
+Asecondoptionisthedefinitionofhingeconditions. Similartothedefinitionofhingeconditions
+atthestartandtheendofthestructurallineatparameterFIXAandFIXE,hingeconditionscan
+also be defined relative to crossing structural members.
+For this purpose, the hinge conditions described in section 5.6.4 can be inserted at parameter
+XFLG. In this case, a hinge is inserted between the structural line and the adjacent member,
+which suppresses the transfer of the respective force condition.
+For example, the following input
+SLN 1 NPA 1 2 SNO 1 XFLG MM
+suppresses the transfer of moment forces to adjacent crossing members. Such kind of input
+can be used to model the connection between a rafter and the purlin in roof constructions, in
+ordertokeepmomentforceswithintherafterandtopreventaninputoftorsionalmomentsinto
+the primary bearing construction.
+As in the previous case, it must be noticed, that the given options only apply to connections
+which cross the stuctural line in the internal. Hinge conditions at the start and the end of the
+structural line must be defined at the parameter FIXA and FIXE.
+A definition of internal hinge conditions at all intermediate nodes using FIMA and FIME is not
+possible if hinges are defined at XFLG.
+Thegivenoptiondoesalsonotapplytoconnectionsbetweenparallelmembersorconnections
+between structural lines and structural areas.
+5-16 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+5.7 SLNB – Straights and circular arcs
+Seealso: SLN,SPT
+SLNB
+Item Description Unit Default
+X1 Coordinates of startpoint [m] 0.0
+1001
+Y1 [m] 0.0
+1001
+Z1 [m] 0.0
+1001
+X2 Coordinates of endpoint [m] 0.0
+1001
+Y2 [m] 0.0
+1001
+Z2 [m] 0.0
+1001
+R Radius [m] -
+1001
+NX Normal direction of circle plane − -
+NY − -
+NZ − -
+XM Coordinates of center [m] -
+1001
+YM [m] -
+1001
+ZM [m] -
+1001
+X3 Third point on arc [m] -
+1001
+Y3 [m] -
+1001
+Z3 [m] -
+1001
+Records of type SLNB can be used to define straight lines, circles and cicular arcs in space.
+Records of this type always refer to the most recently defined structural line at SLN. Multiple
+segmentsareallowedtobeenteredinordertodefinepolycurves. Forthedefinitionofasingle
+segment following possibilities exist:
+• A straight line is defined by its start- and endpoint at (x1,y1,z1) and (x2,y2,z2).
+• A full circle can be defined by its center (xm,ym,zm), the radius and the normal on the
+circular plane (n,ny,nz).
+• Acirculararccanbedefinedbyitsstart-andendpointat(x1,y1,z1)und(x2,y2,z2),aradius
+and the normal or by entering the start-, the endpoint and the center.
+• In addition, circular arcscan alsobe definedby entering threepoints onthe arc. (x1,y1,z1)
+und (x2,y2,z2) describe the start- and the endpoint, (x3,y3,z3) a third point on the arc.
+When multiple segments are defined, the transition between two segments should be mod-
+eled with continuous tangents. Kinks are possible but should be avoided as they can lead to
+incorrect or erroneous meshes. In order to define kinks it is better to define two curves with a
+structural point in between.
+SOFiSTiK2023 5-17SOFiMSHC|Definitionofstructuralelements
+5.8 SLNP – 3D curve point data
+Seealso: SLN,SPT
+SLNP
+Item Description Unit Default
+X 3D coordinates [m] 0.0
+1001
+Y [m] 0.0
+1001
+Z [m] 0.0
+1001
+W Weight of control point (NURBS) − 1.0
+S Station on point (for interpolation) − -
+DX Tangential direction (Type HINT) − -
+DY − -
+DZ − -
+NX Direction of local z-axis − -
+NY − -
+NZ − -
+TYPE Type of curve
+Structural lines with arbitrary freeform geometry can be defined with SLNP using character-
+istic data points. Each record SLNP defines one coordinate in 3D. They always refer to the
+previously defined structural line at SLN. Following types of curves are supported:
+• POLY: Interpolation as polygonal sequence
+The given points will be interpolated as polygonal sequence.
+• SPLI: Spline interpolation
+ThegivendatapointswillbeinterpolatedusingacubicB-Spline. Theinterpolationiscarried
+out curvature continuous at the definition points (C2-continuity).
+The parametrization (chainage) of the curve can be set explicitly at each datapoint using
+the parameter S. If no parameter values are given, SOFiMSHC assigns a parametrisation
+automatically. For this, special techniques are applied which minimize possible oszillations
+between unequally distributed definition points.
+• HINT: Hermite interpolation
+The given datapoints will be interpolated using piecewise cubic B-Spline segments. The
+interpolation is carried out tangentially continuous at the definition points (C1-continuity).
+Using the parameters DX,DY,DZ, the tangential direction at certain points can be defined
+explicitly by the user. Similar to the spline interpolation, the parametrisation (chainage)
+along the curve can be set using the parameter S.
+• NURB: NURBS-curve
+A NURBS (Non Uniform Rational B-Spline) curve can be defined by entering the euclidian
+coordinatesofthecontrol-pointsatX,Y,Z.Ifweights<>1.0aregiven,theinputresultsina
+true’rational’NURBScurve,which,forexample,allowstodescribealsocircleandellipses.
+ThedegreeoftheNURBScurvecanbesetinrecordSLNN,whendefiningtheknotvector.
+5-18 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+5.9 SLNN – Knot value of a NURBS-curve
+Seealso: SLN,SLNP
+SLNN
+Item Description Unit Default
+S Knot value − !
+MUL Multiplicity − 1
+DEGR degree of Nurbs − *
+Records of type SLNN are used to define the knot vector of NURBS-curves or to explicitly set
+the parametrization of interpolation curves. For each knot value of a NURBS or parameter
+value a single record SLNN is to be entered which refers to the previously defined structural
+lineatSLN.Multipleknot-values(e.g. attheendsofacurve)canbeenteredinasinglerecord
+using multiplicities > 1. Within the first record the polynomial degree of a NURBS-curve can
+be set using parameter DEGR.
+When NURBS-curves are defined in SOFiMSHC knot vectors must always be given with mul-
+tipleknotsattheends(”clampedends”)withamultiplicityequaltothedegreeofthecurve. In
+the case that no knot-vector is given by the user, a uniform distribution is assumed internally.
+When defining interpolation curves, the local parameter values at each interpolation point can
+also be set explicitly using this record. This can be, for example, necessary when one wants
+to keep the parametrization between different curves consistent. In general cases however,
+it is better to not set these values always since SOFiMSHC optimizes the parametrization by
+default such that oscillation between the different interpolation points are minimized.
+SOFiSTiK2023 5-19SOFiMSHC|Definitionofstructuralelements
+5.10 SLNS – Supports and kinematic couplings on a SLN
+Seealso: SLN,SLNP
+SLNS
+Item Description Unit Default
+GRP Group number of the support −/LT AUTO
+AUTO detect automatically
+FIX Boundary / coupling conditions Lt28 -
+REFT Type of support / bedding LT >FIX
+>FIX absolute
+>SPT relative to a point
+>SLN relative to a line
++SAR, -SAR, *SAR:
+Interface
+REF Number of referenced element − -
+MNO Material number −/LT -
+AUTO detect automatically
+(cid:2)kN/m3(cid:3)
+CA Axial bedding 0.
+1097
+(cid:2)kN/m3(cid:3)
+CL Lateral (transversal) bedding 0.
+1097
+CD Torsional bedding [kN/rd] 0.
+1099
+KR Direction specifier −/Lt4 -
+DRX Explicit direction of support/bedding − 0.
+DRY − 0.
+DRZ − 0.
+DROT Rotation about beam axis deg 0.
+D Distance to interface element [m] 0.
+1001
+(REFT SAR)
+BFIX Width of support [m] 1.0
+1001
+FCTA Factor for beddings at start 1.0
+FCTE Factor for beddings at end − 1.0
+TYPE Type of generated element Lt4 -
+SPRI
+BOUN
+INTF
+5-20 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+Thisrecorddefinesboundaryconditions,elasticsupports,kinematiccouplingsorspecialinter-
+face elements for the most recently defined structural line at SLN. For a given structural line,
+multiplerecordsoftypeSLNScanbegiven,e.g. inordertodefineelasticboundaryconditions
+and fixed supports along the line in parallel.
+5.10.1 Supports and coupling conditions
+Supports or coupling conditions along the structural line can be defined at parameter FIX with
+theliteralsdescribedinsection2.6.1: Byprecedinga’L’totheliterals(e.g. LPXPY)thesupport
+conditions will be interpreted in the local coordinate system of the structural line. If multiple
+support and/or coupling conditions given, they will be superimposed accordingly.
+Local support conditions (e.g. LPZ) are primarily aligned according to the local coordinate
+system of the beam elements created along the structural line. This local orientation, however
+can also be set separately for this record using the parameters KR to DROT according to the
+description in section 5.10.3 below.
+In case that a number is given at REF a kinematic coupling is created to the referenced el-
+ement. All coupled degrees of freedom of the structural line are set equal to those of the
+reference element. A coupling condition can be defined to a structural point (REFT >SPT) or
+astructuralline(REFT >SLN).Inthelattercase,boththegivenandthereferencedlinewillbe
+subdivided equally and the respective nodes will be connected with the given condition. Kine-
+maticcouplingsofwarpingtorsion(MB)betweentwostructurallinesarenotallowed. Basically,
+couplingconditionsaredefinedwiththesameliteralsassupportconditions,whichcanalsobe
+combined, e.g. FIX PXPY. Further information about couplings can be found in section 2.6.2.
+5.10.2 Elastic beddings and spring elements
+Instead of coupling or support conditions the given record also allows to create boundary el-
+ements with elastic bedding or spring elements along the given structural line by setting one
+of the parameters at CA to CD or a material number at MNO. In contrast to individual spring
+elements, a boundary element defines a continuous bedding along the line which interpo-
+lates the displacements between the finite element nodes. If only linear parameters are given,
+SOFiMSHCgeneratesbasicallyboundaryelements. Incaseofnon-linearparameters(usually
+given by the material) or in case of coupled structural lines, spring elements will be created
+along the structural line. The generation of beddings and spring elements can be further con-
+trolled by setting the global parameter STEU LSUP.
+Basically,aspringoraboundaryelementcanbeassignedthreeparameters: axial(CA),lateral
+(CL) and/or rotational (CD) stiffness. These three parameters always refer to an explicit bed-
+dingorspringdirection. Anaxialbeddingactsradialintothisdirection,alateral(ortransversal)
+bedding in a plane perpendicular to it and a rotational bedding parameter creates a rotational
+stiffness around this direction. The bedding direction can be set by the user by specifying
+the parameters KR to DROT. If no direction is given, the spring or boundary elements will be
+aligned parallel to the structural line. SOFiMSHC provides following possibilities for setting
+directions of spring and boundary elements:
+Similar to coupling conditions, also linear or non-linear bedding conditions can be defined
+betweentwostructurallines,ifthenumerofareferencedlineisgivenatparameterREF.Inthis
+case, the given and the referenced line will be subdivided with the same number of nodes and
+springelementscreatedinbetween. IfnodirectionisgivenatKRtoDROT,thedirectionofthe
+SOFiSTiK2023 5-21SOFiMSHC|Definitionofstructuralelements
+spring elements is set to the direction between the referenced nodes.
+In the case that a material number is given at MNO, the spring constants will be calculated
+from the corresponding linear or non-linear elasticity properties of the material. BFIX can be
+set to adapt the material parameters to the width of the support. A negative value at the
+bedding parameters CA to CD allows to further scale the values calculated from the material.
+If the literal AUTO is set, SOFiMSHC automatically determines the material number from the
+adjacent structural area.
+5.10.3 Orientation of the elements
+Supports, coupling conditions and elastic beddings or spring elements can be locally aligned
+using the parameter KR,DRX,DRY,DRZ and DROT independant from the orientation of the
+structural line. Following possibilities exist:
+• AlignedaccordingtoglobaldirectionsBysettingoneoftheliteralsPOSX,POSY,POSZ
+or NEGX, NEGY, NEGZ at KR, the direction of spring elements or elastic beddings can be
+set according to one of the global coordinate axes X, Y or Z.
+• AligntootherstructuralelementKR{PT,LN,AR}NOUsingthisoption,thelocalorien-
+tationofthespringelementorthebeddingalongthestructurallinecanbealignedtowards
+another structural element.
+Following possibilities exist:
+KR PT: align towards a structural point
+KR LN: align towards a structrual line
+KR AR: align towards a structural area
+Thedirectionofeachbeamelementisdeterminedindividuallybycalculatingtheprojection
+onto the referenced structural item. If no projection exist, i.e. the distance is zero, the
+coordinate system of the referenced item is taken directly.
+• AdditionalrotationaboutlineaxisDROTInthecasethatanangleisgivenatDROT,the
+direction of spring elements or elastic beddings will be additionally rotated about the axis
+of the structural line.
+• Local direction specifier KR LOCX, LOCY, LOCZ (only spring elements) Using this
+option the direction of the axial springs can be switched between the local coordinate di-
+rections of the structural line. Default setting is KR LOCX. In this case, the spring direction
+will be aligned tangentially to the axis of the structural line. LOCY and LOCZ respectively
+allows to align the direction with one of the local coordinate axes perpendicular to the line.
+The local directions LOCY and LOCZ primarily refer to the local coordinate system (y- or
+z-axis) of the beam elements created along the structural line.
+If no beam coordinate system is given (e.g. line is boundary of a structural region), the
+directions refer to the coordinate system of the structural line itself.
+• Explicit direction vector at DRX, DRY, DRZ A vector given at DRX, DRY, DRZ allows to
+alignspringandboundaryelementswithanarbitraryglobaldirection. Anadditionalrotation
+of the springs using the parameter DROT is not possible in this case.
+5-22 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+5.10.4 Interface-elements
+The options { +-*} SAR at REFT allow to create coupled interface elements along the given
+structural line automatically. Depending on the sub-type at SAR, SOFiMSHC creates and sets
+ofinterfaceedgestooneorbothsidesofthelineanddisconnectsconnectedstructuralregions
+accordingly. The direction at DRX, DRY, DRZ or, if not given, the local z-axis of the structural
+line defines to which side connected lines and regions will be disconnected. Thereby three
+possibilities exist:
++SAR: a single interface edge is created in positive z-direction
+-SAR: a single interface edge is created in negative z-direction
+*SAR: two interface edges are created in both directions.
+If a distance is given at D a gap is created between the given and the interface line.
+SOFiMSHC creates spring elements between the coupled interface edges and assigns the
+linear bedding parameters given at CA to CD or possibly non-linear parameters if given at the
+material. The direction of the spring elements is always aligned perpendicular to the coupled
+lines.
+If parameter TYPE INTF is specified, SOFiMSHC will generate dedicated Rigid Frictional In-
+terface elements, which can currently be used in TALPA, for simulating non-linear contact in
+geotechnics.
+SOFiSTiK2023 5-23SOFiMSHC|Definitionofstructuralelements
+5.11 SLSC – Explicit sections on structural line
+Seealso: SLN
+SLSC
+Item Description Unit Default
+REF Reference LT STRT
+STRT Distance from Start of line
+END Distance from end of line
+MID Distance from mid
+XI Relative position between start and end
+[0;1]
+S Distance / Position m/− 0.0
+TYPM Type of section main bending LT SECT
+TYPT Type of section transverse bending LT SECT
+SECT Standard section
+CFAC Face of clamped support
+HFAC Face of hinged support
+IFAC Face of indirect support
+This record allows to define additional design sections along a structural line. These sections
+will always be placed at the same position independant from any element subdivision.
+As an example, the following input
++PROG SOFIMSHC
+HEAD
+...
+SLN 1 NPA ...
+SLSC REF STRT,END 15[cm] TYPM HFAC
+...
+END
+createstwoadditionalsectionsatadistanceof15cmfrombothendsatthelocationofsupport
+faces of connected columns. These sections will be evaluated during reinforcement design in
+AQBwhere,accordingtothetypeofthesectiondefinedatTYPMorTYPT,areducedmoment
+at the respective support is accounted for.
+Hint
+UsingtheglobaloptionCTRLBSEC,designsectionscanalsobeautomaticallygenerated
+along horizontal beam members at the support faces of connected columns and walls.
+5-24 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+5.12 SAR – Structural area
+Seealso: SARB,SPT,SLN
+SAR
+Item Description Unit Default
+NO Area number/ Type identifier −/LT 0
+PROP attribute region
+VOID opening
+FIX Boundary condition within the area LT8 *
+GRP Group number of elements in area − 0
+MNO Material number of QUADs in area − 0
+MRF Material number of reinforcement − 0
+REF Geometric reference on area SAR LT4 -
+NX Vector defining the upward direction of − *
+NY the area − *
+NZ − *
+NRA Formulation of elements (Bitmask) − 0/7
+0 geometry only
++1 plate action
++2 membrane action
++4 in-plane bending
+QREF Reference for elements LT CENT
+CENT centered
+ABOV in negative z direction
+BELO in positive z direction
+KR Direction identifier or LT/− *
+DRX explicit direction vector of the local − -
+DRY element coordinate system − -
+DRZ see remarks − -
+DROT Rotation angle [deg] 0.0
+T Constant thickness override [mm] *
+1010
+TX Orthotropic thickness [mm] T
+1010
+TY Othotropic thickness [mm] T
+1010
+TXY Orthotropic thickness cross [mm] T
+1010
+TD Orthotropic thickness torsion [mm] T
+1010
+Tablecontinuedonnextpage.
+SOFiSTiK2023 5-25SOFiMSHC|Definitionofstructuralelements
+Item Description Unit Default
+(cid:2)kN/m3(cid:3)
+CB Factor(negative)orbeddingmodulusfornormalsub- -1
+1097
+grade bedding
+(cid:2)kN/m3(cid:3)
+CT Factor (negative) or bedding modulus for transverse -1
+1097
+subgrade bedding
+MCTL Meshing control 0
+AUTO Automatic meshing
+REGM Regular Mesh if possible
+SNGQ Mesh as single quad
+OFF Deactivate meshing
+Mesh density:
+H1 - for the whole region [m] -
+1001
+H2 - at points inside the region [m] -
+1001
+H3 Minimum thickness of elements within the structured [m] -
+1001
+boundary layer mesh defined with DFIX (→ SARB)
+XFLG Disable automatic intersection LT -
+TITL Title of region Lt32 -
+The given record defines a structural area, a two-dimensional arbitrarily shaped region
+which can be meshed with triangular or quadrilateral elements. If no identifier NO is given,
+SOFiMSHC assigns one automatically. A negative identifier changes the existing definition of
+a previously defined record.
+Two special literals (PROP, VOID) indicate that the record defines an attribute region or an
+opening instead of a regular area. These special type of regions can be placed arbitrarily
+within the model on top of other surfaces in order to change selected properties locally or to
+create openings. They will not be meshed for themself. SOFiMSHC intersects these regions
+geometricallywith otherstructuralregions andchangesthe givenpropertiesin theintersected
+part or cuts out an opening respectively.
+In addition to changing the properties the elements within an attribute region can also be
+assigned to a secondary group (see record GRP). For this the secondary group identifier,
+given as text string of at most four characters, has to be set at parameter GRP. In this case,
+all elements remain in the primary group defined for the original structural area and will be
+additionally assigned to the secondary group of the attribute region.
+The shape of a structural region is defined by its boundary and possibly a geometric surface
+description. Avalidregionrequiresatleastoneclosedloopofouterboundarycurveswhichare
+defined by following SARB records. Inner boundaries may be added to create openings. For
+morecomplexgeometricshapesanadditionalsurfacedefinitionisneededinordertodescribe
+the geometry inside the outer boundary. This geometry can be either defined by referencing
+a GAR record at REF or by adding succeding SARP records describing points on the surface.
+5-26 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+In most cases however, an explicit geometry is not necessary as SOFiMSHC determines it
+automatically on basis of the boundary description.
+The orientation of a structural region is basically defined by specifying a normal direction at
+NX,NY,NZ. This direction defines the local z-axis of all plane elements created on the struc-
+tural region, which are oriented to the opposite side of the normal. It can be entered only
+approximatelybytheuser,onlyspecifyingthesideasSOFiMSHCcalculatesitsexactdirection
+according to the given geometry afterwards.
+The orientation of the elements within the structural region can be specified by different meth-
+ods. By default, the local x-axis of the plane-elements will be aligned:
+• Explicit direction vector at DRX,DRY,DRZ
+A direction vector at DRX, DRY, DRZ defines a direction to which the local x-axis of all
+plane elements created on the structural region will be aligned. This direction must not be
+defined perpendicular to the surface, as no uniqe direction can be determined in this case
+then.
+By setting one of the literals RADI or TANG at KR it can be further specified which of the
+two local coordinate axes x or y is to be aligned.
+• Predefined directions using a literal at KR
+Instead of an explicit direction, the user may also enter one of the literals POSX, POSY,
+POSZ,NEGX,NEGYorNEGZatKRinordertoalignthelocalx-axiswithoneofthegiven
+global directions.
+Moreover, the local x-axis may also be aligned within one of the global coordinate planes
+by entering:
+KR = XY, YX: align x within global XY-plane in X- resp. Y-direction
+KR = YZ, ZY: align x within global YZ-plane in Y- resp. Z-direction
+KR = ZX, XZ: align x within global ZX-plane in Z- resp. X-direction
+• Align to other structural element KR { PT,LN,AR} DRX
+Using this option, the local x-axis of the area elements on the structural region can be
+alignedtowardsanotherstructuralelementwhosenumbermustbegivenatDRX.Following
+possibilities exist:
+KR PT: align towards a structural point
+KR LN: align towards a structrual line
+KR AR: align towards a structural area
+The direction of each area element is determined individually by calculating the projection
+onto the referenced structural item. If no projection exist, i.e. the distance is zero, the
+coordinate system of the referenced item is taken directly.
+Inordertoalignthelocaly-axis,thelocalcoordinatesystemcanberotatedby90degrees.
+• additional rotation about beam axis at DROT By setting an angle for DROT the local
+coordinate system of each plane element will be additionally rotated about its local z-axis.
+The thickness of the elements in a structural region can be defined by setting the parameter
+T. If no thickness is given, it will be set to a constant value of 1.0 m. In addition to a constant
+distribution of the thickness, SOFiMSHC also allows to define varying thicknesses within a
+region. Therefor two possibilities exist:
+SOFiSTiK2023 5-27SOFiMSHC|Definitionofstructuralelements
+• Thickness at boundary edges in record SARB: By setting the thickness value at the outer
+boundary edges of a region, a varying thickness can be defined.
+• Thickness at structural points within the region: For this, structural points with thickness
+properties (SPT ... T) can be defined within or on the boundary of the region in order
+to describe a variable thickness distribution. Since one of these points may be shared
+by multiple structural regions, the region thickness value at SAR must be set explicitly to
+T=0.0 in order to activate this setting. Only structural points with no additional geometric
+informationlikecolumnsizesetc. willbeconsideredincalculatingthethicknessdistribution.
+In both cases a least square method is applied, which interpolates the thickness values at the
+support points or lines. In most cases this interpolation reduces to a planar distribution of the
+thicknessvaluesacrosstheregion,butmayalsobehigherpolynomialinthecasethatahigher
+number of support points is given.
+Different stiffnesses in different local directions can be defined by setting orthotroptic thick-
+ness values (TX, TY, TXY, TD). An average thickness T should be given which will is used for
+calculating masses etc.
+Meshingoftheregioncanbecontrolledusingageneralparameteranddifferentdensityvalues.
+By setting MCTL=REGM SOFiMSHC tries to create a regular (structured) mesh on structural
+regions with 4 boundary edges. The structured mesh is created as long as the ratio of edges
+and angles corresponds approximately to a rectangular shape. By default, a unstructured
+mesh consisting of quadrilateral or triangular elements is created. The parameter H1 sets the
+element size within the region overwriting the global setting in CTRL HMIN. The value given
+at H1 defines the maximum length of an element edge. Additionally, H2 can be set to create
+refinements around structural points inside the region.
+BysettingMCTL=SNGQthestructuralregionwillbeconvertedintoasinglequadelement. The
+regionshouldhaveatriangularorquadrilateralstructure. Thisoptionisusefulfordefiningload
+distribution areas whose stiffness is deactivated using NRA=0. Since no nodes are created in
+the interior of the region, problems with large deflections might not occur.
+Option XFLG allows to prevent the automatic intersection of the given structural region with
+other structural elements. The following options are provided, which can also be combined:
+• ’P’ Structural points will no longer be automatically added as constraining points to the
+region.
+• ’L’ Other structural lines will no longer be automatically added as constraining lines to the
+region.
+• ’A’ The structural region will not be intersected with other structural regions. I.e. no inter-
+sectionlineswillbecreatedautomatically. Twostructuralregionscanbeplacedparallelon
+top of each other without warning.
+Pleasenotethattheabovementionedoptionsonlyapplytotheinternalofthestructuralregion.
+Theywillnotapplytoedgesandpointsontheboundary. Inthecasethattheuseralsowantsto
+prevent intersection on the boundary, he has to create the lines and points with the respective
+settings explicitly.
+IndependentlyfromthesettingsinXFLGitwillalwaysbepossibletoaddsinglestructuralpoints
+and lines as constraining points and lines explicitly to the region using the command SARB
+5-28 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+CONS. Contrary to the default behaviour of SOFiMSHC, this allows to add only a selection of
+structural elements as constraints to a region.
+SOFiSTiK2023 5-29SOFiMSHC|Definitionofstructuralelements
+5.13 SARB – Structural area boundaries and constraints
+Seealso: SAR,SLN
+SARB
+Item Description Unit Default
+TYPE Type of boundary LT OUT
+OUT outer boundary
+IN inner boundary
+CONS inner constraint
+NL Number of a geometric line − 0
+NP Number of a geometric point − 0
+NA number of start point − *
+NE number of end point − *
+T Thickness of the area in this boundary [Lt16/mm] *
+1010
+MNO Material number of the boundary − 0
+FIX Hinge condition of boundary LT -
+DFIX Distance to boundary m 0
+(cid:2)kN/m2(cid:3)
+CA Axial bedding 0
+1096
+(cid:2)kN/m2(cid:3)
+CL Lateral bedding 0
+1096
+CD Torsional bedding [kNm/rd∗m] 0
+1099
+VAXI IDoftheaxisonwhichavariablethicknessisdefined Lt4 -
+This record describes one single edge of an outer or inner boundary of a preceding structural
+region defined at SAR. A valid structural region requires at least one closed loop of outer
+boundary edges but may also have a number of inner boundaries to describe openings or
+constraining edges. The edge can be given as reference to a structural line SLN or can be
+established directly by adding subsequent SLNB or SLNP records.
+Inthe case, that noouter boundaryis explicitlygiven fora structuralarea, SOFiMSHC creates
+the edges on the boundary automatically on basis of the underlying geometric surface defini-
+tion, if one exists. This option is especially helpful when defining rotational (SARR) and free
+form surfaces (SARP).
+The edges of the boundaries can be entered in any sequence and orientation. SOFiMSHC
+sorts and connects the edges, provided that common end points exist and a closed sequence
+of edges can be found.
+Additional point or line constraints in the interior of the domain may be defined for supports,
+columns or other selected points using TYPE CONS. As SOFiMSHC however, automatically
+incorporates points and lines lying inside a region as constraint, there is usually no need for
+thisoption. Onlyincases,wheretheautomaticdetectionfails,itcanbeusefultoaddpointsor
+5-30 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+lines as constraints explicitly.
+For boundary edges and constraining points a thickness may be set at T in order to define
+a varying thickness distribution over the structural region. The thickness is approximated be-
+tween the given points and lines using a least squares method. Depending on the number of
+definition points linear and higher polynomial distributions of the thickness are possible. If the
+thickness is given at boundary edges, the general thickness of the region at SAR must be set
+explicitly to ’0’.
+Alternatively, it is possible to define the thickness along a boundary line as a variable along
+an axis, specified at parameter VAXI. In this case, the name of the variable is specified in
+parameter T, as a literal. This feature may be used to define a bridge deck, with a variable
+thickness distribution along its axis.
+Hinge-andbeddingconditionscanbedefinedforouterandinneredges. Hingeconditionsare
+defined at FIX, where the literals PX, PY, PZ, MX, MY, MZ which can also be combined are
+possible and which defines the respective local degree of freedom to be released. In order
+to define bedding conditions on the boundary, linear bedding constants can be given at CA,
+CL and CD for axial, transversal and rotational bedding or a material at MAT which allows to
+define also non-linear conditions. When boundary conditions are defined, additional edges
+will be created in the interior of the region and connected with the respective boundary. If a
+distance is given at DFIX, these internal edges will be additionally set off with a small gap to
+the interior of the region.
+SOFiSTiK2023 5-31SOFiMSHC|Definitionofstructuralelements
+5.14 SARR – Rotational and sweep surfaces
+Seealso: SAR
+SARR
+Item Description Unit Default
+Type Type of Structural surface geometry Lt4 ROTA
+ROTA Surface of revolution
+SWEE Sweep-surface
+GID1 First generating curve −/Lt4 *
+GID2 Second generating curve −/Lt4 -
+X Reference point [m] 0.0
+1001
+Y [m] 0.0
+1001
+Z [m] 0.0
+1001
+NX Direction vector − *
+NY − *
+NZ − *
+UMIN Start parameter in u-direction − *
+UMAX End parameter in u-direction − *
+VMIN Start parameter in v-direction deg 0.
+VMAX End parameter in v-direction deg *
+The given record SARR defines the geometry of rotational or sweep-surfaces. The record is
+a property record and refers to the directly preceding definition of a structural area SAR. Only
+one record SARR is allowed or each structural area.
+The following types of geometry can be described with this record:
+• ROTA: Surface of revolution A given structural line or geometric curve GID1 is rotated
+about a straight axis in space. The rotation axis is defined by a point at X,Y,Z and a direc-
+tionvector at NX,NY,NZ.
+The parameters UMIN and UMAX define the extends of the surface in meridian direction
+along the generating curve GID1. If nothing is given, the whole curve GID1 is taken.
+TheextendoftherotationangleindegreeisdefinedusingtheparamtersVMINandVMAX.
+If nothing is given, the parameters default to an angle from 0 to 180 degree.
+Important: Inordertoavoidambiguityinnumericaloperations,surfacesofrevolutionshould
+neverbedefinedasclosedsurfacewitharotationanglefromeg. 0to360degree. Inthese
+cases it is recommended to create two halfshells with angles from 0 to 180 degree and 0
+to -180 degree respectively.
+• SWEE: Sweep-Surface
+A structural line or geometric curve GID1 is swept along a so called trajectory curve GID2.
+Instead of the trajectory curve, a direction vector can be given at NX,NY,NZ along which
+5-32 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+the generating curve GID1 is moved.
+The parameters UMIN and UMAX define the extend of the surface along the trajectory
+curveGID2orthedirectionvector,respectively. Ifnothingisgivenhere,thewholecurveor
+the length of the direction vector is used.
+The parameters VMIN and VMAX define the extend of the surface along the generating
+curve GID1.
+In general cases, there is no need to define the boundary edges of the structural area explic-
+itly, when rotational or sweep surfaces are defined with this record. SOFiMSHC creates the
+edges automatically at the boundary of the geometry surface. Only in cases if openings or
+constraining edges should be defined or the boundary of the structural area does not coincide
+with the extends of the geometric surface, the boundary edges have to be defined explicitly
+using records of type SARB.
+SOFiSTiK2023 5-33SOFiMSHC|Definitionofstructuralelements
+5.15 SARP – 3D Surface data point
+Seealso: SAR,SARN
+SARP
+Item Description Unit Default
+TYPE Type of data point Lt -
+M Position in u-direction { 1,...} − !
+N Position in v-direction { 1,...} − !
+X X-coordinate [m] 0.
+1001
+Y Y-coordinate [m] 0.
+1001
+Z Z-coordinate [m] 0.
+1001
+W Weight of control-point (TYPE NURB) − 1.0
+T Thickness of plate at point (currently not supported) [mm] -
+1010
+With records of type SARP an arbitrary freeform surface geometry can be defined for a pre-
+cedingstructuralregionatSAR.AsinglerecordSARPdescribesonepointonthesurface. The
+points will be usually given in a m x n-grid like pattern.
+Depending on the parameter TYPE, following types of surface geometries can be defined:
+• SPLI: Bicubic interpolation
+The given data points will be interpolated by a bicubic spline surface. The points must be
+given in a m x n-grid like pattern.
+• NURB: Nurbs surface
+The given data points correspond to the control points of a NURBS surface. The points
+mustbegiveninamxn-gridlikepattern. Inordertodescribenon-rationalNURBS-surfaces
+(e.g. rotationalorsphericalsurfaces),eachpointcanalsobeassignedaweightW< >1.0.
+Additional information about the definition of NURBS curves and surfaces can be found in
+chapter 2 of this manual.
+In general cases, there is no need to define the boundary edges of the structural area explic-
+itly, when a freeform surface geometry is defined with this record. SOFiMSHC creates the
+edges automatically at the boundary of the geometry surface. Only in cases if openings or
+constraining edges should be defined or the boundary of the structural area does not coincide
+with the extends of the geometric surface, the boundary edges have to be defined explicitly
+using records of type SARB.
+5-34 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+5.16 SARC – Coons-Patch surfaces
+Seealso: SAR
+SARC
+Item Description Unit Default
+TYPE Type of surface interpolation Lt BLIN
+SOFiMSHCallowstocreatecurvedstructuralareasonlybydefinitionofanouterboundary. In
+thesecases-iftheuserhasnotexplicitlydefinedthegeometryofthearea(SARR,SARP)-the
+surface geometry is interpolated from the pairwise opposite boundary curves (Coons-Patch or
+Gordon-Surfaces). With this record the type of this interpolation can be set:
+• BLIN:bilinearinterpolationThesurfacegeometryisdefinedbylinearinterpolationofoppo-
+site boundary curves
+• BCUB: bicubic interpolation A bicubic interpolation also considers the inclinations of the
+boundary cuves. This allows to define surfaces with smooth transitions between adjacent
+structural areas.
+SOFiMSHC automatically performs a linear interpolation of the boundary edges, if the edges
+are not lying within a plane and no surface geometry has been set explicitly. Thus, this record
+must only be given if a cubic interpolation is desired.
+InordertoperformaCoons-Patchinterpolation,atleastthreeclosedboundaryedgesmustbe
+given. If more than four edges are given, they will be joined conveniently.
+SOFiSTiK2023 5-35SOFiMSHC|Definitionofstructuralelements
+5.17 SARS – Support and coupling of structural areas
+Seealso: SAR,SLNS
+SARS
+Item Description Unit Default
+REFT Type of support / bedding LT >FIX
+>FIX Use of fixed supports
+>SAR Coupling with another surface
+REF Number of the referred element − -
+FIX Support / kinematic coupling Lt28 -
+(cid:2)kN/m3(cid:3)
+CA Axial bedding 0.0
+1097
+(cid:2)kN/m3(cid:3)
+CL Lateral (transvere) bedding 0.0
+1097
+GRP Group number of the support / coupling elements − -
+MNO Material number − -
+RCTL Control parameter for surface coupling − 1
+0 Generatemeshindependentofthereferred
+surface
++1 Ifpossible,generatethesamemeshasthat
+of the referred surface
+This record defines boundary conditions, kinematic or elastic couplings for the last defined
+structural area SAR.
+5.17.1 Boundary conditions
+If option FIX is specified at REFT and no reference surface is defined at REF, the resulting
+boundary conditions are those of a fixed support. In this case, there is the possibility to define
+an axial bedding perpendicular to the surface and a lateral bedding within the surface plane,
+using the parameters CA and CL. Alternatively, a fixed support can be defined by specifying
+thecorrespondingdegreesoffreedomusingFIX.Localdegreesoffreedom(e.g. ’LPXPY’)are
+consideredinthelocalcoordinatesystemofthestructuralarea. Rotationaldegreesoffreedom
+are ignored.
+In contrast to parameters CB, CT of the structural area record SAR, which are processed
+as bedding constants during quad element generation, with this record spring elements with
+the corresponding constants are created. The properties of the spring elements are scaled
+according to their area of influence, in order to achieve a uniform bedding effect across the
+structural area. The spring elements, as well as the fixed supports, can be assigned to a
+group, regardless of the group of the structural area.
+5-36 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+5.17.2 Coupling of structural areas
+With the input of option >SAR at REFT and a number at REF, it is possible to couple two
+structural areas with each other, as in the following example:
++PROG SOFIMSHC
+HEAD
+...
+SAR 1 T 200 ...
+SARB OUT ...
+SARS REFT >SAR 2 CA 10000.0 CL 1000.0
+...
+END
+In this example, structural area 1 is coupled with structural area 2 and an elastic bedding is
+generated between the two, with an axial stiffness of 10000.0 kN/m3 and a lateral stiffness
+of 1000.0 kN/m3. The bedding is modeled by means of individual spring elements between
+corresponding nodes, which are then scaled according to their area of influence.
+Bydefault,ifthegeometryofthestructuralareasallowsit,theresultingmeshesofthecoupled
+areas will have the same pattern of subdivision, so that every node of the generated mesh
+can be coupled with a node of the reference mesh. This behavior can be disabled with the
+use of parameter RCTL. In case that, due to the areas’ geometry or use of RCTL, such a
+correspondence does not exist for the two meshes, the kinematic coupling will be generated
+directly on the reference area, if necessary.
+SOFiSTiK2023 5-37SOFiMSHC|Definitionofstructuralelements
+5.18 SVO – Structural volume
+Seealso: SVOB
+SVO
+Item Description Unit Default
+NO Number of structural volume − *
+FIX Boundary condition within the volume LT *
+GRP Group number of volume elements − 0
+MNO Material number of volume elements − 0
+MRF Material number of reinforcement − 0
+TYPE Type of element LT TET
+TET Unstructured tetrahedral mesh
+TITL Title of volume Lt32 -
+Thisrecorddefinesastructuralvolume,whichcanbemeshedwithvolumetricelements(Tetra-
+hedrons). The geometry of the volume is defined by succeding records of type SVOB. By
+entering a negative number, the properties of an existing structural volume can be changed.
+This record allows to generate an unstructured mesh consisting of tetrahedral elements. The
+numerical quality of tetrahedrons however are inferior to hexahedral elements. A generation
+of a structured hexahedral mesh can be carried out within SOFiMSHA by extrusion, lofting
+and interpolation of 2D quad meshes. See records SOFIMSHA: EXTR, SOFIMSHA: LOFT,
+SOFIMSHA: BRIC for additional details.
+An unstructured tetrahedral mesh can also be defined using record SOFIMSHA: UMSH in
+SOFiMSHA. This records provides additional means to define the volume to be meshed and
+its enclosing surfaces.
+5-38 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+5.19 SVOB – Boundary surfaces of a structural volume
+Seealso: SVO
+SVOB
+Item Description Unit Default
+TYPE Type of surface LT OUT
+OUT Outer surface
+NO Number of structural area SAR − !
+This record defines boundary surfaces of a structural volume. This record is a property record
+and refers to the lastly defined structural volume at SVO. For an unstructured meshing with
+tetrahedrons, the surfaces of the structural volume must form a closed shell.
+SOFiSTiK2023 5-39SOFiMSHC|Definitionofstructuralelements
+5.20 GUID – Globally Unique Identifier
+Seealso: SPT,,SLN,SAR,SVO
+GUID
+Item Description Unit Default
+ID 128 bit code given as hexadecimal string Lt !
+This record allows to assign a Globally Unique Identifier to a structural element. A Globally
+Unique Identifier (GUID) is a worldwide unique reference number usually stored as 128-bit
+integer,whichisprimarilyusedfortheuniqueidentificationofobjects,whendataisexchanged
+between different computer systems. It must be given at parameter ID as hexadecimal string,
+like for example:
++PROG SOFIMSHC
+HEAD
+...
+GUID ID '3F5A9ECC-145B-4093-9D16-E6F48732F569'
+...
+END
+The GUID is a property record and must be given directly after the definition of the structural
+elementatSPT,SLN,SARorSVO.GUIDswillbeassignedtoallstructuralelementsexported
+from SOFiPLUS or Autodesk Revit Structural. When describing the model using the CADINP
+language in text mode, it is usually not necessary to set a GUID.
+5-40 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+5.21 BBOX – Bounding box
+Seealso: XSUB,GRP
+BBOX
+Item Description Unit Default
+XMIN Minimum coordinates [m] -1.e10
+1001
+YMIN [m] -1.e10
+1001
+ZMIN [m] -1.e10
+1001
+XMAX Maximum coordinates [m] 1.e10
+1001
+YMAX [m] 1.e10
+1001
+ZMAX [m] 1.e10
+1001
+This record defines as rectangular bounding box for the selection of structural elements. The
+record can be used for selecting the elements of a subsystem (see XSUB) or as secondary
+group (see GRP).
+SOFiSTiK2023 5-41SOFiMSHC|Definitionofstructuralelements
+5.22 SLVL – Storey levels
+Seealso: XSUB,GRP
+SLVL
+Item Description Unit Default
+NO Option: Lt4 -
+DEL delete all levels
+ZLVL Storey elevation (upwards positive) [m] !
+1006
+TITL Designation of storey level Lt32 *
+This record defines the storey levels for a multi-storey building. The ZLVL axis has its origin at
+theglobalcoordinatesystemoriginandalwayspointsupwards(opposedtogravity),seefigure
+5.2.
+LVL3
+Shearforce
+h3
+drift
+LVL2
+Shearforce
+u
+h2
+LVL1
+Shearforce
+ZLVL h1
+LVL0(baselevel)
+G
+Figure5.2: Definitionofstoreysinamulti-storeybuilding
+Hint
+The definition of storey levels requires the gravity direction to be aligned with the global
+Z-coordinate axis (positive or negative); lateral storey extension is associated with global
+coordinates in X- and Y-direction.
+Storeylevelswillbeautomaticallyassignedauniquenumber,userinputisnotsupported. Ifthe
+literal ’DEL’ is given at NO, all previously defined storey levels will be deleted from the system.
+Formoreinformationaboutstoreylevelsandrelatedfunctionality,pleaserefertoSectionStorey
+Analysis in the manual FEABENCH: storeys.
+5-42 SOFiSTiK2023Definitionofstructuralelements|SOFiMSHC
+5.23 SRES – Predefined Result Sets
+SRES
+Item Description Unit Default
+TYPE Type of predefined RSET Lt4 NONE
+NONE
+BEAR Elastic Bearing at Node
+ID Identifier Lt4 -
+TITL Designation Lt32 *
+With the use of SRES, it is possible to define Result Sets of predefined structure and proper-
+ties,whichcorrespondtoaspecificmodelingentityorconcept. Incontrasttothefreestructure
+of the RSETs, which can be defined in SOFiMSHA, the items of predefined RSETs are auto-
+matically generated, based on the type of the RSET, as well as the structural elements that
+are associated with it. The definition of a predefined RSET is initiated by a header record,
+which specifies the ID and type of the generated RSET, followed by the records of the asso-
+ciated structural elements. The termination of the RSET is done automatically, when a new
+command is issued, or by using an empty SRES record. Currently, the following types of
+predefined Result Sets are supported:
+5.23.1 BEAR - Elastic Bearing at Node
+This predefined RSET can be used for sets of spring elements that act on a node, as in the
+common case of bridge bearings. A number of following SPTS records are expected after
+the SRES record, which correspond to the springs that act on different directions at the bear-
+ing. The individual springs are allowed to have either an axial or a rotational stiffness. The
+generated RSET contains one force and one displacement item per spring.
+Example:
++PROG SOFIMSHC
+HEAD
+...
+SPT NR 1 X 0 Y 0 Z 0
+SRES TYPE 'BEAR' ID 'BR01' TITL 'Bearing at Node 1'
+SPTS TYPE 'CX' CP 1000
+SPTS TYPE 'CY' CP 1000
+SPTS TYPE 'CZ' CP 1000
+SPTS TYPE 'CX' CM 1000
+SPTS TYPE 'CY' CM 1000
+SPTS TYPE 'CZ' CM 1000
+...
+END
+SOFiSTiK2023 5-43SOFiMSHC|Definitionofstructuralelements
+With the above input, an RSET of 12 items will be generated: 3 forces, 3 moments, 3 dis-
+placements and 3 rotations, referring to the support springs of Node 1, with respect to its local
+coordinate system.
+5-44 SOFiSTiK2023Bibliography |SOFiMSHC
+Bibliography
+[1] M. Schweingruber E. Rank M. Rücker. Automatische Generierung von Finite-Element-
+Netzen. Bauingenieur Heft 10, 1994.
+[2] Joachim Schöberl. NETGEN - An advancing front 2D/3D-mesh generator based on ab-
+stractrules.Comput.Visual.Sci,1:41-52.SoftwareavailableundertheLesser-Gnu-Public-
+Licence (LGPL), 1997.
+[3] G. Farin. Curves and Surfaces for Computer-Aided Geometric Design. Academic Press,
+San Diego, 1996.
+[4] L.PieglandW.Tiller.TheNURBSBook,MonographsinVisualCommunication.Springer,
+Berlin, 1997.
+SOFiSTiK2023 5-45
