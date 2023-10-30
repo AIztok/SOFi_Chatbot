@@ -1,0 +1,979 @@
+!#!Info Example:    Static of a Road Bridge
+!#!Info Program:    BEMESS
+!#!Info  Keyword:   temperature; settlement; prestress; tendon; Design; traffic
+
+$ Overview exapmles see file   german_din_fb_slab.dat
+
+!#!Kapitel System
++PROG AQUA urs:1
+HEAD Materials and Cross Sections
+CTRL REST 1
+ECHO MAT,SECT FULL
+$PAGE FORM 2
+NORM 'NS' 'en199X-200X-BRIDGE'     CAT 'B'  $ road bridges
+CONC  1    C    40  $ = C40/50
+STEE  2    S 500   $ standard reinforcement steel 500
+STEE  7    S  '235' $ TMAX  0 $ structural steel for tubes, rolled steel ...
+STEE 11    Y '1860A' $ prestessing steel
+                    $ fp0,1k = 1600 N/mm2
+                    $ fpk    = 1860 N/mm2
+                    $            0.8*fpk    = 0.80*1860 = 1488 N/mm2
+                    $            0.9*fp0,1k = 0.90*1600 = 1440 N/mm2
+                    $ sigp,max = min(1488,1440)         = 1440 N/mm2 EN-1992-1-1 5.10.2.1(1) maximum stress
+                    $ sigp,SLS = 0.65*fpk   = 0.65*1860 = 1209 N/mm2 EN-1992-1-1 7.2(5)      on traffic opening permanent
+                    $ sigp,rare= sigp,max
+END
+
++PROG SOFIMSHA urs:2
+HEAD Road Bridge as FE-Slab acc. EN 1992-1-1
+$ The input of the statical system is - compared with the effort
+$ Of the proofs - the least problem.
+$ In order to show other ways of the input - in this case the slab is entered with a
+$ raster formed elementing in SOFISHA.
+$ The advantage of SOFIMSHA is that the node numbers can randomly be given out by the program
+$ And only the compulsory points (bearing, edges) need to be defined with fixed numbers.
+$ The inner nodes of the meshes are undetermined at first.
+$ Tn the case of a different element division the numbering of the edge nodes
+$ does not need to be changed!
+UNIT 0 $ m fest
+SYST SPAC GDIR POSZ GDIV 1000
+ECHO FULL NO ; ECHO SYST YES
+NODE  1 X  0   8 0 $ left lower edge of the slab
+NODE  8 X 11  -8 0 $ left upper edge of the slab
+NODE NO NR1 NR2    Y
+      2   1   8   6.50 $ Edge of haunch
+      3   1   8   5.50 $ Bearing axis 1
+      4   1   8   2.50 $ Bearing axis 2
+      5   1   8  -2.50 $ Bearing axis 3
+      6   1   8  -5.50 $ Bearing axis 4
+      7   1   8  -6.50 $ Edge of haunch
+TRAN NODE FROM 1 TO 8 DNO 100 DX 0.80
+TRAN NODE FROM 1 TO 8 DNO 200 DX 0.80+20.0
+TRAN NODE FROM 1 TO 8 DNO 300 DX 0.80+20.0+0.80
+let#1 0.20 $ Thickness at cantilever end
+let#2 0.40 $ Thickness at cantilever section
+let#3 0.80 $ Thick slab area
+QUAD N1  N2  N3  N4  M  N T1 T2 T3 T4 MNO=1 MRF=2 POSI=BELO
+      1 101 102   2  1  2 #1 #1 #2 #2 $ Cantilever
+    101 201 202 102 12  2 #1 #1 #2 #2 $ Cantilever
+    201 301 302 202  1  2 #1 #1 #2 #2 $ Cantilever
+$
+      2 102 103   3  1  2 #3 #3 #3 #3 $
+    102 202 203 103 12  2 #3 #3 #3 #3 $
+    202 302 303 203  1  2 #3 #3 #3 #3 $
+$
+      3 103 104   4  1  3 #3 #3 #3 #3 $
+    103 203 204 104 12  3 #3 #3 #3 #3 $
+    203 303 304 204  1  3 #3 #3 #3 #3 $
+$
+      4 104 105   5  1  4 #3 #3 #3 #3 $
+    104 204 205 105 12  4 #3 #3 #3 #3 $
+    204 304 305 205  1  4 #3 #3 #3 #3 $
+$
+      5 105 106   6  1  3 #3 #3 #3 #3 $
+    105 205 206 106 12  3 #3 #3 #3 #3 $
+    205 305 306 206  1  3 #3 #3 #3 #3 $
+$
+      6 106 107   7  1  2 #3 #3 #3 #3 $
+    106 206 207 107 12  2 #3 #3 #3 #3 $
+    206 306 307 207  1  2 #3 #3 #3 #3 $
+$
+      7 107 108   8  1  2 #2 #2 #1 #1 $ Cantilever
+    107 207 208 108 12  2 #2 #2 #1 #1 $ Cantilever
+    207 307 308 208  1  2 #2 #2 #1 #1 $ Cantilever
+$
+SPRI NO NA DZ=1 CP=1E6 CT=1 $ Floating bearing on 2*4 bearings
+    103 103
+    104 104
+    105 105
+    106 106
+    203 203
+    204 204
+    205 205
+    206 206
+$
+END
+
+!#!Kapitel Loading, Prestress
++PROG SOFILOAD urs:3
+HEAD actions and loads
+$ actions bridge design
+$ All actions should be defined here.
+$ This can be done in a separate SOFILOAD run as shown here.
+UNIT 5 $ units: sections in mm, geometry+loads in m
+ECHO ACT Full $ Please check GAMU factors, especially for L_U and L_T (in germany GAMU 1.35)
+ACT G_1                                                              TITL 'dead load'
+ACT G_2                                                              TITL 'dead load'
+ACT P   GAMU 1.00 GAMF 1.00  PSI0 1.00 PSI1 1.00 PSI2 1.00           TITL 'prestress'
+ACT C                                                                TITL 'C+S'
+ACT ZC  GAMU 1.00 1 SUP PERM PSI0 1.00 PSI1 1.00 PSI2 1.00           TITL '                            life load creep part'
+ACT L_T GAMU   -  0 SUP EXCL PSI0 0.75 PSI1 0.75 PSI2 0.20 PS1S    - TITL 'TS Tandemsystem'
+ACT L_U GAMU   -  0 SUP COND PSI0 0.40 PSI1 0.40 PSI2 0.20 PS1S    - TITL 'UDL basic load'
+ACT L_1 GAMU 1.35 0 SUP EXCL PSI0 0.40 PSI1 0.40 PSI2 0.20 PS1S    - TITL 'UDL overload span 1'
+ACT L_2 GAMU 1.35 0 SUP EXCL PSI0 0.40 PSI1 0.40 PSI2 0.20 PS1S    - TITL 'UDL overload span 2'
+ACT L_3 GAMU 1.35 0 SUP EXCL PSI0 0.40 PSI1 0.40 PSI2 0.20 PS1S    - TITL 'UDL overload span 3'
+$ The GAMU and PSI factores are taken from the .ini file depending on the design code (-> check)
+$ You can also define them nanually here e.g. with:
+$ ACT L_T GAMU 1.35::1.50 0 SUP EXCL PSI0 0.75 PSI1 0.75 PSI2 0.20 PS1S    - TITL 'TS Tandemsystem'
+$ ACT L_U GAMU 1.35::1.50 0 SUP COND PSI0 0.40 PSI1 0.40 PSI2 0.20 PS1S    - TITL 'UDL basic load'
+  $ Superposition with ELLA traffic loading see more\csm31_design_ella.dat
+  $ here SUP COND=special case, since L_U is applied in MAXIMA/AQB without inter superposition!
+  $ L_1 with multiple UDL over loads in transvers direction needs EXCL, because only one to be taken
+ACT SL  GAMU 1.50 0 SUP COND PSI0 0.40 PSI1 0.40 PSI2 0.20 PS1S    - TITL 'loading during construction'
+$--------------------------------------------------------------------------
+ACT FAT GAMU 1.50 0 SUP EXCL PSI0 1 1 1                              TITL 'Fatigue LM3'
+ACT SF  GAMU 1.00 0 SUP EXCL PSI0 1 1 1                              TITL 'possible settlement'
+ACT ZF  GAMU 1.00 0 SUP EXCL PSI0 1 1 1                              TITL 'probable settlement'
+  $ Acc. DIN FB 101 - C.2.3 for settlements GAMA=1.00.
+ACT W                                                                TITL 'wind transvers'
+ACT T   GAMU 0.81 0 SUP EXCL PSI0 0.80 PSI1 0.60 PSI2 0.50 PS1S    - TITL 'temperatur'
+  $ In the ULS design you can usually take the temperature forces only with 60 %
+  $ because the concrete may crack and will have only 60% stiffness for the temperature effect in ULS.
+  $ Hence to simplify, set the ULS-gama-u value by 1.35 to 0.81 (0.81 = 1.35*0.60).
+  $ So: safety factor = 1.35 but only with factor 0.6 due to reduced stiffness (60% stiffness)
+  $---------------------------------------------------------------------------------------------------------
+ACT R   GAMU 1.5  0        SUP COND PSI0 1 1 1                              TITL 'earthpressure traffic'
+ACT B   GAMU 1.35 1 PART G SUP PERM PSI0 1 1 1                              TITL 'construction stage'
+$
+$ The signs SUP PERM,COND,EXCL are necessary and set itself according to
+$ the definition of traffic load cases:
+$    SUP EXCL - only one out of available load cases
+$    SUP CONC - all of the available load cases, if acting unfavourable
+           $ Meaning of PSI-Value:
+           $
+           $ Fraction :(1.00*Q-Leit + PSI0*Qki)*GAMU-GAMF
+           $
+           $ Rare    : 1.00*Q-Leit + PSI0*Qki
+           $ frequent: PSI1*Q-Leit + PSI2*Qki
+           $ quasi   : PSI2*Q-Leit + PSI2*Qki  =    PSI2*Q-all
+           $ not     : PSI1*Q-Leit + PSI1*Qki
+           $
+           $ to  : (ING-BAY-Buba-S.15)
+           $ See MAXIMA - theoretical basics
+$ G if as generic term effects G the under effects
+$ G_1 and G_2 combined! alike L the L_U plus L_T combined!
+$ not but Z the ZF and ZS, as no underline follows!
+$------------------------------------------------------------------------------------------------
+END
+END
+
+
+END
+$ Overview over the used Load case numbers:
+$  1-  99  Basic Load Cases see following Sofiload run
+$
+$500- 599  Possible intermediate superposition Traffic UDL case ABC
+$600- 699  Possible intermediate superposition Traffic Tandemsystem
+$
++PROG SOFILOAD URS:25
+HEAD
+UNIT 5 $ units: sections in mm, geometry+loads in m
+CTRL WARN 909  $ as some single loads are outside the bridge area
+let#L 32.60 $ Länge der Flächenlasten         $ Length of area loads
+LC   1 TYPE none FACD 1
+LC   2 TYPE none
+  QUAD GRP 0 TYPE PZZ P 0.12*25
+
+
+$ Load model 1 acc. EN 1991
+!*!Label UDL
+$ UDL basic load 3 kN/m2
+LC 101 TYPE L_U TITL 'Basic Load 3.0 kN/m2'
+    AREA TYPE PZZ P1 3.0 X1 0 X2 #L X4 0 Y1   8.00 Y3   7.00  $  Sidewalk
+
+LC 102 TYPE L_U TITL 'Basic Load 3.0 kN/m2'
+    AREA TYPE PZZ P1 3.0 X1 0 X2 #L X4 0 Y1   6.60 Y3   6.20  $  Cap to railing
+
+LC 103 TYPE L_U TITL 'Basic Load 3.0 kN/m2'
+    AREA TYPE PZZ P1 3.0 X1 0 X2 #L X4 0 Y1   6.20 Y3   0.00  $  Cap to middle
+
+LC 104 TYPE L_U TITL 'Basic Load 3.0 kN/m2'
+    AREA TYPE PZZ P1 3.0 X1 0 X2 #L X4 0 Y1   0.00 Y3  -6.20  $  Middle to cap
+
+LC 105 TYPE L_U TITL 'Basic Load 3.0 kN/m2'
+    AREA TYPE PZZ P1 3.0 X1 0 X2 #L X4 0 Y1  -6.20 Y3  -6.60  $  Cap to railing
+
+LC 106 TYPE L_U TITL 'Basic Load 3.0 kN/m2'
+    AREA TYPE PZZ P1 3.0 X1 0 X2 #L X4 0 Y1  -7.00 Y3  -8.00  $  Sidewalk
+
+$ Flächenlast UDL: Überlast Fahrstreifen 1   3 m Breite
+$ Area load UDL: Over load lane 1   3 m width
+LC 201 TYPE L_1 TITL 'Excess Load'
+    AREA TYPE PZZ P1 (12.0-3.0) X1 0 X2 #L X4 0 Y1   6.20 Y3   3.20  $  very right at cap
+
+LC 202 TYPE L_1 TITL 'Excess Load'
+    AREA TYPE PZZ P1 (12.0-3.0) X1 0 X2 #L X4 0 Y1   1.50 Y3  -1.50  $  Central
+
+LC 203 TYPE L_1 TITL 'Excess Load'
+    AREA TYPE PZZ P1 (12.0-3.0) X1 0 X2 #L X4 0 Y1  -3.20 Y3  -6.20  $  Very left at cap
+
+!*!Label TS Tandem System
+$ Tandemsystem : Lane 1:Wheel load 150 kN/Rad TS=SOFILOAD-TYP L !
+$                  Total excess load=600 kN    (Please check safety factor GAMU ! 1.35/1.50)
+$                Lane 2:Wheel load 100 kN/Rad
+$                  Total excess load=400 kN
+$ =======================================================================
+$ Case EYA1 Lane 1 is at right     all xx m a Node position!
+$----------------------------------------------------------------------------------------
+let#lf 301
+let#ys1 6.20-1.50      $  middle lane 1
+let#ys2 6.20-1.50-3.00 $  middle lane 2
+loop#1 10
+ LC #lf TYPE L_T TITL 'TS_overload'
+   let#lf #lf+1 ; let#x1 3.50+#1*2.0 $
+   POIN QGRP TYPE PZZ P 150 X #x1      Y #ys1+1.0,#ys1-1.0 $  1. Axis lane 1
+   POIN QGRP TYPE PZZ P 150 X #x1+1.20 Y #ys1+1.0,#ys1-1.0 $  2. Axis lane 1
+   POIN QGRP TYPE PZZ P 100 X #x1      Y #ys2+1.0,#ys2-1.0 $  1. Axis lane 2
+   POIN QGRP TYPE PZZ P 100 X #x1+1.20 Y #ys2+1.0,#ys2-1.0 $  2. Axis lane 2
+endloop
+$  Case B lane 1 is in the middle!
+let#ys1 0.00      $  Middle lane 1
+let#ys2 0.00-3.00 $  Middle lane 2
+loop#1 10
+ LC #lf TYPE L_T TITL 'TS_overload'
+   let#lf #lf+1 ; let#x1 6.00+#1*2.0 $
+   POIN QGRP TYPE PZZ P 150 X #x1      Y #ys1+1.0,#ys1-1.0 $
+   POIN QGRP TYPE PZZ P 150 X #x1+1.20 Y #ys1+1.0,#ys1-1.0 $  2. Axis lane 1
+   POIN QGRP TYPE PZZ P 100 X #x1      Y #ys2+1.0,#ys2-1.0 $  1. Axis lane 2
+   POIN QGRP TYPE PZZ P 100 X #x1+1.20 Y #ys2+1.0,#ys2-1.0 $  2. Axis lane 2
+endloop
+$  Case C lane 1 is at left:
+let#ys1 -6.20+1.50      $  Middle lane 1
+let#ys2 -6.20+1.50+3.00 $  Middle lane 2
+loop#1 10
+ LC #lf TYPE L_T TITL 'TS_overload'
+   let#lf #lf+1 ; let#x1 7.90+#1*2.0 $  first axis
+   POIN QGRP TYPE PZZ P 150 X #x1      Y #ys1+1.0,#ys1-1.0 $  1. Axis lane 1
+   POIN QGRP TYPE PZZ P 150 X #x1+1.20 Y #ys1+1.0,#ys1-1.0 $  2. Axis lane 1
+   POIN QGRP TYPE PZZ P 100 X #x1      Y #ys2+1.0,#ys2-1.0 $  1. Axis lane 2
+   POIN QGRP TYPE PZZ P 100 X #x1+1.20 Y #ys2+1.0,#ys2-1.0 $  2. Axis lane 2
+endloop
+$ For the check of the limit state of the bearing capacity the possible soil movements
+$ have to be taken into consideration, however for their determination
+$ the 0.6 folded rigidities of state 1 can be disregarded for this check
+$ (due to possible transition into state II). According to SOFiSTiK (Dr. Bellmann)
+$ the superposition has then to be applied with a load safety coefficient g=1.35.
+LC 81 TYPE SF TITL 'Possible Settlement 1+3'
+   NODE NO 103,104,105,106  TYPE WZZ 1000*0.01*0.60[mm] $ corresponds to analysis with 0.6 folded rigidities
+LC 82 TYPE SF TITL 'Possible Settlement 2'
+   NODE NO 203,204,205,206 TYPE WZZ 1000*0.01*0.60[mm]
+$ For checking the limit states of the fitnes of purpose the most probable
+$ soil movements should always be applied as constant effects, therefore 1.0 folded,
+$ see DIN FB 102 II-2.3.4(110)P  . Here the reduction of 0.4 is not allowed!
+$ In the present analysis 1 com is applied as possible settlement and 0.5 cm are applied as probable settlement,
+$ each per support axis and in the worst case superposed.
+LC 83 TYPE ZF TITL 'Real Settlement 1+3' $
+   NODE NO 103,104,105,106  TYPE WZZ 1000*0.005[mm]
+LC 84 TYPE ZF TITL 'Real Settlement 2'
+   NODE NO 203,204,205,206 TYPE WZZ 1000*0.005[mm]
+
+$ Attention: due to the four structural bearings in transverse direction the temperature also creates
+$ strong transverse bending moments (the four bearings suppres a transverse curvature).
+LC 85 TYPE T TITL 'T TOP WARMER'
+   QUAD GRP 0 TYPE DTZ P  -7.9 $  positive DTZ = higher Temp. in pos. z
+LC 86 TYPE T TITL 'T DOWN WARMER'
+   QUAD GRP 0 TYPE DTZ P  +5.0
+END
+
++PROG SOFILOAD urs:5
+HEAD
+UNIT 5 $ units: sections in mm, geometry+loads in m
+CTRL WARN 909  $ as some single loads are outside the bridge area
+HEAD Fatigue Load Model 3     3*10 = 30 Load Cases from LC 401
+HEAD Attention: Please do not define these loads as TYP L,
+HEAD they are not allowed to be superpositioned with Load Model 1 !!
+$ Fatigue load model 3  : wheel load 60 KN/wheel  - 4 Axes
+$     Achsabstände   1.20 - 6.00 - 1.20
+$ =======================================================================
+$ Case A lane 1 is on the right side:
+let#lf 401
+
+let#ys1 6.20-1.50      $ Middle lane 1
+loop#1 10
+ LC #lf TITL 'TS_overload'   TYPE FAT ; let#lf #lf+1 ; let#x1 3.50+#1*1.5 $ first axis
+   POIN QGRP TYPE PZZ P  60 X #x1      Y #ys1+1.0,#ys1-1.0 $ 1. Axis
+   POIN QGRP TYPE PZZ P  60 X #x1+1.20 Y #ys1+1.0,#ys1-1.0 $ 2. Axis
+   POIN QGRP TYPE PZZ P  60 X #x1+7.20 Y #ys1+1.0,#ys1-1.0 $ 3. Axis
+   POIN QGRP TYPE PZZ P  60 X #x1+8.40 Y #ys1+1.0,#ys1-1.0 $ 4. Axis
+endloop
+$ Case B lane 1 central!
+let#ys1 0.00      $ Middle lane 1
+loop#1 10
+ LC #lf TITL 'TS_overload'   TYPE FAT ; let#lf #lf+1 ; let#x1 6.00+#1*1.5 $ first axis
+   POIN QGRP TYPE PZZ P  60 X #x1      Y #ys1+1.0,#ys1-1.0 $ 1. Axis
+   POIN QGRP TYPE PZZ P  60 X #x1+1.20 Y #ys1+1.0,#ys1-1.0 $ 2. Axis
+   POIN QGRP TYPE PZZ P  60 X #x1+7.20 Y #ys1+1.0,#ys1-1.0 $ 3. Axis
+   POIN QGRP TYPE PZZ P  60 X #x1+8.40 Y #ys1+1.0,#ys1-1.0 $ 4. Axis
+endloop
+$ Case C lane 1 is left:
+let#ys1 -6.20+1.50      $ Middle lane 1
+loop#1 10
+ LC #lf TITL 'TS_overload'   TYPE FAT ; let#lf #lf+1 ; let#x1 7.90+#1*1.5 $ first axis
+   POIN QGRP TYPE PZZ P  60 X #x1      Y #ys1+1.0,#ys1-1.0 $ 1. Axis
+   POIN QGRP TYPE PZZ P  60 X #x1+1.20 Y #ys1+1.0,#ys1-1.0 $ 2. Axis
+   POIN QGRP TYPE PZZ P  60 X #x1+7.20 Y #ys1+1.0,#ys1-1.0 $ 3. Axis
+   POIN QGRP TYPE PZZ P  60 X #x1+8.40 Y #ys1+1.0,#ys1-1.0 $ 4. Axis
+endloop
+END
+
++PROG WING urs:6
+HEAD Load representation
+SIZE URS 0 SPLI 2x2 HLEG 1.5 SLEG 1.0
+VIEW TYPE DIRE X 0.7431436 Y 0.5305365 Z 0.4077605 AXIS POSZ ROTA 0
+PERS A 55.420002 BX 16.300005 BY 1.29090E-05 BZ 7.14080E-07 ANGL 1
+let#s 0.30
+LC 101 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 102 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 103 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 104 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 105 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 106 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 201 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 202 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 203 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 301 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 302 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 303 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 305 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 309 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 313 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 323 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 405 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 406 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 416 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+LC 426 ; LOAD TYPE ALL UNIT DEFA SCHH #s SING VECT FILL NO REPR DREP GTYP ELEM
+END
+
++PROG TENDON urs:7
+HEAD Delete old tendons in database
+TDEL 0 0 0
+END
+
++PROG TENDON urs:28
+HEAD Parabolic Prestress
+UNIT 5 $ units: sections in mm, geometry+loads in m
+$ Definition of prestressing system:
+$ We recommend to input all data as user defined prestressing system.
+$ For the static analysis the following values are sufficient:
+SYSP NOPS MAT   ZV       AZ    LITZ MINR   BETA  MUE ECC  SP     DO
+        1  11 2430[kN] 1800[mm2] 12 6.50[m] 0.3 0.20 4[mm] 3[mm] 82[mm] $ csm3_parabel and csm32_slab, 12 wires
+      $ 1  11 3078[kN] 2250[mm2] 15 7.10[m] 0.3 0.20 4[mm] 3[mm] 92[mm] $            15 wires
+      $ 1  11 3848[kN] 2850[mm2] 19 6.50[m] 0.3 0.21 4[mm] 3[mm] 97[mm] $ csm31_beam 19 wires
+      $ 1  11 2430[kN] 1800[mm2] 12 6.50[m] 0.0 0.00 0[mm] 0[mm] 10[mm] $ csm3_casting_yard
+$
+$ reference axis for all tendons = x-axis:    $ Bezugsspur = X-Achse $ Reference lane  = X-Axis
+AXES NOH 1  VAL1  0.00 0.00 0.00  TYPE=poly  KIND=QUAD
+         1  VAL1 50.00 0.00 0.00  TITL "X-Axis"
+$ or use existing axis with   AXES NOH 1 TYPE REFS 'AX_3' KIND QUAD
+
+$ tendon geometry definition:
+let#nr 1   $ Geometrie- und Strangnummer             $ Geometry- and String number
+let#y 6.30 $ Y-Koordinate dieses Stranges            $ Y-coordinate of this string
+#define tendons
+TGEO NOG #nr NOH 1 NOPS 1 $ NOPS = prestressing system for max-min radius parameters + duct-excentricities
+let#x 11/2-#y*11/16 $ Startkoordinate an Platten-Aussenkante
+                    $ Starting coordinate at slab outer edge
+PTUV S        U       V   DVS type=REFX
+    #x       #y      0.25
+    #x+10.80 #y      0.70
+    #x+21.60 #y      0.25
+
+CS ICS1 11 12                $ = construction stages
+PSIG 'RI' ANWS 9 KAPA - K3 1280 $
+        $ k3 = estimated limit to reduce stress at traffic opening (after first creep+shrinkage)
+        $      max-sigma-traffic opening in most cases (e.g. to EN-1992-1-1 7.2(5)) -> 0.65 fpk (or 0.75 depending on design code)
+$ final tendon definition:
+TEND NOT #nr NOG #nr NTEN 1 LC 3
+let#nr #nr+1   $ für nächste Nummer hochzählen         $ count up for the next number
+#enddef
+#include tendons
+
+loop#i0 25
+  let#y  6.00-0.50*#i0 $ Y-Koordinate des nächsten Stranges       $ Y-coordinate for the next string
+  #include tendons
+endloop
+
+let#y -6.30 $ Y-Koordinate des nächsten Stranges       $ Y-coordinate for the next string
+#include tendons
+
+$ ----------------------------------------------------------
+ECHO PLOT full $ tendon plots:
+SIZE URS
+SCHH h2 0.18
+PLOT GEOE NO  1 FACH 5 TYPG DUTE PCS 1
+PLOT GEOE NO 12 FACH 5 TYPG DUTE PCS 1
+$
+PLOT FACT NO 14 FACH 50
+end
+$ Max. perm. stress  po,max:
+                    $ fp0,1k = 1600 N/mm2
+                    $ fpk    = 1860 N/mm2
+                    $            0.8*fpk    = 0.80*1860 = 1488 N/mm2
+                    $            0.9*fp0,1k = 0.90*1600 = 1440 N/mm2
+                    $ sigp,max = min(1488,1440)         = 1440 N/mm2 EN-1992-1-1 5.10.2.1(1) maximum stress
+                    $ sigp,SLS = 0.65*fpk   = 0.65*1860 = 1209 N/mm2 EN-1992-1-1 7.2(5)      on traffic opening permanent
+                    $ sigp,rare= sigp,max
+
++PROG ASE -E urs:8
+$ ANALYSIS OF UNGROUTED LOAD CASES
+HEAD Load cases on net cross-section: BA 0   g1,v
+ECHO DISP,REAC,FORC,NOST,BEDD NO
+GRP (0 999 1) CS 11 $ Ungrouted tendons !
+LC  1
+LC  3
+END
+
++PROG ASE -E urs:9
+$ LOAD CASES ON IMAGINARY END-CROSS SECTION
+HEAD Load cases on imaginary cross-section: BA 1
+ECHO DISP,REAC,FORC,NOST,BEDD NO
+CTRL WARN 185  $ as some single loads are outside the bridge area
+GRP - CS 998   $ any tendon of IBA2=998 are grouted
+LC       2     $ (CS 999 is reserved for external tendons!)
+LC  (81  86 1)
+LC (101 106 1)
+LC (201 203 1)
+LC (301 330 1)
+LC (401 430 1)
+END
+
++PROG ASE -E urs:11
+HEAD State t-infinite for BEMESS tendon stress analysis
+GRP - CS 998   $ any tendon of IBA2=998 are grouted
+CTRL WARN 254  $ due to factor 0.88 on P - here OK
+LC 4098 TYPE none FACD 1 $ Traffic opening - to get max. tendon stress including traffic
+  LCC 2 $ g_2
+  LCC 3 FACT 0.95 $ Factor 0.95 due to creepage and shrinkage losses (estimated)
+LC 4099 TYPE none FACD 1 $ On CSM usage this is the last CSM stage after creep and shrinkage
+  LCC 2 $ g_2
+  LCC 3 FACT 0.88 $ Factor 0.88 due to creepage and shrinkage losses (estimated)
+END
+
+!+!Kapitel Superposition
++PROG MAXIMA urs:10
+HEAD Superpositioning ULS
+HEAD ATTENTION : ULS with SF-possible Settlements !!!!
+HEAD ATTENTION : here without Temperature !!!!
+$ To apply the temperature in the state of failure see also
+$ the general circular accomanying the technical reports,
+$ that demands temperature for t his check!
+$
+ECHO FULL NO ; ECHO TABS YES
+COMB 1 desi BASE 2100
+ACT  G_1
+     LC 1 TYPE G
+ACT  G_2
+     LC 2 TYPE G
+ACT  P
+     LC 3 FACT 0.88        $ Factor 0.88 due to creepage and shrinkage losses
+                           $                      (estimated)
+ACT  L                     $ Action traffic
+     LC (101 106 1) Q      $ 2.5 kN/m2 can effect simultaneously
+     LC (201 203 1) A1     $ 6.5 ULD lane: only take on of them
+     LC (301 330 1) A2     $ TS: additionally take one of these
+ACT  SF   $ possible_settlements
+     LC 81,82       TYPE A1  $ here they exclude each other
+$ ACT  ZF $ probable_settlements
+$      LF 83,84       typ A1  $ here they exclude each other
+ACT  T
+     LC 85,86       TYPE A1  $ here they exclude each other
+CTRL warn 2112 $ no warning for element 999999 in SUPP FROM
+SUPP 1 EXTR MAMI ETYP QUAD TYPE M     TITL design FROM 1 $ 999999 = none
+SUPP 1 EXTR MAMI ETYP QNOD TYPE M     TITL design FROM 1 $ 999999 = none
+SUPP 1 EXTR MAMI ETYP QUAD TYPE VX,VY TITL design FROM 999999 $  Test printout
+SUPP 1 EXTR MAMI ETYP QNOD TYPE VX,VY TITL design FROM 999999 $  Test printout
+SUPP 1 EXTR MAMI ETYP NODE TYPE PZ    TITL design FROM 103
+$SUPP 1 EXTR MAMI ETYP qbed TYPE P     TITL design $ in case of bedding
+ECHO LOAD,FACT YES $ Control printout for element/nodes of
+END
+
++PROG MAXIMA urs:13
+HEAD SLS LS_Serviceability rare Pkinf 0.90
+HEAD ATTENTION : NOW WITH ZF-probable Settlements !!!!
+ECHO FULL NO ; ECHO TABS YES
+#define Pkinf=0.90*0.88
+#define Pksup=1.10*0.95
+COMB 1 rare BASE 1100               $ rare = selten        LC 1100...
+#define Bezeichng=SLS_rare
+#define superpos
+ACT  G_1
+     LC 1 TYPE G
+ACT  G_2
+     LC 2 TYPE G
+ACT  P
+     CTRL WARN  44  $ due to multiple LC 3 - here OK
+     LC 3 TYPE G FACT $(Pkinf)
+     LC 3 TYPE Q FACT ($(Pksup))-($(Pkinf))
+ACT  L                     $ Action traffic
+     LC (101 106 1) Q      $ can effect simultaneously
+     LC (201 203 1) A1     $ ULD lane: just take one only
+     LC (301 330 1) A2     $ TS: take additionally one of these
+$ACT  SF   $ prossible_settlements
+$      LF 81,82       typ A1  $ here they exclude each other
+ACT  ZF $ probable_settlements
+     LC 83,84       TYPE A1  $ here they exclude each other
+ACT  T
+     LC 85,86       TYPE A1  $ here they exclude each other
+CTRL warn 2112 $ no warning for element 999999 in SUPP FROM
+SUPP 1 EXTR MAMI ETYP QUAD TYPE M     TITL $(Bezeichng) FROM 1 $ 999999 = no test printout
+SUPP 1 EXTR MAMI ETYP QNOD TYPE M     TITL $(Bezeichng) FROM 1 $ 999999 = no test printout
+SUPP 1 EXTR MAMI ETYP QUAD TYPE SIGT  TITL $(Bezeichng) FROM 999999 $ sigt = prestressing steel!
+SUPP 1 EXTR MAMI ETYP QUAD TYPE VX,VY TITL $(Bezeichng) FROM 999999 $ 999999 = no test printout
+SUPP 1 EXTR MAMI ETYP QNOD TYPE VX,VY TITL $(Bezeichng) FROM 999999 $ 999999 = no test printout
+SUPP 1 EXTR MAMI ETYP NODE TYPE PZ    TITL $(Bezeichng) FROM 103
+$SUPP 1 EXTR MAMI ETYP QUAD TYPE P     TITL $(Bezeichng) $ in case of bedding
+#enddef
+#include superpos
+ECHO LOAD,FACT YES  $ control printout for elements/nodes SUPP of ...
+$ Anotation: Any element is superposed, but for
+$ ECHO FAKT ... only for nodes 103 MAMI-PZ a test printout of the
+$ participating factors will be generated.
+END
++PROG MAXIMA urs:14
+HEAD SLS LS_Serviceability nonfrequent Pkinf 0.90
+ECHO FULL NO ; ECHO TABS YES
+COMB 1 nonf BASE 1200               $ nonfrequent
+#define Pkinf=0.90*0.88
+#define Pksup=1.10*0.95
+#define Bezeichng=SLS_nonfrequent
+#include superpos
+END
++PROG MAXIMA urs:15
+HEAD SLS LS_Serviceability frequent Pkinf 0.90
+ECHO FULL NO ; ECHO TABS YES
+COMB 1 freq BASE 1300               $ frequent
+#define Pkinf=0.90*0.88
+#define Pksup=1.10*0.95
+#define Bezeichng=SLS_frequent
+#include superpos
+END
++PROG MAXIMA urs:16
+HEAD SLS LS_Serviceability permanent with 1.0-Prestressing
+ECHO FULL NO ; ECHO TABS YES
+#define Pkinf=1.00*0.88
+#define Pksup=1.00*0.95
+COMB 1 perm BASE 1400               $ perm = quasi-permanent LC 1400...
+#define Bezeichng=SLS_permanent
+#include superpos
+END
+
+!#!Kapitel Design
++PROG BEMESS URS:4
+HEAD Definition of reinforcement parameters
+GEOM - HA 55 DHA 10 HB 55 DHB 10 $ covering ->  Exposition class XC1 ?
+DIRE  90  90 $ layer 1 = transverse
+             $ layer 2 = main bridge direction - is plotted mainly in CSM-DESI
+PARA NOG - DU 16 WKU 0.20 ASU 5.24[cm2/m] ASU2 5.24[cm2/m] ASL 5.24[cm2/m] ASL2 5.24[cm2/m]
+$                         ASU 5.24[cm2/m] : for prestress design checks it is senseful
+$                         to define a minimum reinforcement - here diameter 10 every 15 cm
+$ If check shall be done for bar distances, directly the steel stress
+$ can be defined with PARA...SSU. For parallel input of
+$ WKU and SSU, SSU is used for tablebar distances. WKU may then be used for
+$ minimum reinforcement check!
+CTRL RO_V 0.5
+              $ Up to this bending reinforcement ratio it is attempted not to
+              $ use shear reinforcement. The shear check increases the
+              $ bending reinforcement up to this value if necessary. The value
+              $ PUNC can be modified for the punching areas:
+PUNC - D 0.45[m] B 0.45[m] RO_V 1.50 $ Voreinstellung Einzel-Stützenabmessungen   $ default single column
+$ (All inputs for PUNC are saved in the database and have not to be defined
+$ anymore in the following BEMESS inputs!)
+$ Please do not make input for the dimensions for punching, if these inputs
+$ are done already in the grafical input SOFIPLUS (otherwise they are overwritten)!
+$
+$ In WINGRAF with INFO-necessary reinforcement the pure bending reinforcement
+$ can be plotted!
+END
+
++PROG BEMESS urs:18
+HEAD Design Ultimate Limit State (ULS)
+$ Tendon stress increase in ULS design:
+$ For bonded tendons now the stress increase in the tendons is taken into account in the
+$ ULS design. For this the tendons are smeared over a certain width.
+$ The stress increase is limited by the strain in the height of the tendons and
+$ by the material parameters. With CTRL SIGZ it can be limited e.g. CTRL SIGZ 180 to 180 N/mm2.
+$ The tendon stress increase results in a lower longitudinal reinforcement which
+$ can be checked in tke listing.
+$ With  CTRL SIGZ 0 the feature can be switched off totally.
+ECHO PUNC extr $ -> tendons at the punching perimeters
+CTRL LCR 11 $ number of the reinforcement distribution
+            $ Because the reinforcement distribution number 1 is reserved for
+            $ the final result, the start is here with number 11!
+LC   DESI   $ DESI = design = ultimate limit state
+LC 4098 'perm'      $ Permanent state traffic opening (ASE LC necessary for exact analysis of the tendon stress)
+CTRL RO_V 0.5 $ Up to this reinforcement ratio the program attempts not to use
+              $ any shear reinforcement. The shear check increases possibly
+              $ the bending reinforcement up to that value.
+              $ It is possible to modify the value for the punching area.:
+END
+$ First calculate the robustness check, the crack checks and the steel range
+$ check (fatigue) for increase of the reinforcement, then the following
+$ stress checks are successful (NSTR CHKC...)!
+
++PROG BEMESS urs:19
+HEAD Crack control check at serviceability limit State frequent
+CTRL LCRI 11 LCR 12 $ number of the reinforcement distribution read from 11, write to 12
+CTRL SLS RMOD SUPE
+LC FREQ             $ Load cases according to frequent combinations SLS
+                    $ Tabelle 4.118 > depending on structure: frequent combination!
+LC 4098 'PERM'      $ Permanent state traffic opening (ASE LC necessary for exact analysis of the tendon stress)
+                    $ In case the loadcases include pk-inf and pk-sup (here in LC FREQ), please notice in the tendon stresses:
+                    $ The storage of the max. tendon stress for WINGRAF is done without pk-sup in the static determined part NP0, that means:
+                    $       The permanent tendon stress from LC 4000 PERM does not include a change due to
+                    $       pk-inf/pk-sup, only the little stress part from traffic includes a pk-inf/pk-sup part!
+$ Minimum reinforcement see also bemess2.dat and bemess6_design.dat:
+MREI FFCT 1.0 KC .4 K 1.0 $ minimum reinforcement for bending constraint
+$       Alternative:    MREI FFCT 0.5 KC 1.0 - for centric constraint hydration heath
+$ ^ use only, if the constraint loading reaches the crack internal forces and moments!
+CRAC WK TAB         $ crack width check acc. to DIN-FB 4.4.2.3.   Tabelle (4.120)  Seite 176
+                    $ see input PARA
+$ The input   CRAC WK 0.20[mm] would do a direct calculation of the crack width
+$ acc. to DIN-FB 4.4.2.4..  We recommend to use the check with the table 4.120/4.121
+$ with CRAC WK TAB.   J. Bellmann
+END
+
+!#!Kapitel Fatigue
++PROG MAXIMA urs:20
+HEAD Standard-Superposition for the fatigue verification LC 1501-1510
+ECHO FULL NO ; ECHO TABS YES
+COMB 1 STAN TYPE none
+     LC 1,2         TYPE G
+     LC 3 FACT 0.88 TYPE G  $ factor 0.88 due to creep and shrinkage loss
+     LC 85          TYPE G  $ load case 85 temperature is used as
+                            $ alternating load case, because it has no
+                            $ load canging for fatigue
+                            $ LC 85 was choosen here as TYPE G gewählt, because
+                            $ it generates tensile stresses below and it can be
+                            $ important for the maximum concrete compressive
+                            $ stresses above!
+     LC (401 430 1) A1      $ fatigue load model 3
+SUPP  ETYP  TYPE  LC COMB=1 EXTR=MAMI TITL='fatigue'
+      'QUAD' MXX 1501  $ live loads have no normal forces, therefore
+      'QNOD' MXX 1501  $ live loads have no normal forces, therefore
+      'QUAD' MYY 1503  $ NXX not necessary !
+      'QNOD' MYY 1503  $ NXX not necessary !
+      'QUAD' MXY 1505
+      'QNOD' MXY 1505
+      'QUAD' VX  1507
+      'QNOD' VX  1507
+      'QUAD' VY  1509
+      'QNOD' VY  1509
+      'NODE' PX  1501  $ support
+      'NODE' PY  1503
+      'NODE' PZ  1505
+END
+
++PROG BEMESS urs:21
+HEAD Calculate stress range ->WING LCR 112 without increase of reinforcement
+CTRL LCRI 12 LCR 22 $ ->WING stress range
+CTRL SLS
+CTRL RMOD SUPE
+LC (1501 1510 1)     $ Load cases fatigue
+LC 4098 'perm'      $ Permanent state traffic opening (ASE LC necessary for exact analysis of the tendon stress)
+NSTR SIGS 999 SIGT 999    $ only calculate stress range
+END
++PROG WING urs:30
+HEAD stress range ->WING LCR 22
+SIZE URS 0
+VIEW STAN 0 0 -1 POSY
+COLO C25 -2017 $ Don't draw tendons
+let#s 0.30
+#define Schnitte
+MOVE  $ Schnittlinien :
+let#y -6.00 ; MOVE X -99 Y #y ; DRAW X 99 Y #y DTYP QSEC
+let#y -3.00 ; MOVE X -99 Y #y ; DRAW X 99 Y #y DTYP QSEC
+let#y -0.00 ; MOVE X -99 Y #y ; DRAW X 99 Y #y DTYP QSEC
+let#y  3.00 ; MOVE X -99 Y #y ; DRAW X 99 Y #y DTYP QSEC
+let#y  6.00 ; MOVE X -99 Y #y ; DRAW X 99 Y #y DTYP QSEC
+#enddef
+#include Schnitte
+MOVE X DEL DTYP TEXT; MOVE X 1 14 UNIT PR SCHH .6 C 1001
+TEXT stress range fatigue LM3
+LC DESI 22
+  QUAD SRMA REPR DISO SCHH .28
+  QUAD SRUM REPR DISO SCHH .28
+  QUAD SRLM REPR DISO SCHH .28
+  QUAD  SSR REPR DISO SCHH .28
+END
+
++PROG BEMESS urs:22
+HEAD Fatigue verification for steel and concrete
+$ For not prestressed bridges without welded reinforcement
+$ a sufficient resistance agains fatigue can be assumed, if
+$ under frequent effects the stress range remains bottom 70 mPa.
+$ See EN 1992-1-1 6.8.6(1)
+$ This could be succeeded with an entry
+$     dehn sigs 70 sigt 70.
+$ For this check load model LM 3 has to be applied.
+$ In this case it was superposed in load case 1501-1510
+$ together with the constant loads.
+$
+$ The fatigue design for concrete under pressure is done with sigma_c,perm
+$ according EN 1992-2 NN.3.2 (NN.112)
+$ It is requested with 'LC 'perm' for the permanent loadcase and an input
+$   for the correction factors as product lambda_c1*lambda_c2*lambda_c3*lambda_c4
+$   in NSTR ... LC14
+$      (for lambda-c,1 value 0.85 is applicable in most cases,
+$       for lambda-c,2,3,4 1.0, so together LC14 0.85 )
+$ The maximum concrete pressure can be checked in WINGRAF with:
+$   Area elements-dimensioning stresses-maximum concrete pressure
+$ Singularity places should be interpretated by the engineers.
+CTRL LCRI 12 LCR 13 $ Number of the reinforcement distribution read/write
+CTRL SLS RMOD SUPE  $ Requesting a working load check
+LC (1501 1510 1)    $ Load cases fatigue
+LC 4098 'perm'      $ Permanent state traffic opening (ASE LC necessary for exact analysis of the tendon stress)
+$ Coefficients see EN 1992-1-1:   6.8.4 and for road bridges
+$                  EN 1992-2 NN.3.2 Tabelle NN.3
+$   (old german DIN-Fachbericht 102 4.3.7.7 (101) table 4.116 ff)
+NSTR SIGS 175 SIGT 0.454*175 SIGP 185                          $$
+             LS_U 1.18 LS_L 1.44 LS_V 1.18 LS_P 1.30 LC14 0.85 $$
+             FACU 1.40 FACL 1.40 FACV 1.40 FACP 1.40 CHKR 0.8
+$ The increasing factors FACU... have to be used only for the axle load
+$ of the load model 3 and not for g+p... .
+$ Because g+p balance for prestressed bridge, the total internal force
+$ from MAXIMA is multiplied here by the increase factors!
+$ For more detailed checks the factors have to be considered already in MAXIMA
+$ and used than in BEMESS with 1.00.
+$ This happens in a design via CSM DSI - see csm32_slab_design.dat
+$
+$ Fatigue shear reinforcement is reduced onto 0.454*SIGS due to small
+$ diameter of mandrel.
+$ CHKR 0.8: It is recommended to limit the maximum steel stress (CHKR 0.8) additionally
+$ to the stress amplitude, because the load cases have possibly fatigue of another
+$ combination of internal forces and moments and full utilize the normally hardly
+$ used small reinforcement.
+$
+$    For continuous systems with intermediate support we have to apply:
+$            FACU 1.75 FACL 1.40 FACV 1.75 FACP 1.40
+$
+$ Determination of the coefficients also see page 13-27 in:
+$   Examples for dimensioning according to DIN 1045-1
+$   Volume 2: Ingenieurbau - engineering
+$   Deutscher Beton- und Bautechnik-Verein E.V. - German concrete and building techniques Association
+$   Verlag Ernst & Sohn   ISBN 3-433-02835-4
+END
+
+!#!Kapitel Robustness
++PROG BEMESS URS:65
+HEAD Robustness Reinforcement for Saving of a Ductile Member Behaviour
+head - refer to EN 1992-1-1  9.2.1.1(1)
+CTRL SLS RMOD SUPE
+CTRL LCRI 13 LCR 14 $ $ Number of the reinforcement distribution read from 13, write to 14
+$
+LC 2101,2156   $ load cases max-mx and min-PZ from ULS superposition:
+MREI ROBU fctk $ robustness reinforcement with fctk,0.05 !!!!
+$ Remark: Also the minimum reinforcement was activated here in the 2nd design calculation.
+$         That is larger than the robustness reinforcement in the 1st layer. The 1st layer
+$         is therefore not increased opposite the LCR 13.
+$         The 2nd layer (main direction of effective span) has no minimum reinforcement
+$         and is increased now due to the robustness reinforcement.
+          $ The robutsness reinforcement is always applied at the bottom of a section.
+          $ On top only in case of appearing tensile stresses.
+          $ To make it easier we only anlayze load case 2101
+          $ to determine tensiles.
+          $ (LF 1 is not enough, as for missing prestresses to much reinforcement will be generated
+          $  in the field middle)
+          $ steu robu fctm can also be entered for a normal BEMESS-run -
+          $ in this case we requeste to do it in a seperate run
+          $ to be able to recognize graphical areas, where
+          $ the robustness check requires an increase of the reinforcement.
+          $ The robustness reinforcement on the top has to be placed over a length of
+          $ up to a quarter of the span length.
+END
+
+!#!Kapitel Stress verifications
++PROG BEMESS urs:24
+HEAD SLS Stress verification concrete stresses rare Pk-inf-sup [<0.6 fck ?]
+HEAD SLS Stress verification steel stresses rare Pk-inf-sup [<0.8 fyk ?]
+CTRL SLS
+CTRL LCRI 14 LCR 15 $ Number of reinfocement distribution read/write
+LC RARE             $ rare = characteristic
+LC 4098 'perm'      $ Permanent state traffic opening (ASE LC necessary for exact analysis of the tendon stress)
+                    $ In case the loadcases include pk-inf and pk-sup (here in LC RARE), please notice in the tendon stresses:
+                    $ The storage of the max. tendon stress for WINGRAF is done without pk-sup in the static determined part NP0, that means:
+                    $       The permanent tendon stress from LC 4000 PERM does not include a change due to
+                    $       pk-inf/pk-sup, only the little stress part from traffic includes a pk-inf/pk-sup part!
+NSTR CHKC 0.6 CHKR 0.8 $ Printout (check) of the concrete pressure stresses
+$ on tendon stress please notice that RARE includes pk-inf and pk-sup!
+END
++PROG WING urs:31
+HEAD SLS Stress verification concrete stresses rare Pk-inf-sup [<0.6 fck ?]
+HEAD SLS Stress verification steel stresses rare Pk-inf-sup [<0.8 fyk ?]
+SIZE URS 0
+VIEW STAN 0 0 -1 POSY
+COLO C25 -2017 $ Don't draw tendons
+let#s 0.30
+#include Schnitte
+MOVE X DEL DTYP TEXT; MOVE X 1 14 UNIT PR SCHH .6 C 1001
+TEXT Max. nonlinear concrete stess - rare Pk-inf-sup
+LC DESI 15
+  DSGN TYPE LINE DTYP YY
+  QUAD  CPM UNIT - ND 2 REPR DCUT SCHH 0.25
+  VIEW XY           $ view direction
+  QUAD  CPM REPR DISO
+
+MOVE X DEL DTYP TEXT; MOVE X 1 14 UNIT PR SCHH .6 C 1001
+TEXT Max. nonlinear reinforcement stress rare Pk-inf-sup
+  DSGN TYPE LINE DTYP YY
+  $ QUAD SSMA UNIT 250 ND 2 REPR DCUT SCHH 0.25
+  VIEW XY           $ view direction
+  QUAD SSMA REPR DISO
+END
+
++PROG BEMESS urs:12
+HEAD SLS Stress verification concrete stresses permanent pm [<0.45 fck, tendons <0.75 fpk ?]
+$ The check of the prestresssed steel stresses permanent pm <0.75 fpk is done graphically!
+CTRL SLS
+CTRL LCRI 15 LCR 16 $ We do not determine additional reinforcement, however
+                    $ for graphical output of the concret pressure stresses of these
+                    $ quasi constant load cases a proper number LFB makes sense!
+LC PERM             $ Load cases according to quasi constant "permanent" combination SLS
+LC 4098 'perm'      $ Permanent state traffic opening (ASE LC necessary for exact analysis of the tendon stress)
+NSTR CHKC 0.45   $ Printout (check) of the concrete pressure stresses
+$ The check of the prestresssed steel stresses permanent < 0.75 fpk is done graphically WING-result-quad-tendon-stress LC 1
+$ according EN 1992-1-1 7.2(5) after creep and shrinkage with average perstress (LC 4099 'perm')
+END
++PROG WING urs:32
+HEAD SLS Stress verification concrete stresses permanent pm [<0.45 fck, tendons <0.75 fpk ?]
+SIZE URS 0
+VIEW STAN 0 0 -1 POSY
+COLO C25 -2017 $ Don't draw tendons
+let#s 0.30
+#include Schnitte
+MOVE X DEL DTYP TEXT; MOVE X 1 14 UNIT PR SCHH .6 C 1001
+TEXT Max. nonlinear concrete stess - permanent pm [<0.45 fck ?]
+LC DESI 16
+  DSGN TYPE LINE DTYP YY
+  QUAD  CPM UNIT - ND 2 REPR DCUT SCHH 0.25
+  VIEW XY           $ view direction
+  QUAD  CPM REPR DISO
+MOVE X DEL DTYP TEXT; MOVE X 1 14 UNIT PR SCHH .6 C 1001
+TEXT Max. prestressed steel stresses permanent pm [<0.75 fpk ?]
+BEAM TYPE SGMA UNIT DEFA SCHH YES FILL NO REPR DLIN         $ CADTRA
+END
+
+!#!Kapitel Decompression
++PROG BEMESS urs:23
+HEAD SLS decompression check frequent EN 7.3.1 100mm above/below tendon ducts
+CTRL SLS
+CTRL LCRI 16 LCR 17 $ -> WINGRAF LCR 17
+LC  FREQ            $ incl. pk,inf
+$ LC 4098 'perm'    $ here without tendon, because FREQ includes pk-inf and pk-sup!
+                    $ In case the loadcases include pk-inf and pk-sup please notice in the tendon stresses:
+                    $ The storage of the max. tendon stress for WINGRAF is done without pk-sup in the static determined part NP0, that means:
+                    $       The permanent tendon stress from LC 4000 PERM does not include a change due to
+                    $       pk-inf/pk-sup, only the little stress part from traffic includes a pk-inf/pk-sup part!
+NSTR DECO - $ use default value
+$ DECO: for the decompression check according EN 1992-1-1 7.3.1 the check distance
+$ (default 100mm) is taken from the .ini file and thus adjusted to the design code.
+$ Via input e.g. NSTR DECO 120[mm] the check distance can be changed individually
+$ (without h/10 limitation). In every stress check with NSTR (also pure input NSTR)
+$ the maximum decompression strain in the direction of tendons in the check distance
+$ above and below the duct surface are calculated and stored for WINGRAF.
+$
+$ The second WING run plots the permanent linear stress on top and bottom of the section
+$ as additional information - compression not required in most european countries (dependig)
+END
++PROG WING urs:33
+HEAD SLS decompression check frequent EN 7.3.1 100mm above/below tendon ducts
+SIZE URS 0
+VIEW STAN 0 0 -1 POSY
+COLO C25 -2017 $ Don't draw tendons
+let#s 0.30
+#include Schnitte
+LC DESI 17
+
+MOVE X DEL DTYP TEXT ; MOVE X 1 14 UNIT PR SCHH .5 C 1001 DTYP TEXT
+TEXT decompression strain frequent EN 7.3.1 100mm above tendon ducts
+                       MOVE X 1  9 UNIT PR SCHH .5 C 1001 DTYP TEXT
+TEXT Values <0.00 : concrete under pressure
+  DSGN TYPE LINE DTYP YY ; QUAD TYPE DCSA UNIT - SCHH #s REPR DCUT
+
+MOVE X DEL DTYP TEXT ; MOVE X 1 14 UNIT PR SCHH .5 C 1001 DTYP TEXT
+TEXT decompression strain frequent EN 7.3.1 100mm below tendon ducts
+                       MOVE X 1  9 UNIT PR SCHH .5 C 1001 DTYP TEXT
+TEXT Values <0.00 : concrete under pressure
+  DSGN TYPE LINE DTYP YY ; QUAD TYPE DCSB UNIT - SCHH #s REPR DCUT
+END
+
++PROG WING urs:17
+HEAD Pemanent linear stress on top and bottom of the section (decompression check in germany)
+$ as additional information - compression not required in most european countries (dependig)
+SIZE URS 0
+VIEW TYPE DIRE X 0.1 Y -0.7 Z 0.6  AXIS POSZ ROTA 0
+COLO C25 -2017 $ Don't draw tendons
+#include Schnitte
+let#quad_sig   10.00 $  unit quads  N/mm2
+  SIZE  urs SC    0 Spli 1x1 hleg 1.5 sleg 1.0
+  let#schr 0.22 ; SCHH H6 #schr
+$ MOVE X 1  6 UNIT PR SCHH .4 C 1001 DTYP TEXT
+$TEXT Decompression max.min stress permanent on top
+  MOVE X DEL DTYP TEXT ; MOVE X 1 14 UNIT PR SCHH .4 C 1001 DTYP TEXT
+TEXT Decompression max.min stress permanent on top
+LC  1401 ; SCH2 MIN1 -999999 MAX1 0
+  DSGN TYPE LINE DTYP Z $
+  QUAD SNU UNIT #quad_sig ND 2 REPR DCUT SCHH #schr
+  and ; LC  1402 ; SCH2 MIN1 0 MAX1 999999
+  DSGN TYPE LINE DTYP Z $
+  QUAD SNU UNIT #quad_sig ND 2 REPR DCUT SCHH #schr
+  MOVE X DEL DTYP TEXT ; MOVE X 1 14 UNIT PR SCHH .4 C 1001 DTYP TEXT
+TEXT bottom
+LC  1401 ; SCH2 MIN1 0 MAX1 999999
+  DSGN TYPE LINE DTYP Z $
+  QUAD SNL UNIT #quad_sig ND 2 REPR DCUT SCHH #schr
+  and ; LC  1402 ; SCH2 MIN1 -999999 MAX1 0
+  DSGN TYPE LINE DTYP Z $
+  QUAD SNL UNIT #quad_sig ND 2 REPR DCUT SCHH #schr
+$ -------------------------
+  SIZE  urs SC    0 Spli 2x1 hleg 1.5 sleg 1.0
+  VIEW XY           $
+LC 1402
+  MOVE X DEL DTYP TEXT ; MOVE X 1 14 UNIT PR SCHH .4 C 1001 DTYP TEXT
+TEXT Decompression max.min stress permanent local x on top
+  QUAD SXU REPR DISO
+LC 1401
+  MOVE X DEL DTYP TEXT ; MOVE X 1 14 UNIT PR SCHH .4 C 1001 DTYP TEXT
+TEXT bottom
+  QUAD SXL REPR DISO
+END
+
+!#!Kapitel Final reinforcement
++PROG BEMESS urs:26
+HEAD Maximum of the required reinforcement
+$ In LCR 15 we already have a maximum - it would be sufficient to only copy it
+$ into LCR 1 , but to be on the safe side any LCR
+$ can be applied in order to create a maximum from them:
+CTRL LCRI 11,12,13,14,15,16
+CTRL LCR  1    $ writes the maximum of the reinforcement to LCR 1
+$ because if you open WINGRAF, the default is LCR 1 and you would like
+$ to see the maximum first - not to miss the maximum !
+END
++PROG WING urs:27
+HEAD Plot of the reinforcement LFB 1 = Maximum of all verifications
+SIZE urs 0 ; SCHH FACW 0.55 ; COLO C25 -2017 $ Do not draw a tendon !
+LC DESI 1 $ Number of the reinforcement distribution
+QUAD ASPS   1 SCHH 0.25 ND 1 STYP QUAD  REVI RAMA DIST 1.2
+
+QUAD TYPE DCUQ SCHH 0.35 STYP NODE ! Origin of max. values
+
+$GRID AMAX SIZP -4 $ -4 generates a text raster with is 4* as big as th
+                   $ font size, in this case 4*0.25cm= 1.00cm
+QUAD ASL   1 SCHH 0.25 ND 1 STYP QUAD REVI RAMA DIST 1.2
+QUAD ASU   1 SCHH 0.25 ND 1 STYP QUAD REVI RAMA DIST 1.2
+
+#include Schnitte
+let#unit 5000
+SECT TYPE  ASLH UNIT  #unit UMIN #unit/100 SCHH 0.25 DTYP PPLA ; AND
+SECT TYPE  ASUH UNIT  #unit UMIN #unit/100 SCHH 0.25 DTYP NPLA
+SECT TYPE  ASLQ UNIT  #unit UMIN #unit/100 SCHH 0.25 DTYP PPLA ; AND
+SECT TYPE  ASUQ UNIT  #unit UMIN #unit/100 SCHH 0.25 DTYP NPLA
+$ Schub:
+$SECT TYPE TAU0 UNIT   0.20 UMIN 0.1 SCHH 0.25 DTYP NPLA
+$SECT TYPE  ASPS UNIT   5.00 UMIN 1 SCHH 0.25 DTYP NPLA
+END
+
+$ Usage of SIR please see csm4_quad_einfeldtraeger.dat  /  csm4_quad_singlespan.dat
+
+$ Clean file folder:
++sys del $(project).$d?
+

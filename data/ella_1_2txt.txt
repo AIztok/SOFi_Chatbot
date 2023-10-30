@@ -1,0 +1,2833 @@
+ELLA
+Extended Live Load Analysis
+SOFiSTiK | 2023ELLA
+ExtendedLiveLoadAnalysis
+ELLAManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|ELLA
+Contents
+Contents i
+1 Task Description 1-1
+2 Theoretical Principles 2-1
+2.1 Bending Areas . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.2 Unit Loads . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.3 Load Introduction in Lanes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.4 Interpolation of the Influence Areas . . . . . . . . . . . . . . . . . . . . . . . . 2-4
+2.5 Transverse Influence Lines . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-6
+2.6 Evaluation of the Influence Lines . . . . . . . . . . . . . . . . . . . . . . . . . 2-7
+2.6.1 Favourably and Unfavourably Performing Loads . . . . . . . . . 2-7
+2.6.2 Unfavourable Load Position . . . . . . . . . . . . . . . . . . . . . . 2-8
+2.6.3 Loaded Length and Load Values . . . . . . . . . . . . . . . . . . . 2-9
+2.7 Limits . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-10
+3 Input Description 3-1
+3.1 Input Language . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.2 Input Records. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-2
+3.3 ECHO – Control of the Output Extent. . . . . . . . . . . . . . . . . . . . . . . 3-4
+3.4 CTRL – Control Parameter . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-5
+3.5 Definition of the Lane Geometry . . . . . . . . . . . . . . . . . . . . . . . . . . 3-6
+3.6 GAX – Geometry of an Axis. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-7
+3.7 LANE – Width of Traffic Lanes . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-9
+3.8 LSEL – Selection of a Defined Lane . . . . . . . . . . . . . . . . . . . . . . . 3-13
+3.9 Calculation of Influence Areas . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-15
+3.10 CALC – Evaluation of Influence Areas . . . . . . . . . . . . . . . . . . . . . . 3-16
+3.11 LINF – Influence Lines . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-18
+3.12 APPL – Control of the Loading Location . . . . . . . . . . . . . . . . . . . . . 3-19
+3.13 SIZE – Graphic Representation of Influence Lines . . . . . . . . . . . . . . 3-20
+3.14 SHOW – Representation of Influence Lines. . . . . . . . . . . . . . . . . . . 3-22
+3.15 ACT – Definition of an Action . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-23
+3.16 LC – Train Load Loading Case . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-31
+3.17 TRAI – Load Train Definition . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-32
+3.17.1 Impact Factor . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-36
+3.17.2 Centrifugal Forces . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-37
+3.17.3 Load Trains according to Eurocode . . . . . . . . . . . . . . . . . 3-38
+3.17.4 Load Trains SLW and LKW . . . . . . . . . . . . . . . . . . . . . . 3-48
+3.17.5 Load trains BS 5400, TMH7 . . . . . . . . . . . . . . . . . . . . . . 3-50
+3.17.6 Heavy Load trains BS 5400, TMH7, IS 1227 . . . . . . . . . . . 3-52
+3.17.7 Live Loads according to AASHTO . . . . . . . . . . . . . . . . . . 3-53
+SOFiSTiK2023 iELLA|Contents
+3.17.8 Load trains according CAN/CSA . . . . . . . . . . . . . . . . . . . 3-55
+3.17.9 Load trains IRC 6-2000 . . . . . . . . . . . . . . . . . . . . . . . . . 3-56
+3.17.10 Load trains of the Japan Road Association . . . . . . . . . . . . 3-57
+3.17.11 Load trains AS 5100 . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-58
+3.17.12 Swedish Load Trains (BRO 2004) . . . . . . . . . . . . . . . . . . 3-59
+3.17.13 French Load Trains . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-60
+3.17.14 Railway train loads . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-62
+3.17.15 Military NATO Load Trains (Stanag 2021) . . . . . . . . . . . . . 3-68
+3.18 TRPL – Point Load of load train . . . . . . . . . . . . . . . . . . . . . . . . . . 3-69
+3.19 TRBL – Block Load of Load Train . . . . . . . . . . . . . . . . . . . . . . . . . 3-72
+3.20 SAVE – Saving case for an evaluation . . . . . . . . . . . . . . . . . . . . . . 3-74
+3.21 CASE – Evaluation Case . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-75
+3.22 POSL – Position of the Load Trains for an evaluation . . . . . . . . . . . . . 3-77
+3.23 COMB – Intermediate Combination of Evaluations . . . . . . . . . . . . . . 3-80
+4 Output Description 4-1
+4.1 Lane Geometry. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.2 Influence Lines . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.3 Load Trains . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-2
+4.4 Superposition Combinations . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-3
+4.5 Evaluation Results. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-3
+4.6 Program Statistics . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-4
+ii SOFiSTiK2023TaskDescription|ELLA
+1 Task Description
+ELLAisaprogramfortheanalysisandevaluationofimposedloadsthatactsonspatialbeamor
+shellstructuresintheformofloadtrainswhichmovealongcertaintrafficlanes. Theenvelopes
+of the scalar variables for the entire structure are usually the result. In the case of simple
+statical systems and simple load cases a traditional analysis of the system can be faster for a
+large number of imposed load cases under circumstances. The evaluation of influence lines
+or influence surfaces becomes necessary for an accurate analysis of larger systems, as they
+are usual particularly in the bridge construction. It is not so simple to determine either the
+most unfavourable load position or the used parts of a load in order to maximize the certain
+internal forces for important parts of the structure outside its midspan. In addition, different
+load positions are critical for the different internal forces and moments. The evaluation of the
+influence lines reduces the extent of the input very significantly.
+Theentiresurfaceofastructureatwhichimposedloadsactgetsdividedintostraightorcurved
+lanesofvariablewidth. Anyloadtrainscanbeassignedtoeachlane. Theycanmoveindepen-
+dently or in relation to each other. The traffic lanes are defined with axes which may contain
+circular segments or clothoids. The loading refers always to the lane axis. An influence line
+is generated for a vertical loading along the lane’s axis for each lane as well as for a moment
+loading about the same axis due to the eccentrical parts. Additional influence lines for brake
+or centrifugal loading can be considered upon request.
+The program evaluates influence lines only for corresponding traffic lanes even in the case of
+plane structures. However, a satisfactory representation of the two-dimensional effects can be
+achieved for the available element distribution by partitioning the structure into multiple lanes.
+The influence surfaces can be either transferred from the database or determined as a rule
+with a calculation with an own static module of the influence line program.
+Inthesecondcase,however,allthesingleelementstiffnessesaswellasthestiffnessmatrixof
+theentirestructuremustbeavailable. Thisrequiresthatatleastoneloadcasehasbeenanal-
+ysed with the programs ASE or STAR2 with option CTRL SOLV 1 or 3, and the corresponding
+data is still available. Load cases with settlement of support or non-linear load cases are not
+suitable for this.
+SOFiSTiK2023 1-1ELLA|TaskDescription
+1-2 SOFiSTiK2023TheoreticalPrinciples|ELLA
+2 Theoretical Principles
+2.1 Bending Areas
+Influencelinescanbecalculatedwithtwocompletelydifferentmethods. Thefirstmethoddeter-
+minesthedeformations(e.g. bendingline)duetoanunitdeformationforthesearchedinternal
+force (e.g. a break for a moment). The bending area is the result of a static analysis with an
+appropriate program. A load case defines always one influence area. Corresponding areas
+are own load cases in each case. This method should be preferred when only a few influence
+areasorparticularvariablesaretobecalculated(e.g. supportreactions,deformationsorsums
+of scalar variables).
+When a large number of influence lines of the structure has to be calculated with this method,
+an own load case will have to be analysed for each cross section and for each internal force.
+This procedure exceeds usually the available CPU time and memory capacities of the static
+programs.
+2.2 Unit Loads
+Thesecondmethodworksinoppositemanner. Aunitloadisdefinedateachposition(nodeor
+member cross section). The analysis determines all the other corresponding internal forces.
+The main advantage of this method is that the single loads do not have to be applied at every
+loading location. The missing intermediate values can be calculated easily with an interpola-
+tion, if the known discontinuities at loading location (break, jump) are considered additionally.
+Therefore, the number of load cases to be analysed can be reduced significantly.
+In the case of plane structures the discontinuity is defined by means of a singularity. This
+singularity does not result from a finite element analysis in principal. However we have a
+smooth approximate influence function which may be used to derive the principal problem of
+precision in a Finite-Element-Analysis very clearly (see Hartmann/Katz - Structural Analysis
+with Finite Elements, Springer). This should be considered particularly in the case of shear
+forces!
+2.3 Load Introduction in Lanes
+The loaded traffic area is defined by lanes with a traffic band of constant width and residual
+areas. Loads will be defined within a lane, but can move arbitrarily along the lane and in some
+cases also across the traffic band.
+Inordertoacceleratetheevaluation,theloadsaresimplifiedwithinalanebyaverticalloading
+and a torsional moment due to the eccentric position of the vertical load. Thus the description
+by means of an eccentric lane or an eccentric load is equivalent for single loads.
+SOFiSTiK2023 2-1ELLA|TheoreticalPrinciples
+Figure2.1: Eccentriclaneandeccentricload
+Mostofthestandardroadloadingsareinternallypartitionedintoloadsattheleft-handsideand
+at the right-hand side of the shear centre. The location of which is automatically determined
+from the influence values for torsional and vertical loading.
+Figure2.2: Partitionofthedistributedloadsattheshearcentre
+In the case of two girders and articulated load distribution the result is the same, if the loading
+is placed centrically at lane 1 or eccentric with respect to lane 2. The eccentricity moment
+2-2 SOFiSTiK2023TheoreticalPrinciples|ELLA
+offers the necessary correction for the distribution of the loading at the longitudinal girders:
+Lane 1 Lane 2
+Lane 1:
+Lane 2:
+Figure2.3: Distributiontwolongitudinalgirders
+However, great differences are already available in this case for rigid load distribution. An
+eccentricity should be then only relatively small. Here up to 20 percent deviations would result
+in the distribution between the two variants.
+In the case of three or more girders the results can be very different as the next two figures
+show. It can be stated as a rule that both the load and the lane must be located in the same
+span region in terms of the lateral behaviour of the structure.
+DifferentresultsarealwaysobtainedinFEstructures,whenloadandlanearenotatthesame
+or neighboring elements. The deviations of the results are negligible in the neighbouring ele-
+ment, but they increase of course as the distance between lane and load increases. As the
+loading of single moments for planar shell or slab structures may lead to further errors, eccen-
+tricities of loads must not be used for these types of the structure, instead an evaluation with a
+SOFiSTiK2023 2-3ELLA|TheoreticalPrinciples
+transverse influence line should be used.
+Figure2.4: Correctloaddistributionforthreelongitudinalgirders
+moment M
+load P
+resulting force
+Figure2.5: Wrongloaddistributionforthreelongitudinalgirders
+2.4 Interpolation of the Influence Areas
+When the lane axis does not coincide with the defined nodes, the values of the influence line
+2-4 SOFiSTiK2023TheoreticalPrinciples|ELLA
+must be interpolated. The program searches then for two series of nodes in the direct vicinity
+of the lane and interpolates perpendicularly to its axis.
+Figure2.6: Interpolationoftheinfluenceareas
+The selection of a neighboring node series is trivial for plane structures. For girders, however,
+it is in general a problem for the artificial intelligence. It is extremely difficult for a program to
+develop the human ability of the general overview. Therefore, this part of the program can not
+execute in a uniquely determined way. A specific constellation not being recognized correctly
+can occur again and again. The user must take a proper action in such cases by defining a
+sequence of nodes or beam elements.
+For the interpolation perpendicularly to the lane axis a distinction must be done very exactly
+between three variations that result from different types of the load distribution:
+INT = 0 INT = 1 INT = 2
+Single lane Articulated Rigid
+load distribution load distribution
+Figure2.7: Loaddistribution
+In the first case (INT 0) an eccentrically placed loading generates directly a torsional moment.
+The influence line of the shear force for the effect of the eccentric influence has no jump in the
+loading location.
+In the second case (INT 1) the load is replaced by two forces that act at the two girders.
+The torsional moments result only as a secondary phenomenon due to the constraint of the
+rotations. Theinfluencelinefortheeffectoftheeccentricitymayincludejumps. Thisisusually
+the most accurate method for plane structures analysed with Mindlin elements.
+In the third case (INT 2) torsional moments result additionally from the fixed constraint of the
+deck slab.
+Following the inverse principle of influence lines it is also possible to view the different meth-
+SOFiSTiK2023 2-5ELLA|TheoreticalPrinciples
+ods as different interpolation grades of the transverse influence line as shown in the following
+picture:
+INT 0 INT 1 INT 2
+Figure2.8: InterpolationGrades
+2.5 Transverse Influence Lines
+For plate and shell structures this interpolation of the lane values may become insufficient as
+local effects of the loads have to be neglected. Thus, the use of the types 3, 5, 7 or 9 will
+create this number of load points transverse to the lane. The transverse influence line will the
+be interpolated with a spline between these values.
+Inafirststepanimmediateevaluationofthemaximumeffectsforauniformloadingandseveral
+axle types with predefined distances of wheels is performed in the transverse direction.
+Figure2.9: ImmediateEvaluationintransversedirection
+• The values P are the sums of the influence values at the wheel positions for up to
+three load directions (P = vertical, PT = transverse, PL = longitudinal)
+• The value M is the moment of the vertical influence values at the wheel positions.
+• Thegiveninfluencevaluesp+andp-aretheintegralsforauniformverticalloadwith
+the influence values across the lane width with positive and negative contributions.
+• The given influence values r+ and r- are the integrals for a uniform residual vertical
+load with the influence values on the right and left side of the lane.
+• The first row shows the values for the most important configuration of wheels, the
+2-6 SOFiSTiK2023TheoreticalPrinciples|ELLA
+following lines show the valueas of the alternate axles (here approx. 15% less)
+• Theobtainedvalueswillthenbecomethevaluesofthelongitudinalinfluencelineat
+this position for the second evaluation along the lane.
+There are some inevitable inconsistencies to be accepted:
+• If the applied load train is smaller than the lane width, the influence values for a
+uniformloadingarenotapplicable. Thiscasewillbecheckedwithanerrormessage.
+• If the applied load train has a different distance of the wheels, the influence values
+will not match if the transverse influence line is not linear. Multiple wheel configura-
+tions within a load train are possible. This case will be checked with a warning.
+• All wheels are applied together, there is no possibility to split the wheels for differ-
+ent signs of the influence line. If a load train is defined with single wheels, their
+contribution is evaluated based on a central P and a M from the excentricity.
+• It might be possible that the extreme load position is not the same for the maximum
+verticaleffectandthemaximumtorsionaleffect. Thisisneglectedbyusingthemost
+adverse effect of the forces in all cases, based on the fact that any moment will be
+transferred via forces of the wheels
+2.6 Evaluation of the Influence Lines
+2.6.1 Favourably and Unfavourably Performing Loads
+Since each load may use more than one influence line at the same time, a quick evaluation of
+influence lines is possible only if some assumptions are made about the load positions. ELLA
+uses also deductional loads, i.e. negative loads, which describe gaps within an uniform traffic
+band.
+Loads of the load trains are thus considered unfavourable, when a load in the positive gravity
+direction(downwards)withthesameeccentricityatthecorrespondingpointoftheinfluenceline
+wouldalsoactunfavourably. Loadsthatactatregionsoftheinfluencelinewithanoppositesign
+are considered favourable. This classification decides about the appropriate dynamic factors,
+the possible use of the reduction factors, and whether the load should be taken into account
+at all. Horizontal loading will not be included in this decision. However all load directions are
+consideredforthedeterminationofthemostunfavourableloadpositionandthefinalevaluation
+of the results of cause.
+In order to consider eccentricity effects (eg. torsional loading), the loads may be automatically
+subdivided if the shear centre is within the width of the lane. However, despite all these fea-
+tures the user should take care, that the real load situation may be mapped by the load train.
+Sometimes either the lane axis must be displaced or a secondary lane must be added or the
+loads must be given explicitly.
+For the evaluation of horizontal loading by braking or wind one has to take care of some more
+subtle effects. If for example the influence line for a bending moment is taken with respect to
+the eccentric longitudinal force at the upper deck, we have areas with positive and negative
+values:
+Following remarks should be observed:
+SOFiSTiK2023 2-7ELLA|TheoreticalPrinciples
+Figure2.10: EvaluationofHorizontalLoading
+• If the brake load is taken over the total length in the same direction, the contributions will
+cancel mostly. This kind of loading should be defined as standard load case, but not within
+ELLA.
+• If the load train has a dedicated travelling direction, only those contributions will be taken
+into account acting unfavourably, although the design code (e.g. Eurocode) may define
+the load value by the total, but limited loading in the lane and an overall loaded length. A
+modification of the load value depending on the loaded length will not occur.
+• Iftheloadtrainisallowedtotravelinanydirection,allcontributionswillbesummedupwith
+their unfavourable sign. Thus the areas with the wrong sign will either have traffic in the
+oppositedirectionoraccelerationforcesareeffective. AlthoughtheEurocodespecifiesthis
+possibility only for the total load value, this approach will also compensate for the missing
+effect of the adoption of the load value to the loaded length from the remark above.
+2.6.2 Unfavourable Load Position
+Fortheloadtrainstherearecaseswheretheloadtrainshouldbeappliedintotalonlyorwhere
+parts of the load train may be deactivated. This will be controlled by a factor for favorable
+loading for every load element. Then the distinction has to be made between the cases of a
+loadingwhichisalwayspresent(e.g. cranes)andthosewheretheloadmayleavethesystem.
+But as the resulting forces and moments have to be superimposed with permanent loads, this
+decision may be postponed until then.
+The most unfavourable load position is sought with a three-stage method. In a first step some
+typical load patterns are positioned at different locations perpendicular to the traffic axis. This
+may be done with a transverse influence line (LSEL INT>2) or based on simple mechanics of
+a lever.
+Inasecondsteptheloadtrainisplacedatselectedpositionswhicheithertheprogramselects
+itself or the user prescribes with POSL. Variable lengths or convoys of loading are estimated
+separatelywithasimplemethod. Thelengthsofthepositiveloadsaresetalwaysequaltotheir
+maximum value, whereas negative loads are placed in such a way that their influence value at
+the end of the load is the largest possible.
+In a third step the most unfavourable value of all analyzed positions keeps on being examined
+for local extreme values. That means the load train positions and all lengths are varied until
+the most unfavourable position is found.
+A special hint should be given to the Culmann load position. For two adjacent loads the most
+unfavourable moment is obtained when the larger force and the resultant of the two loads are
+symmetrictothemidofthespan. Butthemaximummomentisthennotathemidofthespan!
+2-8 SOFiSTiK2023TheoreticalPrinciples|ELLA
+For the special case of two equal loads P with a distance  on a single span beam of length ,
+the maximum moment is given by:
+(cid:149)  (cid:152)2
+M m =P·· 1− (2.1)
+2·
+2.6.3 Loaded Length and Load Values
+For some load trains the load values are dependant on the loaded length. Problems might
+occur if very short sections of an influence line will generate very high loadings and these will
+become unfavourable compared to values of the total loaded length. ELLA provides differnet
+methods With CTRL AGRL to cope with that variations:
+AGRL -1 Lengthvalueswillbekeptseparately,eachspanistakenonitsown. Thisisthemos
+unfavourable approach.
+AGRL 0 Length values will be combined within the same lane, but the load value will be
+increased if the most important span would be more unfavourably
+AGRL 1 Length values will be combined within the same lane, the load value is dependant
+only on the total length (Default)
+AGRL 2 Length values will be combined over all lanes
+In any case only full spans or sections of the influence lines will be considered.
+SOFiSTiK2023 2-9ELLA|TheoreticalPrinciples
+2.7 Limits
+Some limits must be satisfied when using the program. The load direction of all load trains is
+always in the direction of the gravity. The application of ELLA for plane frames or shear walls
+provides so many ambiguities, that we do not support this feature currently.
+coordinate system right-handed
+maximum number of load cases 999999
+maximum number of axis unlimited
+maximum number of lanes per axis 99
+maximum number of influence lines unlimited
+Analysis time may become quite large. Thus the following points may be important:
+• ECHO EXTR may create a really huge amount of print with high time requests.
+• It is worth to select only those lanes with intended loadings.
+• The influence lanes may be calculated only once, it is possibel to repeat an evaluation in a
+separate input block.
+• If only few influence lines are required, the analysis with unit dislocations may be faster
+(see example ella1_threespan.dat)
+• ECHO STAT prints the time of the individual steps.
+The program uses a dynamic working memory which is used mainly for the storage of the
+values needed for the influence lines. An equation for the necessary memory can not be
+given, yet the in fact used size can be printed with ECHO STAT. Thus the amount of reserved
+memory may be specified after PROG ELLA with a parameter Mnnn, where nnn is the size
+of the memory in millions of 4-byte words. As a very high request will slow down the virtual
+memory performance, the optimum value has to be found individually.
+The program is executed mostly in a uniquely determined way. There are, however, two types
+of problems for which a unique solution does not exist or can not be found by the program
+under circumstances. These are:
+• The algorithm for the selection of the nodes next to the lane It is to be expected that un-
+expected results arise at irregularities (e.g. kinematic constraints, double defined beam
+members etc.).
+• Load trains with variable length In the case of load trains with loads of variable length the
+whole problem may become very complex. One should use so few changeable lengths as
+possible. Inadditiontheusershoulddefinefirstthelengthswhichhavethemostsignificant
+effects. In the case of doubt it is better to define more evaluation cases with fixed load
+lengths.
+2-10 SOFiSTiK2023InputDescription|ELLA
+3 Input Description
+3.1 Input Language
+The input is made in the CADINP language (see general manual SOFiSTiK: ’FEA / STRUC-
+TURAL Installation and Basics’).
+Thegeometricandstaticalmodelmusthavebeenalreadydefinedandstoredinthedatabase.
+The geometric definitions of the lanes may be already available in the database.
+The input is articulated in blocks which are decollated with the record END. Within every block
+one can:
+• calculate or take over influence lines at old or new defined lanes:.
+GAX, LANE Geometric definition of a lane
+LSEL Select a lane for influence line evaluation
+LINF Get influence line from database
+CALC, APPL Parameter for evaluation
+• print or plot the calculated or stored influence lines
+SIZE, SHOW Print and draw influence lines
+• Define load trains
+LC, TRAI, TRPL, TRBL
+• evaluate the influence lines with different load trains
+CASE,COMB Load cases and their combinations
+POSL Position of load trains within the lanes
+The influence lines and load positions remain stored in a separate database (.CDI) and are
+available for further evaluations.
+The program is ended, when an empty block (END/END) occurs.
+Three categories of units are distinguished:
+mm Fixed unit. Input is always required in the specified unit.
+[mm] Explicit unit. Input defaults to the specified unit. Alternatively, an explicit as-
+signment of a related unit is possible (eg. 2.5[m] ).
+[mm] Implicit unit. Implicit units are categorised semantically and denoted by a cor-
+1011
+responding identity number (shown in green). Valid categories referring to the
+unit ”length” are, for example, geodetic elevation, section length and thickness.
+Thedefaultunitforeachcategoryisdefinedbythecurrentlyactive(designcode
+specific) unit set. This input default can be overridden as described above. The
+specified unit in square brackets corresponds to the default for unit set 5 (Eu-
+rocodes, NORM UNIT 5).
+SOFiSTiK2023 3-1ELLA|InputDescription
+3.2 Input Records
+The following input records are defined:
+Record Items
+ECHO TYPE VAL
+CTRL OPT VAL
+GAX NO S X Y Z R A
+NX NY NZ TYPE TITL
+LANE NO TYPE SA SE WR WL YCA
+YCE YRA YLA YRE YLE L
+LSEL NO INT DX DY DZ RSEL RSEQ
+LSEL LSEQ
+CALC TYPE LMAX LMIN FROM TO DELT SYST
+LINF T1 L1 T2 L2 T3 L3 T4
+L4 T5 L5 T6 L6 TITL
+APPL TYPE TGEN
+SIZE TYPE SC W H MARG FORM HDIV
+C1 C2 C3 C4 C5 C6 C7
+SHOW SNO TYPE NO X ETYP DSV YMAX
+ACT TYPE GAMU GAMF PSI0 PSI1 PSI2 PS1S
+PART SUP TITL
+LC NO PSI0 PSI1 PSI2 PS1S GAMU GAMF
+TITL
+TRAI TYPE P1 P2 P3 P4 P5 P6
+P7 P8 P9 PFAC WIDT PHI
+PHI2 PHIS PHI4 V FUGA XCON DIR
+DIRT
+TRPL P PB PW PF PFAC DIST A
+DPOS DMIN DMAX Y Y2 HW ZW
+HF PHI B
+TRBL P PB PW PF PFAC DIST A
+L LMAX LDEL Y Y2 HW ZW
+HF PHI B
+SAVE LCB TYPE TITL
+CASE NO GRP
+POSL NO TRAI FACT
+OPT SMIN SMAX DEL YEX V P
+Tablecontinuedonnextpage.
+3-2 SOFiSTiK2023InputDescription|ELLA
+Record Items
+SYNC PLON PTRA FUGA IMPA EXCE EXTR
+COMB V P SYNC
+TYPE L1 F1 L2 F2 L3 F3
+L4 F4 L5 F5 L6 F6
+L7 F7 L8 F8 L9 F9
+L10 F10
+The records HEAD, END and PAGE are described in the general manual SOFiSTiK: ’FEA /
+STRUCTURAL Installation and Basics’.
+SOFiSTiK2023 3-3ELLA|InputDescription
+3.3 ECHO – Control of the Output Extent
+Seealso: LANE,LINF,CALC,TRAI
+ECHO
+Item Description Unit Default
+OPT A literal from the following list: LT FULL
+LANE Lane geometry
+IL Influence lines
+LOAD Load trains
+EVAL Evaluation
+LPOS Load positions
+RES Results
+FULL All the above options
+STAT CPU time and memory allocation
+VAL Extent of the output LT FULL
+OFF no calculation, no output
+NO no output
+YES regular output
+FULL extensive output
+EXTR extreme output
+The record name ECHO must be input for every record so that the options are not confused
+with other records with identical names. The volume of printed data is also controlled with the
+record SHOW.
+With ECHO IL the influence lines will be printed, in general as pictures, but with option EXTR
+alsoastext. ThesmallinfluencelinesintransversedirectionwillbeshownwiththeOption+4.
+Without a SHOW selection the volume of pictures may become quite large.
+With the option LPOS FULL the actual load positions of all evaluations will be saved to the
+database and the graphical visualization of the influence lines will include the loading and will
+be repeated for all evaluation cases.
+ECHO EVAL YES prints only the generated load cases for the case of ECHO RES NO. For
+the load train position ECHO EVAL FULL is needed and for the detailed statistical data ECHO
+EVAL EXTR.
+ECHO RES EXTR prints the intermediate results of all cases.
+3-4 SOFiSTiK2023InputDescription|ELLA
+3.4 CTRL – Control Parameter
+Seealso: APPL,CALC
+CTRL
+Item Description Unit Default
+OPT A literal from the following list: LT !
+SECT Evaluation of beam sections
+VAL Value of Option − *
+V2 reserved for additional option − -
+V3 reserved for additional option − -
+V4 reserved for additional option − -
+V5 reserved for additional option − -
+V6 reserved for additional option − -
+WithCTRLSECTonecanobtainevaluationsonlyatcertainbeamsections. Theinputoptions
+are:
+CTRL SECT 0 only section with print-flag (see program SOFiMSHA record BSEC)
+CTRL SECT 1 all beam sections (default)
+With CTRL AGRL one can select how ELLA should cope with the aggregation of loaded
+lengths. The load values as well as the impact factors may depend on those values.
+CTRL AGRL -1 Length values will be kept separately, each span is taken on its own.
+CTRL AGRL 0 Length values will be combined within the same lane, but the load
+value will be increased if the most important span would be more un-
+favourably
+CTRL AGRL 1 Lengthvalueswillbecombinedwithinthesamelane,theloadvalueis
+dependant only on the total length (Default)
+CTRL AGRL 2 Length values will be combined over all lanes
+It has to be pointed out, that option -1 will be not be general applicable in case of elastic
+supports, where strong discontinuities in the results may be obtained and thus is not a me-
+chanically sound procedure.
+SOFiSTiK2023 3-5ELLA|InputDescription
+3.5 Definition of the Lane Geometry
+Thebaseofthemovingloadprocessisalanegeometry,describedintheplanviewbystraight,
+circular or clothoid segments and in the elevation as straight or quadratic parabola. This can
+be taken from the database as defined by SOFiMSHC or SOFILOAD or explicitly input with
+the record GAX. Each axis may have up to nine separate lanes with the sub numbers 1 to 9
+definedviaLANE.Forthedynamicimpactcoefficientsaneffectivelengthmaybespecifiedand
+the extra width of the traffic area may be defined.
+A lane axis already stored in the database (by SOFiMSHC or SOFiLOAD or ELLA) can be
+activated with the record LSEL.
+Each lane has two coordinate systems. There is a local system (x) at the lane axis for real
+distances. However,theinputsforthepositionsalongthelanesareenteredinaglobalsystem
+of stations (s) which defines an alignment of the lanes to each other.
+Figure3.1: Laneaxisdefinition
+3-6 SOFiSTiK2023InputDescription|ELLA
+3.6 GAX – Geometry of an Axis
+Seealso: Load-train,LANE
+GAX
+Item Description Unit Default
+NO Axis identifier LT4 A1
+S Total arc length (station) − 0
+X Real world coordinates of point [m] 0
+1001
+Y [m] 0
+1001
+Z [m] 0
+1001
+R Radius of the lane axis [m] -
+1001
+A Transition curve R·L=A2 [m] -
+1001
+NX Direction vector for curves in 3D − *
+NY not to be used for standard alignments − *
+NZ − *
+TYPE Type of axis LT AXIS
+AXIS = general axis
+LANE = traffic lane
+BGEO = bridge geometry line
+TITL Designation of lane LT32 -
+A general geometric axis with all details may be now defined in SOFIMSHC. For SOFiLOAD /
+ELLA / TENDON only a simplified definition is provided as follows.
+• Definition with a length resp. station in the plan view For the first record of an axis the
+start point (X,Y,Z) and the start direction (NX,NY,NZ), the length S of the first segment and
+optional curvature and clothoidal parameter is specified. All consecutive records contain
+only the next S-value and the curvature parameters.
+Ifaradiusisdefined,atransitionelementfromthelastradiustothecurrentvalueisgener-
+ated. PositivevaluesforRcauseacurvaturetotheright-handside,whilstnegativevaluesa
+curvature to the left-hand side. If A is defined, a clothoidal spiral transition curve is created
+where the curvature increases for the positive values of A and decreases for the negative
+values. If the radius R is not given it will be calculated automatically based on the length, if
+it is given together with A the curvature of the start point will be calculated instead. Basket
+arches with piecewice constant curvatures may be defined with A=0.0 and the selected
+radius.
+GAX 'B1' S 8.0 A 10 X -1.000 NX 1.0 TITL 'SPIRAL AND CIRCLE'
+S 16.0
+GAX 'B2' S 8.0 R 25.0 A 0.0 Y -1.000 NY 1.0 TITL 'THREE CENTER CURVE'
+SOFiSTiK2023 3-7ELLA|InputDescription
+S 16.0 R 14.0 A 0.0
+Figure3.2: Laneaxis
+• Definition about 3D points at a curve The coordinates have to be input for all records. The
+given direction (NX,NY,NZ) is the local z-axis and thus a defined circular arc turns around
+this vector.
+GAX A1-X S 0.0 X -1.000 TITL 'CENTER GEOMETRY'
+S 16.0 X 30.000 R 150.0 NZ 1.0
+The described elements will be automatically adopted from WinGRAF as dynamic axis. A
+graphical check is recommended with the programs WING or WinGRAF.
+The options to define the elevation or cross falls are now only available in SOFiMSHC.
+3-8 SOFiSTiK2023InputDescription|ELLA
+3.7 LANE – Width of Traffic Lanes
+Seealso: Load-train,GAX
+LANE
+Item Description Unit Default
+NO Lane number (lane_ident.nummer) LT *
+e.g. A1.3 = third lane of axis A1
+lane_ident only = all/total lanes
+TYPE Predefined type (see remarks) LT *
+WR Ordinate of right curbstone [m] -
+1001
+WL Ordinate of left curbstone [m] -WR
+1001
+SA Coordinate along lane axis for start − !
+SE Coordinate along lane axis for end − !
+YCA Offset of centre of lane at start (SA) [m] *
+1001
+YCE Offset of centre of lane at the end (SE) [m] YCA
+1001
+YRA Right value at start (SA) [m] *
+1001
+YLA Left value at start (SA) [m] *
+1001
+YRE Right value at end (SE) [m] YRA
+1001
+YLE Left value at end (SE) [m] YLA
+1001
+L Effectivelengthofsegmentforimpactcoefficientsand [m] *
+1001
+loaded length dependencies
+CONT add to last segment
+HSA Height of deck or rail above lane at SA [m] 0.0
+1001
+HSE Height of deck or rail above lane at SE [m] HSA
+1001
+INCA Cross fall dz/dy or Δh[mm] at SA [mm] 0.0
+INCE Cross fall dz/dy or Δh[mm] at SE [mm] INCA
+HEFF Effective height of rail and sleeper [m] -
+1001
+BEFF Effective length of sleeper [m] -
+1001
+DEFF Effective width of sleeper [m] -
+1001
+INCD Spread angle for stresses − 0.25
+ASL Distance between mounting points [m] -
+1001
+WREF Gauge to convert inclinations [m] 1.435
+1001
+The total loading area will be subdivided in up to 99 individual traffic lanes relative to a given
+geometrical axis. These may be created automatically by a predefined standard section or
+with explicit coordinates. One may subdivide each segment with different widths and dynamic
+impact factors. All lanes have to be defined together to an existing axis, any new definition will
+delete all previously defined lane definitions.
+SOFiSTiK2023 3-9ELLA|InputDescription
+Figure3.3: Singlelaneloadedandresidualarea
+The width of the lane is defined through the left and the right boundaries. The lane can be
+widened or narrowed by different input data at different stations. If the lane edges happen to
+intersect the lane, this should be defined only at distinct points to allow for correct treating of
+torsional loading.
+The width of the load train may be less than those of the lane. In that case additional basic
+areas are established loaded by a constant load specified with the load train. If the load train
+is larger than the lane width, reductions of the applied loading are possible.
+The lane 0 has to be defined always, for the following procedures two cases have to be distin-
+guished:
+• There is only lane 0, the width of the moving loading is defined only by the load train. Only
+then, the eccentricities of the load train are applied absolutely for all lanes.
+• There are other lanes within the curb stone limits. Then lane 0 defines the total extend of
+thetrafficloadincludingpathways. Thewidthofthemovingloadisthemaximumextendof
+the other lanes.
+Ó Ó Ó Ó Ó Ó Ó Ó Ó
+AXIS.1
+T 101 ÓÓ Ó Ó Ó Ó Ó Ó Ó Ó Ó ÓÓ Ó Ó Ó Ó Ó Ó Ó ÓÓ Ó
+Y −4.00 −2.00 0.00 2.00 4.00 m
+M 1 : 70
+Figure3.4: Twolanesloadedandresidualarea
+Default constant sections are available via literals as follows. If such type (without blank
+spaces) is given at the main lane, secondary lanes will be automatically created:
+RQ7.5, RQ9.5, RQ10.5, RQ15.5,
+RQ20, RQ26, RQ29.5
+RQ33, RQ35.5 Setting total width automatically
+For the following types the definition of the curbstone coordinates is always required, which is
+constant along the total lane.
+3-10 SOFiSTiK2023InputDescription|ELLA
+EN EN 1991-2 / DIN-Fachbericht 101
+BS even lanes according BS resp. BD 37-01
+TMH7 even lanes according TMH7
+CAN even lanes according Canadian Standards
+IRC even lanes according Indian road congress
+JRA Main and secondary lanes (Japan road congress)
+AS Main and secondary lanes (Australian AS 5100)
+If the lanes have all the same width or the number of lanes is exceeding 6, the lanes starting
+withno. 1willbealignedfromtherightedge(positivey-values). Ifthisisnotthecaselane1is
+always the central lane in the mid of the total traffic area, more lanes with numbers 2 to 7 will
+be created on alternating sides aside to lane 1.
+In all cases right adjusted lanes starting with number 10 and left adjusted lanes starting with
+number 20 will be available. However they will be created as own elements only if the second
+case is given and the eccentricity is larger than 0.30 m.
+For TMH7 lanes 11,12,13 resp. 19,18,17 with extreme eccentricity will be created.
+Ó Ó Ó Ó Ó Ó Ó Ó
+AXIS.11 AXIS.10
+T 102 T 101 Ó ÓÓ Ó ÓÓ Ó Ó Ó Ó Ó Ó Ó ÓÓ Ó Ó Ó Ó Ó Ó ÓÓ Ó
+Y −4.00 −2.00 0.00 2.00 4.00 m
+M 1 : 70
+Figure3.5: Twolanesadjustedtotherightloadedandresidualarea
+Ó Ó Ó Ó Ó Ó Ó Ó Ó
+AXIS.20 AXIS.21
+T 101 T 102 ÓÓ Ó Ó Ó Ó Ó Ó Ó ÓÓ Ó Ó Ó Ó Ó Ó ÓÓ Ó Ó ÓÓ Ó
+Y −4.00 −2.00 0.00 2.00 4.00 m
+M 1 : 70
+Figure3.6: Twolanesadjustedtotheleftloadedandresidualarea
+Residualareasaretheareasbetweentheedgesdefinedbythewidthoftheloadtrainandthe
+edges of the lane itself. The pathways are thus only included in lane 0. Gaps between the
+lanes are NOT treated as residual loading areas.
+For the loading of the lane in SOFiLOAD it will be subdivided in the longitudinal direction
+into segments (e.g. each span). If several lane-definitions should be combined to one single
+segment, the definition of L is only possible for the first of the definitions, while specifying for
+all the others the literal CONT at this position.
+For railway bridges there are detailed tables available within EN 1991-2 or DIN FB 101 how
+to select the governing length. Further there are detailed descriptions how to calculate the
+SOFiSTiK2023 3-11ELLA|InputDescription
+effective pressures below the ballast. For the latter the input values HEFF to ASL are needed,
+however applicable and definable in SOFiLOAD only.
++ INC
+s
+BEFF HEFF HS
+INCD
+INCD
+y
+YL YR
+z
+Figure3.7: Ballastandsleepers
+TheheightHEFFofthetracksorroadabovethelaneandthecrossfallINCA/INCEofthelane
+will create additional moments within SOFILOAD and ELLA.
+3-12 SOFiSTiK2023InputDescription|ELLA
+3.8 LSEL – Selection of a Defined Lane
+Seealso: LaneGeometry,GAX,LANE,LSEL
+LSEL
+Item Description Unit Default
+NO Lane identifier t8 !
+INT Load distribution (see chapter 2) − 1
+0 Single lane
+1 Articulated distribution
+2 Rigid distribution
+3,5,7,9 Transverse infl. line QUAD
+DX Maximum longitudinal distance or direction deviation [m] 99
+1001
+DY Influence width of the lane [m] 99
+1001
+DZ Influence height of the lane [m] 99
+1001
+RSEL Explicit centric/right-hand side nodes LT EDGE
+EDGE by nodal sequence RSEQ
+SZUG by continuous beam RSEQ
+GRP by beams of group RSEQ
+QGRP QUADs of group RSEQ
+RSEQ Selection number for RSEL − -
+LSEL Explicit left-hand side nodes LT (RSEL)
+EDGE by nodal sequence LSEQ
+SZUG by continuous beam LSEQ
+GRP by beams of group LSEQ
+QGRP QUADs of group LSEQ
+LSEQ Selection number for LSEL −/Lt -
+only for INT>2 (transverse evaluation):
+TRAI Load case of a train for evaluation − -
+B Width of the traffic band in transverse direction [m] 3.0
+1001
+BWH Distance of wheels in transverse direction [m] 2.0
+1001
+YMAX overwrite maximum eccentricity from TRAI [m] +YEX
+1001
+YMIN overwrite minimum eccentricity from TRAI [m] -YEX
+1001
+An already defined lane gets activated for evaluation with the record LSEL. At NO one has to
+specifytheaxisidentifier(4chars)optionallyappendedbyadotandadigitforthelanenumber
+(e.g. A1.3 but also with wild cards like A1.? or A1.1?). Without a lane number all lanes of that
+axis are selected, which is not always a good choice to minimize analysis time. At the same
+time parameters can be specified for the selection of the neighbouring nodes.
+LaneswhicharedefinedwiththerecordGAXinthesameblockareselectedautomaticallywith
+the standard values for DX, DY and DZ. A special feature can be achieved with an input of a
+SOFiSTiK2023 3-13ELLA|InputDescription
+negativevalueforINT.Inthiscaseallgeometricparametersandinfluencelinesaredeletedfor
+this lane.
+Iftheuserdoesnotdefineanexplicitsequenceofneighboringnodes,Ellawilltryinafirststep
+to look for all nodes which are adjacent to the lane and tries to link them to one (INT 0) or two
+(INT 1,2) nodal sequences.
+For this search DY and DZ describe a region in which the corresponding nodes must be situ-
+ated. DY is measured in this case at the right-hand side and at the left-hand side of the lane.
+A value of about 90 percent of the distance between the main girders is a sound definition.
+TheparameterDZdefinesthelimitsoftheregionunderthelanewhichistobeexamined. This
+is for example necessary for three-dimensional structures at which parts of this structure lie
+sometimes beneath the lane. Nodes above the lane axis are never considered.
+ForINT>2DXspecifiesamaximumdistanceoftheloadpointsalongtheaxis. Whilethedefault
+istousealoadpointateveryedgecrossingthelane,asmallervaluewillinsertadditionalpoints
+between.
+For INT 0 to 2 the parameter DX specifies, how large the angle between the lane axis and
+an edge of the nodal sequence is accepted. An input is necessary, if transverse girders and
+longitudinal girders have similar angles of intersection to the lane. If the node sequences may
+intersect the lane, DX has to be input with a negative value.
+Figure3.8: Nodeselectionforalane
+If ELLA is not able to find suitable sequences of nodes, then it is possible to specify
+two sequences explicitly by boundary or beam elements containing the desired nodes with
+RSEL/RSEQ and LSEL/LSEQ.
+Forplatesandshellsstructuresitisrecommendedtomakeanevaluationoftheinfluencearea
+in transverse direction before establishing the longitudinal influence values. With types 3,5,7
+and 9 these numbers of load points in transverse direction will be examined based on the
+existing and selected QUAD elements.
+QUAD elements are searched only based on the plan view. If a secondary group or a range
+of primary groups is specified, no further checks about the elevation will be made. However
+if no such definitions are given, only those QUAD elements will be considered situated with a
+maximumofDZbelowtheloadingorwheretheloadingiswithintheelement. Thusitisstrongly
+3-14 SOFiSTiK2023InputDescription|ELLA
+recommended to use a group definition to specify the traffic area properly. One secondary
+group or a range of primary groups may be specified.
+For the evaluation the transverse width of the traffic lane B, the distance of the wheels BWH
+and the minimum and maximum eccentricities (YMIN,YMAX) are required. For the evaluation
+in the longitudinal direction these values may not be changed any more. Thus the width of the
+train has to match in all cases. If the wheel distances of the train do not match, deviations are
+possible, which are flagged by a warning message.
+Thus, it is strongly recommended to use a specific loadtrain with TRAI instead of those explict
+values, allowing to select all requested values directly. Loadtrain LM3 contains also the wheel
+spacingsofLM1,butnotinverse. ForspecialcasesaUSERtrainmaybeused,containingjust
+all possible wheel spacings.
+A graphical control may be obtained with ECHO EL +4.
+3.9 Calculation of Influence Areas
+Influence areas are calculated from unit load cases, when the record CALC is input. In every
+case all the influence areas are produced for the corresponding internal forces. The record
+CALC specifies for which elements and for which scalar variables the evaluation of the influ-
+ence area will be performed.
+For each extreme value of any scalar variable a load case can be generated and stored in the
+database. The corresponding values of the rest of the internal forces are calculated automati-
+cally too.
+As an alternate way one may readinfluence lines or areaswhich were stored asload cases in
+thedatabasewiththeinputoptionLINF.Thevaluesaretheninterpolatedtothedefinedlanes.
+The results, however, do not get stored in the database.
+SOFiSTiK2023 3-15ELLA|InputDescription
+3.10 CALC – Evaluation of Influence Areas
+Seealso: CalculationofInfluenceAreas,APPL,CTRL,CASE
+CALC
+Item Description Unit Default
+TYPE Scalarvariableforwhichtheinfluencelinesshouldbe LT -
+evaluated
+LMAX Load case number for the maximum − *
+0 no evaluation
+LMIN Load case number for the minimum − *
+0 no evaluation
+FROM Smallest element number −/Lt4 1
+TO Largest element number −/Lt4 FROM
+INC Increment of the element numbers − 1
+SYST Subsystem for the analysis LT *
+SPAC / GIRD
+PHI Impactfactororcharacteristiclengthforimpactfactor − *
+if given with a length unit
+With CALC the elements will be selected for which the influence lines will be established. The
+parametersspecifiedwithLSELwillbeappliedforthiscalculation. WithoutanyCALCdefinition
+the last influence lines in file projectname.CDI will be reused.
+If no input occurred for FROM, TO and DELT, all elements of the structure will be selected.
+Multiple overlapping definitions are possible, the latest positive definition is valid. Instead of
+the element numbers a group may be selected via or FROM ’GRP’ group.
+The parameter SYST can define a reduced influence line evaluation. This may result in a
+significant reduction of the CPU time and the memory requirement e.g. in the case of girders,
+if a three-dimensional model was defined due to the prestress and the temperature, while the
+imposed loads are acting only at a two-dimensional girder. The influence lines for the axial
+forceaswellasforthetransversebendingarenotcalculatedorevaluatedwiththeinputSYST
+GIRD.
+List of the Scalar Variables
+1. Beam Elements
+N, VY, VZ, MT, MY, MZ, MB, MT2 Forces and moments
+2. Truss, Cable and Spring Elements
+TRUS Axial forces in truss elements
+CABL Cable forces
+3-16 SOFiSTiK2023InputDescription|ELLA
+P, M Spring force, spring moment
+PTX, PTY, PTZ Transverse spring force component (PT is not directly
+available, as it is nonlinear)
+3. Shell, disk and plate elements
+MXX, MYY, MXY Bending moments
+VXX, VYY Shear forces
+NXX, NYY, NXY Membrane forces
+4. Nodes
+UX, UY, UZ global displacements
+PHIX, PHIY, PHIZ global rotations
+5. Result sets
+Result sets defined in SOFIMSHA will be selected with TYPE RSET:xxxxx, where
+xxxxx is either the ID of the item within a set to be evaluated or a number if the x-th
+item of all result sets should be evaluated. Supported are all forces and moments of
+beam,trussandcableelements,forcesandstressesinthecenterofQUADandBRIC
+elementsandnodaldisplacements,supportforcesandspringforces(butnotresultant
+PT) Also any formula expressions within a result set definition will inihbit to select this
+item as an influence line for ELLA.
+AtFROMandTOtheidentsoftheresultsetsmaybespecifiedinlexicalorder(FROM
+may also contain wildcards, e.g. "SU*") .
+The evaluation of the influence lines for nodal support forces is possible by an import of a
+deflection area caused from a nodal displacement, as force of a supporting spring or via the
+result sets.
+Theevaluationoftheinfluencelinesforpileelementsdoesnotincludetheeffectofthebedding,
+thus only the results at the nodes are correct.
+The application of ELLA for plane frames or shear walls provides so many possibilities
+for miss-understandings, that we do not support this feature.
+SOFiSTiK2023 3-17ELLA|InputDescription
+3.11 LINF – Influence Lines
+Seealso: CalculationofInfluenceAreas,LANE,ECHO,SHOW
+LINF
+Item Description Unit Default
+T1 Type of the first influence line LT MAMI
+L1 Load case number first influence line − -
+T2 Type of the second influence line LT MAMI
+L2 Load case number second influence line − -
+T3 Type of the third influence line LT MAMI
+L3 Load case number third influence line − -
+T4 Type of the fourth influence line LT MAMI
+L4 Load case number fourth influence line − -
+T5 Type of the fifth influence line LT MAMI
+L5 Load case number fifth influence line − -
+T6 Type of the sixth influence line LT MAMI
+L6 Load case number sixth influence line − -
+PHI Impactfactororcharacteristiclengthforimpactfactor − *
+if given with a length unit
+TITL Title of the influence line LT24 *
+Influence lines or areas which were stored as load cases can be taken over for the evaluation
+along the defined lane axis. However, results are only printed and do not get stored in the
+database.
+Up to six corresponding influence lines can be defined together.
+For type T1 to T6 one can enter:
+MAMI = Evaluation for minimum and maximum
+MAX = Evaluation for maximum
+MIN = Evaluation for minimum
+ACC = Evaluation only as corresponding line
+Positive load case numbers are processed with the first set of impact factors (bending), while
+negative load case numbers use the second set (shear).
+3-18 SOFiSTiK2023InputDescription|ELLA
+3.12 APPL – Control of the Loading Location
+Seealso: CalculationofInfluenceAreas,CALC,CTRL
+APPL
+Item Description Unit Default
+TYPE Direction of the unit forces LT STAN
+MONO Only centric vertical loading
+STAN Only vertical loading
+TRAV Additionally tranverse loading
+FULL Additionally longitudinal loading
+TGEN Accuracy of the cross section jumps − 0.
+The CPU time for obtaining the influence lines can be reduced by using the default value of
+APPL. The options TRAV and FULL are only useful for three-dimensional systems with the
+corresponding loads.
+TheitemTGENspecifiesatwhichcrosssectionswithinabeamelementtheadditionalloading
+locations are defined. A loading location is inserted, when the difference of the reciprocal
+stiffness of two neighbouring cross sections is larger than a multiple of TGEN.
+(cid:12) 1 1 (cid:12) 1
+(cid:12) (cid:12) − (cid:12) (cid:12) > TGEN· (3.1)
+(cid:12)E  E +1(cid:12) E 
+The input of TGEN is recommended for structures with many similar cross sections, because
+the CPU time and the memory allocation are reduced then significantly. For instance, TGEN
+1.E10 suppresses the insertion of any loading locations at internal beam sections.
+SOFiSTiK2023 3-19ELLA|InputDescription
+3.13 SIZE – Graphic Representation of Influence Lines
+Seealso: SHOW,ECHO
+SIZE
+Item Description Unit Default
+TYPE Paper size − -lp
+Positive value Landscape format
+Negative value Portrait format
+SC Scale − *
+0 format filling
+W Paper width cm -
+H Paper height cm -
+MARG Draws a border LT FULL
+OFF does not draw a border
+NO draws only an inner border
+YES release of an additional border
+FULL draws an additional border around the
+sheet
+FORM Form of the border LT ZTVK
+STAN Standard frame
+ZTVK ZTVK-88 frame
+URS URSULA definition
+HDIV Number of the representations per sheet − *
+C1 Pen number for vertical influence lines − 1000
+C2 Pen number for torsional influence lines − 1001
+C3 Pen number for longitudinal influence lines − 1002
+C4 Pen number for transverse influence lines − 1003
+C5 Pen number for positive uniform loadings − 0
+C6 Pen number for negative uniform loadings − 0
+C7 Pen number reserved − -
+C8 Pen number for loadings − 2001
+C9 Fill area number for loadings − 2235
+Graphic representations are only produced, when the record SIZE is input. If a pen number is
+defined negatively, the corresponding line type does not get plotted. Coding of lines see GPLI
+ThelinestobeplottedareprescribedwiththeinputoftherecordSHOW.WithoutECHOLPOS
+only the influence lines will be shown, with ECHO LPOS the actual load position will be also
+visualized, which will need more pictures in general.
+Theitemcausesasubdivisionofthesheetintosomestrips,sothatthecorrespondinginfluence
+lines can be plotted at the same drawing. Positive values draw the lane axis along the paper
+3-20 SOFiSTiK2023InputDescription|ELLA
+width and subdivide the paper height; negative values have a contrary effect. The default is
+that three lines get plotted parallel to the largest dimension of the paper.
+SOFiSTiK2023 3-21ELLA|InputDescription
+3.14 SHOW – Representation of Influence Lines
+Seealso: SIZE,ECHO,LINF
+SHOW
+Item Description Unit Default
+SNO Lane number − 0
+0 all
+lit4 all lanes of axis ’lit4’
+lit4.n only lane n of axis ’lit4’
+TYPE Influence location LT ALL
+ALL All types
+LINF explicit bending areas (LINF)
+BEAM Beam elements
+TRUS Truss elements
+CABL Cable elements
+SPRI Spring elements
+QUAD Plane elements
+NO Element or first LINF-case number − 0
+no input all
+X X value for beam elements − -
+no input all beams
+ETYP Type of the influence lines LT ALL
+EXTR Lines only for extreme values
+ALL Also the corresponding lines
+DSV Distance of the output values − *
+YMAX minimum value to scale the line − 1.E-6
+With SHOW the lines which should be printed (record ECHO IL) and / or plotted (record SIZE)
+are selected. The item DSV controls the distance between marked positions in the output.
+Available values are shown then at least in this distance. However, extreme values are output
+additionally in all cases. There will be up to four lines for three force components and the
+torsional moment. The presentation may be changed with record SIZE.
+3-22 SOFiSTiK2023InputDescription|ELLA
+3.15 ACT – Definition of an Action
+Seealso: ACT,LC
+ACT
+Item Description Unit Default
+TYPE Designation of action LT4 !
+GAMU Unfavourable partial safety factor − *
+GAMF Favourable partial safety factor − *
+PSI0 Combination coefficient rare − *
+PSI1 Combination coefficient frequent − *
+PSI2 Combination coefficient quasi-permanent − *
+PS1S Combination coefficient infrequent − *
+GAMA Partial safety factor accidental − *
+PART Partition to which the action belongs: LT *
+G permanent
+P prestress
+Q variable action
+Q_1 variable action load group 1
+...
+Q_99 variable action load group 99
+A accidental action
+E seismic action
+SUP Default superposition of the load cases within the ac- LT *
+tion:
+PERM permanent with unique factor
+PERC permanent with individual factors
+COND conditional
+EXCL mutually exclusive within category
+EXEX mutually exclusive within action
+UNSI COND with unfavourable sign
+USEX EXCL with unfavourable sign
+ALEX permanent but exclusive within action
+TITL Designation of action LT24 *
+As type of the action one may use any literal with up to 4 characters, however some combina-
+tions are reservedfor special purpose. Theyare defined in the corresponding INI-files and will
+followthedesignationoftheselecteddesigncodeascloseaspossible. Anoverviewisgivenin
+the table below. Furthermore, it is possible to subdivide each action with up to two characters
+in categories, designated with a character from A to Z, each having distinguished combination
+coefficients or partial safety factors. The category will be appended with an underscore to the
+name of the action.
+SOFiSTiK2023 3-23ELLA|InputDescription
+• Eachcategoryhasitsowncombinationvaluesanditsownloadcasesandadefaultsuper-
+position rule within the action category.
+• Each action comprehends all its categories, i.e. one may select either a sub category on
+its own or all categories by the generic name of the category. (Q selects all Q_?)
+INI-File/ EC-Defaults
+action G
+loadcase
+loadcase
+action Q
+action Q_A
+loadcase
+loadcase
+action Q_B
+loadcase
+loadcase
+Figure3.9: Structureoftheactions,theircategoriesandtheirloadcases
+ForexamplethereareforroadbridgesinEN1990fortheuniformlifeloadUDLandthemovable
+doubleaxledifferentcombinationcoefficients. Forsimplecasesonewilldefinealoadcasefor
+everyspanoftypeL_U(UDL),tobesuperimposedconditionally,whilethediscreteloadcases
+of different load positions of the double axle will be defined as type L_T and exclude each
+other. All load cases however will be applied together as leading variable action.
+Finally any individual load case may have its own combination factors assigned in SOFiLOAD.
+(seeLC).ThisshouldbeavoidedhoweverandadefinitionofcombinationcoefficientsinMAX-
+IMA is then at least ambiguous and of little use therefore.
+Normal Add. Spec. Remark
+− for LC only: not assigned to an action
+NONE
+Gg ZGg SGq dead load (G + G_1 + G_2)
+3-24 SOFiSTiK2023InputDescription|ELLA
+Normal Add. Spec. Remark
+G_1g Z1g S1q primary dead load
+G_2g Z2g S2q secondary dead load
+Pg ZPg SPq Prestress (for old DIN use V !)
+Cg ZCg SCq Creep and shrinkage
+Qq ZQ SQ variable load
+L ZL SL life load (L in analog mode L_T (TS), ZL in analog mode L_U
+(UDL))
+W ZW SW Wind (use ZW for Bridges)
+Sq ZS SS Snow (use ZS for Bridges)
+Rg ZR SR Earth pressure, Water Pressure
+Fq ZF SF Settlements (ZF = expected, SF = possible)
+T ZT ST Temperature
+A ZA SA Accidental
+B ZB SB Construction, Maintenance
+(ZB = resistance of bearings, SB = Exchange of bearings)
+E ZE SE Seismic (ZE = Service, SE = Design)
+g = Load case is permanent (always added)
+q = Load case is conditional (added if unfavourable)
+ = Load cases are conditional excluding each other
+The actions indicated in the table are used only as preset action, provided that they are avail-
+able in the INI-file of the selected design code.
+The entries within one row with preceding Z for additional loading and S for special loading
+may be treated in AQB as belonging to the same action.
+For the seiesmic action there is in EN 1998 an importance factor γ  depending on the impor-
+tance class to be selected by the user explicitly:
+Class factor Description
+I 1.4 Buildings whose integrity during earthquakes is of vital importance for civil
+protection, e.g. hospitals, fire stations, power plants, etc.
+II 1.2 Buildings whose seismic resistance is of importance in view of the conse-
+quences associated with a collapse, e.g. schools, assembly halls, cultural
+institutions etc.
+III 1.0 Ordinary buildings, not belonging to the other categories
+IV 0.8 Buildings of minor importance for public safety, e.g. agricultural buildings,
+etc.
+In principal every action may be subdivided by categories. For some action types (Q, L or
+S) the values from EN 1990 (resp. DIN 1055-100, Table A2 or other deviations) are already
+available as follows:
+SOFiSTiK2023 3-25ELLA|InputDescription
+Action ψ 0 ψ 1 ψ 2
+Q: Payload for buildings [0.70] [0.50] [0.30]
+- Q_A Housing [0.70] [0.50] [0.30]
+- Q_B Offices [0.70] [0.50] [0.30]
+- Q_C Assembly rooms [0.70] [0.70] [0.60]
+- Q_D Sales rooms [0.70] [0.70] [0.60]
+- Q_E Storage rooms [1.00] [0.90] [0.80]
+Live load for buildings
+- Q_F truck load <30kN [0.70] [0.70] [0.60]
+- Q_G 30kN< truck load <160kN [0.70] [0.50] [0.30]
+- Q_H Roofs [0.00] [0.00] [0.00]
+L: Live loads according EN 1990
+- L_T, Tandem Axle of LM 1 (γ=1.35) [0.75] [0.75] [0.00]
+GR_T
+- L_U, UDL loading of LM 1 (γ=1.35) [0.40] [0.40] [0.00]
+GR_U
+- L_C Load model UIC 71 (γ=1.45) [0.80] [0.80] [0.00]
+- L_D Load model SW/0 (γ=1.45 [0.80] [0.80] [0.00]
+- L_E Load model SW/2 (γ=1.20) [0.00] [1.00] [0.00]
+Live load for buildings
+- L_F truck load <30kN [0.70] [0.70] [0.60]
+- L_G 30kN< truck load <160kN [0.70] [0.50] [0.30]
+- L_H Roofs [0.00] [0.00] [0.00]
+S: Snow for buildings
+- S_L = buildings up to 1000m elevation [0.50] [0.20] [0.00]
+- S_H = buildings above 1000m elevation [0.70] [0.50] [0.20]
+- For SIA 260 with PSI0 as elevation h 1-60/h 1-250/h 1-1000/h
+W: Wind for buildings [0.60] [0.20] [0.00]
+T: Temperature (no fire) for buildings [0.60] [0.50] [0.00]
+F: Settlements [1.00] [1.00] [1.00]
+Other actions [0.80] [0.70] [0.50]
+A definition of ACT will reinitialize the action with the defaults defined in the INI-file depending
+on the category of the design code. Values GAMU to PS1S replace the predefined values.
+The user should check the defaults in all cases. Deviations of the PSI-values for wind and
+temperature especially for bridges or other non buildings are to be expected as all values are
+"boxed values" depending on individual or country dependant settings. For example you will
+findinOENORMB4750categorieswithtrucksbetween30and60kNwithvaluesaugmented
+by 0.1 for ψ 1and ψ 2.
+3-26 SOFiSTiK2023InputDescription|ELLA
+ForallENcodesaswelltheSIAcodestherearetwodefaultsfortheliveloadforbuildingswith
+the categories F,G and H. The user can choose, whether the live load for buildings should be
+in an own action L (with categories L_F, L_G and L_H) or whether these categories should be
+a part of the action Q in addition to the payloads for buildings (categories Q_A till Q_H).
+If the category of the design code or the design code is changed in AQUA, all actions should
+be redefined. ACT INIT deletes all defined actions and superposition rules if specified in
+SOFiLOAD.
+WiththespecificationofACTallsubsequentloadcasesinSOFILOADwillthenhavethisaction
+type as default.
+The item PART defines, to which action of the selected superposition equation the input ac-
+tion belongs. The actions in the superposition equations are distinguished according to their
+temporal variances:
+• permanent actions: PART G e.g dead load
+PART P prestress
+• variable actions PART Q
+PART Q_1 load group 1
+PART Q_2 load group 2
+...
+PART Q_99 load group 99
+• accidental actions PART A
+• seismic action PART E
+ThustheitemPARTallowsthecorrectclassificationofuser-definedactions,butalsoofspecial
+cases as for example PART G SUP ALEX (always but exclusive, it means, that only one load
+case is always used). Exclusively the item SUP controls, how the load cases which are a part
+of the actions are used for the superposition (always, conditional, mutually exclusive).
+Meant for example PART P, that the input action is used in the equation part Pk for superposi-
+tionsforultimateandserviceabilitylimitstate(EC,DIN,DIN-FB,seemanualMAXIMA,chapter
+2).
+The item PART depends on TYPE for preset actions. For example PART G is the default for
+theactionsG,G_1andG_2,PARTPfortheactionsPandC,PARTQfortheactionsQandL,
+PART A for the action A and PART E for the action E.
+The item PART has to be input for user-defined actions. Otherwise the user-defined actions
+get PART Q (default).
+Hint
+All categories of an action must have the same definition of PART. E.g. categories Q_A
+and Q_B of the variable action Q get PART Q. Only the load groups of a variable action
+PART Q_1 till Q_99 can be different.
+TheitemSUPdefinesthedefaulttreatmentofmultipleloadcaseswithinanaction. Thedefault
+SOFiSTiK2023 3-27ELLA|InputDescription
+will be taken from the INI-File, but for free defined types of actions it is EXCL in general, if the
+type of the action has a leading Q it will become COND and for a leading G it will be PERM.
+In MAXIMA one may overwrite this for any particular load case of an action or recombine
+load cases (e.g. 0.7*LC_101(Ex)+0.5*LC_102(Ey)). Due to historic reasons there are special
+literals at record LC in MAXIMA in addition to the literals of SUP:
+SOFiLOAD MAXIMA
+Remark
+ACT SUP LC TYPE
+PERM G always (permanent), partial safety factor action-wise
+PERC PERC always(permanent)withvariablefactors,partialsafetyfactorload-
+case-wise
+COND Q conditional (only unfavourable)
+EXCL A* mutually exculsive
+EXEX Ano mutuallyexclusivebutconditionalinclusivecategories(onlywithin
+anaction),MAXIMArecordLConlyonealternativegroupnumber
+Ano
+UNSI W changing sign (e.g. seismic actions)
+USEX X* changing sign, mutually exclusive
+ALEX AG1 always but exclusive (only within an action)
+F additional load case to be combined
+Using SUP PERM the same partial safety factor is used for all load cases of a permanent
+action (e.g. ACT G). In this case the sum of the values of the single load cases is decisive,
+whether the unfavourable (GAMU) or the favourable (GAMF) partial safety factor is applied. In
+the contrast to that the partial safety factors are considered load-case-wisely, if SUP PERC is
+defined. Here one load case of the permanent action can get GAMU and another GAMF.
+SUP EXEX excludes only categories against each other within an action (no exclusion
+of different actions). If for example the categories X_1 and X_2 of the action X are defined
+with SUP EXEX, then only the most unfavourable load case is used either from X_1 or from
+X_2andalsoonly,ifithasanunfavourablecontribution. Inthecontrasttothatanunfavourable
+load case from X_1 and an unfavourable load case from X_2 are used for the input of SUP
+EXCL.
+SUP ALEX defines a permanent alternative group (MAXIMA record LC TYPE AG1). Only
+the load cases of an action or all load cases of the categories of an action are used for the
+formationofapermanentalternativegroup. Hereonlyaloadcaseisconsideredforthesuper-
+position, also if it has a favourable contribution. Load cases of different actions do not exclude
+themselves mutually. If SUP ALEX is input for some actions, a load case is considered per
+action.
+In program MAXIMA it is additionally possible to assign load cases of an action or category to
+severalpermanentalternativegroups. TheinputisdoneinprogramMAXIMAwithLC... TYPE
+AG1 till AG99.
+The total mechanism of the defaults for the action types is governed by the following rules:
+• ByselectingadesigncodewithinAQUAalldefinitionsgivenintheassociatedINI-Fileinthe
+3-28 SOFiSTiK2023InputDescription|ELLA
+[action] -section will become available. If no such file is available, defaults in the program
+are available for all EC and newer DIN (since year 2000). For all other cases there are
+exactly two predefined actions G and Q without any coefficients or factors.
+• When addressing an action, a copy of this definition is created in the database which has
+then the possibility of deviating factors if explicitly defined with this record or via the SOFi-
+PLUS menus.
+• When creating a load case, the factors are copied from the action definition to the load
+case. However, those factors may be modified for any individual load case.
+• For special design purposes the factors may be changed temporarily when using the load
+cases in AQB.
+Variable action - load groups:
+TheloadgroupsPARTQ_1tillQ_99canbeusedforabetterformationofcombinationwithout
+intermediate superpositions in MAXIMA e.g. for the load models of the bridge design (EN
+1990/A1). If different load groups are defined for categories with corresponding inputs for the
+item SUP, then the intermediate superpositions and the following superpositions are done in
+one MAXIMA run.
+Example:
+PROG SOFILOAD
+HEAD
+ACT XY_A gamu 1.4 0.0 0.6 0.4 0.2 0.6 PART Q_1 SUP excl
+ACT XY_B gamu 1.3 0.0 0.5 0.3 0.1 0.5 PART Q_1 SUP excl
+ACT XY_C gamu 1.45 0.0 0.6 0.3 0.0 0.6 PART Q_2 SUP exex
+ACT XY_D gamu 1.35 0.0 0.5 0.2 0.0 0.5 PART Q_3 SUP exex
+...
+PROG MAXIMA
+HEAD
+COMB 1 desi TYPE desi BASE 2100
+ACT XY_A
+LC -1
+ACT XY_B
+LC -1
+ACT XY_C
+LC -1
+ACT XY_D
+LC -1
+or
+COMB 2 expl TYPE desi BASE 2200
+ADD {QI} gamm
+First of all three load groups Q_1, Q_2 and Q_3 are defined with PART in the program
+SOFiLOAD.ThecategoriesXY_AundXY_Bareaartoftheloadgroup1. Theirloadcasesare
+mutually exclusive only within the respective category about the input SUP EXCL. The cate-
+SOFiSTiK2023 3-29ELLA|InputDescription
+goriesXY_CandXY_Dareapartoftheloadgroups2and3. Allloadcasesofbothcategories
+are mutually exclusive about the input SUP EXEX.
+With one of the MAXIMA combinations then the superposition is done as follows: First of all
+MAXIMA searches which load cases of the load group 1 are decisive (possible one ore two or
+noloadcase=firstintermediatesuperposition).Thenthedecisiveloadcaseoftheloadgroups
+2 and 3 is determined (possible one or no load case = second intermediate superposition). In
+the last step the final superposition is done. Either the decisive load cases of the load group 1
+or the decisive load case of the goups 2 and 3 are here the final result.
+It should be noted here that load groups are mutually exclusive. If, for example, the superpo-
+sition of the load cases for two load load groups are specified with SUP COND - conditionally,
+only the load cases of the decisive load group are taken into account.
+Example:
+PROG SOFILOAD
+HEAD
+ACT XY_1 gamu 1.4 0.0 0.6 0.4 0.2 0.6 PART Q_1 SUP cond
+ACT XY_2 gamu 1.3 0.0 0.5 0.3 0.1 0.5 PART Q_2 SUP cond
+The load cases of category XY_1 belong to load group 1 and those of category XY_2 belong
+to load group 2. Thus, either the load cases of XY_1 or of XY_2 are taken into account in the
+superposition depending on which brings the more unfavorable result.
+3-30 SOFiSTiK2023InputDescription|ELLA
+3.16 LC – Train Load Loading Case
+Seealso: POSL,LANE,,CALC,COMB
+LC
+Item Description Unit Default
+NO Number of load case − 1
+TYPE Action type of load case LT -
+PSI0 Combination value standard − *
+PSI1 Combination value frequent − *
+PSI2 Combination value quasi permanent − *
+PS1S Combination value non permanent − *
+GAMU unfavourable safety factor − *
+GAMF favourable safety factor − *
+TITL Title of loadcase Lt24 -
+The input of the loading occurs in the form of load trains identified by a load case number,
+which must not be used for other cases, and the position of load trains within lanes.
+The record LC must be followed by the definition of a corresponding load train:
+TRAI Specifying the load train
+TRPL,TRBL Explicit loading of a load train
+ThecombinationvaluesmaybetakenfromtheactionselectedbytheTYPEorwillbedefaultto
+thevaluesaccordingtoEC1Part3AppendixC,ormaybespecifiedexplicitly. Fortheresulting
+load cases of the evaluation the maximum value of all applied trains will be saved. These
+values will then be accepted from the program MAXIMA.
+DeviationsofthePSI-valuesforwindandtemperatureespeciallyforbridgesotothernonbuild-
+ings are to be expected as all values are "boxed values" depending on individual or country
+dependent settings. For example you will find in OENORM B 4750 categories with trucks
+between 30 and 60 kN values augmented by 0.1 for ψ1and ψ2.
+Furthermore the DIN-Fachberichte supply different combination values for the constant load
+an the heavy vehicle.
+SOFiSTiK2023 3-31ELLA|InputDescription
+3.17 TRAI – Load Train Definition
+Seealso: COPY,TRPL,TRBL,LANE,TREX
+TRAI
+Item Description Unit Default
+TYPE Type of a load train LT CONS
+P1 class of load train or load value kN,m *
+P2 second value for load train kN,m *
+P3 Third value for load train kN,m *
+P4 fourth value for load train kN,m *
+P5 loading on spare areas kN/m2 *
+P6 Wind loading kN/m2 *
+P7 Height of wind attack area [m] *
+1001
+P8 Parameter for brake load ∗ *
+P9 Heightofmasscenter(centrifugalloadandcrossfall) [m] *
+1001
+PFAC Factor for loading of total train − 1.0
+PFAV Factor for favorable effects within load trains − *
+WIDT Width of load train [m] *
+1001
+PHI explicit impact factor for bending − *
+PHIS explicit impact factor for shear − *
+V Speed of load train [km/h] *
+1203
+FUGA Factor for the masses of total train for the centrifugal − 1.0
+forces
+XCON Minimum distance for repeated load train (convoy) [m] 0
+1001
+YEX possible eccentricity of train (+/-) [m] 0.0
+1001
+DIR Direction of train LT B
+B = in both directions
+R = only to the right (positive)
+L = only to the left (negative)
+N = do not apply
+DIRT Direction of transverse loading LT B
+B = in both directions
+R = only to the right (positive)
+L = only to the left (negative)
+N = suppress this loading
+Parameters for multibody dynamics:
+FRB Frequency for body Spring Cb 1/sec ∞
+Tablecontinuedonnextpage.
+3-32 SOFiSTiK2023InputDescription|ELLA
+Item Description Unit Default
+DAB Modal Damping of body support − 0.0
+BOGI Load value of bogie −/kN 0.0
+FRBO Frequency for bogie Spring Cbo 1/sec ∞
+DABO Modal Damping of bogie support − 0.0
+WHEE Load value of wheel −/kN 0.0
+FRWH Frequency for wheel spring Cwh 1/sec ∞
+DAWH Modal Damping of wheel support − 0.0
+The description of all available load trains can be found within the next pages. If a value for
+the convoy distance is given (XCON), the specified train will be applied multiple times with
+that given minimum distance between the last load ordinate and the reference point of the
+consecutive load train.
+The the residual area loading P5 is applied without dynamic impact factors and without cen-
+trifugal forces. It is applied only for:
+• Areas between the constant width of the load train and the polygonal bounds of the lane.
+If the load train has no width (WIDT 0) there won’t be a residual area either (Railways)
+• Areas between the borders of lane 0 and all other lanes (e.g. pathways)
+• The total lane area for the load group GR4 (e.g. pedestrian bridges)
+The wind loading is generally equal to P6 and acts horizontally upon a traffic band with height
+P7. As there will be no traffic for strong winds, this is not the maximum wind load on the
+structure itself. The sign of the wind load is defined as positive if coming from the right in the
+moving direction, but option DIRT allows a more specific definition. ELLA has the possibility in
+record POSL via OPT to apply the wind load in the most unfavourable direction at its own, if
+DIRT has allowed this. Both options are combined with a logical ”and”-operation.
+ThefactorPFACisamultiplieringeneralforallloadelementsoftheloadtrain,itmaybeused
+for classified LM71 or SW/0 loadings. (e.g. a value from the list 0.75 - 0.83 - 0.91 - 1.00 - 1.10
+- 1.21 - 1.33 - 1.46 from EN 1991-2 6.3.2(3)).
+The factor PFAV specifies the factor for favorable loadings (see e.g. EN 1990-2 GRP 13/14
+and 23/24). For road train loadings this factor will be applied only for the wheel loadings. The
+default for railway load trains is 0.0 for the LM71 and 1.0 for all other load trains. The default
+forthemajorityformostotherroadtrainsis0.0. Forloadtrainsforroads,thosefactorsmaybe
+specified only with individual load train definitions.
+Theeccentricityoftheloadtrainwithinthelaneshouldonlybedefinedwhenapplyingtheload-
+ing. Only for the wide heavy load trains (LM3, HB etc.) an explicit eccentricity of that loading
+may be defined a priori. The definition of YEX in TRAI is intended to describe the eccentricity
+for railway loadings according EN 1991-2 6.3.5., predefined with r/18 in any direction.
+The load trains have a moving direction which is not only important for some of the train loads
+but also for the direction of the braking load. Positive load values are considered to be braking
+loads in traveling direction, negative load values are accelerating loads in reverse direction. If
+SOFiSTiK2023 3-33ELLA|InputDescription
+DIR N is specified, no impact factor will be applied and the brake and velocity and wind load
+will be preset to zero. Also in this case some filters are available in ELLA.
+DIRcontrollsthesequenceofgeneratedloadsforastandardtrain,butitcannotbeusedtoflip
+the sequence of a user defined load train.
+ThemeaningofvalueP8isdifferentforeachloadingtype. Thesignofthebrakingloadwillbe
+takenfromthemovingdirection. Achangingsign(DIRB)willbeonlypossibleforELLAtotake
+care of. ELLA and SOFILOAD allow to change the direction or deactivate the loading.
+For an analysis with multi-body-dynamics it is possible to generate masses, beams, springs
+and dampers via the record TREX. The mass of bogie and wheel may be specified either as a
+positive absolute load value or as a negative fraction of the total mass. For more information
+see record TREX.
+Table of most important Standard Load Trains:
+USER constant Area Loading P5 / user defined Load Train
+LM1 double axle load model 1 according Eurocode 1 part 3
+LM2 single axle load model 2 according Eurocode 1 part 3
+LM3 special case load model 3 according Eurocode 1 part 3
+SV,SOV Special vehicles according BS EN1991-2
+LM4 pedestrian load model 4 according Eurocode 1 part 3
+FLM1 Fatigue load model 1 according Eurocode 1 part 3
+FLM2 Fatigue load model 1 according Eurocode 1 part 3
+FLM3 Fatigue load model 1 according Eurocode 1 part 3
+FLM4 Fatigue load model 1 according Eurocode 1 part 3
+SLW Heavy load truck according to DIN / OENORM / IAP
+LKW Standard truck (according to country code)
+LKWD German truck (in Austria)
+LKWA Austrian truck
+NBR Brasilian load trains NBR 7188 / NB6 similar to SLW/LKW
+HS Highway Load according AASHTO
+HT Highway Truck according AASHTO
+CAN Highway Load according Canadian Standard CSA
+CANP Pedestrian load according Canadian Standard CSA
+3-34 SOFiSTiK2023InputDescription|ELLA
+HA HA according BS 5400 / BD 37-01
+HB HB according BS 5400 / BD 37-01
+HFUG Centrifugal loading according BS 5400 / BD 37-01
+IRC Loading Class AA, A, B and Appendix I of
+Indian Road Congress 6-2000
+JRA Load trains T and L of the Japan Road Association
+BRO1 3 axle load train of the Swedish BRO type 1
+BRO2 Single axle load train of the Swedish BRO type 2/3/4
+BRO3 2 x 3 axle load train of the Swedish BRO type 5
+BROF Fatigue relevant load train of the Swedish BRO
+NFA Area loading according French Fascicule No 61
+NFBC Lorry according French Fascicule No 61
+NFBT Tandemaccording French Fascicule No 61
+NFC Heavy load trains according French Cerema / Leclerc
+AS_A Single wheel / axle according australian AS 5100
+AS_M Load train M 1600 according AS 5100
+AS_S Load train S 1600 according AS 5100
+HLP Heavy load platform according AS 5100.7
+LM71 Loading according LM 71
+resp. UIC 71 resp. RU of BS 5400
+SW Heavy load trains SW/0 DS 804 / EC
+SW/2 Heavy load trains SW/2 DS 804 / EC
+RFAT Railway Fatigue loading EC and others
+HSLM Load trains according EC 1 Annex 2
+RL Railway Loading BS 5400
+ASRT Railway Loading AS 5100
+All load trains may be extended with TRPL and TRBL definitions. If none of the standard load
+elementsoftherainshouldbeused,butotherpropertieslikeimpactfactorsshouldberetained,
+the literal USER may be defined for P1. The user should take care of:
+• The default live load P5 should be deducted for the areas loaded by the defined loading.
+• Thedistancetothelastloadofastandardtrainmaybenotasexpectedduetoautomatically
+SOFiSTiK2023 3-35ELLA|InputDescription
+generated loads of those type and should be checked.
+The loading may be applied with a variable eccentricity YEY. For a railway loading (default
+±r/18) additional moments are created. For road loading the total train will have an offset
+(default 0.0) to the right or left.
+3.17.1 Impact Factor
+Twodifferentdynamicfactorsareprovidedforbendingorsheareffects. Thevaluesdependon
+the dynamic properties of the structure, the type of loading and on an effective length, to be
+definedingeneralforeveryindividualelementandresultwithrecordCALC.Ifthatisnotdone,
+the value defined with the lane geometry is used, but one can also specify an explicit value for
+eachofthosefourvalues. WiththedefinitionofPHISTEE,CONC,PRCOundCOMPvariants
+of the formulas may be selected, if the design code supplies such variantst (e.g. IRC, JRA,
+SNIP).
+Default formulas are:
+• DIN Impact factor according to DIN 1072
+(Default for SLW and LKW)
+PH =1.4−0.008·LPH (3.2)
+• UIC Impact factor according to EN 1992 / DS 804
+for extended maintenance
+(cid:112)
+PH =0.82+1.44/( LPH−0.2)≤1.67 (3.3)
+• UICB Impact factor according to EN 1992 / DS 804
+with standard maintenance
+(cid:112)
+PH =0.73+2.16/( LPH−0.2)≤2.0 (3.4)
+• BS Impact factor according to BS 5400
+(cid:112)
+PHB=0.73+2.16/( LPH−0.2)≤2.0 (3.5a)
+(cid:112)
+PHS=0.82+1.44/( LPH−0.2)≤1.67 (3.5b)
+• NA Impact factor according to TMH7
+PH =0.05·(100+LPH)/(10+LPH) (3.6)
+• SW/0 Impact factor according to DS 804
+between 1.48 and 1.08
+• SW/2 Impact factor according to DS 804
+between 1.18 and 1.03
+• AASH Impact factor varying according to AASHTO
+before 2005 varying between 1.00 and 1.30, newer releses with fixed values
+3-36 SOFiSTiK2023InputDescription|ELLA
+1.15 or 1.33).
+PH =1.0+15.24/(LPH+38) (3.7)
+• CAN Impact factor according to CAN/CSA
+between1.25and1.40,dependingontheavailablelengthforone,twoorthree
+axles. (A depencency for the true number of applied axles is not available)
+• IRC Impact factor according to Clause 211 Fig. 5. for Class A, B and AA loading
+for concrete and steel bridges.
+PH =1.0+4.5/(LPH+6) (3.8a)
+PH =1.0+9.0/(LPH+13.5) (3.8b)
+• JRA Impact factor according to JRA are only distinct for T-Loading, for L-loading
+there are deviations for standard concrete and steel bridges.
+PH =1.0+20/(50+LPH) (T) (3.9a)
+PH =1.0+10/(25+LPH) (L) (3.9b)
+• AS Impact factor according to AS 5100 are defined as (1+α). For roads fixed val-
+ues are given in Table 6.7.2, however as M1600 requires a greater allowance
+ifonlyasinglethree-axlecomponentcontrolsandthereexistsalsoastation-
+ary loading S1600 without dynamic allowance, a user definition is required in
+some cases.
+AS_A PHB=1.0+0.40 (3.10a)
+AS_M PHB=1.0+0.30(1.0+0.35) (3.10b)
+Railway loading distinguishes between ballasted and direct fixing (input with
+LANE) and account for the reference length as follows:
+(cid:112)
+PHB=1.0+2.16/( LPH−0.20)−0.27 (>3.6) (3.11a)
+(cid:112)
+PHB=1.0+2.16/( LPH−0.20)−0.17 (>2.0) (3.11b)
+LPHIshouldbedefinedfortheaxisviaLANE.HoweverELLAmayalsousethedistanceofthe
+zerovaluesoftheinfluencelineasagoodapproachtotheeffectivelength. IfnoinputforLPHI
+is given, the dynamic factor will be set equal to the value with a minimum length and the width
+of the lane will be set equal to 0.0.
+Dynamic coefficients according to appendix E of DIN FB 101 are dependant on the frequency
+of the structure and should be specified explicitly therefore.
+DynamiccoefficientsaccordingtotheFrenchFasciculeNo. 61section5.5dependontheratio
+G/S of the permanent to the maximum loading. If this formula should be taken this ratio has to
+be specified instead of the impact factor PHI.
+3.17.2 Centrifugal Forces
+In case of a curve, the mass of the loading, usually derived from the vertical load, is used
+together with the speed of the train and the curvature of the lane to compute the centrifugal
+SOFiSTiK2023 3-37ELLA|InputDescription
+load components.
+The forces calculated according to the laws of physics with vin [ m/sec] are:
+2
+P ƒ =P · ; g=9.80665 m/sec2 (3.12)
+Rg
+Sometimes there is an equivalent formula in the design code for a speed in [ km/h] with a
+factor of v2/(127R).
+These forces will be replaced for Eurocode and BRO as follows:
+According to Eurocode EC 1-3 4.3 (independent from v)
+Q tk =0.2·Q  (r <200m) (3.13a)
+Q tk =40·Q /R (200m≤r ≤1500m) (3.13b)
+Q tk =0 (r >1500m) (3.13c)
+These forces will be replaced for BS as follows:
+100
+Q tk =Q · (3.14)
+R+150
+These forces will be changed for railway loadings UIC as follows:
+UIC Reduction according DS 804 / BS 5400 / EC 1-3 6.5
+for v > 120 km/h and L > 2.88
+−120 (cid:12)814 (cid:12)
+(cid:12)·(cid:12) (cid:12)1−(cid:112)2.88/L(cid:12)
+red=1.0− ·(cid:12) (cid:12) +1.75(cid:12) (cid:12) (3.15)
+1000 (cid:12)  (cid:12) (cid:12) (cid:12)
+ForFUGAyoumayhoweverspecifyanadditionalfactorexplicitly. Negativefactorswillenforce
+the laws of physic to all type of load trains.
+Inthosecaseswhereaconstanthorizontalcentrifugalloadingorhorizontalbumpinghastobe
+considered a horizontal loading PW/HW may be specified with TRPL/TRBL.
+3.17.3 Load Trains according to Eurocode
+The position of the loading according to Eurocode along the traffic lanes is free. Thus a syn-
+chronizationwithsecondary lanesshouldnotbeapplied. Fortheassessmentof globaleffects
+(EN 1991-2 4.3.2) each tandem system should be assumed to travel centrally along the axes
+of notional lanes. With a definition of YEX, ELLA may apply this excentricity value in both di-
+rections. But the minimum distance of 0.5 m between adjacent loading cannot be checked by
+ELLA, but will be satisfied in almost all cases if the width of the lane is at least 2.5 m.
+Thedoubleaxleshouldbeappliedonlyintotal. Thusallloadsoftheaxleswillbeappliedeven
+if one is favourable.
+Load Model 1
+There is one double axle with a spacing of 1.2 m. For the different lane classes it is generally
+3-38 SOFiSTiK2023InputDescription|ELLA
+α QQ k α QQ k α qq k
+0.5∗
+2.00 1
+0.5∗
+2
+3
+Figure3.10: Loadmodel1
+recommended to use three different load trains with individual adjustment factors α q. These
+factorsarespecifiedinnationalannexesandaredefinedintheINI-files. (e.g. DINFachbericht
+with a value of α Q= 0.8, SIA with a value of α Q= 0.9). Other values may be specified with a
+direct load value if needed.
+P1 = Class 300 200 100
+P2 = Axle load [ kN] 300 200 100
+P3 = reserved [ kN] 0 0 0
+P4 = traffic lane [ kN/m2] 9.0 2.5 2.5
+P5 = Residual area [ kN/m2] 2.5 2.5 2.5
+P8 = Brake loading [ kN] * 0.0 0.0
+The brake loading is calculated according to the length of the total lane if the item DIR is not
+defined as N. It will be distributed as uniform load along the whole loaded lane if the axle load
+exceeds 200 kN:
+Q k =1.2·P2+0.10·P4·WDT·L ; 180α Q1 ≤Q k ≤900kN (3.16)
+The upper limit is defined by the requests of the STANAG, it may be redefined by a national
+annex or other means. This may be specified via a global variable EN1991-2_QLMAX in the
+INI-file or via TVAR in the section loading.
+SOFiSTiK2023 3-39ELLA|InputDescription
+Load Model 2
+Thisloadmodelisasingleaxletakenfromloadmodel1,butwithadynamicimpactfactorand
+thewheelsmayactindependently. Asthisloadmodelisonlyforlocalelementsitshouldnotbe
+selected within ELLA, especially as it does not work with influence areas (INT>2). A possible
+application is the accidential load case of a vehicle on the pathway:
+1 2 1 2
+0.40
+2.00
+3
+α Q 00.2
+Q2 2k
+0.40
+3
+0.50
+Figure3.11: Loadmodel2
+P1 = Basic Value 400 300 200 100
+P2 = Axle load [ kN] 320 240 160 80
+P3 = Rotation [ ◦] 0 0 0 0
+P5 = Residual area [ kN/m2] 0.0 0.0 0.0 0.0
+P8 = Brake loading [ kN] 0.0 0.0 0.0 0.0
+3-40 SOFiSTiK2023InputDescription|ELLA
+Load Model 3
+Figure3.12: Loadmodel3
+Thisloadmodelisforspecialcasesofheavyloadvehicles. Wehavetodistinguishbetweenthe
+narrow version fitting within one lane (2 axles) and the broader version for P2=240 (3 axles).
+For the latter case the loading of the same load train in two synchronized lanes with special
+provisionsofYEXshouldbeused. Partsoftheloadtrainnotwithinthelaneimitswillbeclipped
+automatically.
+The three values of P1 to P3 define the loading as follows (Table A1):
+SOFiSTiK2023 3-41ELLA|InputDescription
+600 / 150 4 × 150 kN
+900 / 150 6 × 150 kN
+1200 / 150 8 × 150 kN
+1200 / 200 6 × 200 kN
+1500 / 150 10 × 150 kN
+1500 / 200 7 × 200 kN + 1 × 100 kN
+1800 / 150 12 × 150 kN
+1800 / 200 9 × 200 kN
+2400 / 200 12 × 200 kN
+2400 / 240 10 × 240 kN
+2400 / 200 / 200 6 × 200 kN + 6 × 200 kN
+2700 / 150 18 × 150 kN
+3000 / 200 15 × 200 kN
+3000 / 240 12 × 240 kN + 1 × 120 kN
+3000 / 200 / 200 8 × 200 kN + 7 × 200 kN
+3600 / 200 18 × 200 kN
+3600 / 240 15 × 240 kN
+3600 / 200 / 200 9 × 200 kN + 9 × 200 kN
+4500 / 150 / 150 15 × 150 kN + 15 × 150 kN
+1.50 1.50
+X X
+4.20
+2.70
+1.50 1.50
+1.50 1.50
+1 2 1 2
+3.00 3.00 3.00 3.00
+Figure3.13: LoadmodellLM3
+The variants with an axle loading of 240 kN are wider than the default lane. Thus, it is in
+3-42 SOFiSTiK2023InputDescription|ELLA
+general necessary to specify a transverse offset when applying this load. This will be +/- 0.75
+m for the main lane, +2.25 for the left adjacent lane and -2.25 for the right adjacent lane.
+Thespeedoftheloadtrainisaveryimportantparameter,itdoesnotonlycontrolfrontandrear
+for some load trains, but it defines also if the load train is moving slowly (v = 5 km/h) or with a
+regular speed (v = 70 km/h). This triggers if an impact factor is applied or not.
+Furthertherewillbenoloadingwitinadistanceof25mbeforeandbehindthatvehicle,butthen
+a load train LM1 with ist frequent load values (ψ 1) may be applied, by specifying the load case
+number of a correspondig LM1 load train at P4. To select the relative position to the vehicle
+beforeorbehindthesignoftheP4definitionwillbetaken. Apositivevaluewillselectavehicel
+before, while a negative value will select a value behind. The implemented algorithm does not
+allow to select this automatically.
+As the coefficients ψ 1are different for UDL and TS, we use from this load case the value ψ 1for
+TS, but for UDL and the residual loding the default value of 0.4 of the EN will be taken.
+Load Model 3 (NA BS)
+NA to BS EN 1991-2:2003 defines different types of this load model. The distance to the
+residual loading in the lane has been reduced to 2.5 resp 5.0 m. As every axle has a different
+dynamic amplification factor, these will be applied directly if V is larger than 5 km/h.
+Load trains of the Special Types General Order (STGO) will be selected with TYPE SV, where
+P1 defines the class (80, 100 or 196), P2 is not used and P3 defines the central distance
+(values of 1.2, 5.0 and 9.0 m are common). All other remarks especially about P4 remain
+valid:
+165 165 165 165 165 165 165 165 165 180 180 180
+kN kN kN kN kN kN kN kN kN kN kN kN
+1.2m 1.2m 1.2m 1.2m 1.2m 1.2m 1.2m 4.0m 1.6m 4.4m
+3
+0.35 m
+m
+53.0
+m
+1
+0.3
+2
+Figure3.14: LoadModel3(NABS)
+Load trains of the Special Order (SO) will be selected with TYPE SOV:
+SOFiSTiK2023 3-43ELLA|InputDescription
+Figure3.15: LoadmodellSO
+P1 = Class 250 350 450 600
+P2 = combination of tractors in gradients larger 1:25
+= Number of pulling tractors * 10 + number of pushing tractors
+P3 = explicit fixed distance between trailers (default is variable)
+Load Model 4
+This is a pedestrian load model with a basic load area with a maximum value of 5.0kN/m2.
+For a loaded length greater 10 m the load value will be decreased:
+120
+q ƒk =2.0+ >2.50 kN/m2 (3.17)
+L+30
+Further we have the standard service vehicle according Eurocode:
+Q Q
+SV1 SV2
+3.00 m
+0.20 m
+0.20 m
+1.30 m
+X
+Figure3.16: LoadModel4
+3-44 SOFiSTiK2023InputDescription|ELLA
+P1 = Axle loading QSV1 80 kN
+P2 = Axle loading QSV2 40 kN
+P3 = Distance of axles 3.00 m
+Fortheapplicationofthisloadmodelthedefinitionoftheloadgroupismandatory: GR3orGR4
+for the area loading and GR0 for the service vehicle.
+Load Model FLM1
+This model is identical to LM1, but the Axle loads will be reduced by a factor of 0.7, and the
+distributed loading by 0.3.
+P1 = Class 300 200 100
+P2 = Axle load [ kN] 210 140 70
+P3 = traffic lane [ kN/m2] 2.7 0.75 0.75
+P5 = Residual area [ kN/m2] 0.75 0.75 0.75
+P8 = Brake loading [ kN] * 0.30 0.30
+Load Model FLM2
+This selects via P1 the frequent truck models according Table 4.6 with the following axle load
+values:
+P1 = 1 90 / 190 kN
+P1 = 2 80 / 140 / 140 kN
+P1 = 3 90 / 180 / 120 / 120 / 120 kN
+P1 = 4 90 / 190 / 140 / 140 kN
+P1 = 5 90 / 180 / 120 / 110 / 110 kN
+SOFiSTiK2023 3-45ELLA|InputDescription
+Figure3.17: LoadModelFLM2
+Load Model FLM3
+1.20 m 6.00 m 1.20 m
+0.40 m
+
+2.00 m 0.40 m X 1
+Figure3.18: LoadModelFLM3
+3-46 SOFiSTiK2023InputDescription|ELLA
+This is a complete truck with two double axles P1 with a distance of 6.0 m designed for the
+fatigue design.
+P1 = axle loading [ kN] 120
+P5 = default life load [ kN/m2] 0.0
+Load Model FLM4
+ThisselectsviaP1theheavyloadtrucksaccordingtotable4.7withthefollowingaxleloading:
+P1 = 1 70 / 130 kN
+P1 = 2 70 / 120 / 120 kN
+P1 = 3 70 / 150 / 90 / 90 / 90 kN
+P1 = 4 70 / 140 / 90 / 90 kN
+P1 = 5 70 / 130 / 90 / 80 / 80 kN
+Figure3.19: LoadModelFLM4
+SOFiSTiK2023 3-47ELLA|InputDescription
+3.17.4 Load Trains SLW and LKW
+Load Train SLW
+Figure3.20: LoadTrainSLW
+Load Train LKW
+Figure3.21: LoadTrainLKW
+Those classical load trains are used in several countries in Europe (DIN 1072, OENORM B
+4002, Spanische IAP and Brasilian NBR). National variants may be selected with a country
+code. The width of the moving loading is 3.0 m in general, for the OENORM it is 2.5 m and for
+the Spanish IAP a minimum distance to the secondary truck suggests a width of 4.0 m. The
+rest of the traffic band is loaded by P3, the remaining areas inside the lane are loaded with
+the basic area loading P5. With DIR N one may select a secondary lane without any dynamic
+factors.
+The definition of a second load train beside with P2 und P4 can not be supported for some
+of the recent features. It us strongly recommended to use synchronized lanes instead, it is
+required to use two lanes with individual load trains instead. The loading in the second lane
+requires the value of P5 defined for P3 and the impact factor to be deactivated with 1.0.
+All loads are divided to portions to the right and to the left of the lane axis, which can act
+independently.
+3-48 SOFiSTiK2023InputDescription|ELLA
+Axial Loads [kN] P3 (cid:2)kN/m2(cid:3) P5 (cid:2)kN/m2(cid:3)
+SLW 30 100 5.0 3.0
+SLW 60 200 5.0 3.0 ∗
+LKW 3 20+10 3.0 2.0
+LKW 6 40+20 4.0 2.0
+LKW 9 60+30 4.0 3.0
+LKW 12 80+40 4.0 3.0
+LKW 16 100+60 5.0 3.0
+LKWA 16 110+50 4.0 3.0
+LKWA 25 170+80 5.0 3.0
+NBR 24 80(SLW) 4.0 3.0
+NBR 30 100(SLW) 5.0 3.0
+NBR 36 120(SLW) 5.0 3.0
+NBR 45 150(SLW) 5.0 3.0
+NBR 12 80/40(LKW) 4.0 3.0
+∗ TheIAP(Instruccinsobrelasaccionesaconsiderarenalproyectodepuentesdecarretera,
+Ministeriodefomento,2000)hasaconstantvalueof4.0kN/m2 onthetotalareaofthebridge,
+but without any deduction for the SLW. For fatigue a SLW with 390 kN and an impact factor of
+1.2 = 468 kN, to be obtained with PFAC 0.78.
+Wind loading: P6 = 1.25 kN/m2
+P7 = 3.50 m
+Brake loading: P8 = 1.00 (Factor for horizontal force)
+DIN 1072 defines a total brake loading with a maximum of 900 kN and a minimum of 30 % of
+theheavyloadtrainswithintheprincipalandsecondarylaneor25%ofthetotalprincipallane.
+As the brake loading is an other load class than the standard life load it is not always possible
+toapplybothloadswithinoneloadcase. IAPhasaminimumof140kNandamaximumof720
+kN.
+SOFiSTiK2023 3-49ELLA|InputDescription
+3.17.5 Load trains BS 5400, TMH7
+Load Train for HA, NA
+Figure3.22: LoadTrainforHA,NA
+The loading HA and NA is described by a uniform load and an additional concentrated single
+or tandem load with spacing P4.
+TheloadingHA(DepartmentalStandardBD37)isrepresentedbyauniformloadP3·pu,with
+themagnitudepudependingonthelengthoftheloading,andeitheraconcentratedload(KEL)
+P1=120 kN or a tandem loading with P1=148 kN (with distance P2, default 1.2m). The value
+of P4 defines the loaded length L. If P4 is not given, L will be calculated in ELLA based on the
+sum of the distances of the null points of the influence line.
+The value pu is calculated from the total loaded length L
+• up to L = 50 m:
+p=336·L−0.67
+(3.18)
+• from L = 50 m (and for the tandem loading):
+p=36·L−0.1
+(3.19)
+It is then possible that shorter loaded lengths could lead to higher forces. As this can not be
+treated easily, ELLA uses an approximation by evaluating an effective length according to BD
+37/01 figure 11. “Base lengths for highly cusped influence lines”. In a first step the integral
+of the total positive and negative contributions of the influence line will be evaluated, then the
+effective length is caluclated:
+(Area under IL)
+L eƒƒ =2· ≤(total length of IL) (3.20)
+(value of maximum ordinate)
+In Hong Kong (BS + Country code 852) the formulas are slightly different:
+• up to L = 70 m:
+p=400·L−0.67
+(3.21)
+3-50 SOFiSTiK2023InputDescription|ELLA
+• from L = 70 m:
+p=44·L−0.15 <14.85 kN/m (3.22)
+theolddefinitionofBSmaybeselectedifP4isspecifiedexplicitlynegativeorthecountrycode
+has been set for Israel (972). it is defined as:
+p=151·L−0.475 ; 9≤p≤30 (3.23)
+Wind loading: P6 = 1.25 kN/m
+P7 = 2.50 m
+The brake loading is also calculated according to the loaded length of the lane:
+P8 = 200kN+8.0·L≤700kN
+The loading NA (Bridge Design Code TMH7, South Africa 1981) is represented by a uniform
+load P3 · pu, with the magnitude depending on the length of the loading and a concentrated
+(cid:112)
+loadP1=144/ nkN(KEL).ThevalueofP4definestheloadedlengthLaswiththeHAloading
+described above. P2 may be used as with HA to generate a tandem loading.
+The value pu is calculated from the total loaded length L
+• up to L = 36 m:
+p=36 (3.24)
+• from L = 36 m:
+p=6+180/L−0.5
+(3.25)
+Wind loading: P6 = 1.25 kN/m
+P7 = 2.50 m
+The brake loading is also calculated according to the loaded length of the lane:
+P8 = 100kN+3.0·L≤400kN
+The loading HFUG allows centrifugal loading according BD 37-01 6.9, It contains a concen-
+trated transverse load and a equal but distributed vertical loading P1. The load train may be
+repeated every 50 m. It shall be applied for radii less than 1000 m.
+TheloadvalueP1defaultsto400kN(300kNforIsrael’sIS1227). Thelengthofthedistributed
+loading is preset with P2 = 6.0 m.
+SOFiSTiK2023 3-51ELLA|InputDescription
+3.17.6 Heavy Load trains BS 5400, TMH7, IS 1227
+Load Train HB, NB
+Figure3.23: LoadTrainHB,NB
+The loading HB and NB consists of a heavy loading and a simultaneous traffic band load.
+P1 = 30.0 (Default Axle loading class)
+values between 24 and 45 are possible, axle loading is 10 times P1
+In some countries very similar load trains are used (South Africa, Israel). These Variants will
+be selected with type NB or the selected country code:
+COUN = GB BS 5400 with distances 1.8 and x = 6.0, 11.0, 16.0, 21.0 or 26.0 m
+COUN = ZA TMH7 NB with distances 2.0 and x = 6.0, 11.0, 16.0, 21.0 or 26.0 m
+COUN = IL IS 1227 with distances 1.5 and x = 8.0, 13.0, 18.0 or 23.0 m
+BS5400makesadistinctionbetweenfourpositionsoftheHBloading,whichaffectthemagni-
+tude of the traffic band load. These are controlled by the factor P3 and the eccentricity P2:
+P3 = 1.000 ; P2 = 0.0 HA-UDL simply centred
+P3 = 2.000 ; P2 = 0.0 HA-UDL doubly centred
+P3 = 1.333 ; P2 = +a/4 HA-UDL full to the right, 1/3 to the left
+a = nominal lane width
+P3 = 1.333 ; P2 = -a/4 HA-UDL full to the left, 1/3 to the right
+a = nominal lane width
+The value P3 of the latter load varies with the length P4 according to the loading HA.
+TheDepartmentalStandardBD37/88hasotherfactors(Table14). ThedefaultvalueforP3will
+be selected based on a nominal width bLof 3.048 m and the first lane.
+TMH7 applies the NB vehicle not combined with other life loads. Values P2 to P4 will be
+ignored.
+Basic area loading: P5 = 0.00 kN/m2
+3-52 SOFiSTiK2023InputDescription|ELLA
+Wind loading: P6 = 1.25 kN/m2
+P7 = 2.5 m
+Brake loading are % of the total load. If the train has a unique traveling direction it is applied
+between the first and second axle. If the train travels in both directions it is distributed in two
+separate blocks at both ends.
+P8 = 0.25 (HB)
+P8 = 0.20 (NB)
+Hint
+The basic area loading P5 is not deducted in the case of HA and HB loading. It always
+acts upon the full width of the lane.
+Load Train HC, NC
+TMH7 knows also a NC loading. This is defined by two blocks of varying width, length and
+distance. If the variation of this loading becomes to complex a definition with individual block
+loads with TRBL may be useful.
+(cid:2)kN/m2(cid:3)
+P1 = 30.0 (Area loading )
+P2 = 5.0 (Width of loading [m])
+P3 = 40.0 (Total loaded length [m])
+The IS 1227 has a load train HC, which is very similar to the HB. The axial load of the last two
+axles is augmented by a factor of 2, the distance x is exactly 13.0 m.
+3.17.7 Live Loads according to AASHTO
+The Loadtrain HL-93 may be selected in a SI and an US Version, as the load values are not
+completely equivalent.
+Old loading according AASHTO has three loading classes 10, 15 and 20, derived from the
+gross weight of a two axle loading in tons. Beside the orginal two axle load train (HS), there
+is a three axle load train (HT) with a variant spacing, a uniform loading an single or tandem
+axles.
+SOFiSTiK2023 3-53ELLA|InputDescription
+Load Train HS (AASHTO edition 1944)
+Figure3.24: LoadTrainHS
+TheloadingHSisdescribedbyauniformloadandanadditionalconcentratedsingleortandem
+load with spacing P4. The value P1 specifies the load train class according to AASHTO. The
+value P2 of the old load definitions should be selected manually for shear and moments.
+The width of the train is 10’ = 3.048 m. The following values are possible:
+P1 Load train P2 (HS) P3 P4
+10 HS10-44 (13.0,9.0) kip 0.32 klf 0
+15 HS15-44 (19.5/13.5) kip 0.48 klf 0
+20 HS20-44 (26.0/18.0) kip 0.64 klf 0
+Wind loading: P6 = 1.46 kN/m
+P7 = 1.829 m (6ft)
+Brake loading: P8 = 0.05 (friction coefficient)
+Load train HT (two and three axle truck, ed. 2002/2005)
+32 kip 32 kip
+(145 kN) (145 kN)
+8 kip
+(35 kN)
+P3
+14' 0" to 30' 0" 14' 0"
+(4.3 to 9.0 m) (4.3 m)
+Figure3.25: LoadtrainHL/HST(threeaxletruck,ed. 2002/2005)
+3-54 SOFiSTiK2023InputDescription|ELLA
+The load train has a width of 10 ft (3.048 m), the variant distance can be between 14 and 30
+ft (4.30 to 9.00 m). The special version US2 resp. SI2 selects the two compact vehicles with a
+mimim distance of 50 ft (15 m) with 90% of the loading for negative moments.
+The total weight P2, the lane load P3 and teh distance P4 are preset as follows:
+P1 Load Train P2 P3 P4
+10 H10-44 20 kip 0.32 klf -
+15 H15-44 30 kip 0.48 klf -
+20 H20-44 40 kip 0.64 klf -
+US HL 93 72 kip 0.640 klf 14 ÷ 30 ft
+SI HL 93 325 kN 9.3 kN/m 4.30 ÷ 9.00 m
+US2 HL 93 72 kip 0.640 klf 14 ft
+SI2 HL 93 325 kN 9.3 kN/m 4.30 m
+USF HL 93 (fat) 72 kip 0.640 klf 4 ft
+SIF HL 93 (fat) 325 kN 9.3 kN/m 1.20 m
+Basic area loading: P5 = 0.00 kN/m2
+Wind loading: P6 = 1.46 kN/m2
+P7 = 1.829 m
+Brake loading: P8 = 0.05 (frictional coefficient)
+The traffic band load P3 has been specified in the 2002 edition as an alternate loading, which
+canbeobtainedbysettingP3equaltozero. WiththeloadmodelHL93theloadingP3isactive
+on the full longitudinal length.
+The variable distance between the two axles of the HL may be overwritten with a fixed value
+byP4. Thedetailedloadmodelforlocalandfatiguedesignmaybeselectedwiththeloadtrain
+typesUSFandSIFswitchingthedynamicallowanceimpactfactorto1.15andafixeddistance
+of 30" (9.0 m). P4 is then the spacing of the double axis, thus P4 0.0 will create the simplified
+modell.
+3.17.8 Load trains according CAN/CSA
+The Canadian standards define a truck load in several variants. The type CAN is used for the
+default load train according chapter 14.9.
+SOFiSTiK2023 3-55ELLA|InputDescription
+Axle no. 1 2 3 4 5
+0.04W 0.1W 0.1W 0.14W 0.12W Wheel loads
+CL-W
+0.08W 0.2W 0.2W 0.28W 0.24W Axle loads
+25 62.5 62.5 87.5 75 Wheel loads, kN
+CL-625
+50 125 125 175 150 Axle loads, kN
+3.6 m 1.2 m 6.6 m 6.6 m
+18 m
+0.25 m
+(Typ.)
+0.25 m 2.40 m 1.80 m 0.60 m
+(Typ.) (Typ.)
+Figure3.26: LoadtrainsaccordingCAN/CSA
+The value P1 defines the level of the load train (CL, CL4 = only 4 axles, CL3 = only 3 axles)
+The definitions ON, ON4 and ON3 select the variants for Ontario according Annex A14.4.
+The definitions BC, BC4 and BC3 select the variants for Britisch Columbia. The definition MV
+selects the maintenace vehicle according 3.8.11.
+The value P2 defines the class of the load train (default 625).
+If the value P3 is defined ( 9.0, 8.0 or 7.0 for class A, B or C and D) a constant lane load will
+be defined with reduced load values of the load train without any dynamic allowance. For this
+loading a braking load P8 of min(700,180+0.1*L) will be applied. So P8 should become zero
+for secondary lanes.
+The height of the wind attack area P7 is 3.0[ m] , the zentrifugal force is acting at P9=2.0[ m]
+aove the lane.
+The value P4 defines the fixed distance to the 4th load of the vehicle, it is 6.6 in general, but
+up to 18 m in British Columbia.
+Further wit Literals EP1 and EP2 the special load trains EPLL1 and EPLL2 may be selected.
+The value P8 defines a factor on the braking load which is applied as 180+0.1*P3*L but not
+larger than 700 kN distributed along the total length. P8 0.0 deactivates this type of loading.
+3.17.9 Load trains IRC 6-2000
+The provisions of the Indian Roads Congress has load trains acting always in total. The type
+of the load train is always IRC, the subtype is given via P1. There will be no other life load on
+the bridge (P5=0.0). How many lanes should be loaded is given in table 2.
+• IRC AA - Heavy Loading for certain areas or highways This is a bogie of two axles with a
+total weight of P2 (40t). There is only one lane loaded with this train.
+3-56 SOFiSTiK2023InputDescription|ELLA
+• IRCAAT-LoadingforcertainareasorhighwaysThisisatrackedvehiclewithatotalweight
+of P2 (70t). A convoy with a minimum distance of 90 m is foreseen. There is only one lane
+loaded with this train.
+• IRCA-LoadingforallpermanentbridgesThisisatrainwithtwotrailers,repeatablewitha
+minimum distance of 18.5 m. The axle loading is P2 (27 kN), P3 (114 kN) and P4 (68 kN).
+• IRCB-LoadingfortimberbridgesandtemporarystructuresThisisatrainwithtwotrailers,
+repeatable with a minimum distance of 18.5 m. The axle loading is P2 (16 kN), P3 (68 kN)
+and P4 (41 kN).
+• IRC nnR
+All numbersrefer to thehypothetical vehicles ofappendix 1. An appended Rwill select the
+wheeled trains, an appended S the four wheelers (only 3 to 24) and an appended T will
+select the tracked vehicle:
+3, 5, 9, 12, 18, 24, 30, 40, 50, 60, 70
+• IRCPDforloadingonfootwaysisjustaselectabletype. Thereductionaccordingtoclause
+209.4 dependant from width and length has to be done by the user explicitly via parameter
+P5.
+Forthelongitudinaleffectsoftheloadingtheclause208establishesreductionfactorformultiple
+lanes. This effect should be taken into account during the superposition of load cases.
+The brake load with P8 (0.2 = 20 %) is defined as the fraction for the first load train, while the
+other trains have only half of this value. P8 = 0.05 should be applied in the case of more than
+two lanes to the other ones.
+Wind loading: P6 = 1.0 kN/m2
+P7 = 3.0 m
+(attack in height of 1.5 m with 3 kN/m)
+The height of the mass centre is defined as P9 = 1.2 m.
+3.17.10 Load trains of the Japan Road Association
+JRAT JRAL
+www.road.or.jp
+Figure3.27: JapaneseLoadTrains
+The following load trains are available:
+SOFiSTiK2023 3-57ELLA|InputDescription
+JRAT A Mult. Single Axis Class A for L < 15.0 m
+JRAT B Mult. Single Axis Class B for L < 15.0 m with Tab. 2.2.2.
+P2 Value of axle load (200 kN)
+P4 Effective span length L
+k = L/32 + 7/8 < 1.5 (for JRAT B)
+P5 Residual load for pedestrian areas (3.5 kN/m2)
+JRAL A Area loading Class A for L > 15.0 m with D= 6 m
+JRAL B Area loading Class B for L > 15.0 m with D= 10 m
+P2 basic lane load p2 (3.50, kN/m2)
+P3 extra lane load p1 (10 / 12 kN/m2)
+P4 Effective span length L to reduce p2 if > 80 m.
+P5 Residual area loading is enforeced to p2 or p2/2 depending on
+PFAC.
+Loads for pedestrian lanes according to Tab. 2.2.4. have to be defined with type JRAL and
+P3=0.0.
+3.17.11 Load trains AS 5100
+The provisions of the Australian AS 5100 may be subdivided in two basic load trains.
+AS_A 160 A single axle, including the special case of a single wheel W 80 for local ef-
+fects.
+and further a system with 12 axles and a variant length to be used with influence lines.
+360 kN 360 kN 360 kN 360 kN
+6 kN/m
+ELEVATION
+1.25 1.25 3.75 1.25 1.25 Varies6.25min. 1.25 1.25 5.0 1.251.25
+0.6
+0.2 2.0
+0.4 3.2mstandarddesign 0.6
+PLAN
+Figure3.28: LoadtrainsAS5100
+AS_M the moving load M 1600
+AS_S the stationary load S 1600
+P1 = Total load (1600)
+P2 = Load of an axle group (360/240)
+3-58 SOFiSTiK2023InputDescription|ELLA
+P3 = uniform distributed load (6 / 24 kN/m)
+P4 = fixed distance ( > 6.25 m)
+P8 = Brake coefficient acc. 6.8.2.
+0.45 for single lane (200 < FBS < 720)
+0.15 for multi lane
+If more than one lane is loaded, the second lane shall be loaded with a lane factor of 0.8 all
+subsequent lanes with 0.4. For fatigue 70 percent of the A160 or M1600 load without uniform
+load value P3 should be used.
+The"heavyloadplatform"isgiveninAS5100.7. Itisaloadwith16axleswith200kNeachfor
+theHLP320and250kNfortheHLP400. Toobtainthevariabledistancebetween6and15m
+between two groups of 8 axles each of the old design code, speciy P2 -1.0.
+HLP P1 = total weight in tons (320/400)
+P2 = distance between groups (default = 6 to 15 m)
+3.17.12 Swedish Load Trains (BRO 2004)
+Figure3.29: SwedishLoadTrains(BRO2004)
+TheSwedishloadtrainshavethespecialfeatureofvariantdistancesbetweentheloadswhich
+are best treated using influence lines. However the short distance of 1.5m will be fixed to that
+minimum value, as there are hardly cases to be expected not yielding the most unfavourable
+value with that short distance.
+Most train types have different load values for primary and secondary lanes. The parameter
+P1 is used to specify an enumeration for the most important lane, the secondary lane etc.
+BRO1 3 axle load train of the Swedish BRO type 1/4
+P1 Lane index 1 2 3 4
+P2 Axle load [ kN] 250 170 0 325
+P3 Line loading [ kN/m] 12 9 6 0
+P4 explicit distance (minimum 6.0 m)
+P5 area loading [ kN/m2] 4 3 2 0
+BRO2 Single axle load train of the Swedish BRO type 2/3
+SOFiSTiK2023 3-59ELLA|InputDescription
+P1 Lane index 1 2 3
+P2 Axle load [ kN] 310 210 155
+BRO5 2 x 3 axle load train of the Swedish BRO type 5
+Figure3.30: BRO5
+P1 Lane index 1 2 3
+P2 Axle load [ kN] 250 170 0
+P3 Line loading [ kN/m] 12 9 6
+P4 explicit distance (minimum 6.0 m)
+P5 area loading [ kN/m2] 4 3 2
+The second train has a distance with minimum of 50 m, the individual loads with
+a minimum of 10 m
+BROF Fatigue relevant load train of the Swedish BRO
+Figure3.31: BROF
+3.17.13 French Load Trains
+TheoldFrenchloadtrains(FASCICULENo. 61)definetheloadingsasmassvalues. According
+to all other loadings they will be now defined in kN based on a conversion factor of 10.
+There are two variants available:
+FirstthereisanarealoadoftypeNFA,wheretheloadvalueisdependantontheloadedlength.
+3-60 SOFiSTiK2023InputDescription|ELLA
+360
+≥4.0−0.002·L(cid:148) kN/m2(cid:151)
+A=2.3+ (3.26)
+12+L
+Whilethisequationisusedwiththisloading,noactionwillbetakentocheckifashorterloaded
+length has a more severe effect.
+Thelanefactorsaccordingparagraph4.2ofthedocumentcanbespecifiedwiththeglobalload
+factor PFAC.
+The second load train NFB describes the load trains Bc and Bt, applicable for local checks.
+Type of load train NFBC NFBT
+P1 Total load [ kN] 300 320
+P2 Number of vehicles 1 -
+According to the document only one vehicle should be loaded with braking loads, this will be
+the first vehicle.
+Figure3.32: FrenchLoadTrains(FASCICULENo. 61)
+The third load train NFC describes exceptional heay load trains.
+SOFiSTiK2023 3-61ELLA|InputDescription
+Type of loadtrain P1 P2
+P.E.B. Leclerc (1999) L 96
+CEREMA Semi-Remorque (2016) R 72
+CEREMA Semi-Remorque (2016) R 94
+CEREMA Semi-Remorque (2016) R 120
+CEREMA Grue Automotive (2016) G 72
+CEREMA Grue Automotive (2016) G 94
+CEREMA Grue Automotive (2016) G 108
+Figure3.33: FrenchLoadTrains(CEREMA)
+3.17.14 Railway train loads
+Load trains of the railway are defined as axle loading in general. To get distributed loads
+more data is required, this is the dimension of the ballast with the lane definition and here the
+distanceofthesleepersandthegaugewidth. Therearedifferentgaugewidths,dependenton
+the country code the default is:
+• 1520 mm (Russian gauge) Russia, Ukraine, Finland
+• 1668 mm (Iberic gauge) Spain, Portugal
+• 1676 mm (Indian gauge) India, Pakistan, Argentina, Chile
+• 1435 mm (Standard gauge) all others
+3-62 SOFiSTiK2023InputDescription|ELLA
+Load train LM71 = UIC 71 = RU (BS5400)
+Figure3.34: LoadtrainLM71=UIC71=RU(BS5400)
+Defaults: P1 = Sleeper distance / block length
+0 with four single loads (Default)
+>0 with distributed single loads
+6.4 with simplified block load
+P2 = Axle loading (250 kN)
+P3 = Lane loading (80 kN/m)
+P4 = Nosing force (100 kN)
+PFAC = coefficient α (0.75, 0.83, 0.91, 1.00, 1.10, 1.21, 1.33, 1.46)
+The type LM71 is considered for a train within a excellent maintained track. If that is not the
+case, it is possible to select with type UICB a variant with impact factors for the standard
+maintenance.
+Loadings are defined with a possible eccentricity of 1/18 of the gauge according to EC/DIN-
+Fachbericht. The direction of this eccentricity is selected according to the centrifugal force. An
+explicitdefinitionwithYEX0deactivatesthisfeatureallowingtospecifyexplicitvaluesinCOPY
+YEX.
+For a sleeper distance up to 0.8 m each load is converted to 3 single loads equal to 0.25 · PA,
+0.50 · PA and 0.25 · PA at distances of P1 from each other. A value greater 0.8 will yield a
+constant block load as follows:
+SOFiSTiK2023 3-63ELLA|InputDescription
+Figure3.35: LoadtrainUIC=LM71=UIC71=RU(BS5400)-ConstantBlockLoad
+Wind loading: P6 = 1.25 kN/m2
+P7 = 4.00 m
+Brake loading: P8 = 20.0 kN/m (constant brake load, but in total less than 6000 kN)
+(-33.0 kN/m for traction, but in total less than 1000 kN)
+Centre of mass: P9 = 1.8 m
+Aerodynamic loading due to trains passing and derailing loading are not available.
+Load train SW Schwerlastzug
+Figure3.36: LoadtrainSWSchwerlastzug
+Load train SW/2 Schwerlastzug
+Figure3.37: LoadtrainSW/2Schwerlastzug
+3-64 SOFiSTiK2023InputDescription|ELLA
+Defaults: P2 = Block load 133 kN/m / 150 kN/m
+P4 = Nosing force (100 kN)
+Wind loading: P6 = 1.25 kN/m2
+P7 = 4.00 m
+Brake loading: P8 = 20.0 kN/m (constant brake load)
+P8 = 35.0 kN/m (constant brake load)
+Hint
+load trains SW will act also if their contributions have favourable effects.
+Load train RFAT Real Load trains of EC / DIN Fachbericht etc.
+Defaults: P1 = Class of load train
+1 = Passenger train with engine (663 t)
+2 = Passenger train with engine (530 t)
+3 = High speed passenger train (940 t)
+4 = High speed passenger train (510 t)
+5 = freight train with engine (2160 t)
+6 = freight train with engine (1431 t)
+7 = freight train with engine (1035 t)
+8 = freight train with engine (1035 t)
+9 = suburban multiple unit train (296 t)
+10 = subway - multiple unit train (360 t)
+11 = freight train with engine (1135 t)
+12 = freight train with engine (1135 t)
+IC = German Intercity (549 t)
+ICE1 = German Intercity 1 (780 t)
+ICE2 = German Intercity 2 (693.6 t)
+ICE3 = German Intercity 3 (992.6 t)
+ICE4 = German Intercity 4 (1092 t)
+ICT2 = German Intercity-T (2xBR411=814 t)
+ICT3 = German Intercity T (3xBR415 = 902 t)
+THAL = French ( 878.4 t)
+TGV = French TGV (1020 t)
+VIRG = British Virgin (748 t)
+EURO = eurostar 373/1 (816 t)
+TALG = Spanish TALGO AV 2 (680 t)
+AVE = Spanish TALGO 350 (842.9 t)
+ETRY = Italian ETR-Y 500 (629.6 t)
+P2 = Total load (kN)
+P3 = Total length (m)
+SOFiSTiK2023 3-65ELLA|InputDescription
+P4 = equivalent block load (kN/m)
+Load values P2 to P3 are informative values only. These load trains will be applied as con-
+stant block load in general, but if you specify P4 = 0.0, all individual axles (up to 96!) will be
+generated. The speed of the trains will default to the values specified in the EC.
+Load trains HSLM of EN1991-2 (Annex E)
+Specification: P1 = characterist. Length L-lamda of HSLM-B
+or Class of load train (A1 to A10)
+Defaults: P2 = Axle loading (kN)
+P3 = Number of inner coaches (HSLM-A)
+Number of loads (HSLM-B)
+P4 = Coach length (D) [ m] for HSLM-A
+Distance of loads for HSLM-B [ m]
+Load train RL = Railway Loading BS 5400
+Figure3.38: LoadtrainRL=RailwayLoadingBS5400
+Defaults: P1 = 200 kN
+P2 = 50 kN/m
+P3 = 25 kN/m
+Wind loading: P6 = 1.00 kN/m2
+P7 = 3.7 m
+Brake loading: P8 = 8.0 kN/m (constant load)
+3-66 SOFiSTiK2023InputDescription|ELLA
+Load train ASRT = Railway Loading 300LA according AS 5100
+SIMULATED
+VEHICLE COUPLER
+LOCOMOTIVE
+300 kN 300 kN 300 kN 300 kN 360 kN
+1.7 1.1 1.7 2.0
+300LA RAILWAY TRAFFIC LOADS-AXES LOADS
+SIMULATED
+VEHICLE
+LOCOMOTIVE
+12 to 20 12 to 20 12 to 20 12 to 20
+(Varies) (Varies) (Varies) (Varies)
+Repeat number
+of vehicles as
+necessary
+Figure3.39: LoadtrainASRT=RailwayLoading300LAaccordingAS5100
+The load train 300LA of the AS 5100 consists of a locomotive and as many vehicles as nec-
+essary, each of them with a variant length between 12 and 20 m. Unfortunately even with
+influencelineitishardlypossibletodealwithaninfinitenumberofvariables,thustheloadtrain
+has always a finite number of vehicles.
+Defaults: P1 = 300 kN (Axle load)
+P2 = 360 kN (leading axle load)
+P3 = number of vehicles (12)
+P4 = fixed length of vehicles (-)
+Brake loading: P8 = 100.0 + 15*(L-50) kN (continuous track)
+Formorethantowtracks,theloadinginthethirdtrackisappliedwithafactorof0.85,thefourth
+track with 0.70 and all other with 0.60.
+For this load train different coefficients for dynamic allowances are specified, depending on
+the type of the rail fixing. (Ballast or direct fixing). These information is taken from the LANE
+definition.
+SOFiSTiK2023 3-67ELLA|InputDescription
+3.17.15 Military NATO Load Trains (Stanag 2021)
+Figure3.40: MilitaryNATOLoadTrains(Stanag2021)
+MLC Load trains of the STANAG are given in the sixth edition in appendix A. There are the
+classes P1 = 4, 8, 12, 16, 20, 24, 30 up to 150. For every class we have available:
+P2 = 1 Values from column 4 (Single Axles)
+P2 = 2 Values from column 2 (tracked vehicles)
+P2 = 3 Values from column 3 (Wheeled vehicles)
+3-68 SOFiSTiK2023InputDescription|ELLA
+3.18 TRPL – Point Load of load train
+Seealso: TRAI,TRBL,LANE,TREX
+TRPL
+Item Description Unit Default
+P Load value of vertical load [kN] 0.0
+1190
+PB Load value for braking [kN] 0.0
+1190
+PW Load value transverse (bumping, wind) [kN] 0.0
+1190
+PF Value of vertical load for centrifugal load [kN] P
+1190
+PFAC Factor for favourable components − 0.0
+DIST A is Minimum (MIN) / absolute (ABS) distance LT ABS
+A Distance to last load of train [m] 0.0
+1001
+DPOS Minimum distance to load refer. point [m] 0.0
+1001
+DMIN Influence area before [m] 0.0
+1001
+DMAX Influence area behind [m] 0.0
+1001
+Y Eccentricity to lane axis ( > 0 = to the right) [m] 0.0
+1001
+HW Total height of wind attack area [m] 0.0
+1001
+ZW Height of horizontal force [m] HW/2
+1001
+HF Height of mass center [m] 0.0
+1001
+PHI Impact and special options (see remarks) − 1
+NW Number of wheels on axle (0-7) − *
+B Distance of wheels across the lane [m] 0.0
+1001
+BW Width of Wheel contact area [m] 0.0
+1001
+LW Length of wheeel contact area [m] 0.0
+1001
+SNO Section number for Animation − -
+Parameters for multibody dynamics:
+FRB Frequency for body Spring Cb 1/sec *
+DAB Modal Damping of body support − *
+BOGI Load value of bogie −/kN *
+FRBO Frequency for bogie Spring Cbo 1/sec *
+DABO Modal Damping of bogie support − *
+WHEE Load value of wheel −/kN *
+FRWH Frequency for wheel spring Cwh 1/sec *
+DAWH Modal Damping of wheel support − *
+CONT Contact node − -
+A freely defined loading by the user comprises an arbitrary number of loads defined relative to
+SOFiSTiK2023 3-69ELLA|InputDescription
+each other. The first load determines the load reference point (x=0.0). Each further loading
+is defined with a distance to the previous one.The distance of the point load to the last load
+pointmaybeeitherconstantorvariablewithaminimumvalue. Inthelattercaseandadditional
+minimum distance to the load reference point may be defined with DPOS. For the evaluation
+in ELLA two additional values DMIN and DMAX may be specified for special cases describing
+an influence region before and behind the load.
+For the evaluation of the load trains in ELLA symmetric load trains are expected. Thus, any
+definitionofYshouldbecomplementedwithaseconddefinitionatthesameposition(A0)with
+anegativeY-value. Thus,asecondvalueofY2isnolongersupported. Aneccentricitymaybe
+specified with YEX with the load train. NW allows to specify directly a number of wheels with
+a distance B for that load element. They loads with the same load value will then add up to a
+total axle distributing the loading on all wheels of that axle.
+IfNW=0theloadvalueswillbeconvertedtoadistributedloadbasedonthewidthoftheload
+train WIDT. (120kN distributed on 3m yield 40kN/m) and will be then clipped at the boundary
+of the the current lane width. But there are also cases (KEL of HA in BS), where the load is
+distributed over the lane width, which is controlled via PHI.
+A definition of BW and LW will allow to create also area loadings for every wheel.
+x
+A1 > DPOS(4)
+A2 A3 A4 A5
+Figure3.41: Freelydefinedloadtrain
+The loading has a vertical component P, a longitudinal component PB and two components in
+transverse direction. The load may be defined either as single point load, as a pair of wheels
+(Definition of B < WIDT) or as distributed load (Definition of BW only or B equal to WIDT) The
+truedimensionofthewheelcontactareaisonlyusedforCOPYwithinSOFiLOAD,ELLAuses
+only the resultant forces for the evaluation of the influence lines.
+Positive loadings of PB are braking loads acting in travelling direction, negative values are
+intended as accelerating loads in the reverse direction. Loads are applied at the height of the
+lane.
+The centrifugal loading acts in the height hs, the constant horizontal force in the height zw,
+thus creating torsional moments. If the load has a width B, this moment will be applied as a
+pair of forces on the lane surface, a torsional moment along the lane axis will be generated
+otherwise.
+3-70 SOFiSTiK2023InputDescription|ELLA
+PW h
+w
+PFSv2/gR
+h
+s
+Figure3.42: Singleloadanditscomponents
+With the item OPT several options are controlled:
+1 Apply impact factor
+2 Multiply vertical load value with UDL-value of design code (eg.BS)
+4 Multiply longitudinal load value with value of design code (eg. EN),
+8 split load in transverse direction if unfavourable,
+16 the load is an area load, the total load value will be adopted to the lane width
+32 load is always centric, YEX is not applied
+For an analysis with multi-body-dynamics it is possible to generate masses, beams, springs
+and dampers via the record TREX. The mass of bogie and wheel may be specified either as a
+positive absolute load value or as a negative fraction of the total mass. The default values are
+specified with the record TRAI. For more information see record TREX.
+Asanalternatemethod,itispossibletoassociatealoadtraintoauserdefinedstructuralmodel
+of the load train. In that case CONT specifies the number of a node of the structural system,
+which is located at the current position of the load train. If CONT is specified with a positive
+number, the node will get the deformations of the structure at this point. If defined negative,
+the node will get only the offset of the current position for the visualization however. This has
+to be done for all nodes of the train model having no direct contact to the bridge.
+SOFiSTiK2023 3-71ELLA|InputDescription
+3.19 TRBL – Block Load of Load Train
+Seealso: TRAI,TRPL,LANE,TREX
+TRBL
+Item Description Unit Default
+P Loadvalue of vertical load [kN/m] 0.0
+1191
+PB Loadvalue for braking [kN/m] 0.0
+1191
+PW Loadvalue in transverse direction [kN/m] 0.0
+1191
+PF Value of vertical load for centrifugal load [kN/m] P
+1191
+PFAC Factor for favourable components − 0.0
+DIST A is taken as Minimum (MIN) / absolut (ABS) LT ABS
+A Distance to last load of train [m] 0.0
+1001
+L fixed or minimum length of load [m] 0.0
+1001
+(positive or negative, 0 = unlimited) -
+LMAX maximum length of load [m]
+1001
+LDEL discrete variable length: L + n · LDEL [m] 0.0
+1001
+Y Excentricity to lane axis ( > 0 = to the right) [m] 0.0
+1001
+HW Total height of wind attack area [m] 0.0
+1001
+ZW Height of resulting force PW [m] HW/2
+1001
+HF Height of mass centre [m] 0.0
+1001
+PHI Impact and special options (see remarks) − 1
+NW Number of tracks on axle (0-2) − *
+B Distance of tracks across the lane [m] 0.0
+1001
+BW Width of track contact area [m] 0.0
+1001
+SNO Section number for Animation − -
+Parameters for multibody dynamics:
+FRB Frequency for body Spring Cb 1/sec *
+DAB Modal Damping of body support − *
+BOGI Load value of bogie −/kN *
+FRBO Frequency for bogie Spring Cbo 1/sec *
+DABO Modal Damping of bogie support − *
+WHEE Load value of wheel −/kN *
+FRWH Frequency for wheel spring Cwh 1/sec *
+DAWH Modal Damping of wheel support − *
+A freely defined loading by the user comprises an arbitrary number of loads defined relative to
+each other. The general parameters and remarks are given at record TRPL .
+3-72 SOFiSTiK2023InputDescription|ELLA
+Figure3.43: Blockloading
+All load values will be treated as line loads in general. If NW = 0 the load values will be
+converted to a distributed load based on the width of the load train WIDT. (12kN/m distributed
+on3myield4kN/m2)andwillbethenclippedattheboundaryofthethecurrentlanewidth. For
+standardloadtrains,thedefinitionofthecodeisofteninthatformat. Buttherearealsocases,
+where the load is distributed over the lane width, which is controlled via PHI.
+For NW>0 one or more line loads of the wheels or tracks will be created with the distance B. If
+BW is defined, an area load may be created instead of the line load.
+If only HW is specified a value for PW will be evaluated from the wind load given with the load
+train wind definition.
+Input values for multi-body-dynamics of line loads TRBL for record TREX will not be used
+currently.
+SOFiSTiK2023 3-73ELLA|InputDescription
+3.20 SAVE – Saving case for an evaluation
+Seealso: POSL,LANE,TRAI,CALC,COMB
+SAVE
+Item Description Unit Default
+LCB Loading case base number − 0
+TYPE Action for this Evaluation Lt4 *
+TITL Designation of resulting load cases Lt32 -
+The input of the loading occurs in the form of saving and evaluation cases. Each saving case
+includes several evaluation cases CASE and optional superposition rules of those evaluation
+cases COMB.
+ThevaluegivenhereatLCBisaddedtothenumberofthecasedefinedwiththerecordCALC.
+Example:
+CALC defines LMAX 12 and LMIN 11
+1. Evaluation of the imposed loads in the construction stage (crane etc.)
+SAVE 200
+The load cases 211 and 212 are the result.
+2. Evaluation of the imposed loads in the final stage
+SAVE 250
+The load case 261 and 262 are the result.
+The action type and the designation of the resulting load cases may be specified explicitly or
+be derived from the data saved with the load cases of the used load trains automatically.
+3-74 SOFiSTiK2023InputDescription|ELLA
+3.21 CASE – Evaluation Case
+Seealso: ,POSL,LANE,TRAI,CALC,COMB
+CASE
+Item Description Unit Default
+NO Evaluation Case − 1
+GRP Group of Loading LT ALL
+Theinputoftheloadingwithinasavingcaseoccursintheformofevaluationcases. Eachcase
+gets an identification number and contains the assignement of load trains to individual lanes.
+With the input of GRP one may specify literals for load groups. This definition will then select
+factors according EN 1991-2 or DIN Fachbericht.
+ALL = all load components
+GR0 = single vertical loads only
+GRU = only vertical distributed loads (UDL+Residual area)
+GR1 = vertical loads (gr1 in Table 4.4a)
+GR2 = horizontal loads (gr2 in Table 4.4a)
+GR2N = non-frequent variant of group 2
+GR2F = frequent variant of group 2
+GR2L = only longitudinal loads of group 2
+GR2T = only transverse loads of group 2
+GR20 = only horizontal loads of group 2
+GR3 = pedestrian walk (residual) area only (gr3 in Table 4.4a)
+GR4 = LM4 / P5 on total traffic area (gr4 in Table 4.4a)
+GR5 = special vehicles of LM3 (gr 5 in table 4.4.a)
+all other types of load train with its frequent value
+GR6 = Exchange of bearings
+GR11 = max. vertical 1 according table 6.6 for 1 track
+...
+GR17 = SW/2
+GR21 = max. vertical 1 according table 6.6 for 2 tracks
+...
+GR27 = SW/2
+GR31 = max. vertical 1 according table 6.6 for 3 or more tracks
+The loading is generally done within the lanes only. But the load train may be smaller or wider
+than the lane or not all lanes will be loaded. Then we have the following rules:
+• Loads will be clipped at the edges of the lane
+• The residual loading area will be applied for a regular lane on the space between the lane
+boundariesandthetruetrafficlanedefinedbytheappliedloadtrain. Howeverforlane0all
+otherdefinedlaneswillbespared. Anautomaticextensionoftheresidualareaisnolonger
+applied.
+SOFiSTiK2023 3-75ELLA|InputDescription
+• A loading with group GR4 will apply the residual load on the total traffic area.
+3-76 SOFiSTiK2023InputDescription|ELLA
+3.22 POSL – Position of the Load Trains for an evaluation
+Seealso: ,CASE,LANE,TRAI
+POSL
+Item Description Unit Default
+NO Lane (lane_ident.nummer) LT !
+e.g. A1.3 = third lane of axis A1
+TRAI Loadcase number of load train − !
+FACT global factor for loadtrain − 1.0
+> 0 is applied to all load values
+< 0 is not applied to the residual loading
+OPT Longitudinal load train position in lane − FREE
+FREE Load train may leave the lane
+LANE Area loading only within defined lane
+LIM Loadpositionlimitedwithinthelane(crane)
+SMIN Minimum start station load reference point − -
+SMAX Maximum start station load reference point − -
+DEL Optional grid of the start points − -
+YEX Eccentricity of the train [m] 0
+1001
+V Speed of the train [km/h] *
+1203
+(cid:2)kN/m2(cid:3)
+P Residual loading (TRAI)
+1192
+SYNC Synchronisation of load trains LT OFF
+ON All trains move together
+OFF trains move individually
+PLON Loading in longitudinal direction LT VAR
+OFF No loading
+POS as defined (pos = braking)
+NEG reverse direction (pos = driving)
+VAR unfavourable direction
+PTRA Loading in transverse direction LT VAR
+OFF No loading
+POS as defined (pos to the right)
+NEG reverse direction (pos to the left)
+VAR unfavourable direction
+FUGA Zentrifugal loading LT CODE
+PHYS according physics
+CODE according design code
+IMPA Impact factors LT ON
+OFF deactivated
+ON activated
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-77ELLA|InputDescription
+Item Description Unit Default
+EXCE Automatic selection of excentricity LT FIX
+AUTO activated
+FIX deactivated
+EXTR Selection of load train position LT ALL
+VERT according to vertical loading
+ALL according to all load components
+With this record the loading within a lane for an evaluation case is defined. You have to spec-
+ify at TRAI the load case number of the defined load train and/or the residual loading at P.
+Loadings outside of the defined lane width will not be applied.
+To specify the superposition of the loading for primary and secondary lanes there are now the
+following possibilities:
+• Usage of different load trains (e.g. UIC and SSW)
+• Definition of global factors in POSL.
+• Definition of factors within the final superposition
+The record CASE must be followed by the corresponding POSL records. Lanes without load
+train remain unloaded.
+The program places automatically the loading at the most unfavourable position inside the
+above region. To achieve this, all selected points of the load train are placed at up to four
+extremes of the influence line. The maximum value of this initial position is used for a detailed
+iteration. However, the region can be input for special cases. This is the case, if:
+• only one single load position should be analyzed.
+input of SMIN=SMAX, DEL without effect
+• the load train can not stand in all positions of the influence line.
+input of SMIN, SMAX but DEL not defined
+• the algorithm does not find the correct extreme positions.
+input of SMIN, SMAX and DEL. If DEL is defined <0.0 the Newton search will be deacti-
+vated.
+In all other cases it is reasonable not to input any values for SMIN, SMAX, or DEL. Only a
+single intervall may be used.
+Load trains will be positioned at parallel locations in general. If independently moving trains
+are required, this needs separate lanes in every case and either separate geometries (eg.
+AXA.1 and AXB.1) or a special SYNC OFF definition. Variable load distances will then be
+applied as in the main lane. It should be noted that for the case of favorable contributions of
+the synchronized load trains, results may be on the unsafe side, especially for a classical load
+position analysis.
+For a pure beam system, a transverse shift of the loading during the evaluation might be
+applicable,forFEstructuressuchaneccentricloadingwillbeproducereasonableresultsonly
+in rare cases. Thus it is strongly recommended to define an own lane for each eccentric
+3-78 SOFiSTiK2023InputDescription|ELLA
+loading. ForwideheavyloadtrainsYEXmaybeusedtoshiftthepositionoftheloadtrain,that
+onlypartsoftheloadingwhicharewithinthelanelimitswillbeapplied,butthenasynchronized
+loading has to be assigned in the adjacent lanes. If there is only a single lane 0, YEX is still
+used for historical reasons as a global eccentricity for the total load train.
+Elder definitions assembled most options in a single numeric value at OPT:
+OPT =PLON + 4 · PTRA + 16 · FUGA + 32 · MPA + 64 · EXCE
++ 128 · OPTS + 1024 · OPTR
+ELLA tries to find the maximum forces. The influence of wind on the vehicles is considered
+thereforewithasimplifiedmanner: Thewindactsalwaysinthemostunfavorabledirection. The
+windonthestructureitselfisnothandledanddetailedeffectslikepartialloading(consideration
+oflee),windonpartialvehicles,coherenceorunifiedwinddirectionsatallpartsofthestructure
+are also not considered. However, in some case the wind may be defined with a fixed sign.
+Thus one may describe a few of these effects.
+In the case of a bow of the lane the masses of the load train, usually calculated from the
+verticalloads,areusedtogetherwiththevelocityandthecurvatureofthelaneintheplanview
+for the calculation of the horizontal loads. Depending on the type of the load train, reductions
+or simplified rules may apply.
+For the eccentricity there are the following effects, which might be influenced by the EXCE
+value:
+• Any loading may be eccentric within a given range within the lane. Especially for railway
+loadings this is a very important option to select the most unfavorable eccentricity.
+• Aloadingmaybesubdividedinarightandleftpartbasedonthetorsionaleffect. Forsome
+evaluations (e.g. SLW) a single wheel may become effective in those cases.
+SOFiSTiK2023 3-79ELLA|InputDescription
+3.23 COMB – Intermediate Combination of Evaluations
+Seealso: SAVE,CASE
+COMB
+Item Description Unit Default
+TYPE Superposition of this combination LT Q
+G permanently acting
+Q acting only if unfavourable
+A0 Alternative group 0
+A1 Alternative group 1
+. . .
+A9 Alternative group 9
+F Additional evaluation case to add
+L1 Number / range of evaluation case − -
+F1 Factor of an evaluation case − 1.0
+L2 Number / range of evaluation case − -
+F2 Factor of an evaluation case − 1.0
+L3 Number / range of evaluation case − -
+F3 Factor of an evaluation case − 1.0
+L4 Number / range of evaluation case − -
+F4 Factor of an evaluation case − 1.0
+L5 Number / range of evaluation case − -
+F5 Factor of an evaluation case − 1.0
+L6 Number / range of evaluation case − -
+F6 Factor of an evaluation case − 1.0
+...
+L10 Number of an evaluation case − -
+F10 Factor of an evaluation case − 1.0
+The envelope of extreme values is calculated after the end of evaluation of all the evaluating
+cases. Without COMB definitions each evaluation case is mutually exclusive. However for
+specialcasesitispossibletodefineintermediateresultswiththeCOMBrecordwhicharethen
+combined with variant superposition conditions.
+Eachintermediateresulthasasuperpositionruleassignedandiscreatedfromuptotenbasic
+evaluation cases with factors. If more than ten cases should be combined, additional records
+with COMB F may be used for that purpose.
+For the common case that a combination of multiple lanes is required with either different type
+ofloadtrainsorwithdifferentglobalfactors,aninternalsortingmaybeperformedbyspecifying
+a range of case numbers "cmin:cmax". In that case only loadings are considered not having
+3-80 SOFiSTiK2023InputDescription|ELLA
+loads in any already loaded lane.
+Examples:
+COMB A0 F1 1.0 F2 0.6 F3 0.4 combines any 3 cases such that the
+most unfavourable will be taken with
+100 %, the second with 60 % and the
+least unfavourable with 40 %
+COMB A0 L1 1 1.0 2:9 0.6 2:9 0.4 combines case 1 to 100 % with 60 %
+of the largest of the cases 2 to 9
+and 40 % of highest remaining case.
+Example:
+A railway bridge with 3 tracks and 2 spans with 8.00 and 12.00 m length has to be ana-
+lyzed. According to DS 804 are to be examined:
+2 tracks with UIC 71 100% or
+3 tracks with UIC 71 71% or
+2 tracks with SW 100% or
+1 track with SSW and 1 track with UIC 71
+The following input is possible for the definition and the superposition of the four combinations
+based on nine evaluation cases:
+LC 1001 ; TRAI UIC
+LC 1002 ; TRAI SW
+LC 1003 ; TRAI SSW
+CASE 1 ; POSL 1 1001 ! UIC
+CASE 2 ; PSOL 2 1001
+CASE 3 ; POSL 3 1001
+CASE 4 ; POSL 1 1002 ! SW
+CASE 5 ; POSL 2 1002
+CASE 6 ; POSL 3 1002
+CASE 7 ; POSL 1 1003 ! SSW
+CASE 8 ; POSL 2 1003
+CASE 9 ; POSL 3 1003
+COMB A0 1:3 1.00 1:3 1.00 $ ANY TWO TRACKS WITH UIC
+A0 1 0.71 2 0.71 3 0.71 $ THREE TRACKS WITH REDUCED UIC
+A0 4:6 1.00 4:6 1.00 $ ANY TWO TRACKS WITH SW
+A0 7:9 1.00 1:3 1.00 $ ANY TRACK WITH SSW AND A 2ND UIC
+SOFiSTiK2023 3-81ELLA|InputDescription
+3-82 SOFiSTiK2023OutputDescription|ELLA
+4 Output Description
+Theoutputofaninfluencelineevaluationcanbecomeveryextensive. Thereforetheuseofthe
+various ECHO options may be very helpful.
+4.1 Lane Geometry
+The geometry of the lanes can be controlled with ECHO LINE. The default output results in a
+table for each lane with the following information in its headline:
+DY Influence width of the lane, see record LSEL
+DZ Influence height of the lane, see record LSEL
+Load distribution, see record LSEL
+The table contains the following columns:
+STATION Station parameters of the lane
+COORDINATES X,Y,Z Coordinates of the station at the lane
+SECTION LENGTH Distance of the following section to the
+next station
+REMARKS Data for geometry, radius, clothoidal etc.
+With ECHO LINE FULL one obtains a list of the neighbouring nodes at the left-hand side and
+to the right-hand side of the lane.
+4.2 Influence Lines
+Influence lines can be represented and printed graphically. However, an output occurs only, if
+the lines have been selected with SHOW, and ECHO IL has not been set equal to NO. The
+graphical output is obtained only by using the record SIZE, whilst the output in the form of
+tables is obtained with ECHO IL FULL.
+Thetableoftheinfluencelinescontainsinitsheadlinetheapplicationpointoftheunitloadand
+the scalar variable. The columns are as follows:
+X-VALUE X coordinate measured at the lane axis,
+beginning with 0.000 m
+PV-VALUE Influence line value for vertical loading
+atthelaneaxisresp. themeanvaluefortwotrans-
+verse wheel loadings
+MS-VALUE Influence line value for torsional loading
+PS-VALUE Influence line value for longitudinal loading
+(brake load)
+PQ-VALUE Influence line value for lateral loading
+SOFiSTiK2023 4-1ELLA|OutputDescription
+(wind, centrifugal force)
+dPV/ds First derivative of the influence line values
+PV (corresponds to IL for -M loading)
+p+,p- Integrals of positive and negative influence values
+for INT>2
+r+,r- Integrals of influence values in the right and left
+residual areas for INT>2
+Influence lines are plotted with a predetermined scale in the longitudinal direction and with a
+scale for the influence line values, which is determined by the height of the drawing bands.
+Maximum and minimum values are printed at the plot.
+Forthegraphicsofthetransverseinfluenceline,thesumoftheinfluencevaluesofthethetwo
+wheelsoftheaxle(Pv)andtheintegralsofthepositive(p+)andnegative(p-)influencevalues
+are also given. The values r+ and r- are the integrals of the residual areas outside the traffic
+lane.
+4.3 Load Trains
+The load trains are described in plain text with their parameters. The output of the corre-
+sponding table can be suppressed with ECHO TYPL NO; with ECHO TYPL FULL the table is
+expanded in order to show the generated loadings. This table is also printed for user defined
+loadings by entering ECHO TYPL YES.
+This table contains the following columns:
+TYPE Load type
+E Point load
+E-0 Point load without dynamic factor
+G Distributed load
+G-0 Distributed load without dynamic
+factor
+UDL Distributed load with variable value
+according to BS 5400
+PV Vertical load value
+PL Load value in the lane direction (brake)
+PW Load value in lateral direction (wind)
+PFUG Load value for centrifugal force
+PFAK Factor for favourably acting components
+X Load position
+L Length of the load for distributed loads
+LDEL Subdivision of the length of the load
+Y Load eccentricity
+HW Height of the gravity centre for wind loads
+4-2 SOFiSTiK2023OutputDescription|ELLA
+HF Height of the gravity centre for centrifugal
+forces
+For loads with variable length the output of a second line with the maximum and the minimum
+length and a possible subdivision length value in the column LDEL follows.
+The dynamic factors and the lane widths are output in an additional table. The parameters
+therein mean:
+STARTING first station value
+ENDING second station value
+PHIB dynamic factor for unfavourable bending
+PHI2 dynamic factor for favourable bending
+PHIS dynamic factor for unfavourable shear
+PHI4 dynamic factor for favourable shear
+LPHI determinant length
+YRA lane boundary to the right of first station
+YLA lane boundary to the left of first station
+YRE lane boundary to the right of second station
+YLE lane boundary to the left of second station
+4.4 Superposition Combinations
+Atableofthesuperpositioncombinationsalwaysappearswhensuchcombinationshavebeen
+defined. A single line is printed for each combination containing its type as well as the partici-
+pated evaluation cases with their factors.
+4.5 Evaluation Results
+The evaluation results are controlled by the two ECHO options EVAL and RES.
+When one of these two options is active, a line which contains the identification of the position
+is printed for each position with corresponding influence lines.
+AslongasEVALisactive,thepositionoftheloadtrainaswellasthepossibleconvoydistances
+or the variable lengths are output in a succeeding table.
+If EVAL is set to FULL, the regions with different signs are printed then for each evaluation
+case and for each lane together with the applied dynamic factors PHI1/PHI2 for unfavourably/-
+favourably acting loading and the positions of extreme values.
+If RES is active, the extreme values of the internal forces or other parameters are output in
+an additional table. The first columns contain the number, with which the load case has to be
+SOFiSTiK2023 4-3ELLA|OutputDescription
+stored, and a text for the designation the evaluation rule.
+4.6 Program Statistics
+IftheECHOoptionSTATisused,onereceivesanoutputwhichshowstheusedCPUtimeand
+the up to now needed memory allocation at the screen or in the logfile for each part of the
+program. These values are important, in order to allow an estimation of the memory and the
+CPU time requirements for larger examples.
+4-4 SOFiSTiK2023

@@ -1,0 +1,2119 @@
+RELY
+®
+Structural Reliability powered by Strurel
+SOFiSTiK | 2023RELY
+StructuralReliabilitypoweredbyStrurel®
+RELYManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|RELY
+Contents
+Contents i
+1 Task Description 1-1
+2 Theoretical Principles 2-1
+2.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.2 The reliability problem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.3 Monte Carlo simulation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-3
+2.4 FORM - First-Order Reliability Method . . . . . . . . . . . . . . . . . . . . . . 2-4
+2.5 SORM - Second-Order Reliability Method . . . . . . . . . . . . . . . . . . . . 2-7
+2.6 Importance sampling . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-7
+2.7 Line sampling . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-7
+2.8 Directional sampling . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-9
+2.9 Adaptive sampling . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-9
+2.10 Subset simulation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-10
+Bibliography 2-13
+3 Input Description 3-1
+3.1 Input Language . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.2 Input Records. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.3 CTRL – Control switches . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-2
+3.4 OUTP – Output control . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-4
+3.5 VAR – Random Variables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-5
+3.6 CORR – Correlation. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-8
+3.7 PROJ – Define the SOFiSTiK project that evaluates the limit-state func-
+tion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-9
+3.8 FUNC – Define a limit-state function . . . . . . . . . . . . . . . . . . . . . . . 3-10
+3.9 SLSF – Define the system limit-state function . . . . . . . . . . . . . . . . . 3-11
+3.10 MC – Monte Carlo simulation . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-12
+3.11 IS – Importance sampling . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-14
+3.12 LS – Line sampling . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-15
+3.13 DS – Directional sampling . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-16
+3.14 ADS – Adaptive sampling . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-17
+3.15 FORM – First order reliability method. . . . . . . . . . . . . . . . . . . . . . . 3-18
+3.15.1 SPNT: Starting solution . . . . . . . . . . . . . . . . . . . . . . . . . 3-19
+3.15.2 Convergence criteria . . . . . . . . . . . . . . . . . . . . . . . . . . 3-19
+3.15.3 OPTA: Optimization algorithms . . . . . . . . . . . . . . . . . . . . 3-19
+3.15.4 Finite difference scheme . . . . . . . . . . . . . . . . . . . . . . . . 3-21
+3.16 SORM – Second order reliability method . . . . . . . . . . . . . . . . . . . . 3-22
+3.17 MVFO – Mean value first order. . . . . . . . . . . . . . . . . . . . . . . . . . . 3-23
+SOFiSTiK2023 iRELY|Contents
+3.18 SUBS – Subset simulation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-24
+3.19 EXDS – Experimental Design . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-25
+3.20 RSF – Response Surface Function . . . . . . . . . . . . . . . . . . . . . . . . 3-27
+4 Output Description 4-1
+5 Examples 5-1
+5.1 Simple Beam: Explicit Limit-State Function . . . . . . . . . . . . . . . . . . . 5-2
+5.2 Simple Beam: Finite Element Limit-State Function . . . . . . . . . . . . . . 5-4
+6 Appendix 6-1
+Bibliography 6-19
+ii SOFiSTiK2023TaskDescription|RELY
+1 Task Description
+Traditionally, compliance of an engineering system is demonstrated by means of safety fac-
+tors. Structural reliability offers an alternative approach to assess the safety of an engineering
+system. In structural reliability, uncertainties in loading, material properties and geometry are
+takenintoaccountexplicitly;i.e.,theuncertaintiesaredescribedinaprobabilisticmanner. Our
+aimistocomputetheprobabilitythattheengineeringsystemwillfail. Theconceptofstructural
+reliability is also included in Eurocode 0 and DIN 1055-100.
+Rely is an add-on to the SOFiSTiK program that performs reliability analysis, where the engi-
+neering system of interest is modeled using one of the SOFiSTiK finite element modules. The
+kernel of Rely is powered by the stand-alone software package Strurel. Different structural
+reliability methods are provided:
+• Monte Carlo simulation (Section 2.3)
+• FORM (Section 2.4)
+• SORM (Section 2.5)
+• Importance sampling (Section 2.6)
+• Line sampling (Section 2.7)
+• Directional sampling (Section 2.8)
+• Adaptive sampling (Section 2.9)
+• Subset simulation (Section 2.10)
+SOFiSTiK2023 1-1RELY|TaskDescription
+1-2 SOFiSTiK2023TheoreticalPrinciples|RELY
+2 Theoretical Principles
+2.1 Introduction
+In engineering, the system of interest is approximated by a model. The behavior of the model
+depends on its input parameters; for a finite element model of a structure, this can be material
+parametersliketheYoung’smodulus,ortheappliedloading. Thestateoftheinputparameters
+is usually not known with certainty: e.g., the snow that lies on a roof, the wind-load that acts
+on a building, or the future Young’s modulus of a concrete slab to be designed are uncertain.
+In reliability analysis, all parameters whose uncertainty influences the behavior of the system
+are modeled as random variables.
+For some outcomes of the random variables, the behavior of the system will be undesirable:
+e.g. parts of the structure will collapse, the state of the system can lead to fatalities, or the
+serviceability of the system is no longer maintained. Such undesired events are called failure
+F. Reliability analysis aims at evaluating the probability that a failure event occurs, p = Pr(F).
+f
+The smaller the probability of failure, the larger is the reliability of the system. A measure
+for the degree of safety of the system is given by the reliability index β. The reliability index
+is a decreasing function of the probability of failure and is defined through the inverse of the
+standard normal CDF at the probability of failure: β = −−1(p ). This relation is illustrated in
+f
+Fig. 2.6.
+In structural reliability, the failure event F is defined in terms of a so-called limit-state function
+g(X), where X is the vector of random variables of the problem. Failure occurs if and only
+if g(X) ≤ 0. This concept of the limit-state function defining failure is illustrated in Fig. 2.1.
+For some problems the limit-state function can be defined in terms of the demand S and the
+capacity R as g(X) = R− S (Fig. 2.2). If demand and capacity cannot be separated easily,
+the limit-state function is often defined as the difference between some threshold value and
+the corresponding model output; e.g. the displacement at the tip of a cantilever beam versus
+the maximum allowed displacement for that system. For a detailed introduction to structural
+reliability, the reader is referred to Ditlevsen and Madsen [2], Melchers [3], Papaioannou [4].
+x
+2
+0.06 f(x)
+15 safe domain X
+J foi (n xt distribution g(x)>0
+)
+X
+0.04
+10 g(x)=0
+failure domain
+g(x)<0 0.02
+5 0
+g(x)=0 15
+10
+safe domain
+f X2(x 2) 0 x x 2 5 failure domain 10 15
+0 5 10 15 1 5 x
+0 0 1
+Marginal f (x)
+distributions X1 1
+Figure2.1: Illustrationofthegeneralreliabilityproblem,forthecaseoftworandomvariables.
+(takenfromStraub[1])
+SOFiSTiK2023 2-1RELY|TheoreticalPrinciples
+f(s), f (r) Pr(F) = Pr(R < S)
+S R
+Capacity R
+Demand S
+r, s
+Figure2.2: Thebasicstructuralreliabilityproblem.
+(takenfromStraub[1])
+2.2 The reliability problem
+The probability of failure p can be expressed as
+f
+(cid:90)
+p = ƒ X(x)dx (2.1)
+f
+g(X)≤0
+where ƒ X(x) denotes the joint probability density function of the random vector X, and x is an
+outcome of X. In Eq. (2.1) the probability of failure is expressed as the integral over the failure
+domain. However, the failure domain is usually only known implicitly through the definition of
+the limit-state function g(X). Eq. (2.1) can equivalently be expressed as:
+(cid:90)
+p =  g(x)ƒ X(x)dx (2.2)
+f
+X
+where  g(x) is the indicator function of g(X) defined as
+
+1, if g(x)≤0
+ g(x)= (2.3)
+0, if g(x)>0
+For some reliability methods it is convenient to work in the so-called standard normal space.
+Let us assume that the vector of random variables X can be expressed in terms of a vector of
+independent standard normal random variables U and a transformation T:U→X. Outcomes
+xofXcanconsequentlybeexpressedasfunctionsofunderlyingindependentstandardnormal
+randomvariables U withoutcome . ThereliabilityprobleminEq.(2.1)andEq.(2.2)canthen
+be written as:
+(cid:90)
+p =  g(T()) φ U()d (2.4)
+f
+U
+where φ U() is the joint probability density function of the vector of independent standard
+normal random variables U. The transformation is illustrated in Fig. 2.3.
+ForthetransformationT,differenttransformationmethodsareavailableintheliterature. Three
+well-known methods are:
+• Rosenblatttransformation: requirestheuncertaintyvectortoberepresentedasasequence
+2-2 SOFiSTiK2023TheoreticalPrinciples|RELY
+Original space Standard Normal space
+100 4
+g‘(u ,u ) = 0
+R S
+3
+80
+2
+1
+60
+s g(r,s) = 0 u 0
+S
+40
+-1
+-2
+20
+-3
+0 -4
+0 20 40 60 80 100 120 -4 -3 -2 -1 0 1 2 3 4
+r u
+R
+Figure 2.3: Example of a transformation to standard normal space with two random variables R
+and S: The probability mass in the failure domain (colored areas) is identical in the original and in
+thestandardnormalspace.
+(takenfromStraub[1])
+of conditional distribution functions (Hohenbichler and Rackwitz [5]).
+• MarginaltransformationbasedontheNatafdistribution: Representsthejointdistributionin
+terms of the marginal distributions and the correlation matrix Liu and Der Kiureghian [6].
+• Hermite transformation
+The integral in Eq. (2.2) or Eq. (2.4) can usually not be solved analytically, and, therefore, has
+tobehandlednumerically. Thevariousreliabilitymethodsdifferintheirtreatmentoftheintegral
+in Eq. (2.4). Most methods aim at minimizing the number of limit-state function calls. This is
+becauseinstructuralreliabilitythelimit-statefunctioniscommonlyexpressedasafunctionthat
+depends on the outcome of a finite element analysis. Consequently, every time the limit-state
+functionisevaluated,afiniteelementanalysismustbeperformed-whichrendersthereliability
+analysis of large finite element systems computationally expensiive.
+2.3 Monte Carlo simulation
+The problem stated in Eq. (2.4) can also be expressed by means of the following expectation
+p =EU(cid:2) g(T(U))(cid:3) (2.5)
+f
+whereEU[·] denotestheexpectationwithrespecttothevectorofuncorrelatedstandardnormal
+random variables U. Drawing N random samples  1, 2,..., N from U, this expectation can
+be approximated as:
+1 N
+(cid:88)
+pˆ =  g(T( )) (2.6)
+f
+N
+=1
+where pˆ is an estimate of p .
+f f
+Please note that the value of  g(T( )) follows a Bernoulli distribution with mean value p f.
+SOFiSTiK2023 2-3RELY|TheoreticalPrinciples
+100
+Samples in the failure domain Samples
+80
+60
+s
+g(r,s) = 0
+40
+20
+0
+0 20 40 60 80 100 120
+r
+Figure 2.4: 1000 samples obtained with Monte Carlo simulation. The problem has two random
+variables: capacityRanddemandS. Thefailuredomainisillustratedinstandardnormalspace.
+(takenfromStraub[1])
+Consequently, pˆ ·N has a Binomial distribution with mean p ·N. In plain terms, pˆ equals the
+f f f
+number of failed samples N ƒ, i.e. the number of samples for which g(T( )) ≤ 0, divided by
+N
+the total number of samples, i.e. pˆ = ƒ. Therefore, the estimate pˆ has a mean value of p
+f N f f
+(i.e. the estimate is unbiased), and the standard deviation σ pˆ f of pˆ f is
+(cid:118)
+(cid:117)p (1−p ) (cid:118)p
+σ pˆ =(cid:116) f f ≈(cid:116) f (2.7)
+f N N
+where the approximation is valid if p is small such that p (cid:29) p 2. The coefficient of variation
+f f f
+δ pˆ f of pˆ f is
+(cid:118)
+(cid:117)1−p 1
+f
+δ pˆ f =(cid:116) N·p ≈ (cid:112)N·p (2.8)
+f f
+The variance of the estimate pˆ depends on the probability of failure p and on the number of
+f f
+samples N used in Eq. (2.6). The dependency between p f, N and δ pˆ is illustrated in Fig. 2.5.
+f
+It is shown that the required number of samples for a target coefficient of variation increases
+fastwithadecreaseof p . Usually,thetruevalueof p isnotknown,sinceitisthetargetofthe
+f f
+analysis. Therefore, equation Eq. (2.8) is approximated using the estimate pˆ as:
+f
+1
+δ pˆ f ≈ (cid:198)N·pˆ (2.9)
+f
+2.4 FORM - First-Order Reliability Method
+FORMlinearizesthelimit-statefunctiong(T())withrespecttoattheso-calleddesignpoint
+∗, and computes the probability of failure based on the linearized limit-state function G(cid:48)().
+The design point ∗ is defined as the point on the failure surface g(T()) = 0 that is closest
+2-4 SOFiSTiK2023TheoreticalPrinciples|RELY
+1e+14
+1e+12
+1e+10 NselpmasforebmuN
+1 %
+1e+08 5 % 1 0 % 2 0 % 5 0 %
+1e+06
+10000
+100
+1
+1 0.1 0.01 0.001 0.0001 1e-05 1e-06 1e-07 1e-08 1e-09
+probabilityoffailurep
+f
+Figure2.5: NumberofsamplesNrequiredfordifferentcoefficientsofvariationδ pˆf.
+1
+0.1
+0.01
+fperuliaffoytilibaborp
+0.001
+0.0001
+1e-05
+1e-06
+1e-07
+1e-08
+1e-09
+-2 -1 0 1 2 3 4 5 6
+reliabilityindexβ
+Figure2.6: Relationbetweenthereliabilityindexβandtheprobabilityoffailurep f.
+SOFiSTiK2023 2-5RELY|TheoreticalPrinciples
+u*
+φ(u*)
+Original variable space Standard Normal space Pr(F)
+β
+FORM
+16 5 G´(u)=0
+f (x)
+X
+φ (u)
+12 U
+g(T(u))=0
+0
+2
+8 2 U
+X
+u*
+4
+−5
+g(x)=0
+0
+40 50 60 70 80 90 0 5 10
+X U
+1 1
+Figure 2.7: Design point and linear approximation of the limit state surface. Left side: original
+randomvariablespace;rightside: standardnormalspace.
+(takenfromKlüppelberg,Straub,andWelpe[7])
+to the origin. It is obtained by solving the following constraint optimization problem:
+∗ =rgmin(cid:112) T subjected to g(T())=0 (2.10)
+The design point ∗ is the most likely point of failure in the investigated problem and, thus,
+also referred to as Most Likely Failure Point. The distance of ∗ to the origin, i.e. the length of
+∗, is denoted as β =(cid:112) ∗T∗.
+FORM
+If the design point of the problem is known, a first order probability estimate of p can be
+f
+computed as:
+pˆ =(−β ) (2.11)
+f FORM
+where (·) denotes the CDF of the standard normal distribution. The concept of FORM is
+illustrated in Fig. 2.7.
+ThemainprobleminFORMistosolvetheoptimizationproblemthatgivesthedesignpoint∗.
+Since an optimization problem has to be solved, the limit-state function is usually required to
+be differentiable. In Rely, different optimization algorithms are available.
+Awell-knownprobleminoptimizationisthepresenceofmultipleoptima. Notethatasinglerun
+of an optimization algorithm can only find a single (local) minimum. To obtain a good approx-
+imation of the probability of failure, all dominating minima must be detected and considered.
+Repeated runs with random starting points will at least indicate the presence of multiple min-
+ima. Iftherearemultiplelocaldesignpoints,anupperboundoftheprobabilityestimatecanbe
+2-6 SOFiSTiK2023TheoreticalPrinciples|RELY
+obtained by adding up the failure probabilities of all detected (the global and all local) design
+points.
+2.5 SORM - Second-Order Reliability Method
+FORM uses a first-order approximation of the limit-state function around the design point.
+If instead of a first-order approximation a second-order approximation is used, the reliability
+method is referred to as SORM. Additional to the FORM approximation, SORM takes the cur-
+vature of the limit-state surface around the design point into account. This means that the
+Hessian matrix of the limit-state function at the design point has to be computed. Usually, this
+is only feasible for problems with a small number of random variables.
+For a description of SORM, the reader is referred to Gollwitzer [8].
+2.6 Importance sampling
+The problem with Monte Carlo simulation for problems with small probabilities of failure is that
+manysamplesarerequiredforastableestimateoftheprobabilityoffailure. Thereasonisthat
+onaverageonly p ·N outof N samplesfallinthefailuredomain. Importancesamplingaimsat
+f
+artificiallyincreasingthenumberofsamplesinimportantregionsofthefailuredomain. Forthis
+purpose, the general reliability problem is rewritten as (here, for the standard normal space):
+(cid:90) (cid:90) φ ()
+U
+p =  g(T()) φ U()d=  g(T()) ψ()d (2.12)
+f
+ψ()
+U X
+where ψ() is called importance sampling density and is a joint PDF over . In importance
+sampling the second integral in Eq. (2.12) is approximated: Instead of sampling from φ U(),
+samples are drawn from ψ(). Let z  with =1,...,N denote samples from ψ. The probability
+of failure p is estimated as:
+f
+1 N φ (z )
+(cid:88) U 
+pˆ =  g(T(z )) (2.13)
+f
+N ψ(z )
+=1 
+In the theoretical optimal case, i.e. for ψ opt() = p1  g(T()) φ U(), only a single sample is
+f
+needed to determine the true probability of failure. However, ψ itself requires knowledge
+opt
+about the true probability of failure and the explicit shape of the failure domain, and, thus, the
+use of ψ is not practical. In general, importance sampling methods aim at selecting the
+opt
+importance sampling density ψ such that it approximates ψ .
+opt
+In practice, the importance sampling density is often centered around the design point (or
+an approximated design point). Usually, the importance sampling density is selected as
+ψ( 1,..., N) = (cid:81)N =1φ(cid:0) − ,cen(cid:1) , where φ denotes the standard normal PDF and  ,cen is
+the th coordinate of the (approximated) design point.
+2.7 Line sampling
+Thismethod(HohenbichlerandRackwitz[9])generatessamplesonthetangenthyperplaneto
+thefailuresurfacecenteredatthedesignpoint(oranapproximatedesignpoint). Thesampling
+space is thus rotated and reduced by one dimension.
+SOFiSTiK2023 2-7RELY|TheoreticalPrinciples
+Importance sampling (n = 100) Monte Carlo simulation (n = 1000)
+S S
+100 100
+80 80
+60 60
+s s
+g(r,s) = 0
+g(r,s) = 0
+40 40
+f (r,s)
+ψ(r,s)
+20 20
+0 0
+0 20 40 60 80 100 120 0 20 40 60 80 100 120
+r r
+Figure2.8: SamplesofcapacityRanddemandS. Leftside: samplesaccordingtotheimportance
+sampling density ψ centered around the design point in original space. Right side: samples from
+the original PDF ƒ X(x); i.e., samples from Monte Carlo simulation. It can be seen that importance
+sampling produces more samples in the failure domain than Monte Carlo sampling - even if the
+totalnumberofsamplesusedinimportancesamplingissmallerthantheoneusedinMonteCarlo
+sampling.
+(takenfromStraub[1])
+ν
+1
+G (ν)
+HIS
+design point
+FORM hyperplane
+d(ν ) d(ν )
+a b
+β
+FORM
+ν
+ν ν 2-n
+a b
+samples from ψ(ν)
+Figure2.9: Illustrationoflinesampling
+(takenfromStraub[1])
+2-8 SOFiSTiK2023TheoreticalPrinciples|RELY
+The method is illustrated in Fig. 2.9. Here, the coordinate system ν is selected in such a way
+that the hyperplane through the design point is perpendicular to the first Cartesian coordinate
+ν 1. The origin of the coordinate system ν is the same as the origin of . Samples of ν are
+generated on the hyperplane that is parallel to the FORM hyperplane and goes through the
+origin. Letψ(ν)denotetheimportancesamplingdensitythatisusedtogeneratethissamples.
+Typically, ψ(ν) is selected as the standard normal distribution for ν 2,...,ν n, where n is the
+total number of random variables. Since the samples should lie on the hyperplane, ν 1 =0 for
+allsamples. Next,foreachsampleν  fromψ(ν),alinesearchisperformedtofindthedistance
+of the limit-state surface perpendicular to the hyperplane. This distance is denoted d(ν ). In
+this case, the probability of failure p is estimated from the samples as:
+f
+1 N
+(cid:88)
+pˆ = (−d(ν )) (2.14)
+f
+N
+=1
+where N is the total number of samples used.
+2.8 Directional sampling
+This method expresses a random sample  as a point on a hypersphere with radius r. Any
+samplecanbeexpresseduniquelybyaradiusr andn−1directionangles j,wherenisthe
+totalnumberofrandomvariablesandj=1,...,n−1. Letr andthe j berealizationsofrandom
+variables denoted R and A j, respectively. To generate samples that follow the multivariate
+standardnormaldistribution,theA j mustbeuniformlydistributedrandomvariablesandR2 has
+to follow the chi-squared distribution with n degrees of freedom.
+The idea of directional sampling is to first generate a random direction; i.e. generate realiza-
+tions  j with j = 1,...,n− 1. Next, a gradient-free line search in the generated direction is
+applied to find the point for which the limit-state function becomes zero. The distance of that
+pointtotheoriginisdenotedr . BasedonatotalnumberofNsamples,theprobabilityoffailure
+p can be approximated as:
+f
+1 N
+(cid:88)(cid:148) 1−χ2(cid:128) r2(cid:138)(cid:151)
+pˆ = (2.15)
+f N n 
+=1
+where χ2 is the CDF of the chi-squard distribution with n degrees of freedom.
+n
+This method can cope with problems that have multiple (local) design points, or if failure is
+defined as the union of different failure modes. However, directional sampling is not suitable
+for problems with many random variables.
+2.9 Adaptive sampling
+Adaptive sampling is in-principle importance sampling - with one addition: If the limit-state
+function of a sample becomes negative and if that sample is closer to the origin (in standard
+normal space) than the center of the importance sampling density, the importance sampling
+density will be centered around that point from then on.
+Adaptivesamplingdoesnotrequirethelimit-statefunctiontobedifferentiable. Ifmorethanone
+important regions are detected, a warning is issued. The efficiency of the method decreases
+with the number of random variables of the problem.
+SOFiSTiK2023 2-9RELY|TheoreticalPrinciples
+2.10 Subset simulation
+The subset simulation method proposed by Au and Beck [10] is an adaptive Monte Carlo
+method that is efficient for high dimensional problems. This method expresses the probability
+of failure p as a product of larger conditional probabilities, i.e.:
+f
+M
+(cid:89)
+p = Pr(F |F −1) (2.16)
+f
+=1
+where F  are intermediate failure events that are nested, i.e. F 0 ⊃ F 1 ⊃ ... ⊃ F M = F. The
+failure events F  are defined as F  = {g(X)≤c }, where c  are real coefficients with c 0 = ∞ >
+c 1 >...>c M =0. Commonly, the values of c  are chosen adaptively such that the conditional
+probabilities Pr(F |F −1) are equal to a predefined threshold probability p 0. The probability p 0
+is usually set to 10%. The algorithm stops as soon as c  becomes smaller or equal than zero.
+In this case c  is set to zero; i.e., c  =c M =0.
+ThenumberofsamplesateachleveliskeptconstantinRely. StandardMonteCarlosimulation
+is applied to compute Pr(F 1) = Pr(F 1|F 0). All other conditional probabilities are approximated
+bymeansofMarkovChainMonteCarlo(MCMC)techniques. InRely theadaptiveMCMCwith
+optimalscalingproposedbyPapaioannouetal.[11]isimplemented: Theproposaldistribution
+intheMCMCstepisscaledsuchthattheacceptancerateofaproposedsampleisclosetoan
+optimal acceptance rate.
+ThesubsetsimulationmethodisillustratedinFig.2.10. Thelimit-statesurfaceoftheexample-
+problem is illustrated in sub-figure (l). As shown in sub-figure (a), the method starts with
+Monte Carlo sampling. The samples that are contained in the region outlined in sub-figure
+(b) represent the p 0-fraction of the samples in sub-figure (a) with the smallest value of the
+limit-statefunction. Thefirstintermediatefailuredomain(blacklineinsub-figure(b))ischosen
+suchthatonlythep 0-fractionofthesamples(depictedinsub-figure(b))fallintoit. Thissamples
+are used as seed values for the MCMC sampling, as shown in sub-figure (c). The described
+procedure is continued until at least a p 0-fraction of samples is in the true failure domain.
+2-10 SOFiSTiK2023TheoreticalPrinciples|RELY
+a) Samples of U b) 1st intermediate limit state surface and complying samples
+5 5
+4 4
+3 3
+2 2
+1 1
+u 2 0 u 2 0 G(U) - c 1 = 0
+−1 −1
+−2 −2
+−3 −3
+−4 Pr(E 1) = 0.1 −4
+−5 −5
+−5 −4 −3 −2 −1 0 1 2 3 4 5 −5 −4 −3 −2 −1 0 1 2 3 4 5
+u u
+1 1
+c) Samples of U conditional on {G(U) - c < 0} d) 2nd intermediate limit state surface and complying samples
+1
+5 5
+4 4
+3 3
+2 2
+1 1
+u 2 0 G(U) - c 1 = 0 0 G(U) - c 2 = 0
+−1 −1
+−2 −2
+−3 −3
+−4 Pr(E|E) = 0.1 −4
+2 1
+−5 −5
+−5 −4 −3 −2 −1 0 1 2 3 4 5 −5 −4 −3 −2 −1 0 1 2 3 4 5
+u u
+1 1
+e) - j) repeat for intermediate limit states 2 - 5
+k) Samples of U conditional on {G(U) - c < 0} l) Original limit state surface and complying samples
+5
+5 5
+4 4
+3 3
+2 2
+1 1
+u 2 0 G(U) - c 5 = 0 0 G(U) = 0
+−1 −1
+−2 −2
+−3 −3
+−4 Pr(E|E) = 0.4 −4
+6 5
+−5 −5
+−5 −4 −3 −2 −1 0 1 2 3 4 5 −5 −4 −3 −2 −1 0 1 2 3 4 5
+u u
+1 1
+Figure2.10: Illustrationofsubsetsimulation.
+(takenfromStraub[1])
+SOFiSTiK2023 2-11RELY|TheoreticalPrinciples
+2-12 SOFiSTiK2023Bibliography |RELY
+Bibliography
+[1] Daniel Straub. Lecture Notes in Structural Reliability. Tech. rep. TU München, 2012.
+[2] Ove Ditlevsen and Henrik O Madsen. Structural reliability methods. Vol. 178. Wiley New
+York, 1996.
+[3] Robert E Melchers. Structural reliability analysis and prediction. John Wiley New York,
+1999.
+[4] Iason Papaioannou. Non-intrusive Finite Element Reliability Analysis Methods. TU
+München, 2012.
+[5] Michael Hohenbichler and Rudiger Rackwitz. “Non-normal dependent vectors in struc-
+tural safety”. In: Journal of the Engineering Mechanics Division 107.6 (1981), pp. 1227–
+1238.
+[6] Pei-Ling Liu and Armen Der Kiureghian. “Multivariate distribution models with pre-
+scribedmarginalsandcovariances”.In:ProbabilisticEngineeringMechanics 1.2(1986),
+pp. 105–112.
+[7] Claudia Klüppelberg, Daniel Straub, and Isabell M. Welpe. Risk - A Multidisciplinary In-
+troduction. Springer, 2014.
+[8] Stephan Gollwitzer. Strurel – Users Manual. Tech. rep. RCP Consult GmbH, 2014.
+[9] Michael Hohenbichler and Ruediger Rackwitz. “Improvement of second-order reliability
+estimatesbyimportancesampling”.In:JournalofEngineeringMechanics114.12(1988),
+pp. 2195–2199.
+[10] Siu-KuiAuandJamesLBeck.“Estimationofsmallfailureprobabilitiesinhighdimensions
+bysubsetsimulation”.In:ProbabilisticEngineeringMechanics16.4(2001),pp.263–277.
+[11] Iason Papaioannou et al. “MCMC algorithms for subset simulation”. In: Manuscript, En-
+gineering Risk Analysis Group, Technische Universität München (2014).
+[12] A.HasoferandN.Lind.“AnExactandInvariantFirst-orderReliabilityFormat”.In:Journal
+of the Engineering Mechanics Division, ASCE 100.EM1 (1974), pp. 111–121.
+[13] RüdigerRackwitzandBerndFiessler.“Structuralreliabilityundercombinedrandomload
+sequences”. In: Computers & Structures 9.5 (1978), pp. 489–494.
+[14] Armen Der Kiureghian and Mario De Stefano. “Efficient algorithm for second-order relia-
+bility analysis”. In: Journal of engineering mechanics 117.12 (1991), pp. 2904–2923.
+[15] T Abdo and R Rackwitz. “Reliability of uncertain structural systems”. In: Proc. Finite
+Elements in Engineering Applications (1990), pp. 161–176.
+SOFiSTiK2023 2-13RELY|Bibliography
+2-14 SOFiSTiK2023InputDescription|RELY
+3 Input Description
+3.1 Input Language
+Input is defined using the free format of the CADINP input language (see the general manual
+’SOFiSTiK Basics’).
+3.2 Input Records
+The following records are defined:
+Record Items
+CTRL TRAN SEED SVAL CDBP CLSE ENTR
+OUTP NPRI IMON LSFR PRUV PRXV
+VAR NAME TYPE PTYP P1 V1 P2 V2
+P3 V3 P4 V4 VAL UMIN UMAX
+CHAV TXT TID
+CORR VAR1 VAR2 C
+PROJ DAT CDB
+FUNC NAME EXPR
+SLSF VARN EXPR
+MC NSPL LSF SAVE SAPD FSAV FSAP SPLS
+SENS
+IS NSPL DSPT LSF
+LS NSPL SPNT LSF EPSC GSTP
+DS NSPL LSF EPSC GSTP
+ADS NSPL SPNT LSF
+FORM SPNT OPTA GRDM GSTP MIT1 MIT2 EPSC
+SMU LSF
+SORM SPNT OPTA GRDM GSTP MIT1 MIT2 EPSC
+SMU LSF
+MVFO SPNT GRDM GSTP RELA LSF
+SUBS NSPL P0 LMDA NCS LSF
+EXDS SDES CNTR SAIF SAVE SAPD LSF SPRD
+RSF NAME ANSA LSF LOAD SAVE
+The records HEAD, END and PAGE are described in the genearl manual ’SOFiSTiK Basics’.
+SOFiSTiK2023 3-1RELY|InputDescription
+3.3 CTRL – Control switches
+CTRL
+Item Description Unit Default
+TRAN Type of transformation LT NATF
+ROSE Rosenblatt transformation
+NATF Nataf transformation
+HRMT Hermite transformation
+SEED ID of a seed value to use NT 8
+SVAL User-defined starting solution in U- or in X-space LT U
+U U-space (standard normal)
+X X-space (physical)
+CDBP Clear points in the CDB at start? LT DEL
+DEL Delete points stored in the CDB
+KEEP Consider points stored in the CDB
+CLSE Treat errors in Limit-State function call as fatal? LT NO
+NO Utter only a warning.
+YES Output an error.
+ENTR Repeated trials after failed sample NT 2
+TRANspecifiesthemethodthatisusedtotransformprobabilitydistributionsfromanunderlying
+standard normal space.
+With the flag SEED, seed values can be specified. In Strurel, seven predefined seed values
+areavailable,correspondingtoSEED1,...,7. IfSEEDissetto8,theseediscomputedbased
+on the current time.
+SVAL defines whether starting solutions are defined in U- or in X-space. Thus, the state of
+SVAL influences the option VAL in VAR.
+Some reliability methods require the design-point or an approximated design-point as input.
+Consequently,forthesemethodsthe(approximated)design-pointoftheproblemmustbecom-
+putedbeforehand. Ifsuchapointisobtained,itisstoredintheCDB.Pointsfrompreviousruns
+of Strurel can be used, if CDBP is set to KEEP. If CDBP is set to DEL, points computed in
+previous runs of Strurel that are stored in the CDB will never be used. Note that if the model,
+thelimit-stateorthedefinitionoftherandomvariablesismodified,CDBPshouldalwaysbeset
+to DEL.
+For some problems it might be required that errors in the limit-state function are not treated as
+3-2 SOFiSTiK2023InputDescription|RELY
+fatal; i.e. that the simulation is allowed to continue even if some of the limit-state function calls
+failed. The flag CLSE controls how errors in the limit-state function call are treated.
+A failed limit-state evaluation can have multiple reasons. One the one hand, there might be
+a syntax error in the input file of the finite element model, or the finite element solver might
+not achieve convergence for the specified parameter values. One the other hand, there could
+be a temporary problem with the SOFiSTiK license (e.g., because the user starts accidentally
+anotherfiniteelementcalculationwithouthavingenoughlicenses). Theerrormentionedinthe
+second case could possibly be resolved by restarting the last call to the finite element solver.
+By means of ENTR, the number of repeated trials after an error in the limit-state function call
+can be specified.
+SOFiSTiK2023 3-3RELY|InputDescription
+3.4 OUTP – Output control
+Seealso:
+OUTP
+Item Description Unit Default
+NPRI Verbosity of prints to output files (results) LT MEDI
+NONE no output
+MIN minimum output
+MEDI average output
+MAX verbose output
+IMON verbosity of output to monitoring file LT LRGE
+NONE no output
+SMAL minimum output
+LRGE normal output
+DBG for debugging
+VDBG verbose debugging
+LSFR output realizations of limit-state function LT NO
+NO
+YES
+PRUV outputcoordinatesofsamplevector(instandardNor- LT NO
+mal space) for each realization
+NO
+YES
+PRXV output coordinates of sample vector for each realiza- LT NO
+tion
+NO
+YES
+3-4 SOFiSTiK2023InputDescription|RELY
+3.5 VAR – Random Variables
+Seealso: CTRL,PROJ,FUNC,CORR
+VAR
+Item Description Unit Default
+NAME Name of the random variable LT8 !
+TYPE Type of the distribution of the random variable LT !
+TID ID of the type (form Strurel) NT *
+PTYP The distribution is defined in terms of its: LT PARA
+MOME moments
+PARA parameters
+P1 mean or 1st parameter − -
+P2 standard deviation or 2nd parameter − -
+P3 3rd parameter − -
+P4 4th parameter − -
+Link value of another random variable as:
+V1 mean or 1st parameter LT8 -
+V2 standard deviation or 2nd parameter LT8 -
+V3 3rd parameter LT8 -
+V4 4th parameter LT8 -
+VAL Value for starting solution − 0.0
+UMIN smallest value allowed in U-space − *
+UMAX largest value allowed in U-space − *
+CHAV Characteristic value − -
+TXT A string describing the random variable. LT60 -
+Thisrecorddefinestherandomvariablesoftheproblem. Atleastasinglerandomvariablehas
+to be defined in a project.
+NAME defines the name that is associated with the random variable. The name of a random
+variable can be up to eight characters long. Empty names are not allowed. No two random
+variables with the same name must exist. No distinction is made between upper and lower
+case letters.
+Thetypeofthedistributionoftherandomvariableissetbymeansofeitherthekey-wordTYPE
+orthedistributionidTID.EitherTYPEorTIDmustbespecified. Anoverviewofthedistribution
+SOFiSTiK2023 3-5RELY|InputDescription
+typesTYPEavailableinStrurelisgiveninTable3.5. Thespecificationofthedistributiontypeby
+meansofthekey-wordTYPEisonlyavailableforthemostcommontypes. Allotherdistribution
+types must be defined in terms of their id through the key-word TID. The ids of all distributions
+available is listed in the table in Appendix A.
+PTYP specifies how the distribution of the random variable is defined. Available options are
+MOME and PARA:
+• PARA: the distribution is defined in terms of its parameters. The number of parameters
+requiredtodefineadistributiondependsonthetypeofthedistribution(specifiedinTYPE).
+• MOME: the distribution is defined in terms of its mean value and standard deviation. If the
+distribution has more than two parameters, then the 3rd parameter and, optionally, the 4th
+parameter have to be supplied as well.
+Themeanvalueofthedistributionoritsfirstparametercaneitherbedefinedasasafixedvalue
+in P1 or as a link to another random variable in V1. If P1 is set, V1 must not be defined - and
+vice versa. P1 expects a floating-point number, and V1 expects the name of random variable
+that is already defined. If P1 is used, the mean value or first parameter of the distribution is
+constant and equals the value specified in P1. If V1 is used, the mean value or first parameter
+of the distribution is not constant and equals the realization of the random variable specified
+in V1. If neither P1 nor V1 is specified, P1 is set to zero by default. P2/V2, P3/V3 and P4/V4
+behave accordingly.
+If a starting solution for the random variable is requested, the value specified in VAL will be
+used. Depending on whether CTRL SVAL U or CTRL SVAL X is used, VAL is defined in U- or
+in X-space, respectively.
+UMINandUMAXdefinetherangeofadmissiblevaluesinU-space. Iftheirvalueisnotexplicitly
+specified, the value is set based on the floating point precision of your system.
+If CHAV is not set explicitly, the specified mean of the random variable will be used as its
+characteristic value.
+The following table lists the available distribution types for random variables:
+Table3.5: DistributiontypesforrandomvariablesavailableinStrurel
+TYPE Name of distribution Parameters Available options
+for PTYP
+UNIF Uniform , b MOME, PARA
+NORM Normal μ, σ MOME, PARA
+LOGN Lognormal (Shifted) ξ, δ, τ MOME, PARA
+EXPO Exponential τ, λ MOME, PARA
+GAMMA Gamma (Shifted) k, λ, τ MOME, PARA
+BETA Beta r, t, , b MOME, PARA
+GUMBMAX Gumbel (max) , α MOME, PARA
+FRECMAX Frechet (max) , k, τ PARA
+WEIBMIN Weibull (min) , k, τ MOME, PARA
+3-6 SOFiSTiK2023InputDescription|RELY
+Table3.5: (continued)
+TYPE Name of distribution Parameters Available options
+for PTYP
+RAY Rayleigh α, τ MOME, PARA
+STUD Student ν PARA
+TRAP Trapezoid , b, c, d PARA
+BIRN Birnbaum/Saunders α, β MOME, PARA
+CAUCHY Cauchy θ, λ PARA
+INVGAU Inverse Gauß μ, λ MOME, PARA
+GUMBMIN Gumbel (min) , α MOME, PARA
+FRECMIN Frechet (min) , k, ω PARA
+WEIBMAX Weibull (max) , k, ω MOME, PARA
+PARETO Pareto , k MOME, PARA
+LAPL Laplace θ, ϕ MOME, PARA
+LOGISTIC Logistic μ, σ MOME, PARA
+HALFN Halfnormal m, σ MOME, PARA
+CHIS Chi-square ν PARA
+FISH Fisher’s F ν 1, ν 2 PARA
+STUDG non-standard Student m, σ, ν PARA
+NEVILLE Neville r, k, τ PARA
+HERM Hermite m, σ, γ, ε MOME, PARA
+SOFiSTiK2023 3-7RELY|InputDescription
+3.6 CORR – Correlation
+Seealso: VAR
+CORR
+Item Description Unit Default
+VAR1 Random Variable 1 LT8 !
+VAR2 Random Variable 2 LT8 !
+C Correlation between VAR1 and VAR2 − !
+C is the correlation coefficient between random variables VAR1 and VAR2. By default, all
+random variables are considered uncorrelated.
+3-8 SOFiSTiK2023InputDescription|RELY
+3.7 PROJ – Define the SOFiSTiK project that evaluates the limit-state
+function
+Seealso: FUNC,VAR
+PROJ
+Item Description Unit Default
+DAT Name of the DAT-file of the project LT !
+CDB Name of the CDB-file of the project LT *
+Defines the SOFiSTiK project that needs to be computed in order to evaluate the limit-state
+function. For the special case that the limit-state function is defined explicitly by means of a
+mathematical function, this record does not have to be specified.
+If CDB is not specified, it is set equal to the value specified in DAT.
+Within the dat-file specified in DAT, the current realization of the random variable VARNAME
+can be addressed as #VARNAME.
+SOFiSTiK2023 3-9RELY|InputDescription
+3.8 FUNC – Define a limit-state function
+Seealso: PROJ,VAR,SLSF
+FUNC
+Item Description Unit Default
+NAME Name of the limit-state function LT8 REL_FUN
+EXPR mathematical definition of the limit-state function [∗] -
+If multiple limit-state functions are defined, the individual functions can be addressed by their
+NAME.
+IfnoSOFiSTiKprojectwasspecifiedbymeansofPROJ,EXPRdefinesthelimit-statefunction
+as an explicit mathematical expression. The functional expression of the limit-state function
+must start with an equal sign (i.e., with ’=’). An example of an explicit limit-state function
+definition that does not involve the SOFiSTiK FEM-module is:
+FUNC 'rel_fun' EXPR '=0.1-800000/2.1952*#rv_q/#rv_E'
+Please do not forget the equal sign at the beginning of the functional expression.
+IfaSOFiSTiKprojectwasspecifiedthroughPROJ,EXPRisignored. Inthiscase,thevalueof
+NAME is retrieved from the CDB specified in PROJ. Consequently, NAME must be defined in
+the dat-file specified in PROJ; e.g., by means of #STO.
+Note: Ifthelimit-statefunctionisexpressedintermsofafiniteelementanalysis,theSOFiSTiK
+@KEY can be used in the DAT-file specified in PROJ to access the CDB of the finite element
+solver. An introduction to the @KEY concept can be found in the SOFiSTiK Basics-manual.
+The structure of the CDB is documented in the file CDBASE.CHM that can be found in the
+installation folder of SOFiSTiK.
+3-10 SOFiSTiK2023InputDescription|RELY
+3.9 SLSF – Define the system limit-state function
+Seealso: PROJ,VAR,FUNC
+SLSF
+Item Description Unit Default
+VARN Name of FEM-variable that stores the result of the LT8 -
+system limit-state function.
+EXPR explicit representation of the system limit-state func- [∗] -
+tion
+With SLSF, a user-defined limit-state function for the system reliability problem can be speci-
+fied. By default, the system reliability problem is defined as follows: The limit-state functions
+defined through FUNC are treated as belonging to components of a series system. Thus, if
+failure occurs in at least one local limit-state function, the entire system is assumed to fail.
+SLSF can be called only once. Ideally, the command should be called after all local limit-state
+functionweredefinedthroughFUNC.EitherVARNorEXPRmustbespecified,butnotbothat
+the same time.
+If the local limit-state functions are defined explicitly using FUNC EXPR, then the system limit-
+state function must be specified by means of EXPR. EXPR defines the limit-state function of
+thesystemreliabilityproblemasaexplicitmathematicalexpression. NotethatsimilartoFUNC
+EXPR, the functional expression of the limit-state function must start with an equal sign (i.e.,
+with’=’). Thenamesofthelocalcomponentlimit-statefunctionscanbeusedasvariables(i.e.,
+’#’ followed by the name of the LSF) in the functional expression EXPR.
+If the local limit-state functions are defined within a separate DAT-file specified in PROJ DAT,
+then the system limit-state function must be specified also in that DAT-file. In this case, the
+name of the variable used to store the value of the evaluated limit-state function in the CDB
+must be given in VARN.
+SOFiSTiK2023 3-11RELY|InputDescription
+3.10 MC – Monte Carlo simulation
+Seealso: IS,LS,DS,ADS,FORM,SUBS,EXDS
+MC
+Item Description Unit Default
+NSPL Number of samples − 2500
+LSF Name of the limit-state function LT8 *
+SAVE Name of a file to which the generated samples are LT ""
+written.
+SAPD Should the generated samples be appended to the LT NO
+file specified in SAVE?
+NO an already existing file is overwritten
+YES generated samples are appended to an al-
+ready existing file
+FSAV Nameofafiletowhichthefailedsamplesarewritten. LT ""
+FSAP Should the failed samples be appended to the file LT NO
+specified in FSAV?
+NO an already existing file is overwritten
+YES generated samples are appended to an al-
+ready existing file
+SPLS Sampling technique to be used to generate samples LT PRAN
+PRAN pseudo random sampling
+LHS Latin Hypercube sampling is employed
+SENS Evaluate sensitivities. LT YES
+REST Restart simulation using samples from specified file LT ""
+Performs a Monte Carlos simulation (see Section 2.3) with NSPL samples.
+If multiple limit-state functions are defined, the limit-state function to use can be specified with
+LSF. If the key LSF is not set explicitly, the first limit-state function that was defined is used.If
+LSF is a proper limit-state function (and not a response surface function), then the only effect
+of LSF is on the ’analysis log’. The final results will be computed for all limit-state functions
+defined.
+All processed samples are written to the file specified in SAVE. The structure of the file is as
+follows: Each generated sample is written to a separate row. The first K columns contain the
+valuesofalldefinedlimit-statefunctionsevaluatedforthesampleathand,whereK denotesthe
+number of limit-state functions defined. The ordering of the limit-state functions corresponds
+3-12 SOFiSTiK2023InputDescription|RELY
+totheorderoftheirdefinition. Thereaftercomesacolumnthatliststhevaluesofthelimit-state
+function of the system reliability problem (see SLSF). If the specified limit-state function is a
+resonse surface function, then only the the value of the evaluated response surface function
+is listed in the first column; no other results of limit-state function are outputted. The next
+M columns list the value of the specified random variables, where M denotes the number of
+random variables defined. The last M columns list the value of the specified random variables
+transformed to the underlying independent standard Normal space. Note that if a response
+surface function is specified as limit-state function, only the value of the specified function is
+written to the file (i.e., K = 1 in this case). The same holds for the faileed samples which are
+written to the file specified in FSAV.
+Thevaluesofallrandomvariablesaswellasthevaluesofallspecifiedlimit-statefunctionsare
+storedinmemoryforeachevaluatedsample. Forhowthisdatacanbere-used,pleasehavea
+look at the documentation of RSF.
+A Monte-Carlo simulation can be restarted, meaning the sampling performed in a previous
+run can be continued. The file that contains the data from the previous run is specified in
+REST. The expected format is the same as for the file specified in SAVE. If REST is used, the
+numberspecifiedinNSPListhenumberofsamplesthataretobegeneratedwithinthecurrent
+simulation run. It is perfectly valid to specify the same file in REST and in SAVE. However, in
+this case SAPD should be set to YES - so that the existing samples are not overwritten in the
+current simulation. If the limit-state function specified in LSF is a response surface function
+(RSF),therestart-featurecannotbeused;i.e.,thevalueoftheoptionRESTisignoredincase
+of a RSF.
+SOFiSTiK2023 3-13RELY|InputDescription
+3.11 IS – Importance sampling
+Seealso: MC,LS,DS,ADS,FORM,SORM,SUBS
+IS
+Item Description Unit Default
+NSPL Number of samples − 2500
+DSPT Where to center the importance sampling density? LT USE
+NO at the origin in standard normal space
+(equivalent to Monte Carlo simulation)
+USE get starting point from VAR VAL
+COMP design point is computed if no design point
+is in CDB
+CDB load point stored in CDB
+LSF Name of the limit-state function LT8 *
+Performs an importance sampling (see Section 2.6) with NSPL samples.
+DSPT controls where the importance sampling density is centered:
+• NO: the importance sampling density is centered around the origin in standard normal
+space. Consequently, for this option importance sampling is equivalent to Monte Carlo
+simulation.
+• USE: the coordinates specified in VAR VAL are used as the coordinates for the centering.
+• COMP:Ifno(approximated)designpointisstoredintheCDB,thedesignpointiscomputed
+by means of FORM. The FORM analysis is performed with default settings.
+• CDB: If an already computed design point of the problem or an approximated design point
+isstoredintheCDB,thispointisusedascenteroftheimportancesamplingdensity. Please
+have a look at CTRL CDBP. An approximated design point stored in the CDB is used only
+if no design point is stored in the CDB. If no point is stored in the CDB, a warning is issued
+and DSPT is changed to USE.
+If multiple limit-state functions are defined, the limit-state function to use can be specified with
+LSF. If the key LSF is not set explicitly, the first limit-state function that was defined is used.
+3-14 SOFiSTiK2023InputDescription|RELY
+3.12 LS – Line sampling
+Seealso: MC,IS,DS,ADS,FORM,SORM,SUBS
+LS
+Item Description Unit Default
+NSPL Number of samples − 2500
+SPNT Where to get the (approximate) design point from? LT USE
+USE get starting point from VAR VAL
+COMP design point is computed if no design point
+is in CDB
+CDB load point stored in CDB
+LSF Name of the limit-state function LT8 *
+GSTP Step size for the finite difference scheme in line- − 0.01
+search algorithm.
+EPSC Convergence criterion for line-search algorithm. − 0.001
+Performs a line sampling (see Section 2.7) with NSPL samples.
+SPNT controls the orientation of the hyperplane on which the samples are generated.
+• USE: the coordinates specified in VAR VAL are used.
+• COMP:Ifno(approximated)designpointisstoredintheCDB,thedesignpointiscomputed
+by means of FORM. The FORM analysis is performed with default settings.
+• CDB: If an already computed design point of the problem or and approximated design
+point is stored in the CDB, then this point is used. Please have a look at CTRL CDBP. An
+approximateddesignpointstoredintheCDBisusedonlyifnodesignpointisstoredinthe
+CDB. If no point is stored in the CDB, a warning is issued and SPNT is changed to USE.
+If multiple limit-state functions are defined, the limit-state function to use can be specified with
+LSF. If the key LSF is not set explicitly, the first limit-state function that was defined is used.
+A description of the options GSTP and EPSC is given in the section of FORM.
+SOFiSTiK2023 3-15RELY|InputDescription
+3.13 DS – Directional sampling
+Seealso: MC,IS,LS,ADS,FORM,SORM,SUBS
+DS
+Item Description Unit Default
+NSPL Number of samples − 2500
+LSF Name of the limit-state function LT8 *
+GSTP Step size for the finite difference scheme in line- − 0.01
+search algorithm.
+EPSC Convergence criterion for line-search algorithm. − 0.001
+Performs a directional sampling (see Section 2.8) with NSPL samples.
+If multiple limit-state functions are defined, the limit-state function to use can be specified with
+LSF. If the key LSF is not set explicitly, the first limit-state function that was defined is used.
+A description of the options GSTP and EPSC is given in the section of FORM.
+3-16 SOFiSTiK2023InputDescription|RELY
+3.14 ADS – Adaptive sampling
+Seealso: MC,IS,LS,DS,FORM,SORM,SUBS
+ADS
+Item Description Unit Default
+NSPL Number of samples − 2500
+SPNT Where to initially center the samples? LT USE
+NO no starting solution specified
+USE get starting point from VAR VAL
+COMP starting solution is computed if none is in
+CDB
+CDB load the point stored in CDB
+LSF Name of the limit-state function LT8 *
+Performs an adaptive sampling (see Section 2.9) with NSPL samples.
+SPNT controls the orientation of the hyperplane on which the samples are generated.
+• NO: the search for the design point starts at the origin in standard normal space.
+• USE: the coordinates specified in VAR VAL are used.
+• COMP:Ifno(approximated)designpointisstoredintheCDB,thedesignpointiscomputed
+by means of FORM. The FORM analysis is performed with default settings.
+• CDB: if some prior analysis already computed the design point of the problem or an ap-
+proximated design point, this point is used as starting point. Please have a look at CTRL
+CDBP. An approximated design point stored in the CDB is used only if no design point is
+stored in the CDB.
+If multiple limit-state functions are defined, the limit-state function to use can be specified with
+LSF. If the key LSF is not set explicitly, the first limit-state function that was defined is used.
+SOFiSTiK2023 3-17RELY|InputDescription
+3.15 FORM – First order reliability method
+Seealso: MC,IS,LS,DS,ADS,SORM,SUBS
+FORM
+Item Description Unit Default
+SPNT Where to start the search for the design point? LT NO
+NO no starting solution specified
+USE get starting point from VAR VAL
+RND random starting point
+GRAD from a gradient evaluation
+CDB load point stored in CDB
+OPTA Optimization algorithm for the beta-point search LT HLRF
+RFLS RFLS algorithm
+NLPQ NLPQL algorithm
+HLRF HLRF algorithm
+COBY COBYLA
+GRDM Finitedifferenceschemetoevaluategradientsnumer- LT FWD
+ically
+FWD forward differences
+CTRD central differences
+GSTP Step size for the finite difference scheme − 0.01
+MIT1 for the RFLS algorithm: maximum number of itera- − 50
+tions in the approximate line search step
+for the NLPQL algorithm: maximum number of itera-
+tions in the line search step
+MIT2 for the RFLS algorithm: maximum number of itera- − 50
+tions in the exact line search step
+for the NLPQL algorithm: maximum number of limit-
+state evaluations in one iteration of the line search
+EPSC Convergence criterion for beta-point search. − 0.001
+SMU Convergence criterion for Armijo line-search. − 0.001
+LSF Name of the limit-state function LT8 *
+Performs a first order reliability analysis (see Section 2.4).
+If multiple limit-state functions are defined, the limit-state function to use can be specified with
+LSF. If the key LSF is not set explicitly, the first limit-state function that was defined is used.
+3-18 SOFiSTiK2023InputDescription|RELY
+3.15.1 SPNT: Starting solution
+If the search for the design point did not converge, specifying a starting point for the search
+canhelpfindingthedesignpointoftheproblem. Usingarandomstartingpointandperforming
+the analysis multiple times can give information about the existence of multiple (local) design
+points. Moreover,ifmultiple(local)designpointsexist,usingdifferentstartingpointsmighthelp
+finding the local design points.
+• NO: The search for the design point starts at the origin in standard Normal space.
+• USE: The coordinates specified in VAR VAL are used as the coordinates of the starting
+point.
+• RND: The starting point will be selected randomly in standard normal space.
+• GRAD: The starting point will be generated from a gradient evaluation at the origin in stan-
+dard normal space.
+• CDB: If some previous analysis already computed the design point of the problem or an
+approximateddesignpoint,thispointisusedasstartingpoint. PleasehavealookatCTRL
+CDBP. An approximated design point stored in the CDB is used only if no design point is
+stored in the CDB.
+Note: after a design point was detected with FORM (or SORM) the design point is stored in
+the CDB. If already a design point is in the CDB, the design point in the CDB is overwritten if
+the detected point is ’better’ than the one already in the CDB.
+3.15.2 Convergence criteria
+The convergence of the search for the design point can be controled with EPSC and SMU.
+The global convergence in the search for the design point is controlled by EPSC. The search
+stops if the following condition fulfilled:
+| k+1− k|≤ϵ∀ ∧ |g(T( k+1))|≤ϵ (3.1)
+where ϵ is equal to EPSC. The recommended range for EPSC ranges from 10−4 to 10−2.
+SMU is the relative precision in the Armijo-type stop criterion in the line search. The value of
+SMU must be in the range 0<SMU<0.5.
+3.15.3 OPTA: Optimization algorithms
+Different algorithms that search the design point are implemented in Rely: HLRF, RFLS,
+NLPQL, and COBYLA. The first three mentioned algorithms require the evaluation of gradi-
+ents of the limit state function, and, thus, the limit-state function must be differentiable. In Rely
+thegradientofthelimit-statefunctionisevaluatednumerically. IncaseofSORMthelimit-state
+function must be twice differentiable at the design point. The fourth algorithm (COBYLA) is a
+gradient-free algorithm.
+HLRF(HasoferandLind[12]RackwitzandFiessler[13])iswidelyusedduetoitssimplicityand
+rapid convergence. The design point is recursively approximated by the following expression:
+∇g(T( k))
+ k+1 = (cid:148) ∇g(T( k))T k−g(T( k))(cid:151) (3.2)
+(cid:12) (cid:12)∇g(T( k))(cid:12) (cid:12)2
+SOFiSTiK2023 3-19RELY|InputDescription
+However, the algorithm might fail to converge under certain conditions (Der Kiureghian and
+Stefano [14]).
+Both RFLS and NLPQL are non-linear sequential quadratic programming algorithms; i.e., they
+consist of two steps: first the direction is determined and then the step length. For a small
+number of random variables, the implemented version of RFLS is slightly less efficient than
+NLPQL. However, for problems with many random variables, the NLPQL algorithm might not
+achieve convergence.
+(cid:112)
+The RFLS algorithm is especially adjusted to the the objective T (Abdo and Rackwitz
+[15]). In Rely, two line search strategies to determine an optimal step size are implemented:
+an approximate line search and an exact line search. The exact line search is only done if
+the approximate line search did not converge. The approximate line search is performed by
+meansofaquadraticinterpolation/extrapolation. Ineachiterationsteponlyoneadditionallimit-
+stateevaluationisrequired. Themaximumnumberofiterationsintheapproximatelinesearch
+algorithm is set in MIT1. The exact line search is performed by means of the golden section
+method. Consequently,theexactlinesearchrequiresconsiderablemorelimit-stateevaluations
+than the approximate line search. The maximum number of iterations in the exact line search
+algorithm is set in MIT2. If convergence problems occur, it is recommended to increase MIT2.
+Formostproblemstheapproximatelinesearchshouldconvergefastandtheexactlinesearch
+is not needed. However, in the presence of strong curvatures, the approximate line search
+might be inefficient or might not converge. For such problems, MIT1 can be set to zero, such
+thatonlyanexactlinesearchisperformed. InRely,noupdatingschemefortheHessianmatrix
+isused, becauseallknownupdating schemescanresult insingularHessians. Althoughsome
+precautionstopreventsingularityoftheHessianduringtheiterationcanbemade,thesolution
+canbestronglyaffectedbyill-conditionedHessians. Especiallyforproblemswithmanyrandom
+variables, this can lead to oscillations and convergence problems.
+The NLPQL algorithm was originally designed by Schittkowski (1981,1983). In Rely, the algo-
+(cid:112)
+rithm is adapted to the special form of the objective function ( T). The algorithm is suited
+for problems with a small number of random variables (up to 20). It is considered to be very
+robust, reliable and efficient in finding the design point. An efficient numerical Hessian update
+scheme and a nearly exact line search algorithm is used. If the so-called quadratic subprob-
+lem cannot be solved, it creates a similar quadratic subproblem which can always be solved.
+This algorithm is recommended for problems that have acomplicated and computationally de-
+manding limit-state function but not more than 20 random variables. The maximum number of
+iterationsinthelinesearchstepissetinMIT1. Themaximumnumberoflimit-stateevaluations
+in one iteration of the line search is set in MIT2.
+The COBYLA algorithm is a gradient-free algorithm based on Nelder/Mead (1965) and modi-
+fied by Powell (1994) to include inequality constraints. It is less efficient and (in some cases)
+also less reliable than the other mentioned algorithms. However, if the limit-state function is
+non-differentiable (but it must still be smooth), COBYLA can be applied. If the limit-state func-
+tion is neither smooth nor differentiable, FORM (and, thus, SORM) cannot be applied. Note:
+COBYLA should only be used to determine a first approximation of the design point that is
+used as input for other reliability methods. The maximum number of limit-state function calls
+is determined as MAX(MAX(MIT1,MIT2)*N,100), where N is the total number of random vari-
+ables.
+3-20 SOFiSTiK2023InputDescription|RELY
+3.15.4 Finite difference scheme
+The finite difference scheme is set in GRDM. It can be either a forward difference scheme
+(FWD) or a central difference scheme (CTRD). In general, CTRD is a better estimate than
+FWD; however, CTRD requires twice as much limit-state function calls than FWD. The step
+size of the finite difference scheme is set in GSTP.
+SOFiSTiK2023 3-21RELY|InputDescription
+3.16 SORM – Second order reliability method
+Seealso: FORM
+SORM
+Item Description Unit Default
+SPNT Where to start the search for the design point? LT NO
+NO no starting solution specified
+USE get starting point from VAR VAL
+RND random starting point
+GRAD from a gradient evaluation
+CDB load point stored in CDB
+OPTA Optimization algorithm for the beta-point search LT HLRF
+RFLS RFLS algorithm
+NLPQ NLPQL algorithm
+HLRF HLRF algorithm
+COBY COBYLA
+GRDM Finitedifferenceschemetoevaluategradientsnumer- LT FWD
+ically
+FWD forward differences
+CTRD central differences
+GSTP Step size for the finite difference scheme − 0.01
+MIT1 for the RFLS algorithm: maximum number of itera- − 50
+tions in the approximate line search step
+for the NLPQL algorithm: maximum number of itera-
+tions in the line search step
+MIT2 for the RFLS algorithm: maximum number of itera- − 50
+tions in the exact line search step
+for the NLPQL algorithm: maximum number of limit-
+state evaluations in one iteration of the line search
+EPSC Convergence criterion for beta-point search. − 0.001
+SMU Convergence criterion for Armijo line-search. − 0.001
+LSF Name of the limit-state function LT8 *
+Performs a second order reliability analysis (see Section 2.5).
+Please note: SORM has exaclty the same input parameters as FORM. For a detailed descrip-
+tion of the input parameters please refer to FORM.
+3-22 SOFiSTiK2023InputDescription|RELY
+3.17 MVFO – Mean value first order
+Seealso: MVFO
+MVFO
+Item Description Unit Default
+SPNT Where to start the search for the design point? LT NO
+NO no starting solution specified
+USE get starting point from VAR VAL
+RND random starting point
+GRAD from a gradient evaluation
+CDB load point stored in CDB
+GRDM Finitedifferenceschemetoevaluategradientsnumer- LT FWD
+ically
+FWD forward differences
+CTRD central differences
+GSTP Step size for the finite difference scheme − 0.01
+RELA Output estimated reliability LT NO
+NO do not output estimated reliability
+YES output estimated reliability
+LSF Name of the limit-state function LT8 *
+Evaluatesthederivativeofthespecifiedlimit-statefunction(LSF)attheindicatedstartingpoint
+(SPNT). Based on this information, sensitivity factors are derived.
+If RELA is activated, an estimate for the design point is computed, based on the evaluated
+derivative. However, for non-linear limit-state functions, the so-obtained approximation is typi-
+cally rather crude.
+For a detailed description of the input parameters please refer to FORM.
+SOFiSTiK2023 3-23RELY|InputDescription
+3.18 SUBS – Subset simulation
+Seealso: MC,IS,LS,DS,ADS,FORM,SORM
+SUBS
+Item Description Unit Default
+NSPL Number of samples per subset − 1000
+P0 Threshold probability of the intermediate failure do- − 0.1
+mains.
+LMDA Initial scaling factor − 0.6
+NCS Chain parameter for adaptation − 15
+LSF Name of the limit-state function LT8 *
+Performsasubsetsimulation(seeSection2.10)withNSPLsamples. Itisrecommendedtoset
+NSPL always greater or equal than 500.
+PZERO is the threshold probability of the intermediate failure domains. It can be any value
+between ]0;1[. Usually, this value should not be changed.
+LMDA defines the initial scaling factor of the proposal distribution. The admissible range for
+LMDA is ]0;1]. During the simulation, LMDA can be modified adaptively such that the ac-
+ceptance of a sample proposed in a MCMC step is close to an optimal acceptance rate. The
+absolute value of the parameter NCS defines after how many seed values LMDA is modified.
+If NCS is set to zero, LMDA is not modified. If NCS is not zero, it’s absolute value should be
+largerorequalthan5. IfNCSissmallerthanzero,alldirectionsaretreatedasequalandLMDA
+corresponds to the standard deviations of the proposal distribution. If NCS is larger than zero,
+the standard deviations of the proposal distribution are estimated from the seed values, and
+LMDA acts as a multiplier to achieve a near-optimal acceptance rate.
+If multiple limit-state functions are defined, the limit-state function to use can be specified with
+LSF. If the key LSF is not set explicitly, the first limit-state function that was defined is used.
+3-24 SOFiSTiK2023InputDescription|RELY
+3.19 EXDS – Experimental Design
+Seealso: MC,RSF
+EXDS
+Item Description Unit Default
+SDES Sampling Design LT JOA
+DAT points are read from an input file
+JOA points located just on axis
+CC central composite design
+FF full factorial design
+FFS full factorial design (spherical)
+P1 pointslocatedjustonaxis(onepointineach
+direction)
+CNTR Locationofthecenterpointofthedesign(relevantfor LT NO
+JOA, CC, FF, FFS, and P1).
+NO no center point specified (origin is used)
+USE get center point from VAR VAL
+CDB load point stored in CDB
+SAIF Name of a file from which samples are to be read. LT ""
+SAVE Name of a file to which the generated samples are LT ""
+written.
+SAPD Should the generated samples be appended to the LT NO
+file specified in SAVE?
+NO an already existing file is overwritten
+YES generated samples are appended to an al-
+ready existing file
+LSF Name of the limit-state function. This option is only LT8 *
+used if CNTR is set to CDB.
+SPRD Spread of the sampling design. − 1.0
+Evaluatestheunderlyingmodelforaspecifiedsetofpoints. Thepointscanbeselectedbased
+onaspecificdesign,orreadfromaninputfile. Thesamplingdesignisspecifiedusingkeyword
+SDES.
+If SDES is set to DAT, the points are retrieved from an input file. The path and filename of the
+input file must be specified using keyword SAIF. The format of this input file is as follows: One
+sampling point to evaluate per line. The values of the uncertain model parameters (random
+variables) are assigned based on the columns in this file; i.e., the first column is associated
+SOFiSTiK2023 3-25RELY|InputDescription
+with the first parameter defined, and so on.
+Alternatively, a predefined sampling design can be specified using keyword SDES. Available
+optionsare(Note: Misusedinthefollowingtodenotethenumberofrandomvariablesdefined
+for the problem at hand.):
+• JOA:Atotalof2·M+1pointsarespecified. Thecenterpointaswellastwopointsoneach
+axis;oneonthepositivesideandoneonthenegativesideofthecenterpointoneachaxis.
+• CC: A central composite design is used, which means that 2·M+1+2M points are used.
+• FF: A full factorial design is used, which means that 3M points are used. The points are
+located in a hypercube.
+• FFS: A full factorial design is used, which means that 3M points are used. The points are
+located in a hypersphere.
+• P1: Similar to JOA, however, only M+ 1 points are specified. The center point as well as
+one point on each axis; one located on the side of the center point that point towards the
+origin.
+The center point of the sampling design can be specified using the keyword CNTR. Available
+options are:
+• NO: The origin in standard Normal space is used as center point for the sampling design.
+• USE:ThecoordinatesspecifiedinVARVALareusedasthecoordinatesofthecenterpoint.
+• CDB: If some previous analysis already computed the design point of the problem or an
+approximated design point, this point is used as center point. Please have a look at CTRL
+CDBP. An approximated design point stored in the CDB is used only if no design point is
+stored in the CDB.
+If the center point is to be retrieved from the CDB, the limit-state function of which the
+design point is to be taken must be specified using the keyword LSF.
+The spread of the employed sampling design is specified in SPRD.
+All processed samples are written to the file specified in SAVE. The structure of the file is as
+follows: Each generated sample is written to a separate row. The first K columns contain the
+valuesofalldefinedlimit-statefunctionsevaluatedforthesampleathand,whereK denotesthe
+number of limit-state functions defined. The ordering of the limit-state functions corresponds
+totheorderoftheirdefinition. Thereaftercomesacolumnthatliststhevaluesofthelimit-state
+function of the system reliability problem (see SLSF). If the specified limit-state function is a
+resonse surface function, then only the the value of the evaluated response surface function
+is listed in the first column; no other results of limit-state function are outputted. The next
+M columns list the value of the specified random variables, where M denotes the number of
+random variables defined. The last M columns list the value of the specified random variables
+transformed to the underlying independent standard Normal space.
+Thevaluesofallrandomvariablesaswellasthevaluesofallspecifiedlimit-statefunctionsare
+storedinmemoryforeachevaluatedsample. Forhowthisdatacanbere-used,pleasehavea
+look at the documentation of RSF.
+3-26 SOFiSTiK2023InputDescription|RELY
+3.20 RSF – Response Surface Function
+Seealso: MC,EXDS
+RSF
+Item Description Unit Default
+NAME Name with which to associate the response surface LT !
+function (RSF)
+LSF Name of the limit-state function that is to be approxi- LT !
+mated by the RSF
+ANSA Ansatz Space LT P1
+P1 polynomials of first order
+P2NM polynomials up to second order (without
+mixed terms)
+P2MT polynomialsuptosecondorder(withmixed
+terms)
+LOAD Load the parameter vector from the specified file. LT ""
+SAVE Save the computed parameter vector to the specified LT ""
+file.
+If no file is specified in LOAD, the parameters of the response surface function are computed
+based on performed simulation runs. The data from the last performed Monte Carlo (MC)
+simulation or the last performed experimental design (EXDS) are used.
+The parameter vector can be written to a file, which can be specified through SAVE. Note: In
+case the parameter vector is read from a file specified in LOAD, it will not be written to the file
+specified in SAVE.
+SOFiSTiK2023 3-27RELY|InputDescription
+3-28 SOFiSTiK2023OutputDescription|RELY
+4 Output Description
+During a run of Rely the following output files are generated:
+• the URSULA output and graphic representations (.PLB)
+• the Rely-results file (.RTI)
+• the Rely-monitoring file (.MTI)
+• the Rely-post-processing file (.PTI)
+Ifnoerrorsoccur,formostusers,onlytheURSULAoutputwillbeofinterest. Incaseoferrors,
+the monitoring and the results file can be helpful in tracking the errors down.
+TheverbosityoftheoutputtotheresultsfilecanbecontrolledwiththecommandOUTPNPRI.
+The verbosity of the output to the monitoring file can be controlled with the command OUTP
+IMON.
+For problems with a limit-state function that is computationally demanding to evaluate (i.e.,
+already a single call of the limit-state function takes a considerable time), you might want to
+output every single result of a limit-state function call. This can be done with the command
+OUTP LSFR YES.
+SOFiSTiK2023 4-1RELY|OutputDescription
+4-2 SOFiSTiK2023Examples|RELY
+5 Examples
+The input files which are explained here are to be found in the installation directory SOFiSTiK
+inthesubdirectorystrurel.dat/english. Alternatively,youcanfindtheseexamplesintheTEDDY
+menu HELP > EXAMPLES sorted by program name and language.
+// For additional help like tutorials, tutorial movies and practical examples please // refer to the
+SOFiSTiK Infoportal (www.sofistik.com/Infoportal).
+SOFiSTiK2023 5-1RELY|Examples
+5.1 Simple Beam: Explicit Limit-State Function
+A single-span beam with a length of 20m is investigated. The beam is subjected to a uniform
+distributed load q, and the displacement  at the center of the beam is measured (Fig. 5.1).
+The Young’s modulus E as well as the value of the loading q are considered uncertain. The
+Young’smodulusfollowsaLog-Normaldistributionwithameanvalueof45·103 MN/m2 anda
+coefficient of variation of 10%. The value of the loading has a Normal distribution with a mean
+of 7kN/m and a standard deviation of 1.6kN/m. The height and the width of the beam are
+regardedasdeterministicwithvalues h=0.7mand b=0.2m,respectively. Thesystemfailsif
+the displacement  is larger or equal than 0.1m.
+q
+w
+E
+l=20m
+Figure5.1: Modeloftheinvestigatedbeam
+The center displacement  of the mechanical model at hand has an analytical solution:
+5q4 8·105 q
+(E,q)= = (5.1)
+32Ebh3 2.1952E
+The limit-state function of the problem can be expressed as:
+(E,q)=0.1m−(E,q) (5.2)
+The input to perform the reliability analysis reads:
+PROG RELY
+HEAD
+!Define the random variables
+!Young's modulus
+!Type: Log-Normal distribution
+!Mean: 45e3 MN/m2 = 45e6 kN/m2
+!C.o.V.: 10%
+VAR 'rv_E' TYPE LOGN PTYP MOME P1 45.e+6 P2 4.5e+6
+!Distributed loading
+!Type: Normal distribution
+!Mean: 7 kN/m
+5-2 SOFiSTiK2023Examples|RELY
+!Std.dev.: 1.6 kN/m
+VAR 'rv_q' TYPE NORM PTYP MOME P1 7. P2 1.6 P3 0 P4 16
+!Define the limit-state function
+FUNC 'rel_fun' EXPR '=0.1-800000/2.1952*#rv_q/#rv_E'
+!Perform a FORM analysis
+FORM
+!Perform line sampling
+LS SPNT CDB
+!Perform subset simulation
+SUBS NSPL 2000
+!Perform a Monte Carlo simulation
+MC NSPL 1e5
+END
+First, the two random variables of the problem are defined: the variable modeling the Young’s
+modulus E is called rv_E, the variable modeling the loading q is called rv_q. The limit-state
+function is defined using the command FUNC. Note that the first character in the explicit ex-
+pression of the limit-state function must be the equal sign (=).
+Next, a FORM analysis with default settings is performed. Thereafter, the design point com-
+puted with FORM is used to perform a Line Sampling (LS). The default number of samples
+(2500)isused. Afterwards,subsetsimulation(SUBS)with2000samplesperconditioningstep
+is done. The last reliability method run is Monte Carlo sampling (MC) with 1·105 samples.
+The outputted summary of the results of the different reliability methods is:
+LSF Pf Beta C.o.V.
+FORM REL_FUN 3.53751E-03 2.69330E+00
+Line Sampling REL_FUN 3.35353E-03 2.71106E+00 1.42193E-03
+Subset Simulation REL_FUN 2.59500E-03 2.79501E+00
+Monte Carlo Simulation REL_FUN 3.16000E-03 2.73071E+00 5.61657E-02
+NotethatbydefaultCTRLSEEDissetto8,and,therefore,onlyFORMwillgivethesameresult
+each time the analysis is repeated. A reference solution of the problem was obtained as p =
+f
+3.349·10−3. Inthiscase,thebestestimateisgivenbylinesampling: theestimateisclosestto
+the reference solution and has the smallest coefficient of variation. The coefficient of variation
+oftheestimateobtainedwithMonteCarlosimulationismorethananorderofmagnitudelarger
+thantheoneobtainedwithlinesampling;despitethefactthatMonteCarlosimulationrequired
+almost 10 times as many limit-state function calls than line sampling. The estimate computed
+with subset simulation is not as good as the one obtained from line sampling; however, subset
+simulation with 2000 samples per conditioning step needed in total only half the number of
+limit-state function calls that line sampling with 2500 samples needed.
+SOFiSTiK2023 5-3RELY|Examples
+5.2 Simple Beam: Finite Element Limit-State Function
+The single-span beam illustrated in Fig. 5.1 and discussed in Section 5.1 is now modelled by
+means of finite elements (File: strurel_beam_FEM_model.dat):
++PROG AQUA
+! define the cross-section of the beam
+! define the material: the Young's modulus is a random variable
+HEAD Plane Beam
+NORM DIN 1045-1
+MATE 1 E #rv_E
+SREC 1 MNO 1 H .7 B .2
+END
++PROG SOFIMSHA
+! define the mesh of the beam with length 20m
+HEAD Plane Beam
+SYST FRAM
+GRP 1
+NODE NO X FIX
+1 0 PY
+21 20 PP
+(2 20 1) (1 1)
+BEAM (1 20 1) (1 1) (2 1)
+END
++PROG SOFILOAD
+! define the distributed loading -> the value of the loading is random!
+HEAD Distributed load
+LC 1
+BEAM GRP 1 PA #rv_q
+END
++PROG ASE
+! solve the system
+HEAD
+LC 1
+END
++PROG TEMPLATE
+! Store the result in variable relfun
+HEAD performance function
+! max uy in m
+LET#lf 1
+@KEY N_DISP #lf
+LET#uy @(11,UY)
+5-4 SOFiSTiK2023Examples|RELY
+! store the result of the limit-state function in the CDB:
+STO#rel_fun (10./100.-#uy)
+END
+Note: therandomvariablesareusedexactlylikenormalvariablesintheinputfile. TheYoung’s
+modulus is called rv_E and the loading is referred to as rv_q. The result of the limit state
+function is stored as variable with name rel_fun in the CDB.
+The strurel input is (File: strurel_beam_FEM.dat):
+PROG RELY
+HEAD
+!define the random variables
+!Young's modulus
+!type: Log-Normal distribution
+!mean: 45e3 MN/m2
+!C.o.V.: 10%
+VAR 'rv_E' TYPE LOGN PTYP MOME P1 45.e+3 P2 4.5e+3
+!Distributed loading
+! type: Normal distribution
+! mean: 7 kN/m
+! std.dev.: 1.6 kN/m
+VAR 'rv_q' TYPE NORM PTYP MOME P1 7. P2 1.6
+!define the limit-state function
+!name of the variable to read from the CDB of
+!the project 'strurel_beam_FEM_model'
+FUNC rel_fun
+!the project that needs to be computed to evaluate the limit-state function
+PROJ DAT 'strurel_beam_FEM_model'
+!output the result of each limi-state function call
+OUTP LSFR YES
+!perform a FORM analysis
+FORM
+!perform line sampling
+LS NSPL 100 SPNT CDB
+END
+The definition of the two random variables is equivalent to the one of the explicit example
+(Section5.1). Thelimit-statefunctionisdefinedusingthecommandsFUNCandPROJ:PROJ
+specifies which DAT file is to be executed, and FUNC defines under which name the returned
+value of the limit-state function is stored in the CDB.
+SOFiSTiK2023 5-5RELY|Examples
+The reliability analysis is performed using FORM and LS. First, the design point is computed
+with FORM; and second, the estimate of the linearized problem is improved by Line Sampling
+with 100 samples. The outputted summary of the results is:
+LSF Pf Beta C.o.V.
+FORM REL_FUN 3.53752E-03 2.69330E+00
+Line Sampling REL_FUN 3.37592E-03 2.70885E+00 7.14756E-03
+5-6 SOFiSTiK2023Appendix |RELY
+6 Appendix
+SOFiSTiK2023 6-1APPENDIX A: DISTRIBUTION FUNCTIONS AND THEIR PARAMETERS
+Parameters of Distribution Functions
+(MOME: Moments, PARA: Parameters)
+Type ID Name of Parameters on Type of parameter input
+TID distribution P1,P2,P3,P4 (default is PARA)
+0 Fixed v PARA
+1 Rectangular. (uniform) a, b MOME or PARA
+2 Normal (Gauß) m,  MOME or PARA
+3 Lognormal , MOME or PARA
+4 Exponential , MOME or PARA
+5 Gamma k,  MOME or PARA
+6 Beta r, t, a, b, MOME or PARA
+7 Gumbel (max) u,  MOME or PARA
+8 Frechet (max) v, k,  PARA
+9 Weibull (min) w, k,  MOME or PARA
+10 Shifted Lognormal ,, MOME or PARA
+11 Rayleigh , MOME or PARA
+12 Student (standard)  PARA
+13 Trapezoid a, b, c, d PARA
+14 Birnbaum/Saunders , MOME or PARA
+15 Cauchy , PARA
+16 Shifted Gamma k, , MOME or PARA
+17 Inverse Gauß , MOME or PARA
+18 Gumbel (min) u,  MOME or PARA
+19 Frechet (min) v, k,  PARA
+20 Weibull (max) w, k,  MOME or PARA
+21 Pareto a, k MOME or PARA
+22 Laplace , MOME or PARA
+23 Logistic , MOME or PARA
+24 Halfnormal m,  MOME or PARA
+25 Chi-square  PARA
+26 Fisher’s F  ,  PARA
+1 2
+27 Student m, , PARA
+28 Neville r, k,  PARA
+29 Hermite m, ,, MOME or PARA
+30 Pred.Gumbel (max) t, , n PARA
+31 Pred.Weibull (min) t, k, n PARA
+32 Pred.Frechet (max) t, k, n PARA
+33 Pred.Exponential , h PARA
+34 Pred.Normal (m unknown) ,, n PARA
+35 Pred.Normal ( unknown) m, s,  PARA
+36 Pred.Normal (m  ) x , n, s,  PARA
+37 Post.Gumbel (max) t, , n PARA
+38 Post.Weibull (min) t, k, n PARA
+39 Post.Exponential , h PARA
+40 Post.Normal (m) ,  PARA
+41 Post.Normal () s,  PARA
+42 Post.Normal (m  ) x , , n PARA
+43 Post.Frechet (max) t, k, n PARA
+44 4-Par. Lognormal ,,, PARA
+SOFiSTiK 2014 Appendix A (taken from Strurel – Users Manual, Gollwitzer, 2014) Page A-1APPENDIX A: DISTRIBUTION FUNCTIONS AND THEIR PARAMETERS
+Notes to Parameters of Distribution Functions:
+ Greek characters and other symbols used in this table are converted to plain text in the stochastic model
+window (for example =lamda, =nue and =xq). x
+ The distribution types in the table above are ordered according to their ID, TID in command VAR.
+ For input of PTP equal to MOME the mean and standard deviation are the first and second entry for each
+variable. If there are more than two parameters then parameter no.3 and optionally parameter no.4 have to be
+supplied. So also for input of moments - in case of a distribution with more than 2 distribution parameters -
+the distribution parameters 3 and 4 have to be provided in addition to the mean and standard deviation.
+SOFiSTiK 2014 Appendix A (taken from Strurel – Users Manual, Gollwitzer, 2014) Page A-2APPENDIX B: Table 1: Standard Continuous Distributions
+APPENDIX B: Univariate Distribution Functions
+1. Standard Distribution Functions
+Type Name Density/Distribution Function Range Parameter Mean Standard deviation
+Restriction
+1 Rectangular 1
+f (x)  (Uniform) X b  a a  b b  a
+x  a a  x  b a  b 2 ( 1 2 )
+F ( x ) 
+X
+b  a
+2 Normal V,VI) 1  1  x  m  2  1  x  m 
+ f ( x )  e x p  
+    X 2 2
+ 0 m     x   
+x  m 
+F ( x )  
+X
+
+3 Lognorm al V,VI) 1  1  lnx / 2
+f (x)  exp     2   0 2
+modal value = X x 2  2      e 2   0  x    e 2 e 2  1
+    0
+   Median
+1  lnx /
+    e x p  2 
+x 
+   S td .d e v . M e a n 2  l n  C o v 2  1 
+ 
+  l n x /   C o v = M e a n C o v 2  1
+F ( x )  
+ X
+4 Exponential    f ( x )  e x p    x    1 1
+   X  x     0 
+ 
+F (x)  1 exp x 
+X  
+SOFiSTiK 2014 Appendix B (taken from Strurel – Users Manual, Gollwitzer, 2014) Page B-1APPENDIX B: Table 1: Standard Continuous Distributions
+Type Name Density/Distribution Function Range Parameter Mean Standard deviation
+Restriction
+5 Gamma I,II) 1
+   f ( x ) X k  1  x e x p  x 
+ k k  0 k k
+0  x  
+     ( x , k )F  0
+( x ) X
+ ( k )
+6 Beta III,IV) r  1x t 1
+ a x  a  
+f ( x ) X 1   b  a b  a   a  x  b a  b a   b  a  r  b  a  r t
+   B r , t b  a r  0 r  t  r  t 2  r  t  1 
+t  0
+B ( y , r , t ) x ) a
+F ( yX  ; y B
+( r , t ) b  a
+7 Gumbel f (x) exp x u expx u
+(max. Type I) X    C 1
+VIII) =  =    x    F ( x )X   e x p  e x p  ( x  u )  0 u 
+  6
+    
+ F ( x )  e x p  e x p  x    C
+X 
+ 6
+8 Frechet   k( k  1 v   e v   k 
+k  0
+(max. Type  x  II) I)       v   1 2   2  1 1   f X x )   v  x p    x    x  v  ( v  )   1  1  
+ k   k  k
+  v k F (x)  exp      k  1   k  2 
+X   x  
+9 Weibull k  x  k1   x  k
+(min. Type f (x)    exp     III) I) X w   w    w     x      k  0  w     1  1    w     1  2    2  1  1 
+ w  k k k
+  x   k
+F (x)  1 exp  
+X   w  
+SOFiSTiK 2014 Appendix B (taken from Strurel – Users Manual, Gollwitzer, 2014) Page B-2APPENDIX B: Table 1: Standard Continuous Distributions
+Type Name Density/Distribution Function Range Parameter Mean Standard deviation
+Restriction
+10 Shifted Lognormal VI) 1  1  ln(x /)2
+f (x)  exp       0  2 2
+X x  2  2      x   e 2 e2 1  e 2
+  
+  l n ( ( x  ) / ) 
+F ( xX )  
+
+11 Rayleigh   x    x 2 
+f ( x )  e x p2 
+         X 22  x     0  2 
+2 2
+ e 1 ( x 2 ) 
+F ( x )  1  x p 
+ X 2 2
+12 Standard Student t I)
+  1 
+
+  1 2  2 x   1
+ 0  f ( x )  1   2    x     0 ;   2 
+    X    2
+ 2
+
+x
+F (x)   f (z)dz
+X X
+
+13 Trapezoid
+see X) see X) a  x  d a  b 
+a b c d  c  d
+x
+F ( x ) f ( z ) d z
+X X
+a
+SOFiSTiK 2014 Appendix B (taken from Strurel – Users Manual, Gollwitzer, 2014) Page B-3APPENDIX B: Table 1: Standard Continuous Distributions
+Type Name Density/Distribution Function Range Parameter Mean Standard deviation
+Restriction
+14 Birnbaum/   Saunders V,VI)        f X ( x )  ½  1 2  x / 3 /2x  1   x / 1 /2  x /   1 /2   V )  2  5 2
+0  x      0 1  1 
+2 4
+  1  1 1    0
+  F ( x )    x / 2  x / 2
+ X
+15 Cauchy 1
+f ( x ) 
+   X  1    x   / 2 
+ non-existent non-existent     x     0
+  12  x  
+F ( x ) X 1t a n
+
+ 
+16 Shifted IG amma  x  k k1
+I, I) f X (x)   exp  x     x       0  k k
+  k  0
+   ( ( x  ) , k )
+F ( xX )
+ ( k )
+17 Inverse Gauss VII)         f X ( x )   2 x 1 /23  e x p   x 2  2 x 2   0 3 /2
+0 x     0
+ 1   (x  ) 1 2 
+ erf    exp   
+ 2  2  x  2    
+F (x)  1
+X  
+  (x  )
+ 
+ erf  
+ 2  x 
+   
+18 (mG inu , m Tyb pe el I) f X (x) exp x  u exp x  u    0 u  C VIII)     x    1
+  6
+F (x)  1 exp exp(x  u)
+X  
+SOFiSTiK 2014 Appendix B (taken from Strurel – Users Manual, Gollwitzer, 2014) Page B-4APPENDIX B: Table 1: Standard Continuous Distributions
+Type Name Density/Distribution Function Range Parameter Mean Standard deviation
+Restriction
+19 Frechet I)   k k  1 v     v  k 
+(min I. I )T ype      x   v 1 1    v   1 2   2  1 1   f X ( x )     e  x  x p   x k  0
+ k   k   k 
+   k 1  1  v k  
+F ( x )   e x p   k  2 
+
+ X  x
+20 Weibull I)   k k  1 x     x  k 
+(max. Type  1  III)       w 1   f X ( x )    w   w  e x p   w    x  k  0   w    1  2    2  1  1 
+ k  k k
+  w
+    x  k 
+F ( x ) e x p 
+
+ X  w
+21 Pareto aa k(
+f x ) X
+k a ; a  1x 0  k  x    a  0 a k ;  a  1   a  2 
+a a 1 a  2  k  k  0 a  1
+F (x)  1
+ 
+X  x 
+22 Laplace
+1  x  
+f (x)  exp 
+
+X 2 
+   x     0 2
+    1  12 x  e x p   f o r x 
+F ( x ) 
+  X 12 x  e x p f o r x 
+  
+SOFiSTiK 2014 Appendix B (taken from Strurel – Users Manual, Gollwitzer, 2014) Page B-5APPENDIX B: Table 1: Standard Continuous Distributions
+Type Name Density/Distribution Function Range Parameter Mean Standard deviation
+Restriction
+23 Logistic
+ x x  
+ e p 
+  3
+   f ( x )     x     0
+X 2
+  3  e x   
+ 1  x p 
+ 3
+1
+F ( x ) 
+X
+ p x  
+ 1  e x 
+ 3
+24 Half- 2  1  x  m 2
+normal V,VI) f (x)  exp      X 2 2
+2  2       m  x    m  0 m  1 
+ 
+2  x  m    0
+
+ 
+   
+x 2  z  m   x  m 
+F (x)     dz  2   
+X       
+m
+25 Central   
+1  1  x 
+Chi-Square I) f ( x )  2x e x p 
+  X 2 / 2   / 2 2
+0 x      0 2
+x
+ 1
+F (x)   f zdz  F x|k  ;
+X x 
+2 2
+0
+F see Type 5;
+
+here corresponds to  in textbooks x 2
+SOFiSTiK 2014 Appendix B (taken from Strurel – Users Manual, Gollwitzer, 2014) Page B-6APPENDIX B: Table 1: Standard Continuous Distributions
+Type Name Density/Distribution Function Range Parameter Mean Standard deviation
+Restriction
+26 Central 
+1
+Fisher F I)   1  2    1  2 x 211      2 22    2  
+ 2 ;  2 f X (x)   2   2   /2  1  0  2  2 2     0  x      1 2 2 2   4   ;  2  4 
+       1 2  0 1 2 2
+ 1  2 1 1 x 2
+     
+ 2   2    
+2
+x
+F (x)   f (z)dz
+X X
+
+27 Student I) 1
+ 1
+1   2    t2   2 x  m    0
+f (x)  1 ;t  m;   ;     x      1    2 
+X          0  2
+
+ 
+ 2 
+x
+F (x)   f (z)dz
+X X
+
+28 Neville xk1
+k x 
+f (x)  ; x    x  X r  xk2 r k  0  k  1  IX )  k  2  IX )
+1   0
+1
+F ( x )  1 
+ X ( 1  ( x ) k )
+SOFiSTiK 2014 Appendix B (taken from Strurel – Users Manual, Gollwitzer, 2014) Page B-7APPENDIX B: Table 1: Standard Continuous Distributions
+Type Name Density/Distribution Function Range Parameter Mean Standard deviation
+Restriction
+29 Hermite V,VI) 1
+ f ( y ) Y  y  1  h  2y  1   3 h y  3 y
+(modified) 3 4
+
+  0
+  F ( y )Y    y  h y  y  h (4 2  y  1 ) y
+ x m  3
+ 0
+x  m   ( X  m k ) 
+     y  ; E  ;  ; 3 ;
+  k  4
+   3
+  h  ; h  ;2  ;
+3 46
+4
+ f o r  3 :3
+( 1  3 6 h 1 /)4 2  1 h 1
+ h  ; h 3 3 ; 6
+4 1 8 1  h 2( 1  2 h  6 h3 2 )4 1 / 2
+4
+ f o r  3 :3
+h 1
+ h  h  2 7 h4 2 ; h4 3 3 ; 
+4 1  2 4 h ( 1  2 2 11 0 h  4 2 h )3 / 2
+4 4
+44 4-Parameter
+  l x  /
+ n
+Lognormal     numerical numerical     x  
+   1  ) x 
+V,VI)  integration integration f ( x ) 
+  ,  0
+    ( x  ) (  x 
+  x  
+ln /
+  
+ x 
+F(x)    
+  
+ 
+ 
+SOFiSTiK 2014 Appendix B (taken from Strurel – Users Manual, Gollwitzer, 2014) Page B-8APPENDIX B: Table 1: Standard Continuous Distributions
+Notes:
+ 
+I. Complete Gamma function:   a  a  1  tt e d t0
+x
+II. Incomplete Gamma function:  a  1  tx , a  t e d t ;0
+   a    b 
+III. Complete Beta function:  B a , b b  1a  1   t 1  t d t0 
+  a  b 
+x
+IV. Incomplete Beta function: B x , a b a  1  , b  t 1  t0 1 d t
+1  x2 
+V. Standard Gaussian density: (x)  exp 
+ 
+2  2 
+x
+VI. Standard Gaussian distribution function:   ( x )    u  d u
+
+VII. Error function: e r f  x   2  x 2  1
+VIII. Euler number: C=0.577216
+IX. Can be expressed in terms of binomial coefficients or by numerical integration
+( d  a ) 2  ( d  a ) ( c  a )  2 2( c  a )  ( b  a )  ( d  a )  ( c  a )  ( d  a ) 2  ( c  a ) 2   ( b  a ) 3
+E  X    a V a r  X    ( E  X   a ) 2
+3 ( c  d  a  b ) 6 ( c  d  a  b )
+X.
+SOFiSTiK 2014 Appendix B (taken from Strurel – Users Manual, Gollwitzer, 2014) Page B-9APPENDIX B: Table 2: Continuous Distribution Functions for Bayesian Analysis
+2. Bayesian Distribution Functions
+Type no. Variable unknown Priori/posteriori Posterior parameters Predictive density/distribution
+(predictive (density/distribution) Parameters density/distribution
+posterior) of parameters
+Exponential I,II,III,IV) Gamma Invers-beta
+33 (pred.) f x   expx     h""h" h h  1 e ni
+X    f y  f    "    x
+Y y "h"1    h i
+!
+39 (post.)
+    , h B  y /  y  "  , 1 , h " 
+   F X  x   1  e x p   x  F       h h "  h   n F Y  y   B  1 , h " 
+Gamma I,II,III,IV) Gamma Invers-beta
+not implem. kxk1ex     "g yk1 g g  1 e  ni
+f x ,k     f y  f    "    x
+X k Y B k,g" " yg"k    g ! i
+not implem.
+    , g  B  y /  y  "  , k , g " 
+   1) F X  x , k     x , k  /   k  F       g g "  g   n k F Y  y   B  k , g " 
+SOFiSTiK 2014 Appendix B (taken from Strurel – Users Manual, Gollwitzer, 2014) Page B-10APPENDIX B: Table 2: Continuous Distribution Functions for Bayesian Analysis
+Type no. Variable un- Priori/posteriori Posterior Predictive density/distribution
+(predictive (density/distribution) known density/distribution parameters
+posterior) Param. of parameters
+Normal V,VI) Normal Normal
+34 (pred.)  x m,  m n nx   yY  
+X " 
+40 (post.) 1  1  x  m 2   n  n  m   1 e x p  1  m   2  n " x   2 
+exp        2  2     1 M 2 2 n "  1 e" p 1 y  "
+"  2  2 n "  1
+n  n  "
+n "
+n"  n  n x
+m      x m ,     t m ,  d t
+ m ,   t ,dt X X
+M
+      y " , " , n "
+Y
+Normal I,II,III,V,VI) Invers-Gamma-2 Student
+35 (pred.)  x m,       s " 2 "  s 2   s 2 f  t 
+X    2 Y
+  1
+41 (post.) 1  1  x  m 2    exp         2  2       f      2   2 s  s 2 2  2 e x p   2 s 2 2  s 2  1  i  x i  m  2 1 s " 1 1 1, " 1 "  1  2t "   "  2 1
+ B
+2 
+2 2
+x     s 2 
+ x m,    t m,dt  ,
+X X  2 2 y y  m
+   ; F    1  F Y  y s " , "   f Y  t d t t 
+    / 2 s "
+
+   "   
+SOFiSTiK 2014 Appendix B (taken from Strurel – Users Manual, Gollwitzer, 2014) Page B-11APPENDIX B: Table 2: Continuous Distribution Functions for Bayesian Analysis
+Type no. Variable un- Priori/posteriori Posterior parameters Predictive density/distribution
+(predictive (density/distribution) known density/distribution
+posterior) Param. of parameters
+Normal I,II,III,V,VI) Normal-Invers-Gamma-2 Student
+36 (pred.) m,    X  x m ,   f  m ,  n e x p   n m2  x  2  n "  n   n f Y  t 
+   42 (post.) 1  1  x  m  2  M , 2  n " x "  n  x   n x 1 1 1  2t   "  1 2
+e x p  1 1 
+       2 2 x  2 x  n x i s "  B  1 , 1 "  " "
+  1 i
+   2 2  2s  2 e x p   s 2  " 2s "   2 s   n  x 2  2 2
+     s 2 2 2
+
+ y  x " n"   2s  n x 2   n " x " 2
+t  2
+s" n"1
+1
+x s 2    x ii x 2
+ x m,    t m,dt    n"1 F ( m ,, )  F ( ) F ( m ) n  1
+X X  s"  s" M  M 
+ n"    VII)   s 2  v "  v    n 
+ ,
+   2 2  v   n   n " 
+ F    1 
+  ( / 2 )
+y
+ m  x  F  y x " , n " , s " , v "    f  t d t
+ F  m    Y Y
+  M   /  n 
+SOFiSTiK 2014 Appendix B (taken from Strurel – Users Manual, Gollwitzer, 2014) Page B-12APPENDIX B: Table 2: Continuous Distribution Functions for Bayesian Analysis
+Type no. Variable un- Priori/posteriori Posterior Predictive density/distribution
+(predictive (density/distribution) known density/distribution parameters
+posterior) Param. of parameters
+Gumbel (max) I,VIII)
+n" p expy
+t  30 (pred.) u f y   n Y t"  expy (n"1p) f X  x u ,   f U  u  
+   expx  1 e x p  n  p u  t e x p u  n  pt
+37 (post.)    i  t"  e x p   x  u )  e x p    x  u  
+i1   n  p
+expyn"p u
+   n"  n  n F y  1  F X  x u ,   e x p  e x p    x  u    F U  u   f zU  d z
+Y
+t"   
+t"  t  t
+Frechet (max) I,II,IX) f  y 
+1  q n Y
+32 (p red.) f x v,k  k   v  k1 exp    v  k  v 43 (post.) X v  x    x   f V  v  n k  qv e x p  n  k  v  1  nt k t q / k k  t n  "  k  x ii 1  n  n   n "  1  k q   1  y t  "  nk    1  q "   1 k k t " y 1 k  1
+t"  t  t
+1  q 
+  v  k   k t v , n  1  p / k   k y n "  k 
+F X  x v , k   e x p  x F V  v   n   1  p / k  F Y  y   1  t " 
+Weibull (min) I,II,X) f y 
+Y m  1n n
+31 (pred.)  m1  w  m 1 yk  n" k 1  k 38 (post.) n" 1  yk1 f X  x w , k  k w x w k  1 e x p   x w  k  f W  w  w  n k  m e x p  n    w  m   k t k 1 / k  kt  t n  " k  x ii 1  n  n 
+ k  t"  t"
+ t wk,n  m 1/k t"  t  t   x k 
+F w  1 F xX w , k  1  e x p 
+W n  m 1/k w m  1 
+ ky n "   k 
+F  y   1  1
+Y t " 
+SOFiSTiK 2014 Appendix B (taken from Strurel – Users Manual, Gollwitzer, 2014) Page B-13APPENDIX B: Table 2: Continuous Distribution Functions for Bayesian Analysis
+Notes:
+
+I. Complete Gamma function: a   ta1etdt
+0
+x
+II. Incomplete Gamma function:   x , a   a t0 1  te d t ;
+   a    b 
+III. Complete Beta function: B  a , b   0 t a  1  1  b  1t d t 
+  a  b 
+x
+IV. Incomplete Beta function: B  x , a , b   0 a  1t b  1  t 1 d t
+1  x2 
+V. Standard Gaussian density (x)  exp 
+ 
+2  2 
+x
+VI. Standard Gaussian distribution function:   ( x )    u  d u
+
+1forx0
+VII. x 
+0 forx0
+VIII. p  0.46
+IX. q  0.55 k for k  1.0
+X. m  1 + 0.38 k for k  1.0
+SOFiSTiK 2014 Appendix B (taken from Strurel – Users Manual, Gollwitzer, 2014) Page B-14RELY|Appendix
+6-18 SOFiSTiK2023Bibliography |RELY
+Bibliography
+[1] Daniel Straub. Lecture Notes in Structural Reliability. Tech. rep. TU München, 2012.
+[2] Ove Ditlevsen and Henrik O Madsen. Structural reliability methods. Vol. 178. Wiley New
+York, 1996.
+[3] Robert E Melchers. Structural reliability analysis and prediction. John Wiley New York,
+1999.
+[4] Iason Papaioannou. Non-intrusive Finite Element Reliability Analysis Methods. TU
+München, 2012.
+[5] Michael Hohenbichler and Rudiger Rackwitz. “Non-normal dependent vectors in struc-
+tural safety”. In: Journal of the Engineering Mechanics Division 107.6 (1981), pp. 1227–
+1238.
+[6] Pei-Ling Liu and Armen Der Kiureghian. “Multivariate distribution models with pre-
+scribedmarginalsandcovariances”.In:ProbabilisticEngineeringMechanics 1.2(1986),
+pp. 105–112.
+[7] Claudia Klüppelberg, Daniel Straub, and Isabell M. Welpe. Risk - A Multidisciplinary In-
+troduction. Springer, 2014.
+[8] Stephan Gollwitzer. Strurel – Users Manual. Tech. rep. RCP Consult GmbH, 2014.
+[9] Michael Hohenbichler and Ruediger Rackwitz. “Improvement of second-order reliability
+estimatesbyimportancesampling”.In:JournalofEngineeringMechanics114.12(1988),
+pp. 2195–2199.
+[10] Siu-KuiAuandJamesLBeck.“Estimationofsmallfailureprobabilitiesinhighdimensions
+bysubsetsimulation”.In:ProbabilisticEngineeringMechanics16.4(2001),pp.263–277.
+[11] Iason Papaioannou et al. “MCMC algorithms for subset simulation”. In: Manuscript, En-
+gineering Risk Analysis Group, Technische Universität München (2014).
+[12] A.HasoferandN.Lind.“AnExactandInvariantFirst-orderReliabilityFormat”.In:Journal
+of the Engineering Mechanics Division, ASCE 100.EM1 (1974), pp. 111–121.
+[13] RüdigerRackwitzandBerndFiessler.“Structuralreliabilityundercombinedrandomload
+sequences”. In: Computers & Structures 9.5 (1978), pp. 489–494.
+[14] Armen Der Kiureghian and Mario De Stefano. “Efficient algorithm for second-order relia-
+bility analysis”. In: Journal of engineering mechanics 117.12 (1991), pp. 2904–2923.
+[15] T Abdo and R Rackwitz. “Reliability of uncertain structural systems”. In: Proc. Finite
+Elements in Engineering Applications (1990), pp. 161–176.
+SOFiSTiK2023 6-19

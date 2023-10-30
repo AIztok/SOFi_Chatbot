@@ -1,0 +1,3299 @@
+BEMESS
+Design of Plates and Shells
+SOFiSTiK | 2023BEMESS
+DesignofPlatesandShells
+BEMESSManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|BEMESS
+Contents
+Contents i
+1 Task Description 1-1
+2 Theoretical Principles 2-1
+2.1 Principles, compare of different design strategies . . . . . . . . . . . . . . . 2-1
+2.2 Bending Design of Reinforced Concrete . . . . . . . . . . . . . . . . . . . . . 2-1
+2.2.1 General Comments . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.2.2 Reinforcement Meshes . . . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.2.3 Concrete compression stress . . . . . . . . . . . . . . . . . . . . . 2-2
+2.2.4 Compression reinforcement . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.2.5 Minimum reinforcement of the pressed cross sections . . . . . 2-4
+2.2.6 Tendons . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-4
+2.2.7 Procedure of design according to Baumann (CTRL LAY 0) . . 2-6
+2.2.8 Procedure of the layer design (CTRL LAY 1) . . . . . . . . . . . 2-7
+2.2.9 Other Design Codes . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-9
+2.3 Service Load Checks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-10
+2.3.1 Minimum Thickness Check of the Compression Zone . . . . . 2-10
+2.3.2 Crack Width Control without Direct Calculation . . . . . . . . . . 2-10
+2.3.3 Crack Width Control with Direct Calculation . . . . . . . . . . . . 2-11
+2.3.4 SLS stresses, stress range, fatigue . . . . . . . . . . . . . . . . . 2-11
+2.4 Shear Checks. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-13
+2.4.1 Other Design Codes . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-13
+2.5 Punching Checks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-15
+2.5.1 General Informations . . . . . . . . . . . . . . . . . . . . . . . . . . 2-15
+2.5.2 Column Input and Control Parameters . . . . . . . . . . . . . . . 2-16
+2.5.3 Inner, Edge and Corner Columns . . . . . . . . . . . . . . . . . . 2-17
+2.5.4 Shear and Bending Design at the Column . . . . . . . . . . . . . 2-18
+2.5.5 Special Features at Wall Ends . . . . . . . . . . . . . . . . . . . . 2-19
+2.5.6 Special Features at Wall Corners . . . . . . . . . . . . . . . . . . 2-20
+2.5.7 Punching at Foundations . . . . . . . . . . . . . . . . . . . . . . . . 2-21
+2.5.8 Consideration of the Prestress during Punching Check . . . . 2-21
+2.5.9 Punching Check at a Three-Dimensional System . . . . . . . . 2-22
+2.5.10 V-Ed analysis out of MAXIMA superposition loadcases . . . . 2-23
+2.5.11 Other Design Codes . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-24
+2.6 Linear Stress Determination . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-28
+2.7 Disk structures . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-29
+2.8 Volume elements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-30
+3 Input Description 3-1
+3.1 Input Language . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+SOFiSTiK2023 iBEMESS|Contents
+3.2 Input Records. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.3 NORM – Default Design Code . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-3
+3.4 CTRL – Control of the Design . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-26
+3.4.1 CORE Parallel computation control . . . . . . . . . . . . . . . . . 3-32
+3.5 REIN – Title of the design case . . . . . . . . . . . . . . . . . . . . . . . . . . 3-34
+3.6 CRAC – Control of the Service Load Checks . . . . . . . . . . . . . . . . . . 3-35
+3.7 MREI – Minimum Reinforcement . . . . . . . . . . . . . . . . . . . . . . . . . 3-37
+3.8 SHFT – Offset Value for Shift Rule . . . . . . . . . . . . . . . . . . . . . . . . 3-39
+3.9 NSTR – SLS Checks . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-40
+3.10 MAT – Input of Material Properties . . . . . . . . . . . . . . . . . . . . . . . . 3-44
+3.11 GEOM – Input of the Cross Section. . . . . . . . . . . . . . . . . . . . . . . . 3-46
+3.12 DIRE – Definition of Orthogonal Two-course Reinforcement . . . . . . . . 3-48
+3.13 THRE – Definition of Skew 2- and 3-course Reinforcement. . . . . . . . . 3-50
+3.14 DI3D – Definition BRIC Reinforcement . . . . . . . . . . . . . . . . . . . . . . 3-52
+3.15 LAY – Definition of Multi Layer Reinforcement . . . . . . . . . . . . . . . . . 3-54
+3.16 PARA – Design Parameter . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-56
+3.17 PUNC – Punching Design . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-59
+3.18 LC – Selection of Design Load Cases . . . . . . . . . . . . . . . . . . . . . . 3-62
+3.19 GRP – Selection of Groups . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-63
+3.20 ELEM – Selection of Elements . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-64
+3.21 NODE – Selection of Nodes . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-65
+3.22 SELE – Selection of Punching Points. . . . . . . . . . . . . . . . . . . . . . . 3-66
+3.23 S – Input of External Forces and Moments . . . . . . . . . . . . . . . . . . . 3-67
+3.24 EXPO – Export of the Design Parameters. . . . . . . . . . . . . . . . . . . . 3-68
+3.25 ECHO – Control of Output. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-69
+ii SOFiSTiK2023TaskDescription|BEMESS
+1 Task Description
+TheprogramBEMESSisusedtodesignforcesoftheanalsisprogramsASEorsuperimposed
+forces of MAXIMA according to various codes.
+It is also capable to extract extreme stresses from a set of loadcases according to the linear
+elastic theory.
+Whenthedesignisperformedforseveralloadcases,theresultofthedesigncalculationrepre-
+sentsthemaximumreinforcementamountwhichiscalculatedfromtheseloadcases. BEMESS
+does not perform any load case superpositions. This is the task of the program MAXIMA.
+Additionally to the ultimate limit design, serviceability checks can be done. This can be crack
+width control, minimum reinforcement, stress and fatigue checks.
+Thecompressionreinforcementforshellsanddisksiscalculatedaccordingtothestressstate.
+The appropriate parameters are preset according to each code.
+For circular plates, cylinders or similar structures a circular reinforcement can be defined.
+Theprogramperformsapunchingcheckatpointsupports(columns)aswellasatwallcorners
+and wall ends.
+SOFiSTiK2023 1-1BEMESS|TaskDescription
+1-2 SOFiSTiK2023TheoreticalPrinciples|BEMESS
+2 Theoretical Principles
+2.1 Principles, compare of different design strategies
+SpecialeffectsinaconcreteshelldesignwerepublishedbySOFiSTiKontheMunichConcrete
+Seminar 2017. A short video shows the subject and different design strategies, see:
+YOUTUBE Video https://www.youtube.com/watch?v=wIzO8YNLCn4
+The following design strategies have been compared:
+• Baumann design (SOFiSTiK since 1987)
+• Wood-Armer method (uniaxial design in 2 directions)
+• Capra Maury (uniaxial design every 5 degree)
+• Sandwich-Modell according EN-1992-2 attachment LL
+• SOFiSTiK Layerdesign (consistent iteration of strain)
+2.2 Bending Design of Reinforced Concrete
+Three design cases are distinguished: Disks, plates and shells.
+Also BRIC volume elements can be designed.
+2.2.1 General Comments
+In slab and shell elements the direction of the main forces usually does not fit to the direction
+ofthereinforcement. Themainstressesoftenloadthereinforcementmeshwithaskewangle.
+Soashearforceappearsinthereinforcementmesh. Incasetheconcretefailsduetotension,
+the reinforcement allone cannot carry this shear and would deform to a rhomb. Only with
+an additional compression strut in the concrete the reinforcement mesh can carry the skew
+tension force, see the following figure:
+n-I
+n-I
+Figure2.1: Reinforcementmeshonskewtension,deformationtoanrhomb,compressionstrut
+You can use an otogonal mesh or a three-course and/or skew two-course reinforcement mesh
+(record THRE). For circular plates a radial and a tangential orthogonal reinforcement can be
+selected through the input of a centre point.
+The program ASE determine the internal forces and moments in the local coordinate systems
+of the plane finite elements (see appropriate manuals). In BEMESS both the directions of
+the reinforcement layers and the terms ’upper’ and ’lower’ are oriented at the local coordinate
+SOFiSTiK2023 2-1BEMESS|TheoreticalPrinciples
+systems;’lower’isatthesideofpositivezaxis. Particularlyinspacialsystemstheusershould
+realize the characteristics of the local coordinate axis definition.
+The design of the necessary reinforcement cross sections occurs according to the material
+strengths and laws of the respective code.
+2.2.2 Reinforcement Meshes
+Inmoststresssituationstheorthogonaltwo-coursereinforcementmeshistheoptimumsolution
+of the design task.
+Skewtwo-coursereinforcementmeshesarechosenmostlyduetoconstructiveconsiderations.
+They are static generally less effective than orthogonal nets. The steel requirement increases
+morethanlinearlywiththeskewnessofthereinforcementmesh. Atwo-coursereinforcementis
+only allowed for 90 up to 60 degree skewness. For higher skewness a third layer is necessary
+to avoid large crack width.
+Three-course reinforcement meshes are the best statical solution for the case of an elliptic
+stress state (universal tension or compression): The required steel amount is minimal, i.e. it
+corresponds to the required cross section of an orthogonal reinforcement mesh laid parallel
+to the principal stresses. On the other hand there is no three-course solution for the case
+of the hyperbolic stress states (simultaneous tension and compression). For this a radically
+minimised two-course solution is sought. This is done via breaking off of this reinforcement
+layer which is used least statically. The stiffening compressive concrete force which generally
+must be assigned to another direction, however, is set at this place.
+Figure2.2: stiffeningcompressionstrut(red)on45degreetensiononthereinforcementmesh
+The loading of the heterogeneous reinforced concrete continuum is transformed according to
+the compliance of the internal force equilibrium along the reinforcement directions (tension or
+compression) and the stiffening compression strut of the concrete (Figure 2.2).
+2.2.3 Concrete compression stress
+In case the permissible compressive concrete stress is exceeded, a compression reinforce-
+ment is inserted if possible. The permissible compressive concrete stress is reduced in case
+of transverse tension - EN 1991-1-1 6.5.2(2). For lateral compression 100% are approved. In
+theregionof0.0to0.1N/mm2 transversetensionthecompressivestrengthisreducedlinearly
+from 100 % to 80 % (or 75% according to the code). This reduction can be switched off with
+CTRL TENS 0.
+2.2.4 Compression reinforcement
+If the principal compressive force can not be carried by the concrete alone, the possibility of
+compression reinforcement must be checked.
+If reinforcement is available with a smaller angle, for example an angle with a 10 degree de-
+viation to the principal compressive force, then this reinforcement can take up a compressive
+2-2 SOFiSTiK2023TheoreticalPrinciples|BEMESS
+force. The transverse reinforcement then gets a tensile force which can be interpreted as a
+splitting force. For the equilibrium of the external loads nx, ny, nxy with the inner forces of the
+concrete compressive force and the forces in the reinforcement directions it is now necessary,
+thattheconcretecompressiveforceissetalittlebitskew(fromthecompressionreinforcement
+away). Now the concrete compressive force is not in line with the external principal normal
+force. If the angle reaches 45 degrees between the new concrete compressive force and the
+principalcompressionreinforcement,thennofurtherloadscanbetakenupanymore. Nowitis
+notpossibletodesignthecrosssection. Thentheerrormessage’Anglebetweencompressive
+force and compression reinforcement too large’ is printed.
+CTRLPFAI2canbeusedtoalleviatethismechanicallyexactprocedureandthereforetoavoid
+the error message. The non absorbable concrete compressive force is then fully taken up by
+reinforcement without further checks of compatibility and it is assumed, that the compressive
+force of this inserted compression reinforcement is transferred to the neighbouring elements.
+Usually this is possible at singular points and at re-entrant corners, but not possible at free
+edges!
+To clear this effect following a column that is loaded uniaxially over β c. If only a reinforcement
+mesh on 45 degrees is available, also a high reinforcement can not hold the uniaxial principal
+compressive force, since the reinforcement mesh is deformed stressfree to a rhombus, see
+Figure 2.3 middle. To brace the reinforcement mesh a stiffening tensile force would be nec-
+essary but the concrete cannot carry that. On the right side the behavior with CTRL PFAI2 is
+shown. Herethesameloadcanbecarriedbecausetheforcenotbecarriedbyconcreteisjust
+transformedincocompressionreinforcementwiththeassumptionthattheneighbourelements
+can support this reinforcement compresssion.
+P P>β c
+PP>>ββ
+cc
+CTRL
+PFAI 2
+Figure2.3: Columnwith45degreereinforcementmesh,rightprocesswithCTRLPFAI2
+Afterthistheoreticalexamplenowtwopracticalones. InFigure2.4awindowopeningisshown
+on the left. In case the concrete compression strength is exceeded in the element right above
+the corner, the reinforcement can help and carry a part of the loading. A compression force
+inthereinforcementinthiselementcanbetransferedtoneighbouringelementsandanchored
+there. So in this example an input CTRL PFAI 2 can help to design this singularity at the
+re-entrant corner using compression reinforcement.
+But in general this method is not allowed. E.g. at the support of a wall girder, the support
+compression would point to the support under 45 degree and the ortogonal reinforcement
+mesh could not carry additional compression. The horizontal bars point to a free boundary
+where a bar compression (D) could not be anchored. In this example the input of CTRL PFAI
+2 would be wrong or at least problematic.
+The stress in the compression reinforcement is limited to a stress at 2 o/oo, that gives -400
+SOFiSTiK2023 2-3BEMESS|TheoreticalPrinciples
+σ >β c D
+(D)
+D
+Figure2.4: left: windowopening(PFAI2useful)-right: wallgirder(PFAI2problematic)
+N/mm2 in most cases. Reason:
+In the shell design the forces are converted to a normal force in an upper disc and a normal
+force in a lower disc (Baumann method) - see Figure 2.7
+Then these discs are treaded as centric loaded parts and we limit the stress according EN-
+1992.1.1 6.1 (5) to a stress at 2 o/oo.
+This is not exactly the meaning of the code but it is on the safe side.
+2.2.5 Minimum reinforcement of the pressed cross sections
+Walls designed with BEMESS are considered always as ”reinforced walls”.
+A minimum reinforcement can be demanded, e.g. 0.8% of the statically necessary cross sec-
+tion (see record MAT ... AM3) . The minimum reinforcement calculation occurs in the direction
+of the principal stresses. The skew reinforcement is considered with the square of the cosine
+of the angular deviation.
+2.2.6 Tendons
+Forbondedtendonsthestressincreaseinthetendonsistakenintoaccountwherethetendons
+aresmearedoveracertainwidth,seeCTRLSIGZandWTEN.WithCTRLSIGZ0thetendons
+can be switched off totally in the bending design.
+The decompression strain is only calculated in real hit quad elements. But in the element
+designalsoneighboringelementswithoutrealhittendonsgetaneffectofthesmearedtendon
+area.
+Using CTRL LAY 0 (version 2016) tendons are only taken into account in ULS and only by
+reducing the necessary longitudinal reinforcement (no effect on lever arm...).
+Using CTRL LAY 1 bonded tendons are taken into account in the anylsis of the strain state in
+all SLS and ULS checks. A separate output table informs about the strain and stress state in
+the tendons. In ULS the element with the maximum loading is plotted showing the maximum
+concrete compression strain at the right cube face. In SLS the right cube face points into the
+direction of the (major) tendons to better check decompression (check area in blue).
+The maximum tendon stress in the cracked section can only be stored for WINGRAF, if a cor-
+responding ASE run is given with LC ... PERC ’PERM’, usually the 4000-LC of CSM for traffic
+opening, see created csm32_slab_design_desi.dat file in example csm32_slab_design.dat.
+In case the loadcases include pk-inf and pk-sup, please notice in the tendon stresses:
+2-4 SOFiSTiK2023TheoreticalPrinciples|BEMESS
+Figure2.5: Tendonsindecompressioncheck
+- the storage of the max. tendon stress for WINGRAF is done without pk-sup in the static
+determined part NP0, that means:
+- the permanent tendon stress from LC 4000 PERM does not include a change due to pk-
+inf/pk-sup, only the little stress part from traffic includes a pk-inf/pk-sup part!
+Different bond behaviour of prestressing and reinforcing steel are implemented in the crack
+design EN 1992-1-1 7.3.3 and 7.3.4 and fatigue 6.8.2 (6.64).
+In some countries e.g. Germany then the reinforcement stress is increased due to the tendon
+bond, e.g. DIN-EN 1992-1-1 7.3.3 (2) (NA.7.5.3).
+With CTRL SIGZ 999 V2 0.45 the value xi (Ratio of bond strength between tendons and rein-
+forcing steel 6.8.2 table 6.2) can be set e.g. to 0.45.
+With CTRL SIGZ 999 V2 0 the tendon area is not taken into account for the analysis of the
+effective ro ratio EN 1992-1-1 7.3.4 (7.10). Then also no increase of reinforcement stress due
+to tendon bond is done.
+
+V Vy
+Figure2.6: TendonductreductioninthesheardesignaccordingEN1992-1-16.2.3(6)
+Figure 2.6 explains the tendon duct reduction in the shear design. Teh shear check is alqays
+done in the main shear force direction. In case the direction of the main shear force points in
+lokal x, at side Vx the width bw is reduced according EN 1992-1-1 6.2.3 (6). For a direction of
+the main shear force in lokal y, BEMESS reduces the width according a beam section with an
+opening by a factor duct-diameter/d.
+For a skew direction the two parts are added with sinus2 und cosinus2.
+With CTRL BTEN 2 V2 0 this reduction can be switched off.
+SOFiSTiK2023 2-5BEMESS|TheoreticalPrinciples
+2.2.7 Procedure of design according to Baumann (CTRL LAY 0)
+This reinforcement design is based on the method described by Baumann (Der Bauingenieur
+47 (1972), pages 367-377). It looks a little bit similar to the sandwich-modell of EN-1992-2
+annex LL.
+DB
+0.35 D
+0.30 D z
+0.35 D
+Z
+Figure2.6:Fictitiousdisksandleverarminthebaumanndesign
+Figure2.7: Fictitiousdisksandleverarminthebaumanndesign
+The moments m-xx, m-yy and m-xy as well as the membrane forces n-xx, n-yy and n-
+xy are converted to effective membrane forces acting on fictitious disks with a thickness of
+0.35·construction element thickness at the outer shell side, see figure. The loading consists
+of force pairs divided up into bending moments and halved membrane forces. The lever arm
+of the internal forces required for the decomposition of the bending moments is not assumed
+according to BAUMANN. It is calculated at the basis of full utilisation of the compressive zone.
+Forthistheleverarmisdeterminedfortwocharacteristicdirections(theprincipalbendingmo-
+mentdirectionandtheprincipalnormalforcedirection). Thesmallerleverarmisusedthenfor
+the segmentation of the moment into membrane forces.
+For approximately centrically pressed shells the cross section could not be used completely
+due to the limit of the equivalent thickness of 0.35·h. Therefore in this case the equivalent
+thickness is increased for centrically pressed shells up to the value 0.5·thickness·SC1/SC2.
+The 0.35·thickness is applied from an eccentricity e/d >0.20. For a smaller eccentricity it will
+be interpolated.
+The mesh reinforcement design occurs separately for the two fictitious disks at the shell/slab
+outer sides.
+Hereoncemorethewholeprocess: foreachreinforcementlayeraseparateleverarmisused:
+1. In the direction of the main bending moments as well as in the direction of the main
+normal forces the lever arm is calculated separately. The unfavorable laver arm is taken
+−→ leverarm z
+2. With this leverarm z the fictive disc forces Ax,Ay,Axy are calculated on the considered
+shell side:
+Ax =Nx/2 + Mx/z
+Ay =Ny/2 + My/z
+Axy=Nxy/2 + Mxy/z
+2-6 SOFiSTiK2023TheoreticalPrinciples|BEMESS
+3. For these disc forces the main forces AI and AII are computed.
+4. Then the angle deviation alpha of these main forces to the reinforcement directions are
+calculated.
+5. With this angle deviation the increase factors fx/f1 are calculated according to Baumann.
+This leads to the disc forces in the reinforcement directions f_as1 (fx) and f_as2 (fy).
+These forces can be printed in BEMESS with ECHO DMOM.
+6. As the reinforcement can only carry uniaxial tension, a concrete force Db is necessary to
+bracethereinforcementmeshforshearforces −→ concrete” inthedesignmomenttable.
+Normal compression forces are also included in the output concrete”.
+It is checked if the concrete can carry this compression. Otherwise a compression
+reinforcement is calculated if possible (−→ CTRL TENS and CTRL PFAI).
+7. In case of tension these disc forces are just divided by the allowable steel fyd stress to
+get the necessary reinforcement: required.as1 = f_as1/fyd
+8. In case of a 2D slab analysis the design moments (moments in the direction of the rein-
+forcement = ECHO DMOM) are directly stored for graphical plots, see WINGRAF design
+designmoments
+For3DspacialshellsytemswithCTRLDMOM8000(offset8000)loadcasescanbestored
+with the so called ’woodarmer’ design-forces:
+Attention; stored in local quad direction, this is not the reinforcement direction for skew
+input! CTRL DMOM has nothing to do with ECHO DMOM!
+These woodarmer forces can be found in WINGRAF Resuls-Quad-Forces
+mxx = mxx +- mxy sign +- depending on sign of mxx
+nxx = nxx +|nxy|always positive to get max. reinforcement tension
+Of course the same procedure is done for myy and nyy:
+myy = myy +- mxy sign +- depending on sign of myy
+nyy = same procedure - but the loadcase title is for both cases only mxx +- |mxy|
+These comparison forces are rather similar to the ’Baumann’ method but cannot indicate
+a concrete compression failure. This is done much more precisely in BEMESS in the
+main compression direction, taking into account also an additional compression force
+stiffening the reinforcement mesh. In general the reinforcement mesh has not the same
+direction as the main compression stress.
+9. On CTRL SLS V2 0 these disk forces are also used for checks and stresses in SLS. On
+CTRL SLS V2 1 the strain state is iterated uniaxial, see chapter Service Load Checks -
+CAPRA-Maury.
+2.2.8 Procedure of the layer design (CTRL LAY 1)
+See also YOUTUBE Video https://www.youtube.com/watch?v=i3dVC6tCSH8
+SOFiSTiK2023 2-7BEMESS|TheoreticalPrinciples
+This method was completely new implemented in version 2018 and works with an exact itera-
+tion of the strain state. This method is called ’layer design’ in SOFiSTiK. It can also be used in
+the ULS design but it is not the default because it requires much more calculation time.
+In the layer design the 6 strain parameter (3 strains εx, εy, εxy and 3 curvatures κx, κy, κxy)
+are calculated iteratively to achieve equilibrium between the 6 inner forces and the 6 external
+forces nx,ny,nxy,mx,my,mxy. Thereby nonlinear work laws are taken into account for concrete
+andsteel. Insidethereinforcementareanoconcretestressisapplied. Onbiaxialcompression
+of concrete the poisson ratio is used. On uniaxial compression with transverse tension the
+poisson ratio is not taken into account, because the concrete only works uniaxial parallel to
+the crack. A further crack opening happens without poisson ratio effect. A concrete tensile
+strength is not taken into account - not even in the crack design as we are interested in the
+calculated crack width in the crack section.
+As all components are taken into account using the strain and curvature tensor, also the com-
+patibility is observed as in the Baumann design. So a tension force acting under 45 degree on
+a reinforcement mesh causes a necessary compression strut in the concrete.
+Figure2.8: Realstressdistributionasaresultofthelayerdesign(kinkduetomueanalysis)
+For the stress plot of the most forced element in a first check the maximum main concrete
+compression strain is searched (top or bottom). The stresses in this direction are shown at
+the right face of the plot cube. At the left face the maximum of the corresponding concrete
+transverse stress and a possible skew compression is plotted. This is favorable to recognize a
+skewcompressionstrutstiffeningthereinforcementmeshasthedirectionofmaincompression
+may turn over the height. The left concrete stress plot may also have a kink due to the effect
+that the poisson ration is only taken into account in case of biaxial compression!
+In case enough reinforcement is already defined coming from the ULS, the SLS procedure is
+relatively clear: with 6 target forces the 6 variable strain parameter are tuned. The iteration is
+controlled using a Chrisfield iteration method based on residual forces.
+In the ULS design the procedure is much more complex because a starting reinforcement is
+missing. Inthebeginningoftheiterationthestrainsincreasesignificantly,thecrackedconcrete
+cannot carry the loading. Then the program inserts reinforcement using panelty functions. An
+additional target appears to meet strain limits. If reinforcement is increased usually a strain
+limit of 25 Promille is the optimum. In case of compression problems at the compression face
+the tensile strain must be reduced. On further loading also compression reinforcement can be
+inserted to achieve equilibrium.
+Summary: Using the consistent strain iteration, the layer design can replace the up to now
+successful Baumann design. Mainly in the limit range of ULS design the layer design can
+2-8 SOFiSTiK2023TheoreticalPrinciples|BEMESS
+deliver more accurate results.
+In the SLS the layer design delivers more accurate results than the up to now used uniaxial
+Capra-Maurymethod. EspeciallyinposttensionedstructurestheCapra-Maurymethodcannot
+well map the real biaxial stress state.
+Tendons can now be integrated realistic in the strain analysis also in the analysis ot the lever
+arm (waste-product of the iteration of the strain state) - see tendons.
+2.2.9 Other Design Codes
+Special features for modern codes based on EN-1992
+Depending on the country, different boxed values are set. Important is the factor α-cc (fcd=α-
+cc*fck/γ c). Please check the BEMESS material output!
+Special features of the BS EN 1992-1-1:2004
+- Special values for v1 acc. 6.2.3(3) (6.10.aN)
+Special features of the Swedish BBK 04
+Important is here the additional safety coefficient gamma-n in dependence on the safety class
+(1,2 or 3). The safety class is defined in program AQUA via record NORM at CAT:
+NORM S BBK-04 CAT 1: gamma-n=1.00
+CAT 2: gamma-n=1.10
+CAT 3: gamma-n=1.20
+To change the safety class, an AQUA run with only an input for record NORM can be set in
+front of the BEMESS.
+Special features of the Danish DS 411
+- Bilinear material curve for reinforced concrete according to
+3.1.2-(3)P + 3.1.4-(3)P
+Special features of the Italian Decreto Ministeriale per le Costruzioni 2005
+Concrete safety factor 1.90 [ with alfa-cd = 1.0]
+Special features of the Swiss SIA 262:2013
+Crack check: in 4.4.2 it is recommended to reduce the steel stress accordning figure 31.
+This can be done in BEMESS with an input of PARA-SSO and a check with CRAC WK
+TAB. If the user inputs a specific crack width (e.g. CRAC WK 0.15), the analysis of crack
+width according EN-1992 7.3.4 is done. If this is not possible, shear reinforcement is in-
+serted. AccordingSIA 262:2013, 4.3.3.4.3thecompressionstrudangleisanalysedbetween
+25−45◦.
+Hint
+Please note that in BEMESS, β=90◦ →snβ=1.0
+SOFiSTiK2023 2-9BEMESS|TheoreticalPrinciples
+Special features of the Russian SNiP SP 63.13330.2012
+The concrete strength FC (Rb) and FCTK (Rbt) (see program AQUA record CONC) are re-
+duced with an additional factor for short term/long term loading that can be set with CTRL
+SNIP, default is 0.9 (long term loading). Steel is only used bilinear up to FY, for shear FP is
+used for Rs.
+Special features according to American Standard ACI
+AccordingACI318-14astrengthreductionfactorof0.65-0.9accordingTabelle21.2.1isused,
+depending on the situation bending, bending+compression or compression alone.
+Special features of the Australian AS 5100 and AS 3600
+The strength reduction factor SRF is taken into account according to the table 2.3 AS 3600.
+bending SRF=0.6 - 0.8, shear SRF=0.7
+2.3 Service Load Checks
+If requested with the input, the following checks are performed after each other. If necessary
+the reinforcement is increased which is requested statically by the appropriate amount.
+2.3.1 Minimum Thickness Check of the Compression Zone
+The check for a compression zone height can be done specially on slabs. In spacial systems
+with tensile normal forces the check usually failes in many elements because in the region of
+zero bending moment the sections are fully tension stressed.
+Therefore the check is done using a simple slab without normal force. Then the check gives a
+minimum reinforcement out of geometrical restrictions:
+Assuming a strain at the compression face, a well defined strain in the reinforcement appears
+using XMIN
+- With this strain in the reinforcement and the E-modulus of steel we get an allowable steel
+stress
+- With the concrete strain and the concrete E-modulus we get a compression force on XMIN
+- The reinforcement must carry this force with the allowable steel stress
+- The first assumed strain is cut away
+So the necessary minimum reinforcement is independant of the first assumed strain and only
+depending on the Geometrie and the ration of E-moduli.
+(Only CTRL LAY 0 uses the old method of BEMESS version 2016 - see manual of 2016)
+The check is requested with an input XMIN in the record CRAC.
+2.3.2 Crack Width Control without Direct Calculation
+The check limits the available steel stress in the serviceability state to a permissible value.
+The permissible value comes from a code depending table depending on the bar diameter or
+can be input directly in PARA-SSU! With PARA-SSU a check can be done for the table of bar
+spacing! Usage:
+If a permissible steel stress is input via PARA-SSU, this value is taken. Otherwise the permis-
+2-10 SOFiSTiK2023TheoreticalPrinciples|BEMESS
+sible steel stress is calculated based on the tabel bar diameter.
+If the check for the bar diameter table is not implemented vor a specific code, the check can
+always be done by direct input of the steel stress in PARA-SSU.
+It is assumed a crack formation through load. A crack internal force e.g. for a minimum rein-
+forcement must be requested in MREI.
+Forthickplatesthelimitdiametersareincreasedaccordingtothestandard. Forarbitrarycrack
+widths an interpolation inside the table is done.
+In the Baumann design CTRL LAY 0 tendons are not taken into account in the crack design.
+Inthelayerdesignastressincreaseofbondedtendonsistakenintoaccountintheiterationof
+the strain state (can be switched off with CTRL SIGZ 0).
+Incaseastressincreaseinbondedtendonsoccuredinthetensilezoneintheeffectivetension
+area Ac,eff, in the german DIN EN 1992-1-1 the steel stress of the reinforcement in this direc-
+tion is increased according (NA.7.5.3) - in all other codes not! In the crack design itself, for all
+codesbondedtendonsinAc,effaretakenintoaccountaccordingEN1992-1-17.3.4(7.10),in-
+dependantof150mmruleof7.3.2(3). Thisruleiswrittenfortheminimumreinforcementbutfor
+the minimum reinforcement tendons are not taken into account in BEMESS. The bond values
+are taken from 6.8.2 table 6.2.
+The check is requested with the input WK TAB in the record CRAC. Example see be-
+mess6_design.dat
+2.3.3 Crack Width Control with Direct Calculation
+If the simple check according to the tables is not sufficing, a direct calculation can occur with
+the default of the permissible crack width. For EN codes also equation 7.14 of EN 1992-1-
+1 7.3.4(3) is taken into account (except Germany and Austria). If the check is not explicitly
+programmed in BEMESS for a specific code, the check is done based on eurocode. For this
+please check the protocol of the design parameters in the output.
+Themethodofdirectcalculationofcrackwidthshouldbeusedespeciallyinbridgedesign. For
+normal buildings, the limitation of the crack width without direct calculation according to the
+tables is recommended.
+In case of a LAY multilayer reinforcement, the layers are averaged with their force component.
+Maybethemostouterlayerwithas1=20cm2/mhasasteelstressof200N/mm2undthenext
+innerlayerwithsamedirectionwithas3=10cm2/mhasasteelstressof140N/mm2,weapply
+27cm2/m(20cm2/m+10*140/200=27cm2/m,as3reducedduetolowersteelstress). Inthe
+samewaythecenterofthetensionforceind-eff(effectiveheight)isherecalculatedto50.4mm
+(40*20+80*7/27). Thecrackwidthisthencalculatedaccordingtothecrackformularswiththe
+(in the same way) averaged bar diameter using the averaged steel stress of 184.4N/mm2
+(200*20+140*7 / 27). ac-eff is usually taken as 2.5*d-eff.
+The direct analsis ot crack width is requested with an input WK PARA in the record CRAC.
+2.3.4 SLS stresses, stress range, fatigue
+With NSTR various SLS stress checks can be done.
+SOFiSTiK2023 2-11BEMESS|TheoreticalPrinciples
+ε σ
+c−eƒƒ
+s3=10cm2/2 σ3 d3=80mm
+s−eƒƒ
+s1=20cm2/2 σ1
+deƒƒ =50.4mm
+d1=40
+Figure2.9: Crackwidthdesignonmultilayerreinforcement
+WithoutinputtoCTRLLAYtheSLSstressanalysisusesthelayerdesignwiththemechanically
+consistent approach of the iteration of the biaxial strain state. This method does not use sim-
+plifications or modified analysis methods like Baumann or Capra-Maury but is based only on
+structuremechanicalbasicsandthematerialworklaws. Thenall6forcesnx,ny,nxy,mx,my,mxy
+are brought to equilibrium with the corresponding 6 strains in one iteration.
+With CTRL SLS V2 also the old methods can be set:
+V2=0 : SLS with substitute forced according Baumann
+V2=1 : uniaxial design every 5 degree according Capra-Maury
+In each element the stresses in concrete and steel are calculated for all loadcases with a
+uniaxuial iteration of the strain state in 36 directions (all 5 degree)
+V2=2 : mechanically consistent layer design (default)
+1
+2
+3
+4
+Figure2.10: Capra-Maurydesign
+In the Baumann and Capra-Maury method tendons are not taken into account in the stress
+analysis. In the layer design a stress increase of bonded tendons is taken into account in the
+iteration of the strain state (can be switched off with CTRL SIGZ 0).
+In the layer design also the different bond behaviour of prestressing and reinforcing steel is
+taken into in the steel stress range according EN 1992-1-1 6.8.2 (6.64). For this tendons are
+taken into accound inside 2.5*d1 with d1=axis surface distance of the bar.
+With CTRL SIGZ 999 V2 0.45 the value xi (Ratio of bond strength between tendons and rein-
+forcing steel 6.8.2 table 6.2) can be set e.g. to 0.45. With CTRL SIGZ 999 V2 0 the increase
+of reinforcement stress due to tendon bond can be switched off.
+2-12 SOFiSTiK2023TheoreticalPrinciples|BEMESS
+2.4 Shear Checks
+Ashearcheckisperformedforplatesandshells. ThecriticalshearforceVisdeterminedfrom
+the shear forces VX and VYvia a geometrical addition. This shear force, divided by the lever
+arm of the internal forces (see bending design), results in the effective shear stress τ 0.
+Theoutput includesthe shearzone, the existingshear stress τ 0 andpossibly theshear stress
+τ which has to be considered. Perpendicular links are assumed during the calculation of the
+required shear reinforcement. The shear reinforcement can be output in reference to an area
+(cm2/m2) or to the elements (cm2).
+ThesheardesignaccordingtoEN-1992andmostmoderncodesisbasedontwodesignvalues
+of the sustainable shear force:
+• VRd,c:
+Design value of the sustainable shear force without shear reinforcement
+• VRd,m:
+Maximum design value of the sustainable shear force with shear reinforcement, which can
+be sustained without failure of the fictitious compression concrete strut. If this value is
+exceeded by the existing shear stress Vsd, the cross section can not be designed.
+If shear links are necessary, a minimum shear reinforcement is calculated according to the
+code.
+In BEMESS the method with variable compression strut inclination is implemented. The com-
+pression strut inclination is determined in this case according to the utilization degree.
+As VRd,cdepends on the longitudinal reinforcement, for first V>VRd,cthere are two possibilities
+- either compute shear reinforcement or increase longitudinal reinforcement to increase VRd1.
+This can be controlled with CTRL ro_v for the overall slab or with PUNC ro_v for punching
+regions. Example of an input ( bemess6_design.dat ):
+CTRLRO_V0.5 $Theprogramattemptsnottouseanyshearreinforcement
+$uptothisbendingreinforcementratio.Theshearcheck
+$increasesperhapsthebendingreinforcementuptothisvalue.
+PUNCro_v1.50 $forpunchingdesing
+During the calculation of VRd,c and the compression strut inclination the available longitudinal
+tensileandlongitudinalcompressivereinforcementaswellasthenormalforcetobeincludedin
+the principal shear force direction are considered. Reinforcements are considered in this case
+with the square of the cosine of the angular deviation to the principal shear force direction.
+2.4.1 Other Design Codes
+Special features for codes based on EN-1992:
+Following boxed values are used depending on the code:
+- 6.2.2(1) Shear VRd,ct analysis
+- 6.2.3(2) max. compression angle cot0
+SOFiSTiK2023 2-13BEMESS|TheoreticalPrinciples
+Special features of the BS EN 1992-1-1:2004
+- No minimum shear reinforcement.
+- Minimum value for vrdc: vmn+k1*σ cp according to 6.2.2(1) (6.3N)
+in normal shear design
+ThesheardesignaccordingtotheoldBritishStandard(notBS-EN1992)occurslikethecheck
+according to old EC2. The from the concrete alone sustainable shear stress v-c is determined
+in this case in dependence on the bending reinforcement in principal shear force direction
+according British Standard Table 3.9.
+Special features OENORM B 4700 - difference to EC2
+Unlike the original EC2 the standard method in the shear design which shows a smaller shear
+reinforcement at weak loaded cross sections may not be employed here. The compression
+strut inclination beta is limited to 0.6 (according to B4700 equation 23).
+Special features French Design Code BAEL 91 Revision 99 - difference to EC2
+Shear design ass = γ s · (τ-u-0.3ftj · k)/(0.9fe)
+max. shear stress 0.2fcj/γ b or 5 MPa (compression strut)
+Special features Italian Design Code D.M.9 genniao 1996 - difference to EC2
+Plates without shear design are allowed to
+V ≤ 0.25·ƒ ·r·(1.0+50·ρ)·b ·d·δ
+Sd ƒcd 
+otherwise shear design with VSd ≤ Vcd + Vd
+with Vcd = 0.60fctd · b · d · δ
+max. shear force 0.3fcd· b · d
+minimum shear reinforcement min-Vd = 0.5 · Vsd
+Special features Swiss Code SIA 262
+In shear design, without increase of longitudinal reinforcement it is possible that bending rein-
+forcement plastifies, so an increased epsv acc. 4.3.3.2.3 (39) is used. Dmax is set to 32 mm.
+Value kc is set to 0.55 (4.2.1.7).
+Incasetheshearcheckneedslongitudinalreinforcementuptoro_v(seectrlro_v),equations
+4.3.3.2.2 (38) and 4.3.3.2.1 are used. Then an elastic behavior of the longitudinal reinforce-
+ment is assumed as more than necessary longitudinal reinforcement is present. If this is not
+possible, shear reinforcement is inserted. According 4.3.3.4.3 the compression strud angle
+is analyzed between 25-45 degree. If shear reinforcement is necessary, a minimum shear
+reinforcement is used according 5.5.2.2 (110) (see 5.5.3.3). The maximum shear strength is
+checked acc. 4.3.3.4.6.
+Special features of the Russian SNiP SP 63.13330.2012
+ForshearcheckofplatesnoshearreinforcementisuseduptoQb accordingtoequation(8.57).
+For this c is taken to 1.0·h0. On higher shear force, links are provided according to (8.58) with
+variable compression (c = 2.0·h0 , controllable with CTRL COTT). The minimum shear links
+2-14 SOFiSTiK2023TheoreticalPrinciples|BEMESS
+are considered with qs ≥ 0.25·Rbt·b. The maximum shear capacity is limited with equation
+(8.55).
+Special features of the Swedish BBK 04
+The shear check is done according to the alternative model which is described in BBK
+04-3.7.3.7. As for DIN-Fachbericht a minimum value vmin is used for the concrete bearing
+capacity. For the shear check the program attempts to increase the member resistance VRdc
+via an increase of the longitudinal reinforcement up to RO_V (see CTRL RO_V) in order to
+refuse a shear reinforcement. If a shear reinforcement is necessary, an optimal inclination
+compression strut is determined according to 3.7.4.3d. However, this compression strut
+inclinationbecomesnotsmallerthancot-teta≤1.5duetoBBK04-figure3.7.4.3b. Ifshearlinks
+necessary, they are designed to fs=fst according to 3.7.4.3f. A minimum shear reinforcement
+is not checked.
+Special features according to American Standard ACI
+In the shear design according ACI 318-14 a strength reduction factor of 0.75 for shear is used
+(ACI 318-14 Table 21.2.1). A minimum shear reinforcement is taken into account if necessary
+according ACI 318-14 Table 9.6.3.3.
+Special features of the Australian AS 5100 and AS 3600
+ForsheardesignBEMESStriestoavoid,ifpossible,theshearreinforcementbyincreasingthe
+longitudinal tension reinforcement up to CTRL RO_V.
+If this is not possible, for V>0.5*SRF*Vuc the shear reinforcement is designed with a variable
+concrete compression angle according to AS 3600 8.2.10. The minimum shear reinforcement
+istakenintoaccountaccordingtoAS36008.2.8. SRFisherethestrengthreductionfactor(for
+shear SRF=0.7).
+Special features of the Danish DS 411
+- Without shear reinforcement: if τ Sd < β * τ 0d according to 6.2.2(1) similar to EC2-vrdct
+- Otherwisefullsheardesignwithoptimumcompressionangleviacompressioncapacityacc.
+6.2.2.1(14)P - (17)P
+- Minimum compression angle cot-theta: according to 6.2.2.1(9)(a):
+2.0 for curtailed reinforcement = default in BEMESS MAT-K1S
+2.5 if not curtailed: input in BEMESS-MAT-K1
+- Without minimum shear reinforcement for slabs (6.4.3.1 (4)P only for beams)
+2.5 Punching Checks
+2.5.1 General Informations
+Precondition
+Load cases with support reactions have to be contained in the indicated load cases. If the
+internal forces and moments from the program MAXIMA are designed, the program BEMESS
+has to be informed also about the load case of the extreme support reactions (record LC).
+The use of boundary elements for linear wall support is the precondition for the automatic
+identification of wall ends and wall corners. An elastic edge support is recommended. The
+SOFiSTiK2023 2-15BEMESS|TheoreticalPrinciples
+stiffnessofthislinearedgesupportresultstoc=E·D/h(withh=wallheight)inthiscaseandcan
+be input generally with approximate 500000 kN/m for the usual building constructions. Indeed
+aPZsupportwithanadditionaloutputedgeelementispossible,however,highsingularcorner
+moments which depend on the element mesh strongly are calculated then at the re-entrant
+corners!
+Processing
+The program searches then single support nodes (single columns) and wall ends as well as
+wall corners and performs a punching check for these points.
+The punching force at single support node uses the technique of connecting forces according
+Figure 2.17. At wall corners or edges a perimeter cut is analyzed, see section wall ends.
+Nodes with less than 5 kN support reaction are not considered! This has to be considered for
+the control of the punching points (with program WING ”QUAD ASPS SCHH 0.20”)!
+Within the punching area the plate shear design is replaced then by a punching check. The
+elements lying within this area get then at least the for the punching check necessary upper
+longitudinal reinforcement. If the bending design shows a higher longitudinal reinforcement,
+this becomes determinent. A normal plate shear design occurs outside of the punching area.
+Studrails: see PUNC KPU.
+Incaseofacolumnheadtheprogramverifiesthepunchingintheinnerandouterpart. Exam-
+ple see bemess7_columnhead.dat.
+With ECHO PUNC EXTR a plot ot the punching sitiuation can also be requested if no shear
+reinforcement is necessary.
+So that a necessary shear reinforcement will not forget in the graphics, all points have the
+shear reinforcement in the punching area, also the points directly about the column!
+If no column dimensions are input, BEMESS uses a rectangular column with d=b=plate thick-
+ness (however, not larger than 30 cm) as default. Column dimensions possibly defined in the
+data base are accepted (Slabdesigner).
+With ECHO PUNC FULL a detailed output is printed per column.
+2.5.2 Column Input and Control Parameters
+UsuallythecolumnparametersaresetinthegraphicalinputofastructuralpointinSOFIPLUS.
+These parameters are used in BEMESS.
+In special cases they can be modified in a manual input PUNC where the columns can be
+assigned by means of the supporting coordinates X and Y (mesh-independent). But also a
+node number can be input on TYPE.
+The program attempts to perform first of all the punching check without shear reinforcement.
+If bending reinforcements more than REIN (default 1.5 %) results, so the program changes to
+punching check with shear reinforcement.
+Controlparameters onpunchingcan alsobeinput inaseparate TEDDYtaskin frontof aSSD
+2-16 SOFiSTiK2023TheoreticalPrinciples|BEMESS
+Task design, example see SELE
+2.5.3 Inner, Edge and Corner Columns
+For edge and corner columns the effective perimeter is reduced based on a sector method. In
+addition the punching force is increased by a beta factor.
+BEMESSdeterminesitselftheeffectiveroundcutautomatically,whenitiscontrolledwhetherin
+individualsectorsaroundthecolumnblockoutsoredgesaretobefound. Itappliesinthiscase
+individual sector areas like for the block load analysis. If for a sector area plate elements are
+usedwith100%,thesectorisconsideredaseffectiveforthepunching. Currently72sectorsare
+arranged with 5 degrees per sector. The search sectors extend from dS/2 to dS/2+6·effective
+depth.
+Infig. 2.11thesectors1,2+4arenotcoveredcompletely. Sector1+2findstheboundary,sector
+4 finds the opening. The program can not differ between boundary and opening but the fact
+thattwoactivesegmentsuoccurindicatesthattheremustbeanopening. Thenthecatchedu
+is taken as the active perimeter. Without opening the active perimeter may be elongated up to
+the real boundary according EN 1992-1-1 figure 6.15. You find this in the full punching listing
+marked with ”+ boundary spacing”.
+Sector Method:
+1
+2
+Boundary
+of slab
+u 3
+u
+Search sector 4
+outer radius
+6* dS
+Search sector Opening
+inner radius d
+Figure2.11: Sectormethodtofindtheactiveperimeter
+The sector method delivers the effective perimeter u of the punching round cut. The ratio u/u0
+is output in % in the result list.
+Acolumnisconsideredasaninsidecolumnfrom1.00·u0to0.80·u0.,asanedgecolumnfrom
+0.80·u0 to 0.50·u0, as a corner column smaller 0.50·u0.
+In case a point lies exactly on the boundary we assume that this is only done to simplify the
+analysis model and the outer column face is alligned with slab boundary in reality. So the
+SOFiSTiK2023 2-17BEMESS|TheoreticalPrinciples
+perimeter is elongated by 2*half column width in that case, see EN 1992-1-1 figure 6.15. In
+case the point lies a little bit inside the slab, the length of an exact perimeter at distance 2d is
+used.
+According to the standard the shear stressin the perimeter cut determined with u is increased
+with a beat factor for the rough consideration of not axisymmetric bending loading. Using
+CTRL WINT 0 the program calculates this eccentricity value beta according EN 6.4.3 (6.39).
+BEMESS extracts a restraint column bending moment also in case of a simple pz-supported
+slabusingtheshearforcedistributionaroundthepunchingnode. Ifthecolumnisreallyrestraint
+with a rotational spring or a column beam the real restraint moment is used to calculate the
+beta value according EN 6.4.3 (6.39). The loadcase with the maximum product of Vz*beta will
+bedesignedforpunching. Thisbetamethodisperformedforalldesigncodes-eveniftheydo
+not note it explicitely.
+Usually we have a biaxial bending moment MX+MY. Thus also for international codes the
+extended german formula (NA 6.39.1) is used to combine both Mx and My. The function W1
+according (6.40) is analyzed for the active part of the perimeter, also for edge and corner
+columns. In general the beta value is limited to 1.80 to avoid unrealistic high values. At edge
+andcornercolumnsoftenhighbetavaluesarecomputed. Butastheperimeterisalreadyhighly
+reduced at these columns, BEMESS uses the flat (approximate) values according EN 6.4.3(6)
+Figure 6.21N for edge and corner columns (by default). This behavior can be controlled with
+CTRL BETA.
+The beta value can also be set manually for every punching node with PUNC ... BETA but for
+security on edge and corner columns at least the flat value is used.
+2.5.4 Shear and Bending Design at the Column
+Withinthepunchingareatheregularplatesheardesignisomittedandreplacedbythepunch-
+ing check.
+Thehighnodemomentinasingularsupportednodeisreducedwithdelta-m=A/8·bmin/bmax
+(A = maximum support reaction, bmin, bmax = smaller, larger column dimension). It is con-
+sidered,thatforbiaxialmomentloading(mI=mII)thesupportpressurecanbedeterminedonly
+in each case to a half for a mI and a mII support moment reduction, therefore delta-mI= A/16
+and delta-mII= A/16 for bx=by. The moment reduction is limited to max. 20 %. This reduction
+also works on switched off punching PUNC NO. With PUNC NO D 0.01 B 0.01 the moment
+reduction can be switched off. With SELE this can be switched off for specific nodes.
+d d-support node
+Figure2.12: Designthicknessinthecentralnode
+In addition a larger thickness is used during the bending design of the central column node. In
+this case the thickness is increased from the column edge with 1:3. With the default of a plate
+2-18 SOFiSTiK2023TheoreticalPrinciples|BEMESS
+thickness in the record GEOM as well as at wall ends and wall corners this increase does not
+occur. The increased thickness is printed in the case of ECHO REIN FULL per node.
+2 1
+1b 2
+1,5d b
+1b 2
+1 1
+2 2
+≥2b
+bildung2.11:Maßgebende Abschnitte des kritischenRundschnitt
+Figure2.13: Determinantsectionsofthecriticalroundcut
+Legend 1 Load area Aod
+2 determinant sections of the critical round cut
+
+
+
+
+
+
+ 1 ≤ 2b
+
+
+
+ 6d−b
+1
+
+b
+b ≤
+1
+3d
+Thevalues6dand3daredependingondesigncode. ThevaluesusedherecountforGermany
+and Austria- DIN EN 1992-1-1 Bild NA.6.12.1.
+In Great Britain up to column size a/b smaller 4 no reduction is used, in all other European
+countries the legs are limited to 1,5*d.
+2.5.5 Special Features at Wall Ends
+There are two methods to analyze the punching force at wallends and corners. Default is the
+integration of the slab shear force along the critical perimeter (CTRL WINT 0). WITH ECHO
+PUNCFULLthedistributionoftheslabshearforceisplottedqualitatively. Aswefoundoutthat
+the result varies depending on the distance to the wall, BEMESS analyzes four distances and
+takes the maximum punching force - for an ionfo checkable in WINGRAF after a BEMESS run
+with ECHO PUNC 5.
+SOFiSTiK2023 2-19BEMESS|TheoreticalPrinciples
+Alternatively the old method of SOFiSTiK Version 2014 can be used with CTRL WINT 1.5.
+Thennottheslabshearforceisusedbutthesupportreactionsatthewallareintegratedalong
+a specific length. This length was preset to 1.5*a1/2 in version 2014. With CTRL WINT 1.0
+also a shorter integration length can be selected for wall ends (not acting at wall corners). In
+this method the reaction forces are first changed to smeared line reactions and the integrated.
+The old method caused problems on stiff supports due to the singular high point force at the
+wall end. Often at the second suppurt node a (negative) tension occured. The new method
+integratestheshearforceinadistancetothesingularityandgivesbetterresultsinmostcases.
+Thepunchingatwallendsusesafixed β factoraccordingtothecode. Atendofwallstheside
+length of the punching perimeter is set to s=a1/2 (with limitations according to codes). With
+CTRL WEND this can be controlled:
+With a positive input for CTRL WEND the side length of the design perimeter is set to
+WEND*wallthickness. With a negative input for CTRL WEND an additional factor to the side
+length according the code (a1/2) can be defined: s=(-WEND)·a1/2, default -1.0).
+1b 2
+b
+1b 2
+1
+1 2
+Figure2.14: Wallend,a1andb1seeinnercolumns
+If two wall ends are direct side by side, u is limited to 0.6·u0 in order to prevent an overlap of
+the round cuts.
+The design moment is reduced at wall ends. An increase of the plate thickness in the central
+node does not occur, however, because in the rule it is supported onto a masonry wall.
+2.5.6 Special Features at Wall Corners
+The punching at wall corners was improved according EN-1991-1-1 and is also valid for other
+codes.
+Atwallcornersthesidelengthofthepunchingperimeterissetto1.·d(dependingonthecode).
+The wall width has no effect now! The analysis of the punching force used the same method
+than at wall ends.
+Legend 1 Load area Aod
+
+1
+= 1.5 · d
+2
+2-20 SOFiSTiK2023TheoreticalPrinciples|BEMESS
+b
+1 2
+1 1
+2
+Figure2.15: Wallcorner
+(a1/2 independent of b)
+2.5.7 Punching at Foundations
+For EN-1991-1-1 codes the critical perimeter distance is searched iteratively. Other codes
+often use a distance 1.0·d . The distance to the slab boundary is not valued as critical as
+for normal slabs (the critical distance to the boundary is taken to 1.2-1.8·d depending on the
+slab thickness (6·d for normal slabs/openings). A higher boundary β value is then taken for a
+relation u/u0 < 0.95 (0.80 for normal slabs).
+ReductionofthesoilpressureaccordingEN-1991-1-1isallowedwith100%areaofthecritical
+reduced design cut. PUNC LC_P reactivated to input a fixed loadcase for soil pressure reduc-
+tion. Futhermore now at least 90 % of the maximum soil pressure is taken for the reduction,
+also in case of lower minimum soil pressure, because usually the maximum punching force
+corresponds with maximum soil pressure (is not clear in priory).
+With ECHO PUNC 4 you can get the punchung force V-Ed without bedding reduction in the
+WINGRAF plot.
+2.5.8 Consideration of the Prestress during Punching Check
+Depending on the codeprestress normal stresses are taken intoaccount for punching design,
+but only the part of real defined slab tendons crossing the punching zone. Normal forces of a
+normal 3D analysis without tendons are not taken into account!
+The vertical component of tendons is considered for the analysis of VED in all design codes.
+BEMESSsearchesforeachpunchingperimeterthetendonswhichcrossthis perimeter. Fora
+horizontaldeviationofthetendontotheperimetergreaterthan60degreeatendonisnottaken
+into account for this perimeter. Up to 40 degree the cosine is used, between 40 and 60 the
+contributionisinterpolated. CreepandshrinkageareconsideredwithaconstantlossofCTRL
+VPDC-defaultVPDC=0.12(=12%). WithECHOPUNCEXTRallusedtendonsarelistedwith
+their single effect.
+Instead of the automatic calculation of Vpd, Vpd can also be input manually for each punching
+node with PUNC...VPD (positive = relieving effect). The input value is then taken constant for
+SOFiSTiK2023 2-21BEMESS|TheoreticalPrinciples
+each punching perimeter.
+2.5.9 Punching Check at a Three-Dimensional System
+Inincreasingmeasurehigh-risebuildingsareanalysedaccordingtotheFiniteElementMethod
+also for three-dimensional systems. The singular column points and wall end points are a
+problem in the design especially for the shear design. The decisive punching points of column
+connections and wall ends are identified automatically also at inserted slabs and checked.
+Within a round cut the normal plate shear check can be omitted then. The bending moments
+arereducedatthecolumns. Thedecisiveshearforceresultsfromthedifferenceofthecolumn
+forces over and under the slab. Because these parts are not anymore understandable from
+the column forces after a superposition with the partial safety factors, the punching force is
+integrated about the shape functions at the punching node from the bordering plate elements.
+The punching dimensions are extracted automatically from the column cross sections and the
+wall thicknesses.
+Figure2.16: Criticalpunchingandshearreinforcementperimeters
+Inthesamemannerapunchingcheckisperformedforcolumnsandwallendsatelasticbedded
+foundation plates with deduction of the minimum soil pressure.
+In the illustration the automatically determined critical punching round cuts are plotted in red.
+Some punching points require multiple shear reinforcement perimeters. Here this is the case
+particularly in the foundation slab. The in each case reduced round cut is recognizable at the
+wall ends.
+The following Figure 2.17 shows how BEMESS calculates the punching force:
+2-22 SOFiSTiK2023TheoreticalPrinciples|BEMESS
+Figure2.17: Connectingforcestocalculatethepunchingforceatcolumns
+Procedure: at the column node in the slab here 4 quad elements attach to the node. The
+connecting forces of these 4 quad elements are summed up and give the punching force.
+These connecting forces are much more precise that the quad shear forces that could be
+integrated in a perimeter around the column. Furthermore this method also works in case the
+column forces of a higher level are only applied as single loads. A problem is that usually only
+the MAXIMA superposed loadcases are used - see problemm of Figure 2.19
+A differnce of the column force above and below the slab is not used in BEMESS as the Max-
+Min column forces are separate results and sometimes not even analyzed.
+Punching is only performed on horizontal slabs but not at vertical walls!
+2.5.10 V-Ed analysis out of MAXIMA superposition loadcases
+InthedesignofanormalslaborshellstructureBEMESSonlygetstheMAXIMAsuperposition
+loadcases. The superposed support reactions don’t help because in a 3D system they do not
+give an information at the punching node. Lets now study an example, showing a slab on a
+column with dead load and wind. In a manual calculation you would check the combination
+γ∗g+γ∗ and design punching with β∗V−Ed=512kN:
+γ∗g γ∗ γ∗g+γ∗
+200kN 200 70 −70 270 130
+V−Ed=400kN
+M=60kNm
+β=1.28
+β∗V−Ed=512kN
+Figure2.18: Slabonacolumnwithdeadloadandwind
+But the combination loadcase γ∗g+ γ∗ does not exist as a single loadcase in a normal
+SOFiSTiK2023 2-23BEMESS|TheoreticalPrinciples
+analysis. There you only have the single loadcases and the MAXIMA superposition quad
+forces, e.g. min-mxx. From this BEMESS must extract a punching force and gets:
+γ∗g γ∗ MAXMA−mn−m
+200kN 200 70 −70 270 200
+V−Ed=470kN
+M=30kNm
+β=1.08
+β∗V−Ed=508kN
+Figure2.19: Punchingforce,extractedfromMAXIMAquadsuperpositionforces
+The force V-Ed= 470 kN does not really exist but the design controlling value β∗V − Ed =
+508kN is quite close to the manual value.
+Conclusion: thesuperposedMAXIMAquadforcescancontainresultsfromactionsthatcannot
+occur in parallel (left of the column force with wind, right of the column force without wind), but
+the design controlling value β∗V−Ed=508kN is OK.
+Remark: by default BEMESS uses a minimum β of 1.15. So BEMESS would be on the save
+side here. To use the value β =1.08 you must input CTRL BETA -2.
+2.5.11 Other Design Codes
+Special features of EN-1992
+Punchingdesignisdonewiththecriticalperimeterat2.0*d. Anadditionalcheckatthecolumn
+face is added depending on the country code.
+Special features of the BS EN 1992-1-1:2004
+- Minimum value for vrdc according to 6.4.4(1) (6.47) for punching
+- In punching design the effective steel stress value fyd_ef is taken into account.
+- According to 6.4.5(3) (6.53) a maximum punching resistance is taken into account.
+Special feartures OENORM B 4700
+The original EC2 equation with 40·ro1 is used for VRdc for punching and not the equation (44)
+of B 4700, because the span l in the case of FE plates is in general unknown. VRds is limited
+to 1.4·VRdc. The punching reinforcement is approximately twice so large as with the original
+EC2 due to the effective coefficient ks!
+Special features according to American Standard ACI
+Punching occurs with marking (without precise particularization) of possible necessary shear
+armsaccordingtoACI318-1422.6.4and22.6.5. Likefortheshearcheckastrengthreduction
+factor of 0.75 is used also here.
+In a first step v < vc with vc according table 22.6.5.2 ist checked.
+If v < vc no shear reinforcement is necessary.
+2-24 SOFiSTiK2023TheoreticalPrinciples|BEMESS
+Otherwise a smaller vc according table 22.6.6.1 is used to design a shear reinforcement.
+Special features French Design Code BAEL 91 Revision 99 - difference to EC2
+Punching form: rectangle around the column
+Check of the shear stress in distance d/2
+If not possible without shear reinforcement, then a warning is printed with reference to manual
+determination of punching reinforcement.
+Special features Italian Design Code D.M.9 genniao 1996 - difference to EC2
+Punching is only checked according to EC2. If not possible without shear reinforcement, then
+a warning is printed with reference to manual determination of punching reinforcement.
+Special features of the Russian SNiP SP 63.13330.2012
+AccordingSP63.13330.2012itisonlycheckedifthepunchingdesignisfulfilledwithoutshear
+reinforcement. Otherwise the node is marked with an error.
+Special features of the Swedish BBK 04
+Punching is checked at a perimeter 0.5·d. The punching eccentricity factor η is set to 1/1.15
+for inner supports, 1/1.40 for boundary supports and 1/1.5 for edge supports, according to
+common EC2 regulations. A design with punching shear reinforcement is not allowed in BBK
+04. Also a check for the for column heads is not done.
+Special features of the Australian AS 5100 and AS 3600
+The punching design according to AS 3600 does not allow an increase of the shear capacity
+withlongitudinalreinforcementorshearreinforcement. Thus,thepunchingdesignisperformed
+according to the new Eurocode EC 2 1992-1-1:2004(E). With the printed punching force V-ED
+a manual check according to AS 3600 9.2 can be added easily.
+Special features of the Danish DS 411
+Punching in designed without influence of longitudinal reinforcement. The shear stress τ Sd =
+VSd//h is limited:
+τ Sd < 0.12 * μ* fcd : punching check OK.
+τ Sd < 2 * 0.12 * μ* fcd : shear reinforcement required
+τ Sd > 2 * 0.12 * μ* fcd : punching failed
+Special features Swiss Code SIA 262:2013
+In BEMESS two LoA (level-of-appoximation) are implemented:
+• LoA I (first step)
+• LoA III (third step)
+The punching shear strength for member without shear reinforcement is calculated acc. SIA
+262:2013, 4.3.6.3.1, Eq.(57):
+V Rd,c =k r ·τ cd·d · (2.1)
+SOFiSTiK2023 2-25BEMESS|TheoreticalPrinciples
+The control perimeter  is calculated according to SIA 262:2013, Fig.(21) and Fig.(22):
+2a
+b2 s2
+62
+4/ 624/,d0
+,
+0d 
+=2·+2·b+d ·π =(s+d )·π
+ 
+Figure2.20: Controlperimeter
+The effect of the shear forces at the corners of large supported areas is implemented as well.
+=8·1.5d +d ·π
+ 
+96,0
+0,23
+
+d /2 d·5.1
+
+0,69
+1.5·d
+
+Figure2.21: Reducedcontrolperimeter
+BEMESS takes into account the reduced basic control perimeter ( 1,red) when  > 12·d as
+shown in Fig. 2.21.
+Hint
+Columns: pleasenotethatonlyrectangularandtubesectionsarecalculatedcorrectly. T
+and L cross-sections aren’t supported.
+BEMESS can also reduce the control perimeter in case of punching near the edge of plate
+(refer to SIA 262:2013 Fig.(21-d)), the program checks the edges and openings around the
+2-26 SOFiSTiK2023TheoreticalPrinciples|BEMESS
+punching point. For walls the control perimeter can be calculated as shown in Fig. 2.22.
+1,1
+1.5·d
+ 5,0
+32,1 
+d·5.1
+b
+1,1 1,23
+1.5·d 1.5·d
+ 
+d d
+ 
+=2·1.5·d +b+ ·π =2·1.5·d + ·π
+ 
+2 4
+Figure2.22: Reducedcontrolperimeter
+According to SIA 262:2013 the control perimeter can be reduced by multiplying the length of
+basic control perimeter by the coefficient of eccentricity k e. BEMESS takes the minimal value
+of the two definitions as defined in the norm (on the safety side):
+ 
+k =0.9 ƒor nner comns
+e
+ 
+ k e =0.70 ƒor edge comns 1 
+k e =mn  ; e   (2.2)
+ k e =0.65 ƒor corner comns 1+ 
+ b 
+k =0.75 ƒor corners oƒ s
+e
+The value of k g (DMAX) is set to 32 mm, for high strength and lightweight concrete, the ag-
+gregate particles may break, resulting in reduced aggregate interlock. In that case, the value
+k g =0 (DMAX=0). Value k c is set to 0.55, according to SIA 262:2013 (4.2.1.7).
+The parameter k r is calculated by using SIA 262:2013, Eq.(58):
+1
+k r = (2.3)
+0.45+0.18·ψ·d·k
+g
+where for LoA I (refer to SIA 262:2013, Eq.(59)):
+r ƒ
+s sd
+ψ=1.5· · (2.4)
+d E
+s
+and for LoA III:
+3
+r ƒ (cid:18)m (cid:19)
+s sd sd 2
+ψ=1.2· · · (2.5)
+d E m
+s Rd
+SOFiSTiK2023 2-27BEMESS|TheoreticalPrinciples
+For punching in a first step the perimeter is reduced. Then approximation step 1 according
+4.3.6.4.2 with m sd/m Rd =1 is tried. The distances r s and r sy in radial direction are extracted
+from the real bending moment line. If this step 1 fails, in approximation step 3 the bending
+moments in the supporting strip are extracted from the Finite Element results according to SIA
+262:2013, 4.3.6.4.8. Then BEMESS tries to increase the longitudinal reinforcement (up to
+PUNC RO_V) to increase the bending capacity m sd and reduce the slab rotation ψ.
+Incasethisisnotpossible,thelongitudinalreinforcementissettoPUNC RO_Mandthenecessary
+punching shear reinforcement is calculated according SIA 262:2013, 4.3.6.5).
+The contribution of the shear reinforcement is calculated as
+V d,s =V d−V Rd,c (2.6)
+V Rd,s has to satisfy (SIA 262:2013, 4.3.6.4.5.4, Eq.(66))
+V d,s ≥0.5·V d (2.7)
+The shear reinforcement is calculated as in (SIA 262:2013, 4.3.6.5.4, Eq.(67)):
+V
+(cid:88) d,s
+A s·snβ= (2.8)
+k ·σ
+e cd
+Hint
+Please note that in BEMESS, β=90◦ →snβ=1.0
+σ cd is calculated according to SIA 262:2013, 4.3.6.5.4, Eq.(68).
+The stress in the punching shear reinforcement is calculated using the maximum diameter of
+table 20 (SIA 262:2013, 5.5.3.12). If you want to use a smaller diameter you can manually
+adjust the reinforcement with a higher steel stress.
+ThemaximumpunchingresistanceischeckedaccordingSIA 262:2013, 4.3.6.5.7andlongi-
+tudinal reinforcement increased if necessary:
+V Rd,c,m =2·k r ·τ cd·d ·≤3.5·τ cd·d · (2.9)
+The collapse check according SIA 262:2013, 4.3.6.7.1 is done with k β = 0.37 but without
+additionalcondition 1.7·τ cd·d nt· nt asthenecessarydimensionsarenotknown. Thismust
+be checked separately.
+Foundation/Footing: Thedesignconceptforthepunchingshearoffootingscanbecalculated
+viaBEMESSaswell. TheappliedshearforceV d isreducedbytheupwardsoilpressureinside
+the critical perimeter. The distances r s and r sy in radial direction are extracted from the real
+bending moment line, if BEMESS can not find m d =0 then the value of r s =3·d is used.
+2.6 Linear Stress Determination
+Linearstressesof thesingleloadcasesorof thesingleloadcasesfrom superposition maybe
+2-28 SOFiSTiK2023TheoreticalPrinciples|BEMESS
+printed directly without the program BEMESS with the program WinGRAF at cuts or isolines.
+The option of the stress determination CTRL STRE in BEMESS is used for the search of
+extremestressesfromaseriesofloadcases. InthiscaseBEMESSselectsitselfthemaximum
+stress from the indicated load cases for each element. Then a plot of this extreme stresses
+shows in general results of different load cases like a moment envelope.
+Theanalysisofstressrangeonthesurfaceisdoneevery3degreesimilartotheCapraMaury
+technique. The maximum stress range is printed with the angle where it was found. If a
+permante loadcase is defined (LC PERm) the stress in this direction is printed as well.
+1
+2
+3
+4
+Figure2.23: Analysisofstressrangeonthesurfaceevery3degree(rosettetechnique)
+The normal stresses are determined according to the formula:
+N M
+σ = ±
+A W
+This is done separately for the two sides of the plate or the shell for σ , σ y and σ y. These
+can be used for the calculation of the principal stresses σ  and σ  and the angle α.
+The shear stress at the plate centre or shell centre is calculated according to the formula:
+V
+τ = 1.5 ·
+A
+ThedesignshearforceVisthemaximumshearforcedeterminedatthedesignpointbymeans
+of geometric addition of the shear forces VX and VY:
+V = (V2 + V2)1/2
+ y
+Also van mise stresses on top, on bottom and as maximum values are calculated. To get the
+maximum van Mise stress also inside an element, the elements are cut into 10 layers for the
+sigv analysis.
+ThestressdeterminationwithBEMESSmustnotbeusedafteramaterialnon-linearcalculation
+with ASE, because the formula σ = N/A M/W is not valid anymore for the structure thickness
+of a non-linear stress distribution! Non-linear stresses after a non-linear ASE calculation e.g.
+a1_introduction_example.dat can be requested with the program WING in a separate way.
+2.7 Disk structures
+For disk structures the input DIRE UPP, GEOM HA,DHA and PARA DU,ASU,ASU2 count for
+onesideofthedisc,ontheothersidethesamevaluesareused. IntheoutputyougetanASU
+SOFiSTiK2023 2-29BEMESS|TheoreticalPrinciples
+and an ASL, both must be placed. In WINGRAF only ASU is served, on the other side the
+same reinforcement must be placed.
+2.8 Volume elements
+With RI3D also BRIC elements can be designed - see RI3D and example bric_design.dat
+2-30 SOFiSTiK2023InputDescription|BEMESS
+3 Input Description
+3.1 Input Language
+TheprogramBEMESSusestheCADINPinputlanguage,seegeneralmanualSOFiSTiK:’FEA
+/ STRUCTURAL Installation and Basics’. Three categories of units are distinguished:
+mm Fixed unit. Input is always required in the specified unit.
+[mm] Explicit unit. Input defaults to the specified unit. Alternatively, an explicit as-
+signment of a related unit is possible (eg. 2.5[m] ).
+[mm] Implicit unit. Implicit units are categorised semantically and denoted by a cor-
+1011
+responding identity number (shown in green). Valid categories referring to the
+unit ”length” are, for example, geodetic elevation, section length and thickness.
+Thedefaultunitforeachcategoryisdefinedbythecurrentlyactive(designcode
+specific) unit set. This input default can be overridden as described above. The
+specified unit in square brackets corresponds to the default for unit set 5 (Eu-
+rocodes, NORM UNIT 5).
+3.2 Input Records
+The following records are defined:
+Record Items
+CTRL TYPE RMOD SYST WALL AUGM THIC
+TENS LCR PFAI RO_V COTT FACH
+WARN LCRI VF70 SNIP WINT WEND REDN
+RADP BUBB REDM VPDC SIGZ LCRP WTEN
+CRAC MUEZ XMIN DDES STAN WK BETA BOND
+BET1 BET2 K1 DDEB WKB
+MREI FFCT KC K ROBU PARA
+SHFT TYPE
+NSTR SIGS SIGT CHKC CHKR FATC LS_U LS_L
+LS_V LS_P FACU FACL FACV FACP SIGP
+LOCP
+MAT CONC STEE K BETZ N MINC MSTA
+T011 T02 T03 AM3 FC FY TU0
+TUGR TRD SC1 SC2 SS1 SS2
+GEOM H HA DHA HB DHB DDHA DDHB
+HPRE
+DIRE UPP LOW TYPE X Y Z
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-1BEMESS|InputDescription
+Record Items
+THRE ABEX ABMI ABIN BEEX BEMI BEIN
+DI3D OAL OAF X Y Z
+LAY POS Z DIRE D AS ASMA BS
+WK SS
+PARA NOG NOEL DU DU DU3 DL DL2
+DL3 WKU WKU2 WKU3 WKL WKL2 WKL3
+SSU SSU2 SSU3 SSL SSL2 SSL3 ASU
+ASU2 ASU3 ASL ASL2 ASL3 BSU BSU2
+BSU3 BSL BSL2 BSL3 TYPE
+PUNC TYPE X Y Z D B HEAD
+DHEA RO_V MREI P LC_P REIN L
+VPD RO_M RO_L MMOM HRED BETA
+LC NO PERC FACT
+GRP NO ENVA ENVB WKU WKL SIGU SIGL
+ELEM FROM TO DELT WKA WKB
+SIGA SIGB
+NODE FROM TO DELT GROU WKA
+WKB SIGA SIGB
+SELE NO TYPE
+S NO NO1 MX MY MXY VX VY
+NX NY NXY
+EXPO OPT TO PASS
+ECHO OPT VAL
+Theinputsequenceoftheinputrecordsisarbitrary. However,ENDmustalwaysbethelastin-
+putrecord. EachELEMorNODErecordcausesadesignwiththealreadydefinedparameters
+(possible as the default values). An input of GEO or DIRE or THRE after ELEM/NODE refers
+thus always to the next design specifications.
+The records HEAD, END and PAGE are described in the general manual SOFiSTiK: ’FEA /
+STRUCTURAL Installation and Basics’.
+A reasonable analysis is possible even without data. The default values are activated in each
+case.
+3-2 SOFiSTiK2023InputDescription|BEMESS
+3.3 NORM – Default Design Code
+NORM
+Item Description Unit Default
+DC Design code family LT EN
+EN Eurocodes
+DIN German Standard
+OEN Austrian Standard
+SIA Swiss Standard
+AS Standard
+BS British Standard
+IS Indian Standard
+US US Standards (ACI etc.)
+GB Chinese Building Codes
+NF French Standard
+UNI Italian Standard
+UNE Spanish Standard
+SS Swedish Standard
+DS Danish Standard
+NS Norwegian Standard
+SP Russian Standard
+NZS New Zealand Standard
+SFS Finnish Standard
+NEN Netherlands Standard
+NBN Belgian Standard
+NBR Brazilian Standard
+ZA South African Standard
+NDC Designation of a specific design code Lt16 -
+COUN Country code for boxed values within EN − *
+CAT Category or Class Lt4 -/!
+LON Geographic longitude ◦ 0
+LAT Geographic latitude ◦ 45
+G Gravity acceleration m/sec2 *
+ALT Altitude above sea level m 0.0
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-3BEMESS|InputDescription
+Item Description Unit Default
+WIND Wind zone Lt4 *
+SNOW Snow zone Lt4 *
+SEIS Seismic zone Lt4 *
+WCAT Terrain category for wind Lt4 *
+UNIT Selection of a set of units − *
+LANG Selection of a output language default − *
+Many defaults for materials, superposition and design are selected according to the selected
+designcodeandanoptionalcountrycodeandalltheotherdataprovidedwiththisrecord. Itis
+therefore requested to specify this data with the beginning of the project.
+A redefinition of the design code after the definition of actions or load cases have been
+definedortheeditingoftheINI-Filetoinclude”missing”materialsdoesnotcomplywith
+the provisions of SOFiSTiK for a proper use of the software.
+ItispossibletoredefinethedesigncodeNORMtemporarilyforthedesign(eg. concrete/steel)
+if the parameters of the actions remain the same. As this might have some special risque, the
+user should use this option thoroughly.
+Althoughtherearestillexplicitcodefragmentsinthesoftwareunavoidable,manyofthedefaults
+arespecifiedinsocalledINI-FileslocatedintheSOFiSTiKdirectory. Thenameofthematching
+INI-file is derived from the given data as DC_NDC.INI.
+Some properties (e.g. Eurocode) are dependant on national variants (boxed values). Corre-
+sponding INI-files to EN 1992-2004 and EN 1993-2005 and the country code may be used to
+selectthosevalues,asfaraswehavegotnoticeofthem. Thecountrycodeforexampleisvalid
+for deviations in Hong Kong to the British Standard 8110, 5400, 5950 or similar. Examples for
+the country code:
+00 General EN
+HK / 852 Hong Kong
+The ”boxed values” can be modified manually with the record TVAR.
+Some codes require or allow the selection of a category or class. This can then be specified
+with CAT. The possible items are given in the INI-File. For evaluations with historic design
+codes not available with an INI-file, the definition of CAT USER allows to specify any name of
+the design code.
+Inthecaseofasubsequentmodificationoftheseclassesorcategoriestheinputwhich
+depends on the design code has to be checked and adapted if necessary.
+The extend to which the specified latitude, altitude, wind/snow or earthquake zone definitions
+areaccountedforisdescribedintheprogrammanualsofthemodulesusingthosevalues. The
+user should never assume that all regulations of the design codes are automatically fulfilled
+when selecting such a value. The possible items and defaults are given in the matching INI-
+3-4 SOFiSTiK2023InputDescription|BEMESS
+File. The resultant values which result from the altitude or the wind/snow/earthquake zones
+have to be checked in the corresponding programs in the case of a subsequent modification.
+E.g. for some design codes the combination coefficients of the snow depend on the altitude.
+Inthe caseof amodification ofthealtitude combinationcoefficients haveto beadaptedby the
+user if necessary.
+If the user wants to suppress such a value completely he may specify it with ”NONE”. The
+load case of self weight is always accounted for following the definitions of the design codes,
+an explicit definition of G has to be done only in those cases where the true local value should
+be applied.
+The item UNIT or d LANG will be processed only in AQUA or TEMPLATE. With a definition of
+UNIT a set of units will be selected globally for all input and output data in all other modules.
+The default is specified in the INI-file. Definitions with record PAGE will be active only within
+the current module.
+The following design codes are available as INI-Files and/or special program code has been
+created to cope with special regulations. The marks A and B indicate if this code has been
+implementedinAQBandBEMESS.Formoredetailedinformation,especiallywhichprovisions
+of the codes have been implemented, please check the manuals and the HTM-files of the
+designprograms. Inmanycasesitispossibletoaddsomeclauseswithinshorttimewithinthe
+program or with CADINP.
+SOFiSTiK2023 3-5BEMESS|InputDescription
+EN - Eurocodes
+Description UNIT Design
+EN 199X-200X Eurocode Building Construction 5 A,B
+EN 1992-1-1 Design of concrete structures
+EN 1993-1-1 Design of steel structures
+EN 1994-1-1 Design of composite steel and
+concrete structures
+including actions and combinations according
+to:
+EN 1990
+EN 1991-1-x
+including materials according to:
+EN 1995-1-1 Timber
+EN 1996-1-1 Brickwork
+EN 1999-1-1 Aluminium
+COUN country code Israel for load trains only
+IL/972
+EN 199X-200X-BRIDGE Eurocode Bridge Construction 5 A,B
+EN 1992-2 Design of concrete structures
+EN 1993-2 Design of steel structures
+EN 1994-2 Design of composite steel and con-
+crete structures
+including actions and loads according to:
+EN 1990
+EN 1991-2
+including materials according to:
+EN 1995-2 Timber
+EN 1996-1-1 Brickwork
+EN 1999-1-1 Aluminium
+CAT B/C/D road bridges / footbridges / rail-
+road bridges
+with actions and design values (boxed
+values) for bridges
+COUN country code Israel for load trains only
+IL/972
+3-6 SOFiSTiK2023InputDescription|BEMESS
+DIN - Deutsche Norm
+Description UNIT Design
+DIN EN199X-200X Nationale Anwendungsdokumente DIN 5 A,B
+Hochbau
+DIN EN 1992-1-1/NA:2013 Stahlbetontrag-
+werke
+DIN EN 1993-1-1/NA:2018 Stahlbauten
+DIN EN 1994-1-1/NA:2010 Verbundtragw-
+erke
+einschließlich Einwirkungen, Kombinatio-
+nen nach:
+DIN EN 1990/NA:2012
+DIN EN 1991-1-x/NA:201x
+einschließlich Materialien nach:
+DIN EN 1995-1-1/NA:2013 Holz
+DIN EN 1996-1-1/NA:2019 Mauerwerk
+DIN EN 1999-1-1/NA:2007 Aluminium
+DIN EN199X-200X-BRIDGE Nationale Anwendungsdokumente DIN 5 A,B
+Brückenbau
+DIN EN 1992-2/NA:2013 Stahlbetontragw-
+erke
+DIN EN 1993-2/NA:2014 Stahlbauten
+DIN EN 1994-2/NA:2010 Verbundtragwerke
+einschließlich Einwirkungen, Lasten nach:
+DIN EN 1990/NA:2012
+DIN EN 1991-2/NA:2012
+einschließlich Materialien nach:
+DIN EN 1995-2/NA:2011 Holz
+DIN EN 1996-1-1/NA:2019 Mauerwerk
+DIN EN 1999-1-1/NA:2007 Aluminium
+CAT B/C/D Straßenbrücken / Fußgänger-
+brücken / Eisenbahnbrücken
+mit Einwirkungen und Bemes-
+sungswerte für Brücken (boxed
+values)
+DIN 1045-2008 DIN 1045-1 (2008) 0 A,B
+CAT -/A/B/C/D/E/F (Tab. 18)
+Klassifizierung von Nachweisbedin-
+gungen
+DIN FB102-2009 DIN Fachbericht 102 (2009) 0 A,B
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-7BEMESS|InputDescription
+Description UNIT Design
+CAT A/B/C/D/E (Tab. 4.118) Klassi-
+fizierungvonNachweisbedingungen,
+keineVoreinstellungvonKombinatio-
+nen
+DIN FB103-2009 DIN Fachbericht 103 (2009) 2 A
+DIN FB104-2009 DIN Fachbericht 104 (2009) 0 A
+DIN 18800 Stahlbau (Nov. 2008) 2 A
+CAT A voreingestellte Überlagerung DIN
+18800
+CAT B voreingestellte Überlagerung DIN
+1055-100
+DIN 1052-2008 Holzbau (2008) 0 A
+CAT 1/2/3 Nutzungsklassen
+DIN 1045-1 DIN 1045-1 (2001) 0 A,B
+CAT -/A/B/C/D/E/F (Tab. 18) Klassi-
+fizierung von Nachweisbedingun-
+gen
+DIN FB102-2003 DIN Fachbericht 102 (2003) 0 A,B
+CAT A/B/C/D/E (Tab. 4.118) Klassi-
+fizierung von Nachweisbedingun-
+gen
+DIN 1045 Alte Norm (1988) 0 A,B
+DAfStb hochfest.Beton (1995) A
+DIN 4227 Alte Spannbetonnorm + Anhang A1 (1995) 0 A
+DIN FB103-2003 DIN Fachbericht 103 (2003) 2 A
+DIN FB104-2003 DIN Fachbericht 104 (2003) 0 A
+CAT -/A/B/C/D/E/F (Tab. 4.118 des FB
+102), Klassifizierung von Nachweis-
+bedingungen
+DIN 18800-1990 Stahlbau (1990) 2 A
+DIN 1052-1988 Holzbau (1988) 0 A
+3-8 SOFiSTiK2023InputDescription|BEMESS
+OEN - Österreichische Norm
+Description UNIT Design
+OEN EN199X-200X Nationale Anwendungsdokumente OEN 5 A,B
+Hochbau
+OEN EN 1992-1-1/NA:2011 Stahlbeton-
+tragwerke
+OEN EN 1993-1-1/NA:2007 Stahlbauten
+OEN EN 1994-1-1 Verbundtragwerke
+einschließlich Einwirkungen, Kombinatio-
+nen nach:
+OEN EN 1990/NA:2004
+OEN EN 1991-1-x/NA:201x
+einschließlich Materialien nach:
+OEN EN 1995-1-1 Holz
+OEN EN 1996-1-1 Mauerwerk
+OEN EN 1999-1-1 Aluminium
+OEN EN199X-200X-BRIDGE Nationale Anwendungsdokumente OEN 5 A,B
+Brückenbau
+OEN EN 1992-2/NA:2004 Stahlbetontrag-
+werke
+OEN EN 1993-2/NA:2014 Stahlbauten
+OEN EN 1994-2 Verbundtragwerke
+einschließlich Einwirkungen, Lasten nach:
+OEN EN 1990/NA:2012
+OEN EN 1991-2/NA:2011
+einschließlich Materialien nach:
+OEN EN 1995-2 Holz
+OEN EN 1996-1-1 Mauerwerk
+OEN EN 1999-1-1 Aluminium
+CAT B/C/D Straßenbrücken /
+Fußgängerbrücken / Eisenbahn-
+brücken
+mit Einwirkungen und Bemes-
+sungswerte für Brücken (boxed
+values)
+OEN 4700 Stahlbeton OENORM B 4700 (2001) 0 A,B
+OEN 4750 Spannbeton OENORM B 4750 (2000) 0 A
+OEN 4300 Stahl OENORM B 4300 (1994) 0 A
+For the old design codes OEN 4200, OEN 4250, OEN 4253 no INI files exist. The program
+AQB is so programmed that the appropriate design is done with input of the design code. As
+SOFiSTiK2023 3-9BEMESS|InputDescription
+materials BOE is input for concrete and BSOE for steel.
+SIA - Schweizer Norm
+Description UNIT Design
+SIA 26X Schweizer Normen 0 A,B
+SIA 262 Betonbauten (2013)
+SIA 263 Stahlbau (2013)
+SIA 264 Stahl-Beton-Verbundbau
+einschließlich Einwirkungen, Kombinationen nach:
+SIA 260 Grundlagen der Projektierung
+SIA 261 Einwirkungen auf Tragwerke
+einschließlich Materialien nach:
+SIA 265 Holzbau mit Serviceklassen 1,2,3 - Angabe beim Holz-
+material
+BS - British Standard
+Description UNIT Design
+BS EN199X-200X National Annexes BS building construction 6 A,B
+BS EN 1992-1-1/NA:2005 Design of con-
+crete structures
+BS EN 1993-1-1/NA:2008 Design of steel
+structures
+BS EN 1994-1-1/NA:2008 Design of com-
+posite steel and concrete structures
+including actions and combinations accord-
+ing to:
+BS EN 1990/NA:2009
+BS EN 1991-1-x/NA:200x
+including materials according to:
+BS EN 1995-1-1 Timber
+BS EN 1996-1-1 Brickwork
+BS EN 1999-1-1 Aluminium
+BS EN199X-200X-BRIDGE National Annexes BS bridge construction 6 A,B
+BS EN 1992-2/NA:2007 Design of concrete
+structures
+BS EN 1993-2/NA:2012 Design of steel
+structures
+BSEN1994-2/NA:2007Designofcomposite
+steel and concrete structures
+Tablecontinuedonnextpage.
+3-10 SOFiSTiK2023InputDescription|BEMESS
+Description UNIT Design
+including actions and loads according to:
+BS EN 1990/NA:2009
+BS EN 1991-2/NA:2008
+including materials according to:
+BS EN 1995-2 Timber
+BS EN 1996-1-1 Brickwork
+BS EN 1999-1-1 Aluminium
+CAT B/C/Droadbridges/footbridges/rail-
+road bridges
+withactionsanddesignvalues(boxed
+values) for bridges
+BS 8110 British Standard Concrete (1997) 6 A,B
+COUN country code Hong Kong
+HK/852
+BS 5400 British Standard Concrete Bridge (1990) 6 A
+CAT 0 without Prestress
+CAT 1/2/3 Prestress for Class 1/2/3
+COUN country code Hong Kong
+HK/852
+COUN country code Israel
+IL/972
+BS 5950 British Standard Steelwork (2001) 6 A
+COUN country code Hong Kong
+HK/852
+US - American Standards and Unified Building Code
+Description UNIT Design
+US ACI-318-14 American Standard ACI / UBC (2014) 9 A,B
+US ACI-318-08 American Standard ACI / UBC (2008) 9 A
+US AASHTO-2014 American Highway (2014) 8 A
+US AASHTO-2010 American Highway (2010) 8 A
+US AASHTO-2004 American Highway (2005) 8 A
+US AISC-2005 American Standard AISC (Steel) 2005 9 A
+SOFiSTiK2023 3-11BEMESS|InputDescription
+SP - Russian Standard
+Description UNIT Design
+SP 63-13330 SP 63.13330.20112 (Concrete) 0 A,B
+SP 16-13330 SP 16.13330.2011 (Steel) 2 A
+IS - Indian Standard
+Description UNIT Design
+IS 456 Indian Standard (2000) (Concrete) 6 A
+IS IRC112 Indian Roads Congress: Code of Practice for Concrete Road 6 A
+Bridges (2011)
+AS - Australian Standard
+Description UNIT Design
+AS BUILDING AS for building construction 6
+for concrete and steel stuctures
+without member design, default to superpositions
+AS 3600 Concrete Structures (2009) 6 A,B
+AS 4100 Structural Steel (1998) 6 A
+AS 5100 Bridge Design (2004) 6 A
+UNE - Instrucciones Espaniola
+Description UNIT Design
+UNE EHE Instrucion de hormign estructural 0 A,B
+Nivel de control de ejecucin:
+EHE Normal
+EHE_INTENSIO Intensio
+EHE_REDUCIDO Reducido
+UNI - Decreto Ministeriale Italiane
+Description UNIT Design
+UNI DM-2018 Decreto Ministeriale 2018: Norme Tecniche per le 5 A,B
+Costruzioni
+CAT A Costruzioni Civili
+Tablecontinuedonnextpage.
+3-12 SOFiSTiK2023InputDescription|BEMESS
+Description UNIT Design
+CAT B Ponti Stradali
+CAT C Ferroviari
+NF - AFNOR Association Francaise de Normalisation
+Description UNIT Design
+NF EN199X-200X AnnexesNationalesNFconstructiondebâti- 5 A,B
+ments
+NF EN 1992-1-1/NA:2013 Calcul des struc-
+tures en béton
+NF EN 1993-1-1/NA:2018 Calcul des struc-
+tures en arcier
+NF EN 1994-1-1/NA:2010 Calcul des struc-
+tures mixtes acier-béton
+including actions and combinations accord-
+ing to:
+NF EN 1990/NA:2004
+NF EN 1991-1-x/NA:200x
+including materials according to:
+NF EN 1995-1-1 Bois
+NF EN 1996-1-1 Maçonnerie
+NF EN 1999-1-1 Aluminium
+NF EN199X-200X-BRIDGE Annexes Nationales NF construction de 5 A,B
+ponts
+NF EN 1992-2/NA:2007 Calcul des struc-
+tures en béton
+NF EN 1993-2/NA:2007 Calcul des struc-
+tures en arcier
+NF EN 1994-2/NA:2007 Calcul des struc-
+tures mixtes acier-béton
+including actions and loads according to:
+NF EN 1990-A1/NA:2007
+NF EN 1991-2/NA:2007
+including materials according to:
+NF EN 1995-2 Bois
+NF EN 1996-1-1 Maçonnerie
+NF EN 1999-1-1 Aluminium
+CAT B/C/D ponts routiers / passerelles /
+ponts ferroviaires
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-13BEMESS|InputDescription
+Description UNIT Design
+withactionsanddesignvalues(boxed
+values) for bridges
+NF BAEL Règles techniques de conception et de cal- 0 A,B
+cul des ouvrages et constructions en béton
+armé suivant la méthode des états limites.
+BAEL/BPEL 91 revises 99
+CAT B bâtiments
+CAT P ponts-routes
+SS - Swedish Standard
+Description UNIT Design
+SS EN199X-200X National Annexes SS building construction 5 A,B
+according to Boverkets författningssamling -
+BFS 2019:1 EKS 11
+SS EN 1992-1-1/EKS 11:2019 Design of
+concrete structures
+SS EN 1993-1-1/EKS 11:2019 Design of
+steel structures
+SS EN 1994-1-1/EKS 11:2019 Design of
+composite steel and concrete structures
+including actions and combinations accord-
+ing to:
+SS EN 1990/EKS 11:2019
+SS EN 1991-1-x/EKS 11:2019
+including materials according to:
+SS EN 1995-1-1 Timber
+SS EN 1996-1-1 Brickwork
+SS EN 1999-1-1 Aluminium
+CAT A1 byggnader & säkerhetsklass 1
+CAT A2 Byggnader & säkerhetsklass 2
+CAT A3 Byggnader & säkerhetsklass 3
+SS EN199X-200X-BRIDGE National Annexes SS bridge construction 5 A,B
+according to Transportstyrelsens förfat-
+tningssamling - TSFS 2018:57
+SSEN1992-2/TSFS2018:57Designofcon-
+crete structures
+SSEN1993-2/TSFS2018:57Designofsteel
+structures
+Tablecontinuedonnextpage.
+3-14 SOFiSTiK2023InputDescription|BEMESS
+Description UNIT Design
+SS EN 1994-2/TSFS 2018:57 Design of
+composite steel and concrete structures
+including actions and loads according to:
+SS EN 1990/NA:2009
+SS EN 1991-2/NA:2008
+including materials according to:
+SS EN 1995-2 Timber
+SS EN 1996-1-1 Brickwork
+SS EN 1999-1-1 Aluminium
+CAT B1 Vägbroar & säkerhetsklass 1
+CAT B2 Vägbroar & säkerhetsklass 2
+CAT B3 Vägbroar & säkerhetsklass 3
+CAT B4 Vägbroar & säkerhetsklass 4
+CAT C1 Gangbroar & säkerhetsklass 1
+CAT C2 Gangbroar & säkerhetsklass 2
+CAT C3 Gangbroar & säkerhetsklass 3
+CAT C4 Gangbroar & säkerhetsklass 4
+CAT D1 Järnvägsbroar & säkerhetsklass 1
+CAT D2 Järnvägsbroar & säkerhetsklass 2
+CAT D3 Järnvägsbroar & säkerhetsklass 3
+CAT D4 Järnvägsbroar & säkerhetsklass 4
+with actions and design values
+(boxed values) for bridges
+DS - Danish Standard
+Description UNIT Design
+DS EN199X-200X National Annexes DS building construction 5 A,B
+DS EN 1992-1-1/NA:2013 Design of con-
+crete structures
+DS EN 1993-1-1/NA:2007 Design of steel
+structures
+DS EN 1994-1-1/NA:2007 Design of com-
+posite steel and concrete structures
+including actions and combinations accord-
+ing to:
+DS EN 1990/NA:2007
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-15BEMESS|InputDescription
+Description UNIT Design
+DS EN 1991-1-x/NA:200x
+including materials according to:
+DS EN 1995-1-1 Timber
+DS EN 1996-1-1 Brickwork
+DS EN 1999-1-1 Aluminium
+CAT LE low safety & extended control
+CAT NE normal safety & extended control
+CAT HE high safety & extended control
+CAT LN low safety & normal control
+CAT NN normalsafety&normalcontrol(de-
+fault)
+CAT HN high safety & normal control
+CAT LR low safety & reduced control
+CAT NR normal safety & reduced control
+CAT HR high safety & reduced control
+safety according to DS EN 1990/NA:2007
+control according to DS EN 1992-1-
+1/NA:2007 and DS EN 1993-1-1/NA:2007
+inspection level
+DS EN199X-200X-BRIDGE National Annexes DS bridge construction 5 A,B
+DS EN 1992-2/NA:2015 Design of concrete
+structures
+DS EN 1993-2/NA:2015 Design of steel
+structures
+DS EN 1994-2/NA:2005 Design of compos-
+ite steel and concrete structures
+including actions and combinations accord-
+ing to:
+DS EN 1990/A1/NA:2017
+DS EN 1991-2/NA:2017
+including materials according to:
+DS EN 1995-1-1 Timber
+DS EN 1996-1-1 Brickwork
+DS EN 1999-1-1 Aluminium
+for road bridges:
+CAT BNEnormal safety & extended control
+CAT BHEhigh safety & extended control
+Tablecontinuedonnextpage.
+3-16 SOFiSTiK2023InputDescription|BEMESS
+Description UNIT Design
+CAT BNNnormal safety & normal control
+(default)
+CAT BHNhigh safety & normal control
+for footbridges:
+CAT CNEnormal safety & extended control
+CAT CHEhigh safety & extended control
+CAT CNNnormal safety & normal control
+CAT CHNhigh safety & normal control
+for railroad bridges:
+CAT DNEnormal safety & extended control
+CAT DHEhigh safety & extended control
+CAT DNNnormal safety & normal control
+CAT DHNhigh safety & normal control
+safety according to DS EN 1990/NA:2007
+control according to DS EN 1992-2/NA:2015
+and DS EN 1993-2/NA:2015 inspection level
+NS - Norsk Standard
+Description UNIT Design
+NS EN199X-200X National Annexes NS building construction 5 A,B
+NS EN 1992-1-1/NA:2008 Design of con-
+crete structures
+NS EN 1993-1-1/NA:2008 Design of steel
+structures
+NS EN 1994-1-1/NA:2009 Design of com-
+posite steel and concrete structures
+including actions and combinations accord-
+ing to:
+NS EN 1990/NA:2010
+NS EN 1991-1-x/NA:200x
+including materials according to:
+NS EN 1995-1-1 Timber
+NS EN 1996-1-1 Brickwork
+NS EN 1999-1-1 Aluminium
+CAT A1 Bygninger & palitelighetsklasse 1
+CAT A2 Bygninger & palitelighetsklasse 2
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-17BEMESS|InputDescription
+Description UNIT Design
+CAT A3 Bygninger & palitelighetsklasse 3
+CAT A4 Bygninger & palitelighetsklasse 4
+NS EN199X-200X-BRIDGE National Annexes NS bridge construction 5 A,B
+NS EN 1992-2/NA:2010 Design of concrete
+structures
+NS EN 1993-2/NA:2009 Design of steel
+structures
+NS EN 1994-2/NA:2009 Design of compos-
+ite steel and concrete structures
+including actions and loads according to:
+NS EN 1990/NA:2010
+NS EN 1991-2/NA:2010
+including materials according to:
+NS EN 1995-2 Timber
+NS EN 1996-1-1 Brickwork
+NS EN 1999-1-1 Aluminium
+CAT B/C/Droadbridges/footbridges/rail-
+road bridges
+with actions and design values
+(boxed values) for bridges
+SFS - Finnish Standard
+Description UNIT Design
+SFS EN199X-200X National Annexes SFS building construc- 5 A,B
+tion
+SFS EN 1992-1-1/NA:2010 Design of con-
+crete structures
+SFS EN 1993-1-1/NA:2010 Design of steel
+structures
+SFS EN 1994-1-1/NA:2010 Design of com-
+posite steel and concrete structures
+includingactionsandcombinationsaccord-
+ing to:
+SFS EN 1990/NA:2010
+SFS EN 1991-1-x/NA:200x
+including materials according to:
+SFS EN 1995-1-1 Timber
+SFS EN 1996-1-1 Brickwork
+SFS EN 1999-1-1 Aluminium
+Tablecontinuedonnextpage.
+3-18 SOFiSTiK2023InputDescription|BEMESS
+Description UNIT Design
+CAT A1 Buildings & safety class 1
+CAT A2 Buildings & safety class 2
+CAT A3 Buildings & safety class 3
+SFS EN199X-200X-BRIDGE National Annexes SFS - NCCI bridge con- 5 A,B
+struction
+SFS EN 1992-2/NCCI 2:2017 Design of
+concrete structures
+SFS EN 1993-2 Design of steel structures
+SFS EN 1994-2/NCCI 4:2016 Design of
+composite steel and concrete structures
+including actions and loads according to:
+SFS EN 1990/NCCI 1:2017
+SFS EN 1991-2/NCCI 1:2017
+including materials according to:
+SFS EN 1995-2 Timber
+SFS EN 1996-1-1 Brickwork
+SFS EN 1999-1-1 Aluminium
+CAT B1 Road bridges & safety class 1
+CAT B2 Road bridges & safety class 2
+CAT B3 Road bridges & safety class 3
+CAT C1 Footbridges & safety class 1
+CAT C2 Footbridges & safety class 2
+CAT C3 Footbridges & safety class 3
+CAT D1 Railroad bridges & safety class 1
+CAT D2 Railroad bridges & safety class 2
+CAT D3 Railroad bridges & safety class 3
+with actions and design values
+(boxed values) for bridges
+SOFiSTiK2023 3-19BEMESS|InputDescription
+NEN - Netherlands Standard
+Description UNIT Design
+NEN EN199X-200X National Annexes NEN building construc- 5 A,B
+tion
+NENEN1992-1-1/NA:2011Designofcon-
+crete structures
+NEN EN 1993-1-1 Design of steel struc-
+tures
+NEN EN 1994-1-1 Design of composite
+steel and concrete structures
+includingactionsandcombinationsaccord-
+ing to:
+NEN EN 1990/NA:2011
+NEN EN 1991-1-x/NA:200x
+including materials according to:
+NEN EN 1995-1-1 Timber
+NEN EN 1996-1-1 Brickwork
+NEN EN 1999-1-1 Aluminium
+CAT A1 Buildings & safety class 1
+CAT A2 Buildings & safety class 2
+CAT A3 Buildings & safety class 3
+NEN EN199X-200X-BRIDGE NationalAnnexesNENbridgeconstruction 5 A,B
+NEN EN 1992-2/NA:2011 Design of con-
+crete structures
+NEN EN 1993-2 Design of steel structures
+NEN EN 1994-2 Design of composite steel
+and concrete structures
+including actions and loads according to:
+NEN EN 1990/NA:2011
+NEN EN 1991-2/NA:2011
+including materials according to:
+NEN EN 1995-2 Timber
+NEN EN 1996-1-1 Brickwork
+NEN EN 1999-1-1 Aluminium
+CAT B1 Road bridges & safety class 1
+CAT B2 Road bridges & safety class 2
+CAT B3 Road bridges & safety class 3
+CAT C1 Footbridges & safety class 1
+CAT C2 Footbridges & safety class 2
+Tablecontinuedonnextpage.
+3-20 SOFiSTiK2023InputDescription|BEMESS
+Description UNIT Design
+CAT C3 Footbridges & safety class 3
+CAT D1 Railroad bridges & safety class
+CAT D2 Railroad bridges & safety class
+CAT D3 Railroad bridges & safety class
+with actions and design values
+(boxed values) for bridges
+NBN - Belgian Standard
+Description UNIT Design
+NBN EN199X-200X National Annexes NBN building construc- 5 A,B
+tion
+NBNEN1992-1-1/NA:2010Designofcon-
+crete structures
+NBNEN1993-1-1/NA:2010Designofsteel
+structures
+NBN EN 1994-1-1/NA:2006 Design of
+composite steel and concrete structures
+including actions and combinations ac-
+cording to:
+NBN EN 1990/NA:2013
+NBN EN 1991-1-x/NA:201x
+including materials according to:
+NBN EN 1995-1-1 Timber
+NBN EN 1996-1-1 Brickwork
+NBN EN 1999-1-1 Aluminium
+CAT A1 Buildings & safety class 1
+CAT A2 Buildings & safety class 2
+CAT A3 Buildings & safety class 3
+NBN EN199X-200X-BRIDGE NationalAnnexesNBNbridgeconstruction 5 A,B
+NBN EN 1992-2/NA:2014 Design of con-
+crete structures
+NBN EN 1993-2/NA:2011 Design of steel
+structures
+NBNEN1994-2Designofcompositesteel
+and concrete structures
+including actions and loads according to:
+NBN EN 1990/NA:2013
+NBN EN 1991-2/NA:2014
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-21BEMESS|InputDescription
+Description UNIT Design
+including materials according to:
+NBN EN 1995-2 Timber
+NBN EN 1996-1-1 Brickwork
+NBN EN 1999-1-1 Aluminium
+CAT B1 Road bridges & safety class 1
+CAT B2 Road bridges & safety class 2
+CAT B3 Road bridges & safety class 3
+CAT C1 Footbridges & safety class 1
+CAT C2 Footbridges & safety class 2
+CAT C3 Footbridges & safety class 3
+CAT D1 Railroad bridges & safety class
+CAT D2 Railroad bridges & safety class
+CAT D3 Railroad bridges & safety class
+with actions and design values
+(boxed values) for bridges
+NZS - New Zealand Standards
+Description UNIT Design
+NZS 3101 Concrete Structures Standard (1995) 6 A,B
+GB - Chinese Standard
+Description UNIT Design
+GB 50010-2010 Chinese Standard for Concrete Structures (2010 Edition 0
+2015)
+for default combinations according to GB 50009 - 2012
+CAT A1 Buildings service life 5 years
+CAT A2 Buildings service life 50 years
+CAT A3 Buildings service life 100 years
+GB 50010 Chinese Standard for Concrete Structures (2002) 0 A
+NBR - Brazilian Standard
+3-22 SOFiSTiK2023InputDescription|BEMESS
+Description UNIT Design
+NBR 6118-2003 Norma Brasileira, Projeto de estruturas de concreto - 5 A,B
+Procedimento
+CAT A Edifcios
+CAT B Pontes rodovirias
+CAT C Passarelas de pedestres
+CAT D Pontes ferrovirias
+ZA - South African Standard
+Description UNIT Design
+ZA TMH7 Code of Practice for the Design of Highway Bridges and Cul- 6 A
+verts in South Africa (1989)
+CAT 0 without prestress
+CAT 1/2/3 prestress for class 1/2/3
+The following table describes the implemented features for the concrete design:
+Design Code DESI PUNC CSIG CT CW
+EN 199X-200X X X X X X
+EN 199X-200X-BRIDGE
+DIN EN199X-200X X X X X X
+DIN EN199X-200X-BRIDGE
+DIN 1045 (1988) X X X X X
+DAfStb hochfest.Beton
+DIN 4227+A1 (1995) → DIN 1045
+(1988)
+DIN 1045-1 (2001) X X X X X
+DIN 1045-2008 (2008) X X X X X
+DIN FB102-2009 (2009) → DIN
+EN1992-2004
+DIN FB102-2003 (2003) → DIN1045-1
+(2001)
+DIN FB104-2009 (2009) → DIN
+EN1992-2004
+DIN FB104-2003 (2003) → DIN1045-1
+(2001)
+OEN EN199X-200X X X X X X
+OEN EN199X-200X-BRIDGE
+OEN 4700 (2001) X X X X X
+SOFiSTiK2023 3-23BEMESS|InputDescription
+Design Code DESI PUNC CSIG CT CW
+OEN 4750 (2000) → OEN 4700
+SIA 26X (SIA 262 (2013)) X X X - -
+BS EN199X-200X X X X X X
+BS EN199X-200X-BRIDGE
+BS 8110 (1997) X X X - -
+BS 5400 (1990) → BS 8110
+SP 63-13330 (2012) X X X - -
+UNE EHE (1999) X X X - -
+UNI DM-2018 X X X - -
+NF EN1992-2004 X X X X X
+NF EN199X-200X-BRIDGE
+NF BAEL (1999) X X X - -
+SS EN1992-2004 X X X X X
+SS EN199X-200X-BRIDGE
+NS EN199X-200X X X X X X
+NS EN199X-200X-BRIDGE
+DS EN199X-200X X X X X X
+DS EN199X-200X-BRIDGE X X X X X
+SFS EN199X-200X → EN
+199X-200X
+SFS EN199X-200X-BRIDGE
+NEN EN199X-200X X X X X X
+NEN EN199X-200X-BRIDGE
+NBN EN199X-200X X X X X X
+NBN EN199X-200X-BRIDGE
+US ACI 318-08 → US ACI
+318-14
+US ACI 318-14 (2014) X X X - -
+US AASHTO-2004 → US ACI
+318-14
+US AASHTO-2010 → US ACI
+318-14
+US AASHTO-2014 → US ACI
+318-14
+AS 3600 (2009) → AS 5100
+AS 5100 (2001) X → X - -
+EC2
+EN
+NZS 3101 (1995) → EC 2 EN
+3-24 SOFiSTiK2023InputDescription|BEMESS
+Design Code DESI PUNC CSIG CT CW
+GB 50010-2010 → BS 8110
+GB 50010 → BS 8110
+IS 456 (2000) → BS 8110
+NBR 6118-2003 X → X - -
+EC2
+EN
+ZA TMH7 (1989) → BS 8110
+where
+DESI Bending and shear design
+PUNC Punching check
+CSIG Crack width by permissible stresses
+CT Crack width by table values
+CW Crack width by calculation of crack width
+SOFiSTiK2023 3-25BEMESS|InputDescription
+3.4 CTRL – Control of the Design
+Seealso: MREI,CRAC,NSTR,MAT,PUNC
+CTRL
+Item Description Unit Default
+TYPE Design task LT *
+ULTI Reinforced concrete design for load cases
+on ULS level
+For load cases on SLS level an averaged
+safety factor can be input in LC FACT
+ACCI Reinforced concrete design
+accidental design situation
+EARQ Reinforced concrete design
+earthquake design situation
+SLS SLS design checks
+→ MREI, CRAC or NSTR
+STRE Linear stress calculation according
+to theory of elasticitiy
+default: in dependence on the system
+RMOD Save mode for reinforcement or stresses: LT *
+SING Single analysis, no save
+SAVE Save, does overwrite already stored values
+SUPE The maximum of the calculated and the al-
+ready stored reinforcement is saved.
+DELE delete see CTRL LCR
+default: SAVE in ULS, SUPE in SLS
+Tablecontinuedonnextpage.
+3-26 SOFiSTiK2023InputDescription|BEMESS
+Item Description Unit Default
+LAY Design procedure − -
+0 ULS: Baumann method, SLS Capra Maury
+1 Layer design (iteration of strains)
+default: 0 in ULS and crack design (1 in
+prestressed slabs or skew reinforcement
+THRE)
+1 in stress checks
+LCR Reinforcement distribution number − 1
+(delete LCR’s possible with e.g. CTRL RMOD DELE
+LCR 31,32)
+LCRI Determination of the reinforcement maximum from − -
+some design calculations
+LCRP Incorporationofpunchingresultsfromanotherdesign − LCRI
+DMOM Storage of ’woodarmer’ design forces (offset) [see − -
+TheoreticalPrinciple-bending-procedureofdesign]
+TENS Reduction of the permissible concrete compressive % 25
+stress at transverse tension - default: 25%
+(bigger reductions (EN 1992-1-1 6.5.2(2)) are not
+applied for general slabs+shells because 6.5.2 is a
+chapter for beam struds design)
+25%comesfromareasonablegermanannexincase
+the cracks are perpendicular to the compression and
+this is the case for the main forces is a finite element
+quad.
+PFAI Compression failure method for shells and disks − *
+1 mechanical correct analysis (default for
+ULTI design)
+2 doesalwaystransformintocompressionre-
+inforcement (refer to Basics-Bending De-
+sign of Reinforced Concrete) (default for
+serviceability checks)
+RO_V Maximum reinforcement for shear for normal slab re- % 0.2
+gion (see also PUNC ro_v for punching region).
+Value V2 for upper reinforcement, e.g. CTRL RO_V
+0.4 V2 0.3
+COTT Limitation of the cotangents theta for shear design − *
+input permissible between 1.00 and 3.00
+VLEV maximum lever arm for sher design − *
+e.g. VLEV 0.9 -> max. lever arm = 0.9*d
+BOUN Shear design at supports − *
+further information: see below
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-27BEMESS|InputDescription
+Item Description Unit Default
+VMIN Minimum value for vrdc acc. EN 1992-1-1 6.2.2(1) − *
+e.g. value=0.233 (=0.34/1.5) -> vmin=0.233*fck1/2
+CTRL VMIN will not be considered for punching
+MINS minimum shear reinforcement EN 1992-1-1 9.3.1 − *
+e.g. MINS 0.6 : minimum shear reinforcement in
+slabs = 0.6*minimum shear reinforcement for beams
+according EN 9.3.2(2)
+default 0.6 for DE and ÖNORM, otherwise 1.0
+WINT Integrationofpunchingforceatwallcornersandends − (0)
+0: Integration of slab shear force (default in most
+cases, to be enforced with CTRL WINT 0)
+1.0 or 1.5: Integration of support force
+(see. theoretical principles)
+WEND Length of perimeter leg at wall ends − -1.0
+default: -1.0 (see. theoretical principles)
+BETA Use eccentricity value beta EN 6.4.3 − *
+0: exact for corner, edge and interal columns
+1: exact only for edge+interal columns
+2: exact beta only for interal columns,
+flat beta for corner+edge
+3: always use flat beta value
+according EN 6.4.3(6) Fig. 6.21N
+10: Germany+Austia: if (6.39)gives higher beta for
+boundary or edge columns, use this higher
+beta also if e/c<1.2 acc. (NDP) 6.4.3(6) as
+span difference >25%
+-0.1,-1,-2: exactbetaevenwhenitissmallerthan
+sweeping one (-0.1 means -0)
++0 , +1 , +2: not smaller than sweeping one
+exact means: calculated acc. (6.39)ff
+( CTRL BETA works only with CTRL WINT 0)
+default: 0 for Eurocode codes
+·
+2 for non-Eurocode and Denk mark a,d Spain
+RADP Factor for the check radius in punching − 6.0
+VPDC Consideration of creep and shrinkage during punch- − 0.12
+ing check, default 12% loss of prestress
+Input 0.0 : no loss
+SIGZ SIGZ 0 = switching off the influence of tendons N/mm2 *
+Special switch CTRL SIGZ 999 V2 0.45 : set bond
+stress value to 0.45
+WTEN Distribution width W for QUAD tendons, − 2.0
+Input as factor of the element thickness:
+Tablecontinuedonnextpage.
+3-28 SOFiSTiK2023InputDescription|BEMESS
+Item Description Unit Default
+tendon area AZ distributed triangle wise on 2.0*ele-
+ment thickness right+left
+BRIC Design of volume elements − -
+see DI3D : 0 = no BRIC design
+BUBB Design of bubble decks − 0.55
+REDN Factor for design with reduced normal force − 1.0
+REDM Factor for design with reduced bending moment − 1.0
+FACH 1= use ’DIN Fachbericht’ settings also for DIN-EN − 0
+1992-1-1
+SNIP Short term/long term loading safety factor russian − 0.9
+code, default 0.9 (long term loading)
+VF70 Factor for increase of the load bearing capacity for − 1.0
+accidental loading situation
+WALL Deep beam LT *
+(see also record MAT AM3)
+YES Requirements for minimum reinforcement
+0.075% persideforEN9.7andDIN1045-
+1
+0.10% per side for Austria B 4700
+0.15% per side for old EC2, old BS, ACI
+(Default for disks)
+NO No minimum reinforcement
+(=Default for shells, system 3D)
+CORE CORE Parallel computing control
+WARN Special error messages can be switched off if speci- − *
+fied in the error message.
+V2 second value - e.g. RO_V or CTRL SLS V2 1 − -
+see Theortical Principles: SLS stresses
+V3 third value - e.g. CTRL BOUN − -
+WithCTRLTYPEULTIcanbedefined,thattheloadcasescontaininternalforcesandmoment
+in the ultimate limit state. The default for CTRL ULTI is defined in the following manner: If the
+superposition occurs with actions for the design state in program MAXIMA, this is recognized
+by BEMESS. The program uses the load cases as load cases with ultimate limit loads also
+without an input CTRL ULTI.
+In an SLS design with CTRL TYPE SLS no shear design and no punching check is done. The
+functionCTRLTYPESLSisonlypossibleorsensefulincombinationwithoptionCTRLRMOD
+SUPE to complete a previous ultimate limit design. As data about punching is also necessary
+for the service load check, e.g. support moment reduction over the column, this information is
+used from the ULS design (see CTRL LCRP).
+For shear checks according to EN 1992-1-1 and a lot of other codes it is possible to input a
+SOFiSTiK2023 3-29BEMESS|InputDescription
+maximum percentage of reinforcement RO_V. If the normal shear check without shear rein-
+forcement is not possible with the reinforcement determined from the bending, the program
+attempts to increase the bending reinforcement ratio without an use of a shear reinforcement.
+This succeeds mostly, particularly in the area of the moment zero points. In this case the
+bending reinforcement is increased up to a maximum reinforcement ratio RO_V in percent.
+BETATheoriginaleurocodewritesequation(6.44)and(6.46)forboundaryandedgecolumns.
+These equations are used in all EU countries except Germany and Austria and give relative
+moderate beta values. In Germany and Austria these equations shall not be used and equa-
+tion(6.39) mustbe used. ThereW1 andthemoment Mshall beusedaround thecenterof the
+perimeter. But this results in high beta values especially when the moment around the column
+is nearly zero and e/c=0.0, because a high moment occurs around the center of the perimeter
+(center of the perimeter lies far inside the slab). Now comment on german (NDP) 6.4.3 (6)
+comes:
+"Für Randstützen mit großen Ausmitten e / c 1,2 ist der Lasterhöhungsfaktor genauer zu er-
+mitteln (z. B. nach Gleichung (6.39))."
+With default BETA=0 this comment is interpreted that the flat values can be used if e/c<1.2
+also if you cannot make any comment on the span relation factor.
+On e/c>1.2 and high beta acc. equation (6.39) ina ddition the sector method is applied. For
+this beta is the highest shear force in a sector divided by the average shear force. So it is
+extractedfromthedistributionoftheshearforceintheactiveperimeter(plottomax. VZ*beta).
+At least the flat eccentricity factor is used. On inner columns, the active perimeter is divided
+into 8 sectors, on boundary columns into 6, on edge columns into 4.
+On BETA=10, for boundary and edge columns always the beta value acc. equation (6.39) is
+used.
+Design case title
+UsingafreeloadcasenumberforCTRLLCR(withoutnormalstaticloadcases),adesigncase
+title is stored for WiNGRAF.
+Superposition of various design calculation with LCRI
+WithCTRLLCRI... itispossibletodeterminethereinforcementmaximum(incl. punchingrein-
+forcement)fromsomepreviousdesigncalculations. Thismaximumcanbeusedthenasbasis
+for the current calculation. The current calculation is saved with the reinforcement distribution
+number which is defined with CTRL LCR. CTRL RMOD SUPE is activated automatically.
+If LRCI and LCR are input with the same number and this number is > 1, BEMESS first calcu-
+lates a new stress and then stores the maximum of this stress and the pervious one. Usage
+see CSM-DESI in the fatigue check using multiple permanent parts.
+If LRCI is not equal LCR, BEMESS only stores the SLS stress of the actual design, not the
+maximum of LRCI and LCR, so the last LCRI SLS stress are deleted! Nevertheless the LRCI
+reinforcement is taken into account! For a maximum of SLS stresses you can use a pure
+superposition run without design as follows:
+prog bemess
+head
+CTRL LCRI 1,2,3,4
+CTRL LCR 11
+end
+3-30 SOFiSTiK2023InputDescription|BEMESS
+With this also the maximum reinforcement can be generated in a BEMESS run without further
+analysis.
+VF70 - Factor for increase of the load bearing capacity for accidental loading situation
+For power plant design the shear capacity according to DIN 1045-1 equation 70 and
+105 or EN 1992-1-1 can be increased by a factor with CTRL VF70, e.g. VF70=1.15. to take
+into account a reduction of the partial safety factor for these checks
+REDN - Factor for design with reduced normal force and
+REDM - Factor for design with reduced bending moment
+A design with reduced normal forces or reduced bending moment is possible with CTRL
+REDN or REDM . To design also maximum tension and maximum pressure, in any case a
+previous run without REDN or REDM is necessary! Thus this option is only allowed with
+parallel CTRL RMOD SUPE! To study the influence of REDN in LCR1-LCR2, the best way is
+to use:
+PROGBEMESS
+HEADDesignwithoutreduction
+CTRLLCR2
+...
+END
+PROGBEMESS
+HEADDesignwithreducednormalforces
+CTRLLCR1LCRI2RMODSUPE
+CTRLREDN0.8orSTEUREDM0.8
+...
+END
+It is also possible to processed both BEMESS parts with LCR 1 (without input for LCR).
+RADP - Factor the modification of the check radius for punching
+The check radius for punching perimeters can be modified with CTRL RADP. Sectors
+with openings or boundaries closer than 6·d to the column edge do not act in the perimeter
+by default. With RADP this factor can be changed (default 6.0 for thin slabs, intern already
+reduced for thick slabs).
+BUBB - Design of bubble decks
+In bending design, the compression zone is limited to the thickness of the outer material
+layers. In shear design, the shear capacity is reduced to CTRL BUBB of the shear capacity
+of a full section. (Default CTRL BUBB 0.55). The longitudinal reinforcement is taken into
+accountinsheardesign [ pleaserefertoRO_V] . Shearlinksarenotallowed. Sotheexternal
+shear force VED must be lower than VRDbbbe = 0.55*VRDc of a full section. The output
+VED/VRDm then means VED/VRDbbbe and can be checked in WINGRAF-VED/VRDm.
+Additionally, within punching perimeters, also the normal shear check will be performed for
+bubble elements.
+Example: see bubble_deck.dat
+BOUN - Shear design at supports
+SOFiSTiK2023 3-31BEMESS|InputDescription
+Without further input now the shear force in case of direct support is linear reduced from the
+face of the support up to xVED*d = controlling shear cut at xVED*d (see. DIN 1045-1 10.3.2(1)
+and EN 1992-1-1 6.2.1(8)). The value xVED is set according to the design code and is proto-
+colled in the output. It it set to 1.0 for EN, DIN 1045-1 and all new EC codes, otherwise 0.5.
+With CTRL BOUN V3 ... the value xVED can be changed.
+To satisfy EN-1992 6.2.1(8) ’Any shear reinforcement required should continue to the support’
+theshearforceitnotreducedlinearto0%(Version2016)butto70%atthesupportface. This
+factor can be input with BOUN V2 - default Voreinstellung CTRL BOUN 1+2+4 V2 0.7.
+ForthecheckofVRd,m theshearforceislinearreducedonlyfromthesupportaxisuptothe
+face of the support = check at the face of the support (DIN 1045-1 10.3.2(3) and EN 1992-1-1
+6.2.1(8)). From the face of the support up to the controlling shear cut VRd,m is checked with
+the unreduced shear force.
+CTRL BOUN can controll:
+BOUN 0 no reduction - shear design also over the support
+BOUN +1 at supported edges the shear force is reduced from the face of the sup-
+port up to xVED*d (direct support)
+BOUN +2 also at shell edges with walls below (slabs in 3D-high-rise building)
+BOUN +4 also at vertical shell edges (wall corner in 3D-systems - mostly indirect
+support)
+BOUN +8 alsoatallothershelledges(slapshangingonwalls... -indirectsupports)
+(shell edge = intersection of two parts, e.g. wall/floor or wall corner)
+At shell edges of type +4 and +8 indirect support is assumed and the shear force is reduced
+onlyintheintersectionzone(supportaxisuptothefaceofthesupport). Tbeamsinslabsgen-
+erally are takes as a direct slab support (support width = beam cross section web thickness).
+Default:
+1+2+4 = at direct supports and vertical edges.
+3.4.1 CORE Parallel computation control
+CORE Description Unit Default
+VAL Number of used threads − *
+SOFiSTiK supports parallel computing for selected equation solvers. Additionally, some pro-
+grams offer parallel element processing capabilities – independent of the chosen equation
+solver (CTRL SOLV).
+Activation of parallel computing
+By default parallel computing is triggered automatically where it is feasible.
+Parallel computing requires corresponding hardware and operation system support. In addi-
+tion, availability of an adequate SOFiSTiK license is obligatory.
+3-32 SOFiSTiK2023InputDescription|BEMESS
+Hint
+Parallel computing requires availability of a HISOLV license (ISOL granule).
+Number of available threads for parallel computing
+If parallel computing is active, the number of adopted threads is determined as follows (listed
+with increasing priority):
+a) The software retrieves the information about the number of available physical processor
+cores on the system. This number defines the default number of threads that are used
+when a parallel computation is activated.
+b) This default can be modified via the environment variable SOF_NUM_THREADS, which is
+also available as sofistik.def parameter.
+c) Finally, an explicit statement CTRL CORE NN (or as relative input CTRL CORE NN[%])
+temporarily assigns the number of available threads for the respective run.
+Hint
+Neither option b) nor option c) state an explicit parallel computation request. The deci-
+sionif a parallelcomputation istriggered, dependson theactual analysisoption (parallel
+processing must be supported for the specific task) and the availability of an adequate
+license. Parallel computing can be suppressed by explitly setting the number of available
+threads to 1 (or 0).
+Parallel options for equation solvers
+License
+Solver CTRL SOLV Serial Parallel
+Skyline Gauss/ Cholesky 1 – n.a.
+Iterativ 2 HISOLV HISOLV
+Sparse LDL (default) 3 – n.a.
+Sparse Parallel (Pardiso) 4 HISOLV HISOLV
+SOFiSTiK2023 3-33BEMESS|InputDescription
+3.5 REIN – Title of the design case
+Seealso: CTRL
+REIN
+Item Description Unit Default
+TITL Title of the stored design case LT32 *
+The number of the design case must be input in CTRL LCR.
+3-34 SOFiSTiK2023InputDescription|BEMESS
+3.6 CRAC – Control of the Service Load Checks
+Seealso: CTRL,MAT,GRP,ELEM,NODE
+CRAC
+Item Description Unit Default
+XMIN Minimum thickness of compressive zone [mm] 0.
+1024
+(not possible on multi layer reinforcement)
+WK Computed crack width value [mm] -
+1026
+TAB check of diameters with tables LIT
+via GRP + ELEM + NODE
+>0 direct analysis of crack width
+999 only analysis of crack width
+PARA using definition in PARA
+BOND Indicator of exterior surface quality: LT RIB
+RIB for ripped concrete steel
+PROF for shaped concrete steel
+PLAI for smooth concrete steel
+BET1 Coefficient Beta1 in the crack formula for wk, factor − *
+which considers the bond properties
+Defaults corresponding to the BOND definition:
+1.0 for RIB
+0.75 for PROF
+0.5 for PLAI
+SILO analysis for silos with
+sr,max = 2*c + 1/(2*1.8)*d/ro,p,eff
+Any numerical value can be input otherwise.
+BET2 Input for load duration LT STAT
+DYN for short time loading: implies BET2=1.0
+(Heft 400)
+or kt=0.6 acc. EN 1992-1-1
+STAT for long term loading: implies BET2=0.5
+(Heft 400)
+or kt=0.4 acc. EN 1992-1-1
+WKB Computed crack width value for lower side →WK WK
+The simple crack width check with the limitation of the steel stress with tables is controlled
+with DDES and WK=TAB via the environmental conditions or the crack width in PARA or the
+SOFiSTiK2023 3-35BEMESS|InputDescription
+recordsGRP,ELEMorNODE.AninputofasteelstressinPARA-SSUcanbeusedforacheck
+accordingthetablebarspacing(youlookintothetable,extractyournecessarysteelstressand
+inputthisinPARA-SSU).Elementswithoutdefinedsteelstressaredesignedwiththetablebar
+diameters!
+The ”precise” crack width check with a direct calculation (DAfStb-Heft 400 or EN 1992-1-1) is
+activated via the input of PARA or a value for WK in the record CRAC. The concrete tensile
+stress BETZ of the record MAT has not to be defined then to zero. The parameters WK to K1
+are used only for the ”precise” check.
+This record remains effective until another CRAC record is input. Without a CRAC input, no
+service load checks occur!
+3-36 SOFiSTiK2023InputDescription|BEMESS
+3.7 MREI – Minimum Reinforcement
+MREI
+Item Description Unit Default
+FFCT Factor for effective tensile strength −
+KC Coefficient for stress distribution during first cracking −
+K Externalconstraint-forbendingconstraintusuallyin- −
+put K=1.0 is required
+ROBU Robustness reinforcement −
+The minimum reinforcement according to EN 1992-1-1 7.3.2 is defined with the record MREI
+FFCT, KC and K. In Germany the increase of hc,ef acc. figure 7.1d is taken into account. A
+tendon reinforcement is not taken into account, the MREI crack moment is calculated into a
+necessary normal reinforcement.
+The factor of the effective tensile strength results as follows:
+ƒ = FFCT · ƒ
+ct,eƒƒ ctm
+Minimum 3.0 N/mm2 (leightweight concrete) are used for FFCT = 1.0.
+Withoutan inputforKCthe coefficientisdetermined fromtheaxialforce forthree-dimensional
+systems. Reasonable inputs are:
+MREI FFCT 1.0 KC 0.4 K 1.0 for bending constraint
+MREI FFCT 0.5 KC 1.0 for centric constraint from hydration heat
+TheitemKiscalculatedindependenceofthedepth. Forexternalconstraint(columnsettlement
+or bending constraint) it should be input with k=1.0.
+The determination of the minimum reinforcement requires an input of the crack width WKU
+and WKL in record GRP respectively in the design parameter dialog! For a parallel explicit
+crack width input in CRAK WK (EN 1992-1-1 7.3.4), this is used also for the minimum rein-
+forcement. Ifthelimitationofthecrackwidthaccordingtotables(EN1992-1-17.3.3)isdesired
+simultaneouslywithCRAKWKTAB,WKUandSIGUcanbeinputinrecordGRP(orthedesign
+parameter dialog)! Then WKU is used for the minimum reinforcement and SIGA is used for
+the limitation of the crack width without a direct calculation according to tables (EN 1992-1-1
+7.3.3).
+Example: see bemess6_design.dat
+ROBU:thecheckofaminimumreinforcementforthesafetyofaductilememberbehaviour(ro-
+bustness reinforcement) occurs with an input for ROBU. With MREI ROBU FCTM the check is
+performedwiththeconcretetensilestrengthfctm,withMREIitisperformedwithfctk. However,
+a different tensile strength may be input with ROBU, e.g. MREI ROBU=2.50 (N/mm2).
+SOFiSTiK2023 3-37BEMESS|InputDescription
+The minimum reinforcement is then calculated according EN 1992 9.2.1.1(1) equation (9.1N).
+Only for german design codes a crack moment is calculated and designed with a fixed lever
+arm value kz=0.9 and the steel yield strength fyk according (NDP) 9.2.1.1 (1).
+Therobutsnessreinforcementisalwaysappliedatthebottomofasection. Ontoponlyincase
+ofappearingtensilestresses. Torecognizethisitisnecessarytodefineapermanentloadcase
+for this check may be with a little factor only, e.g. LC (2721 2726 1) FACT 0.001.
+Usually the robustness reinforcement on the top has to be placed over a length of up to a
+quarter of the span length.
+Varying MREI input for different groups is not possible in one run, but you can make multiple
+PROG BEMESS runs with different GRP selection.
+3-38 SOFiSTiK2023InputDescription|BEMESS
+3.8 SHFT – Offset Value for Shift Rule
+SHFT
+Item Description Unit Default
+TYPE Consideration of the offset value for shift rule − 0
+0 does not consider
+1 Consideration according to EC 2 method
+WiththeinputSHFT1anadditionalnormalforceisappliedandleadstoashiftsinthebending
+reinforcment. Near supports up to 0.5·z·cot-theta, the shear force is reduced respectively.
+Toavoidanunnecessaryincreaseoflongitudinalreinforcementinmidspan,theminimumcom-
+pression strut angle is reduced with a default CTRL COTT 7/4.
+Example see (german) versatz.dat
+SOFiSTiK2023 3-39BEMESS|InputDescription
+3.9 NSTR – SLS Checks
+Seealso: ECHO,CTRL,MAT,LC
+NSTR
+Item Description Unit Default
+SIGS Stress range of longitudinal reinforcement N/mm2 -
+Reinforcement will be increased if necessary.
+NSTR SIGS 999 only checks the stress range.
+SIGT Stress range for shear reinforcement. N/mm2 0.454*
+Default 0.454*SIGS due to small bending diameter. SIGS
+Reinforcementwillbeincreasedifnecessary. Punch-
+ing shear reinforcement will not be increased.
+Spezial input negative SIGT see below
+SIGP Stress range for prestressing steel N/mm2 -
+BEMESStriestoreachthisbyincreasinglongitudinal
+reinforcement. Ifthisisnotpossibleawarningoccurs.
+CHKC Maximum concrete compression stress −,N/mm2 0
+0.45 Check to 0.45 fckl
+0 No control
+>1.5 input directly in N/mm2
+In the layer design (default on NSTR) reinforcement
+will be increased if necessary (and if possible).
+On CTRL LAY 0 (Baumann) reinforcement will not be
+increased - check only.
+On CTRL LAY 1 a pure check without increase can
+bei made with NSTR CHCK -0.45 (negative value).
+CHKR Maximum steel stress −,N/mm2 0
+0.8 Check to 0.8 fyk
+0 No control
+>1.5 input directly in N/mm2
+Reinforcement will be increased if necessary.
+DECO check distance decompression check [mm] -
+1011
+FATC FatigueageofconcreteFATC.Nolongerused,please - -
+definefcd-fatinthematerial, seeAQUACONCFFAT.
+Also possible as AQUA-Restart see AQUA CTRL
+REST
+Tablecontinuedonnextpage.
+3-40 SOFiSTiK2023InputDescription|BEMESS
+Item Description Unit Default
+Correction coefficients λs according to:
+DIN-FB 102 Anhang A.106.2 or:
+1992-2 NN.2.1(NN.101)/NN.3.1(NN.106)
+LS_U upper reinforcement − -
+LS_L lower reinforcement − -
+LS_V shear reinforcement − -
+LS_P prestressing steel − -
+LC14 concrete produkt λc1*λc2*λc3*λc4 − -
+λc0 is calculated by the program and used
+Without LC14 input the check is done according EN
+1992-1-1 6.8.7 (6.77), e.g. with NSTR SIGS 999
+LS_U 1 1, with LC14=0 no concrete fatigue check is
+done at all,
+with LC14 input the check is done with sigma-c-perm
+according EN 1992-2 NN.3.2(NN.112)
+Increase factors axle load of load model 3
+FACU upper reinforcement − 1.0
+FACL lower reinforcement − 1.0
+FACV shear reinforcement − 1.0
+FACP prestressing steel − 1.0
+LOCP Local directions of tendons on CTRL LAY 0 − -
+In the layer design, tendons are analyzed exactly. So
+an input LOCP is only allowed for CTRL LAY 0 and
+then means:
+0 Stress range, determines with maximum of
+thestressrangeofthemainandtransverse
+reinforcements (default)
+1 Stress range, determines with the stress
+range of the main reinforcement
+2 Stress range, determines with the stress
+range of the transverse reinforcement
+G_SD gamma-sd fatigue to LC14. In EN1992-2 (NN.112) − 1.00
+gamma-sd is written, but it should be gamma-Ed,fat
+Attention: Using SIGS, SIGT, CHKR, LS_U, LS_L, LS_V, FAKU, FAKL or FAKV, the reinforce-
+ment will be increased to fulfil the check.
+The stress range of the reinforcement may be verified with the input NSTR SIGS. At first a
+normal design occurs with possible additional serviceability checks. Then a possible already
+saved reinforcement is considered at CTRL BMOD SUPE. For each load case the reinforce-
+SOFiSTiK2023 3-41BEMESS|InputDescription
+ment stress in computed. The minimum and maximum value of all load cases then give the
+stressrange. Toavoidmisunderstanding,onlyaninputof100%permanentfactor(LC...PERC
+usedforotherchecks)isallowedusingNSTR.Thesetofloadcaseswith/withoutliveloadpart
+has to be produced with MAXIMA in advance. If the stress range is to large, the reinforcement
+is increased correspondingly.
+AlsotheelementsthatdonotrequireanyreinforcementincreaseareprintedwithECHONSTR
+FULL. ECHO SIGS NSTR produces the stresses of the single load cases as well as the used
+updatedleverarms. IfafurthercalculationisstartedwithCTRLBMODSUPEafteraBEMESS
+calculation with a stress range check, smaller stress range are determined in this second
+calculation, because the reinforcement increased in the previous calculation is used for the
+stress determination (= control of the reinforcement increase).
+At first a design in the ultimate limit state should be performed usually. Then an separate
+BEMESS stress range check occurs with CTRL BMOD SUPE for possible other serviceability
+load cases from the program MAXIMA.
+Fortheshearlinkstressrange(SIGT)thesquarerouteofthestrutinclinationisusedaccording
+to EN 1992-1-1 6.8.2(3) (6.65). It is also checked whether the direction of the shear force
+alternates in the different load cases, because it is an indication for decompression: E.g. if LC
+1 has Vx=+100 and LC 2 has Vx=-100, then both load cases have the same shear stress but
+the shear force changes through zero from LC 1 to LC 2!
+WithspezialinputofanegativeSIGTe.g. -120alwaysastressrangeinshearreinforcementis
+calculated. This automatically causes shear reinforcement in every element. With this feature
+you can check if the then necessary shear reinforcement is smaller than an anyway placed
+minimum shear reinforcement (that you cannot input up to now).
+A stress range is not considered for the punching check! Over punching nodes no shear rein-
+forcementwillbeincreasedduetoSIGT!Forgraphicalchecks,thelinkstressrangecomputed
+from the real slab shear force is calculated and stored for WinGRAF.
+DECO: for the decompression check according EN 1992-1-1 7.3.1 the check distance (default
+100mm) is taken from the .ini file and thus adjusted to the design code. Via input e.g. NSTR
+DECO 120[mm] the check distance can be changed individually (without h/10 limitation). In
+every stress check with NSTR (also pure input NSTR) the maximum decompression strain in
+thedirectionoftendonsinthecheckdistanceaboveandbelowtheductsurfacearecalculated
+and stored for WINGRAF.
+Example prestressed_slab.dat or in CSM DESI: csm32_slab_design.dat
+Fatigue check
+The fatigue check for concrete according to DIN-FB 102-(4.188) or EN-1991-1-1 is con-
+trolled via LC14. With additional input to LC14 and a permanent loadcase the check is done
+with sigma_c,perm. λc0 is calculated by the Programm. The simple check is then done in
+addition for comparison reasons.
+A fatigue check for steel is realized, if at least an input for LS_U, LS_L, LS_V, FAKU, FAKL or
+FAKV is done. Here SIGS means according to 4.3.7.5 DIN-FB 102 or EN-1991-1-1:
+SGS = Δσ (N∗)
+Rsk
+3-42 SOFiSTiK2023InputDescription|BEMESS
+Example for fatigue check:
+prestressed_slab.dat or in CSM DESI: csm32_slab_design.dat
+SOFiSTiK2023 3-43BEMESS|InputDescription
+3.10 MAT – Input of Material Properties
+Seealso: CTRL,CRAC,NSTR
+MAT
+Item Description Unit Default
+CONC Concrete and steel class must be defined − -
+STEE in AQUA or the SSD − -
+K Control parameters for the shear check LT K1S
+K1 Span reinforcement is continuous. (>50%)
+K1S Span reinforcement is in steps
+MINC Minimum transverse reinforcement − 0.0
+The transverse reinforcement is at least MINC times
+the main reinforcement.
+MSTA Character of the loading LT YES
+YES mainly stationary loading
+NO not mainly stationary loading
+AM3 Minimum reinforcement of pressed cross sections (in % *
+percentage of the statically required cross section)
+Default: (see also CTRL WALL)
+0.8 for DIN1045-1988
+0.0 for DIN 1045-1,EN1992,
+BS,ACI, OENORM
+FC Effective concrete design strength MP *
+FY Steel yield limit MP *
+FC and FY can be changed up to 30% from their de-
+fault values.
+FYS Yield limit shear aud punching shear reinforcement MP *
+SC1 Concrete material safety bending − *
+SC2 Concrete safety compression members − *
+SS1 Steel material safety tension and bending − *
+SS2 Steel safety compression reinforcement − *
+default depending on CTRL REIN/ULTI and the code
+C1 Maximum concrete compression strain o/oo *
+C1 is are only allowed in the layer design
+S2 Maximum reinforcement tensile strain o/oo *
+3-44 SOFiSTiK2023InputDescription|BEMESS
+Input of the material properties from the database:
+The materials of the database are used as default, if they are concrete and steel mate-
+rials. They can be changed, mainly FC, FY and the safety factors.
+MSTAcontrolsthecomputationalreductionoftheshearstressintheshearzone3fortheshear
+design according to DIN1045-1988.
+Defaults of the safeties:
+SC1 SC2 SS1 SS2
+DIN 1045-1 (REIN+ULTI) 1.50 1.50 1.15 1.15
+DIN-1045-1988 (REIN) 1.75 2.10 1.75 2.10
+DIN-1045-1988 (ULTI) 1.00 1.00 1.00 1.00
+OENORM (REIN+ULTI) 1.50 1.50 1.15 1.15
+EN 1992-1-1 (REIN+ULTI) 1.50 1.50 1.15 1.15
+British Standard ” 1.50 1.50 1.05 1.05
+American ACI ” 1/0.9 1/0.65 1/0.9 1/0.65
+SOFiSTiK2023 3-45BEMESS|InputDescription
+3.11 GEOM – Input of the Cross Section
+Seealso: DIRE,THRE,MAT,PARA
+GEOM
+Item Description Unit Default
+H Plate thickness [mm] *
+1011
+Default: as available in the database
+HA Centredistanceoftheuppermainreinforcementfrom [mm] 35
+1024
+the upper plate edge
+DHA Centre distance of the upper transverse or middle re- [mm] 10
+1024
+inforcement from the main reinforcement
+HB Centredistanceofthelowermainreinforcementfrom [mm] HA
+1024
+the lower plate edge
+DHB Centre distance of the lower transverse or middle re- [mm] DHA
+1024
+inforcement from the main reinforcement
+DDHA Centredistanceoftheupperinnerreinforcementfrom [mm] DHA
+1024
+the middle reinforcement
+DDHB Centredistanceofthelowerinnerreinforcementfrom [mm] DHB
+1024
+the middle reinforcement
+HPRE Limitation of the compression zone thickness [mm] -
+1024
+The values HU - DDHB are usually input in a separate BEMESS run or the SSD design pa-
+rameter dialog.
+AninputHorHPREcannotbedoneinaparameterdefinitiionrun(PARA).AninputHorHPRE
+is only allowed in a separate design run. Without input to HU-DDHB then H and HPRE can be
+used in combination with the PARA values for an individual design run. If HU-DDHB is input
+then no values are taken from a previous PARA run or the SSD design parameter dialog.
+The inputs for HA, DHA, HB, DHB, DDHA and DDHB have no effect for disk structures. The
+input DIRE UPP, GEOM HA,DHA and PARA DU,ASU,ASU2 count for one side of the disc, on
+theothersidethesamevaluesareused. IntheoutputyougetanASUandanASL,bothmust
+be placed. In WINGRAF only ASU is served, on the other side the same reinforcement must
+be placed.
+This record remainseffective until another record GEOMis input. More explanations are to be
+found in the description of the records DIRE and THRE.
+3-46 SOFiSTiK2023InputDescription|BEMESS
+Note
+The design of orthotropic plates by BEMESS requires additional effort. A different thickness
+should be defined for each load case and each direction of the principal moments. In such
+cases BEMESS prints a warning; the user should specify the thickness explicitly with GEOM
+D.
+HO
+DHO
+DDHO
+D
+DDHU
+DHU
+HU
+1:Geometryofthereinforcedconcretecrosssection(O=upperside U=lo
+Figure3.1: Geometryofthereinforcedconcretecrosssection(O=upperside,U=lowerside)
+The used compression zone thickness may be limited for the design of hollow plates with the
+input possibility GEOM...HPRE. In this way the hollow plates or the bouble-deck plates can
+be calculated. However, a shear design does not occur. The shear force has to be checked
+separately.
+SOFiSTiK2023 3-47BEMESS|InputDescription
+3.12 DIRE – Definition of Orthogonal Two-course Reinforcement
+Seealso: GEOM,THRE,MAT,PARA
+DIRE
+Item Description Unit Default
+UPP Angle between the upper main reinforcement direc- degrees 0
+tion and the local x axis
+(between 0 and 180)
+LOW Anglebetweenthelowermainreinforcementdirection degrees 0
+and the local x axis
+(between 0 and 180)
+X Centre for a circular plate design [m] -
+1001
+Y The angles defined with UPP and LOW [m] -
+1001
+Z refer to the direction vector from the input centre to [m] -
+1001
+the design point. The axis is defined in the case of
+three-dimensional structures.
+An orthogonal steel mesh can be laid both at the upper (support reinforcement) than also at
+the lower side (span reinforcement). The direction of the main reinforcement is specified and
+the transverse reinforcement is perpendicular to it. Clockwise angles are positive and they are
+defined in degrees. They are relative to the x axis of the local coordinate system, which is in
+the case of plane problems identical with the global coordinate system. The location of the
+coordinate system in three-dimensional cases can be defined in SOFIMSHA/SOFIMSHB.
+The inputs for LOW has no effect for disk structures. The input DIRE UPP, GEOM HA,DHA
+andPARADU,ASU,ASU2countforonesideofthedisc,ontheothersidethesamevaluesare
+used. IntheoutputyougetanASUandanASL,bothmustbeplaced. InWINGRAFonlyASU
+is served, on the other side the same reinforcement must be placed.
+A design in ultimate limit state can be done with a symmetrical and centric reinforcement for
+shell systems (SYST SPAC):
+DIRE LOW SYM defines a symmetric reinforcement
+DIRE LOW CENT defines an (upper) centric reinforcement
+(without lower reinforcement)
+For hight concrete cover, the upper and lower reinforcement often are close together. Defining
+a symmetric reinforcement it is now taken into account that the reinforcement at the concrete
+compression side also gets tension and helps the tension side reinforcement. An increase of
+lever arm is taken into account.
+Example file: symmetric.dat
+A special option allows the design of a circular mesh reinforcement by defining a reference
+circle centre and the items UPP/LOW equal to 0 or 90 degrees. Then the radial or tangential
+reinforcement lies at the outer side.
+3-48 SOFiSTiK2023InputDescription|BEMESS
+Inthecaseofthree-dimensionalsystems,Z=0definesaZaxisthroughthepointX,Y.IfZisnot
+equalto0,thenX=0definesaXaxisthroughY,Z,andY=0aYaxisthroughX,Z.Thetangential
+directionhaspriorityagainsttheradialdirectioninthecaseofdiagonallycutelements. AtDIRE
+00the2nd layerliesthentangential,whilethe1st layercandeviateperpendicularlytotheradial
+direction.
+In the normal case of the spiral stair the input DIRE 0 0 - 0 0 0 is correct for all elements.
+The stair links lie then as principal direction outside in radial direction, the structural bars are
+tangential in the 2nd layer (with X=Y=0 = spiral axis).
+This record remains effective until another record DIRE (or THRE) is input.
+X
+upper side transverse reinforcement
+lower side
+main reinforcement
+Y
+Figure3.2: GeometryofthereinforcementlayersforDIRE
+Figure3.3: Definitionofatwo-layercircularreinforcement
+SOFiSTiK2023 3-49BEMESS|InputDescription
+3.13 THRE – Definition of Skew 2- and 3-course Reinforcement
+Seealso: GEOM,DIRE,MAT,PARA
+THRE
+Item Description Unit Default
+ABEX Angle between the upper outer reinforcement direc- degrees 0.
+tion and the local x axis
+(between 0 and 180)
+ABMI Anglebetween theuppermiddle reinforcementdirec- degrees 90.
+tion and the local x axis
+(between 0 and 180)
+ABIN Angle between the upper inner reinforcement direc- degrees -
+tion and the local x axis
+(between 0 and 180)
+BEEX Angle between the lower outer reinforcement direc- degrees 0.
+tion and the local x axis
+(between 0 and 180)
+BEMI Angle between the lower middle reinforcement direc- degrees 90.
+tion and the local x axis
+(between 0 and 180)
+BEIN Anglebetweenthelowerinnerreinforcementdirection degrees -
+and the local x axis
+(between 0 and 180)
+The upper reinforcement mesh (support reinforcement) and the lower reinforcement mesh
+(span reinforcement) are selected independently of each other; thus two- and three-course
+reinforcementissimultaneouslypossible. Anorthogonaltwo-coursereinforcementlaidatboth
+sidesshouldbespecified,however,bymeansoftherecordDIRE.Theanglesofthereinforce-
+ment directions are defined in degrees and they are positive in the clockwise direction. They
+are relative to the x axis of the local coordinate system. The terms main and transverse rein-
+forcementinTHREareusedanalogously,e.g. inreferencetothepercentageparameterMINC
+of the input record MAT.
+The inputs for BEEX, BEMI and BEIN have no effect for disk structures. The input DIRE UPP,
+GEOMHA,DHAandPARADU,ASU,ASU2countforonesideofthedisc,ontheothersidethe
+same values are used. In the output you get an ASU and an ASL, both must be placed. In
+WINGRAF only ASU is served, on the other side the same reinforcement must be placed.
+3-50 SOFiSTiK2023InputDescription|BEMESS
+An SLS check of minimum compression height cannot be performed for skew two- and three-
+course meshes.
+This record remains effective until another THRE (or DIRE) record is input.
+ABMI or BEMI
+ABEX
+or ABIN
+BEEX or
+BEIN
+Middle Layer
+Outer Layer
+Inner Layer
+Figure3.4: GeometryofthereinforcementlayersforTHRE
+SOFiSTiK2023 3-51BEMESS|InputDescription
+3.14 DI3D – Definition BRIC Reinforcement
+Seealso: PARA
+DI3D
+Item Description Unit Default
+OAL Meridian angle, input in rad, rd 0
+for 10 degree please input 10*3.14/180 or 10[°]
+Definition see AQUA-MATE manual ”Geology”
+OAF Descent angle rd 0
+X Centre for a circular reinforcement [m] -
+Y [m] -
+Z [m] -
+The design of volume elements is based on a tension force covering of the stress tensor
+according a paper of P.C.J. Hoogenboom and A. de Boer: ”Computation of reinforcement for
+solid concrete” Heron Heft 53 2008 no 4. In tension, the reinforcement steel is used up to
+the trilinear limit. With the new input DI3D a reinforcement direction can be defined for BRIC
+elements.
+Example see bric_design.dat
+Possible definitions:
+DI3D 0 0
+1. reinforcement direction = global-X 2.=global-Y 3.=global-Z
+DI3D OAL...OAF... without input to a centre:
+first rotation OAL around global-Z
+then rotation OAF around new 1. reinforcement direction
+DI3D with input to a centre:
+X and Y are allowed in addition to OAL+OAF.
+Input Z only allowed with OAL=OAF=0
+- circular reinforcement around X,Y (without Z input):
+Standard case OAL=OAF=0:
+e.g. wind power plant foundation or tank:
+DI3D OAL 0 OAF 0 X 0 Y 0
+1. reinforcement = radial
+2. reinforcement = tangential
+3. reinforcement = global z
+Spezial case with OAL+OAF:
+Additional rotation OAL around global-Z
+then rotation around new 1. reinforcement direction
+3-52 SOFiSTiK2023InputDescription|BEMESS
+e.g. tank with 30 degree cone:
+DI3D OAL 90 OAF 30 X 0 Y 0
+Special input additional Z: only allowed with OAL=OAF=0:
+input Y,Z without X: rotational axis = X around point Y,Z
+input X,Z without Y: rotational axis = Y around point X,Z
+SOFiSTiK2023 3-53BEMESS|InputDescription
+3.15 LAY – Definition of Multi Layer Reinforcement
+Seealso: GEOM,THRE,PARA
+LAY
+Item Description Unit Default
+POS Position of the reinforcement LT !
+UPP Z = distance to upper face
+CENT Z = distance to center
+LOW Z = distance to lower face
+Z Centre distance of the reinforcement [mm] !
+1024
+DIRE Angle to the local x axis (between 0 and 180) Atgrd 0.
+D Diameter, 0=do not design these elements [mm] -
+1023
+can also be set in PARA with PARA...DU 0
+AS Minimum reinforcement [cm2/m] -
+ASMA Maximum reinforcement. When this is reached the [cm2/m] -
+next inner layer will be filled. Do not input ASMA for
+most inner reinforcement!
+BS MaximumreinforcementfornonlinearanalysisinASE [cm2/m] -
+(ASE-> REIQ) - not used in BEMESS
+WK Crack width [mm] -
+1026
+SS Steel stress in SLS crack check (for CRAC WK TAB [MP] -
+1092
+alternative to WK)
+For an element maximum 40 layers can be defined.
+Example see bemess8_multi_layer_design.dat:
+Figure3.5: 4upperlayer,6lowerlayer(3inx+3iny=6)
+All SLS checks can be done.
+Thecrackwidthdesignisdoneforthemostouterlayers,buttheinnerlayersparticipateonthe
+reinforcement ratio and the effective height as shown in Figure 2.9.
+3-54 SOFiSTiK2023InputDescription|BEMESS
+Multilayer reinforcement can also be used in a nonlinear ASE analysis.
+SOFiSTiK2023 3-55BEMESS|InputDescription
+3.16 PARA – Design Parameter
+Seealso: GEOM,DIRE,THRE,LAY,PUNC,MREI
+PARA
+Item Description Unit Default
+NOG Group number −/LT *
+* no input: default for all groups.
+SAR (or GAR): structural area number
+Secondary groups: are allowed
+selection with xmin-xmax: see below
+example bemess6_design.dat
+NOEL Element number − -
+or for SAR - structural area number
+DU Reinforcement diameter upper 1st layer [mm] 10
+1023
+DU=0: do not design this group
+DU2 Reinforcement diameter upper 2nd layer DU*
+DU3 Reinforcement diameter upper 3rd layer DU2*
+* no default in case of TYPE MOD!
+DL Reinforcement diameter lower 1st layer DU*
+DL2 Reinforcement diameter lower 2nd layer DL*
+DL3 Reinforcement diameter lower 3rd layer DL2*
+WKU Crack width upper 1st layer [mm] -
+1026
+WKU2 Crack width upper 2nd layer WKU*
+WKU3 Crack width upper 3rd layer WKU2*
+* no default in case of TYPE MOD!
+WKL Crack width lower 1st layer WKU*
+WKL2 Crack width lower 2nd layer WKL*
+WKL3 Crack width lower 3rd layer WKL2*
+SSU Steel stress upper 1st layer [N/mm2] -
+SSU2 Steel stress upper 2nd layer 1092 SSU*
+SSU3 Steel stress upper 3rd layer SSU2*
+* no default in case of TYPE MOD!
+SSL Steel stress lower 1st layer SSU*
+SSL2 Steel stress lower 2nd layer SSL*
+SSL3 Steel stress lower 3rd layer SSL2*
+ASU Minimum reinforcement upper 1st layer [cm2/m] -
+Tablecontinuedonnextpage.
+3-56 SOFiSTiK2023InputDescription|BEMESS
+Item Description Unit Default
+ASU2 Minimum reinforcement upper 2nd layer 1021 -
+ASU3 Minimum reinforcement upper 3rd layer -
+Usage of minimum reinforcement
+please refer to MREI PARA
+ASL Minimum reinforcement lower 1st layer -
+ASL2 Minimum reinforcement lower 2nd layer -
+ASL3 Minimum reinforcement lower 3rd layer -
+BSU Maximum reinforcement upper 1st layer [cm2/m] -
+BSU2 Maximum reinforcement upper 2nd layer 1021 -
+BSU3 Maximum reinforcement upper 3rd layer -
+The maximum reinf. is not used in
+BEMESS but only for nonlinear analysis
+in ASE. Please refer to ASE ->REIQ
+BSL Maximum reinforcement lower 1st layer -
+BSL2 Maximum reinforcement lower 2nd layer -
+BSL3 Maximum reinforcement lower 3rd layer -
+TYPE Modification of individual design parameters − -
+MOD overwritesonlyinthisinputlinedefinedval-
+ues, defaults inactive. Does not work in
+combination with DIRE+GEOM!
+XMIN Selection box: parameters are only applied [m] -
+1001
+XMAX if the center of a quad lies inside this box. [m] -
+1001
+YMIN Can be mixed with an NOG input. [m] -
+1001
+YMAX [m] -
+1001
+ZMIN no input : up to infinite [m] -
+1001
+ZMAX [m] -
+1001
+ROT rotation around the center of the box in the XY plane [degree] -
+The design parameter should be input only once in a separate BEMESS run of the SSD task
+design parameter. Then they are available in the database for all following calculations.
+All inputs from DIRE, THRE and GEOM (except for GEOM-D) can be done. A following PARA
+input is necessary to close a group or element selection. The first PARA input has a special
+meaning. It is always also a predefinition for all elements, also for all following PARA inputs.
+The inputs for DL,WKL,SSL und ASL have no effect for disk structures. The input DIRE UPP,
+GEOMHA,DHAandPARADU,ASU,ASU2countforonesideofthedisc,ontheothersidethe
+same values are used. In the output you get an ASU and an ASL, both must be placed. In
+WINGRAF only ASU is served, on the other side the same reinforcement must be placed.
+SOFiSTiK2023 3-57BEMESS|InputDescription
+Manual inputs for PUNC are saved also in the database. They have to be defined only in one
+BEMESS input.
+With PARA ... TYPE MOD only defined values of this input line are used for special groups or
+elements. Previous global data to DIRE or GEOM are not changed. So no (DIRE) or (GEOM)
+input is allowed directly before a PARA-MOD line! Also defaults e.g. for DU2=DU are not set.
+All values that shall be modified must be set! Usage e.g.:
+GEOM-HA25DHA10HB25DHB10 $ExpositionXC1
+PARANOG-DU10WKU0.40 $classF
+GEOM-HA40DHA10HB40DHB10 $ExpositionXC4
+PARANOG3DL20WKL0.30 $classE
+$
+PARANOEL20710,20711DU16DL14DL214TYPEMOD $doesnotchangedu2!
+ThistypeofinputisonlyallowedintheASCIIinputandisnotsupportedviatheSSDreinforce-
+ment dialogue. An input Type MOD is also not shown consequently in WINGRAF-System-
+Quad-minimum-reinforcement. For this please start a BEMESS design and check the rein-
+forcement in Design-Reinforcement-loadcase.
+Example: see bemess6_design.dat
+With PARA NOG ... DU=0 a group can be switched off from design.
+3-58 SOFiSTiK2023InputDescription|BEMESS
+3.17 PUNC – Punching Design
+Seealso: ECHO,CTRL,LC,PARA,MREI,SELE
+PUNC
+Item Description Unit Default
+TYPE Design mode - punching type LT *
+NO No punching design
+CHEK only check punching (reinforcement in-
+crease only by minimum reinforcement
+MMOM)
+YES Input for column nodes (default)
+COL as YES: Input for columns
+WALL Input for wall ends and corners
+FOUN Input for foundation slabs
+No Node number for following data
+X Coordinates of the punching node [m] -
+1001
+Y (if number unknown (assigned free)) [m] -
+1001
+Z [m] -
+1001
+D Column or wall thickness [mm] -
+1011
+only in special case, usually defined in SOFIPLUS
+B ColumnwidthB=0definesacircularcolumnwiththe [mm] -
+1011
+diameter D
+HEAD Column head or necessary check LT -
+- column head, normal punching design
+CHEK only check punching: input for individual
+nodes e.g. PUNC 37 HEAD chek
+OFF node is not a punching node (see also
+SELE ... 0)
+DHEA Total thickness in the zone of the enlarged column [mm] 0
+1011
+head (usually from SOFIPLUS)
+RO_V Maximumbendingreinforcementratioduetoshearin % 1.5
+the punching area
+If a design without shear reinforcement would require
+ahigherbendingreinforcementthanRO_V,BEMESS
+switches to the check with shear reinforcement
+LC_P Load case of the corresponding maximum soil pres- − -
+sure (foundation plate)
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-59BEMESS|InputDescription
+Item Description Unit Default
+The soil pressure inside the punching circle dK re-
+duces the maximum column load P for the punching
+check, only allowed for TYPE=FOUN
+VPD Shear force component of tendons [kN] -
+1102
+RO_M Maximum reinforcement ratio for increase of longitu- % -
+dinal reinforcement. See below
+RO_L Minimum longitudinal reinforcement if the punching % *
+check requires links
+MMOM FactoronminimumdesignmomentsaccordingtoDIN − 1.0
+1045-1 10.5.6 table 14 or EN
+0.0 minimummoments+kollapsreinforcement
+switched off
+default: 1.0
+HRED Reduction of thickness: minimum of quad thickness [mm] -
+1011
+and HRED will be used
+BETA Excentricity factor, see also CTRL BETA - -
+beta can only be increased, the flat value is always
+taken. Without input TYPE this BETA is only used for
+columns (not for walls).
+KPU Factor on VRD,max for studrails, see below - -
+Thepunchingcheckisperformedwiththemaximumsupportreaction. Ifnosupportreactionis
+found or the shear stress is too low, no punching check occurs.
+Individual nodes can be deactivated for punching, either with PUNC no. HEAD OFF or with
+SELE no. 0
+Effect on a SSD design task see SELE.
+Without input of a node number or X,Y,Z the following data are used for all punching nodes of
+type TYPE COL/WALL/FOUN.
+If punching shear links are necessary (if check without links and RO_V fails), not RO_V is
+taken for longitudinal reinforcement but only the minimum reinforcement necessary including
+links. As sometimes then too high shear reinforcement would be necessary, RO_L can be
+used to define a longitudinal reinforcement that is used if shear reinforcement is necessary.
+With RO_V=RO_M=RO_L a fixed reinforcement can be set.
+3-60 SOFiSTiK2023InputDescription|BEMESS
+Thecheckdirectlyatthecolumnheadsometimescanrequireahighlongitudinalreinforcement.
+To avoid this an input RO_M can be set. If that check would require a higher longitudinal
+reinforcement the punching check i set to undesignable (without increase of reinforcement).
+So PUNC RO_V controls to switch to shear studs, PUNC RO_L which longitudinal reinforce-
+mentshallbetakeninthatcaseandPUNCRO_Mcontrolsifaveryhighlongitudinalreinforce-
+ment is senseful at all.
+A collapse reinforcement according to EN 1992-1-1 9.4.1(3) is considered automatically (also
+on PUNC NO or PUNC CHEK, can be switched off there with MMOM=0). In this case the
+reinforcement Ved/fyk is distributed at the effective column circumference. No collapse rein-
+forcement is used at wall ends.
+Studrails: with the input PUNC KPU a factor for VRD,max can be input. Then the check in the
+critical perimeter u1 is done with VRD,max = kpu,sl * VRD,c. Most ETA technical reports allow
+a factor of 1.96. It is only checked if VRD,max is OK, the design then must be made extern
+with the spezifications of the studrail producer. For codes that do not have a check VRD,max
+at perimeter u1, input KPU is not allowed.
+In WINGRAF a reinforcement of 9999[cm2] is plotted to mark that a separate studrail design
+must follow.
+SOFiSTiK2023 3-61BEMESS|InputDescription
+3.18 LC – Selection of Design Load Cases
+Seealso: ECHO,CTRL,PUNC,S
+LC
+Item Description Unit Default
+NO Load cases, for which a design is to be performed − -
+or
+InputofadesigncombinationfromprogramMAXIMA
+DESI or (D) Design combination
+ACCI or (A) Accidental combination
+EARQ or (E) Combination for earthquake
+PERM or (P) Quasi-permanent combination
+RARE or (R) Rare or characteristic combina-
+tion
+FREQ or (F) Frequent comb.
+NONF or (N) Non-frequent comb.
+ULTI aftersuperpositiononULSlevelwithoutac-
+tions
+SERV aftersuperpositiononSLSlevelwithoutac-
+tions
+PERC FactorofthepermanentloadforSLSchecks(onlyold %/LT 100
+design codes)
+FortendonsorEN-1992fatigue,literalPERC’PERM’
+defines the permanent load case (level)
+FACT Factor for single load cases − -
+SELE Only for CSM DESI superposition loadcases: − -
+’M’ only use mami bending moment loadcases
+e.g. LC ’rare’ SELE M, so that in the crack design the
+mami-Vz loadcases must not be designed
+With LC DESI/ULTI the load cases which were superpositioned with program MAXIMA for the
+design with ultimate limit loads are selected automatically. For codes with actions, LC DESI
+hastobetaken,forcodeswithoutactions,LCULTIismorecorrect. Pleasechecktheselected
+load cases in the BEMESS output.
+Using LC ACCI/EARQ please check the material safety factors (see record MAT).
+The input of the load cases with maximum support reactions is also necessary for punching
+checks.
+3-62 SOFiSTiK2023InputDescription|BEMESS
+3.19 GRP – Selection of Groups
+Seealso: LC,ELEM,NODE
+GRP
+Item Description Unit Default
+NO Group number or secondary group literal −/LT *
+Default: all groups
+or:
+SAR structural area number − *
+CS construction stage for tendon activation − *
+an input with only CS (GRP CS 12) only sets CS
+All elements and nodes of the defined groups are used for the checks with the record GRP. In
+this way GRP replaces the records ELEM and NODE.
+For secondary groups only the elements are selected, not the nodes.
+Incaseagroupshallnotbedesigned,agroupcanalsobeswitchedofffromdesignwithPARA
+NOG ... DU=0.
+WiththedefaultCS9998alltendonsareactive,tendonswithICS2=0orICS2=9999aretreated
+as unbonded.
+SOFiSTiK2023 3-63BEMESS|InputDescription
+3.20 ELEM – Selection of Elements
+Seealso: LC,CRAC,GRP,NODE
+ELEM
+Item Description Unit Default
+FROM Start element number −/LT *
+or ’GRP’ for input of a group number or a secondary
+group in TO
+To select a group better use GRP because then also
+the nodes of the group are selected.
+TO End element number (or group) −/LT FROM
+INC Increment − 1
+AdesignorastressanalysisfortheloadcaseLCiscarriedoutforallelementsfromFROMto
+TO in increments of INC.
+Incaseagroupshallnotbedesigned,agroupcanalsebeswitchedofffromdesignwithPARA
+NOG ... D0=0.
+In input ELEM can bei used especially to check the design in one element with ECHO FULL
+EXTR.
+Alternatively to ELEM you can also work with ECHO ELEM, then all elements are designed
+but the output only prints the selected elements. Then automatically an extended output is
+started, the layer design stress plot is only done for the first element of the ECHO ELEM list.
+See example bemess.dat/english/bemess8_multi_layer_design.dat
+3-64 SOFiSTiK2023InputDescription|BEMESS
+3.21 NODE – Selection of Nodes
+Seealso: LC,GRP,ELEM
+NODE
+Item Description Unit Default
+FROM Start node number − *
+Default: Smallest saved node number
+TO End node number − FROM
+INC Increment − 1
+GROU Node groups − *
+Default: all groups
+To select a group better use GRP because then also
+the elements of the group are selected.
+A design for the load case LC is carried out for all nodes from FROM to TO in increments of
+INC.
+In input NODE can bei used especially to check the design in one node with ECHO FULL
+EXTR.
+SOFiSTiK2023 3-65BEMESS|InputDescription
+3.22 SELE – Selection of Punching Points
+Seealso: PUNC
+SELE
+Item Description Unit Default
+NO Node number − -
+TYPE Use of the selection − 1
+0 is not used
+1 is used
+GRP group number (alternative to NO) − -
+Individual nodes can be deactivated for punching,
+e.g. node 17 either with PUNC 17 HEAD OFF or with SELE 17 TYPE 0
+TheadvantageofSELEisthatyougenerallydefinethepossiblenodesfortheautomaticpunch-
+ing node search. If only individual nodes shall be excluded from punching the input PUNC no.
+HEAD OFF is better (more clear).
+The advantage of PUNC no. HEAD OFF is: this input can also be made in a separate TEDDY
+taskinfrontofaSSDTaskdesignandwillbeusedthere(butnotSELE).PossibleSSDTEDDY
+Task:
+PROG BEMESS
+HEAD
+PUNC 16,317,712 HEAD OFF
+END
+Examples for SELE:
+SELE (1 9999 1) 0 $ first switch off all nodes
+SELE 14,253,402 1 $ take only these nodes
+or:
+SELE (1 999 1) 1 $ first switch on all user defined SOFIPLUS nodes
+SELE 251,255 0 $ except these
+$ (automatically created nodes have numbers > 1000)
+or:
+SELE TYPE 0 GRP 3,5 $ removes punching nodes
+$ coming from GRP 3+5 (temporary supports)
+3-66 SOFiSTiK2023InputDescription|BEMESS
+3.23 S – Input of External Forces and Moments
+Seealso: LC
+S
+Item Description Unit Default
+NO Element number − 1
+NO1 Additionalnumberusedfordistinctionofseveralinput − 0
+records
+MX Bending moment m-xx [kNm/m] 0.
+MY Bending moment m-yy 1113 0.
+MXY Bending moment m-xy 0.
+VX Shear force v-x [kN/m] 0.
+VY Shear force v-y 1112 0.
+NX Membrane force n-xx [kN/m] 0.
+NY Membrane force n-yy 1111 0.
+NXY Membrane force n-xy 0.
+For the input of external forces and moments the information which are saved in the database
+maybeignoredpossibly. ThismeansthatanelementthicknesshastobeinputinGEOM.Only
+anoldBaumanndesign(CTRLLAY0)isdone-nolayerdesign,nosheardesignisdone. Also
+serviceability checks can not be made with extern forces S.
+But you can achieve a complete design with manually forces with a little one quad system:
+See example bemess.dat/english//special]design_of_external_forces.dat
+SOFiSTiK2023 3-67BEMESS|InputDescription
+3.24 EXPO – Export of the Design Parameters
+EXPO
+Item Description Unit Default
+OPT reserved − -
+TO Name of a file to write to Lt96 *
+PASS Password of the CDB to be exported Lt16 -
+With the record EXPO you may export the design parameters in the database to an input file
+for BEMESS. This may be useful in special cases.
+If the filename is not specified the data will be appended to the most recently defined file or a
+file with the name project_BEX.DAT is generated.
+3-68 SOFiSTiK2023InputDescription|BEMESS
+3.25 ECHO – Control of Output
+Seealso: NSTR,PUNC,LC,CTRL
+ECHO
+Item Description Unit Default
+OPT A literal from the following list: LT FULL
+PARA Design parameter
+MAT Material (default=PARA)
+REIN Reinforcement design results
+NSTR Strains,stressrangeandconcretestressin
+SLS
+PUNC Punching checks
+ECHO PUNC 4: WINGRAF plot of V-Ed
+without bedding red. on foundations
+RTAB Reinforcement compilation
+DMOM Internalforcesofthedesign(ECHODMOM
+has nothing to do with CTRL DMOM!)
+STRE Linear Stress determination with CTRL
+STRE
+ELEM Outprint only for these elements
+NODE Outprint only for these nodes
+RVT switch for REVIT output (shorter PARA
+lists)
+FULL All above the options
+VAL Value of output option −/LT *
+- without input = default
+Only elements with maximum results (with-
+out nodes)
+- element or node number for ELEM or
+NODE
+NO No output
+YES Regular output, no plots
+Only elements and nodes with maximum
+results
+FULL Extensive output, (all elements + nodes),
+plots
+EXTR Extreme output
+Also all single loadcases and details on
+concrete strain
+The default is activated without an user input:
+PARA FULL
+PUNC YES (FULL for the maximum loaded point)
+SOFiSTiK2023 3-69BEMESS|InputDescription
+STRE YES
+RTAB+DMOM NO
+REIN+SIGS+NSTR only elements with maximum results
+On input of single elements with ELEM or NODE (design test) ECHO REIN und ECHO NSTR
+is set to EXTR.
+Alternatively to ELEM you can also work with ECHO ELEM no, then all elements are
+designed but the output only prints the selected elements. Then automatically an ex-
+tended output is started, the stress plot is only done for the first element of the
+ECHO ELEM list. To select a node please input ECHO NODE. See example be-
+mess.dat/english/]bemess8_multi_layer_design.dat
+In the stress range check with ECHO NSTR FULL only elements that require a reinforcement
+increase are printed. ECHO NSTR EXTR generates the maximum stresses of all load cases
+and elements. Better use WINGRAF to check the stress range.
+3-70 SOFiSTiK2023

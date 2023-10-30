@@ -1,0 +1,2450 @@
+TALPA
+2D Finite Elements
+in Geotechnical Engineering
+SOFiSTiK | 2023TALPA
+2DFiniteElements
+inGeotechnicalEngineering
+TALPAManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|TALPA
+Contents
+Contents i
+1 Task Description 1-1
+1.1 Construction Stage Manager (CSG) . . . . . . . . . . . . . . . . . . . . . . . 1-1
+1.2 Finite Element Analysis (FEA) . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-1
+2 Theoretical Principles 2-1
+2.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.2 Analysis Models . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.3 Elements. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.3.1 Truss and Cable Elements . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.3.2 Spring Element . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.3.3 Rigid Frictional Interface Element . . . . . . . . . . . . . . . . . . 2-4
+2.3.4 Beam Element . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-5
+2.3.5 Plane Continuum Finite Elements . . . . . . . . . . . . . . . . . . 2-6
+2.4 Preliminaries on Nonlinear Material Modeling . . . . . . . . . . . . . . . . . 2-7
+2.4.1 Primary states (initial stress states) . . . . . . . . . . . . . . . . . 2-7
+2.4.2 The in-situ stress state . . . . . . . . . . . . . . . . . . . . . . . . . 2-9
+2.4.3 The initial pre-consolidation stress . . . . . . . . . . . . . . . . . . 2-12
+2.4.4 2-phase model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-14
+2.5 Nonlinear Analysis. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-18
+2.5.1 General . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-18
+2.5.2 Iteration procedures . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-19
+2.5.3 Line-search . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-19
+2.5.4 Load stepping continuation method . . . . . . . . . . . . . . . . . 2-20
+2.5.5 Safety assessment by the phi-c reduction method . . . . . . . . 2-22
+3 Input Description 3-1
+3.1 Input Language . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.2 Input Records. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-2
+3.3 TASK – Program Mode . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-4
+3.4 SYST – Global Control Parameters . . . . . . . . . . . . . . . . . . . . . . . . 3-5
+3.5 CTRL – Control of Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-6
+3.5.1 ITER iteration control . . . . . . . . . . . . . . . . . . . . . . . . . . 3-7
+3.5.2 KITE Iteration procedure . . . . . . . . . . . . . . . . . . . . . . . . 3-7
+3.5.3 LSRC Line-search . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-8
+3.5.4 STEP Load stepping procedure . . . . . . . . . . . . . . . . . . . 3-9
+3.5.5 EPOL Extrapolation . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-12
+3.5.6 SPRI Spring, truss, cable elements . . . . . . . . . . . . . . . . . 3-12
+3.5.7 BEAM Beam elements . . . . . . . . . . . . . . . . . . . . . . . . . 3-12
+3.5.8 QART Ansatz control for the quadrilateral element . . . . . . . 3-13
+SOFiSTiK2023 iTALPA|Contents
+3.5.9 FIRE Analysis of temperature dependent material behavior/
+material degradation for concrete and steel materials. . . . . . 3-13
+3.5.10 CONC Concrete material controls . . . . . . . . . . . . . . . . . . 3-15
+3.5.11 TSTF Control of steel-concrete bond behavior (tension stiff-
+ening) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-16
+3.5.12 GRAN Control of material law GRAN . . . . . . . . . . . . . . . . 3-16
+3.5.13 MSTE Material algorithm control . . . . . . . . . . . . . . . . . . . 3-16
+3.5.14 DEFO Storage of nodal displacements . . . . . . . . . . . . . . . 3-17
+3.5.15 LSEQ Load case sequences . . . . . . . . . . . . . . . . . . . . . 3-17
+3.5.16 AFIX Kinematic DOF control . . . . . . . . . . . . . . . . . . . . . 3-18
+3.5.17 SOLV Equation solver . . . . . . . . . . . . . . . . . . . . . . . . . . 3-19
+3.5.18 CORE Parallel computation control . . . . . . . . . . . . . . . . . 3-21
+3.6 PHRS – Phreatic Surface . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-23
+3.7 PLC – Primary Load Case. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-24
+3.8 TPLC – Primary Load Case Temperature . . . . . . . . . . . . . . . . . . . . 3-26
+3.9 GRP – Element Groups . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-27
+3.10 LC – Load Case . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-32
+3.11 LCC – Load Copying . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-34
+3.12 HIST – Iteration History Monitoring . . . . . . . . . . . . . . . . . . . . . . . . 3-35
+3.13 NSTR – Control of Material Limit State. . . . . . . . . . . . . . . . . . . . . . 3-36
+3.14 CSYS – General System Characteristics (CSG) . . . . . . . . . . . . . . . . 3-37
+3.15 CCRL – Control of Analysis (CSG) . . . . . . . . . . . . . . . . . . . . . . . . 3-38
+3.16 CS – Construction Stages (CSG) . . . . . . . . . . . . . . . . . . . . . . . . . 3-40
+3.17 CGRP – Group Control (CSG) . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-41
+3.18 CLOA – Load Reference (CSG) . . . . . . . . . . . . . . . . . . . . . . . . . . 3-43
+3.19 CGW – Global Ground Water Level (CSG) . . . . . . . . . . . . . . . . . . . 3-44
+3.20 CTXT – Arbitrary Text (CSG) . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-45
+3.21 ECHO – Output Extent . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-46
+3.21.1 Element results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-47
+3.21.2 Averaged element results at nodes . . . . . . . . . . . . . . . . . 3-47
+3.21.3 Distributed support reactions . . . . . . . . . . . . . . . . . . . . . 3-47
+3.21.4 Residual forces . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-47
+3.21.5 Material point statistics . . . . . . . . . . . . . . . . . . . . . . . . . 3-47
+3.21.6 Plot of cross-sectional stress distribution (Fiber Beams) . . . . 3-47
+Bibliography 3-49
+ii SOFiSTiK2023TaskDescription|TALPA
+1 Task Description
+TALPA offers two program modi that are selected by the literal TASK.
+CSG The Construction Stage Manager Geotechnics allows for automatic generation of
+the analysis sequence, based on an intuitive description of the construction stages.
+FEA Finite Element Analysis - actual calculation of the analysis steps (construction
+stages) by means of the Finite Element Method.
+1.1 Construction Stage Manager (CSG)
+Executed in mode CSG, TALPA supports the automatic generation of a analysis sequence,
+based on an intuitive description of the single construction stages. The actual calculation is
+then executed in mode FEA.
+Description of the construction stages is based on element groups and the philosophy that
+only changes in relation to the previous construction stage (e.g. installation, removal, change
+of properties of element groups) are specified. Groups that remain unchanged (and therefore
+are based on the foregoing construction stage), are treated automatically.
+InCSG-modeinputrecordsCSYS,CCRL,CS,CGRP,CLOA,CGWandECHOareevaluated.
+1.2 Finite Element Analysis (FEA)
+In FEA mode TALPA allows for linear or non-linear analysis of stresses and deformations both
+for
+• arbitrary shaped plane structures that are loaded in-plane (plane stress or plane strain
+conditions)
+• and axisymmetric three-dimensional structures
+by means of the finite element method. The main focus of TALPA is the numerical analysis of
+geotechnical related taks and soil mechanics.
+The analysis requires a descretized system (splitting of the structure into an assembly of indi-
+vidual elements interconnected at nodes) that is stored in the data base. TALPA features the
+following element types:
+• planar continuum elements
+• beam elements
+• spring/ interface elements
+• cable elements
+• truss elements
+All element types offer various optional nonlinear effects, allowing for an effective and realistic
+capturing of relevant mechanical effects regarding the structure’s load carrying characteris-
+tics. This involves in particular interaction between soil and structural members including wall-
+friction and nonlinear load carrying characteristics of soil. Other important aspects, to name a
+SOFiSTiK2023 1-1TALPA|TaskDescription
+few, are load transfer via (grouted) anchors, load redistribution capabilities of geo-grids, yield-
+ing/ tensile failure of struts, formation of plastic hinges and nonlinear load carrying behavior of
+(reinforced) concrete members.
+The program handles structures with rigid or elastic types of support. Elastic support can be
+providedlinearlydistributedorpoint-wise. Additionally,rigidelementsorskewsupportscanbe
+taken into account.
+TALPA calculates the effects of nodal, line, block and temperature loads. The program con-
+tainsspecialcapabilitiesforthegenerationofloadsfromconstructionstagesorprimarystress
+states.
+The program supports numerous non-linear material models (e.g. elastoplastic, viscoplastic).
+Accounting for non-linear support effects, such as friction or slip, is possible, as well.
+Program control is essentially done via a free format text input file, allowing for parametrized
+input and supporting various data generation capabilities (CADINP scripting language).
+Essentialcomputationalresultsarestrictlystoredinthedatabaseandarethereforeaccessible,
+e.g. for graphical postprocessing. he output includes the nodal deformations, the stresses at
+the centroids of elements and nodes and the reaction forces additional to the input.
+The analysis of nonlinear systems is a demanding engineering task. The increased sensitivity
+ofthesesystemsputsahighdemandonmodelingissues. Moreover,particularcharacteristics
+of the finite element solution procedure are likely to become evident. Therefore, it is generally
+advisable to increase the analysis model’s complexity gradually. Hence, as a rule, prior to
+running a nonlinear analysis, system and loads should be validated by a plain linear analysis.
+Engineering assessment of the computed results is indispensable.
+1-2 SOFiSTiK2023TheoreticalPrinciples|TALPA
+2 Theoretical Principles
+2.1 Introduction
+PlanesystemsarelocatedintheplanespannedbytheX-andY-axesofacartesiancoordinate
+system. This system is right-handed; a positive rotation is therefore defined by a clockwise
+rotation of X about the Z-axis (view corresponds to positive Z-direction). Plane systems are
+
+φ
+z
+y
+Figure2.1: Planarcoordinatesystem
+loaded in-plane, exclusively.
+2.2 Analysis Models
+TALPA supports three basic analysis models:
+• Plane strain state
+Thetotalstrainnormaltothestructure’splaneiszero. Thethicknessoftheplanarelements
+defaults to 1.0 m. Orientation of the coordinate system can be chosen arbitrarily; however,
+it is common practice to have the global Y-direction aligned with the gravity direction.
+• Axial symmetry
+Thismodelallowsfortheanalysisofaxisymmetricstructuresunderaxisymmetricloads. In
+thiscase,themeshrepresentsameridionalsection,rotatingabouttheXaxis. Theanalysis
+is based on a circular element spanning an angle of 1 rad. Essential characteristics of the
+axisymmetric analysis model are:
+– The appearance of a circular strain.
+– Supports in Y-direction are not a necessary condition for a kinematically stable system.
+– ThedimensionofnodalloadsisnolongerkN,insteadkN/mcircumferenceisused. Line
+loads change from kN/m to kN/m2 and bedding constants from kN/m2 to kN/m3.
+SOFiSTiK2023 2-1TALPA|TheoreticalPrinciples
+– Beam elements cannot be used together with axisymmetric elements.
+• Plane stress state
+The stresses perpendicular to the structure’s plane are zero (e.g. building walls). Orienta-
+tion of the coordinate system can be chosen arbitrarily; however, it is common practice to
+have the global Y-direction aligned with the gravity direction. Friction materials (soil materi-
+als) are not a valid option for this model.
+2.3 Elements
+2.3.1 Truss and Cable Elements
+Truss and cable elements can only transmit axial forces. In order to restrict the cable reaction
+to tensile force transfer, a nonlinear analysis is required.
+Optional nonlinear effects are:
+• Initial slip (GAP)
+• Tensile failure upon reaching tensile rupture force (CRAC)
+• Yielding (YIEL)
+• Reaction according to a specified material work law (AQUA: SSLA).
+Hint
+When simulating a loading history using primary states, the following should be consid-
+ered:
+GAP is related to the total deformation of the element.
+CRAC Straining beyond the element’s tensile strength yields to an immediate drop of
+the tensile capacity to zero. This damage cannot be recovered, tensile forces
+are no longer transfered by the element – even after a complete load reversal.
+Continuing loading yields crack growth. Compression cannot be transfered
+unlessthecrackhasclosedcompletely,i.e. thetotal deformationmustbecome
+negative.
+2.3.2 Spring Element
+Spring elements can be used to model parts of the structure through a simplified force - dis-
+placement relationship. This is usually a linear equation characterized by a spring constant:
+P=C· (2.1)
+The spring is defined by its direction (DX, DY, DZ) and the spring constants. The direction can
+be specified as the difference of two nodes (NE - NA) or given explicitly. Support springs (one
+node is referenced, only) must be assigned a direction.
+The spring element provides for subsequent optional nonlinear effects:
+• Initial slip (GAP)
+2-2 SOFiSTiK2023TheoreticalPrinciples|TALPA
+• Tensile failure upon reaching tensile rupture force (CRAC)
+• Yielding (YIEL)
+• Limitation of lateral force transfer by friction μ and/ or cohesion c
+• Reaction of principal and/ or lateral spring according to a general force based response
+curve (AQUA: SFLA)
+Non-linearoptionsareeffectiveforboththerotationalandthetranslationalsprings. Aprestress
+changes the corresponding effects and always induces a load to the system. A prestressed
+spring will unload in the absence of external loading or constraints.
+Hint
+Whensimulatingaloadinghistoryusingprimarystates,theelementreactioniscontrolled
+by the same directions as already given in subsection 2.3.1 Truss and Cable Elements.
+Figure2.2: Standardnonlinearspringresponsecurves
+Lateral spring action
+An optional lateral spring stiffness c q acts isotropically in the plane for which the normal di-
+rection coincides with the principal spring’s direction (lateral direction). The force component
+in lateral direction P q is obtained from the corresponding lateral displacement component  q
+according to:
+P q =C q· q (2.2)
+In case of activated friction or cohesion, the lateral force transfer is limited in dependence of
+the actual principal spring force P by:
+|P q|<=P·μ+c (2.3)
+Friction or cohesion can only be effective, if a lateral spring stiffness is defined. In case the
+principal spring experiences failure, the lateral spring becomes ineffective, too.
+All spring nonlinearities are effective for a nonlinear analysis, only.
+SOFiSTiK2023 2-3TALPA|TheoreticalPrinciples
+2.3.3 Rigid Frictional Interface Element
+RigidFrictionalInterfaceelementscanbeusedtosimulatethecontactconditionsbetweentwo
+mechanically interacting bodies of a model. Common use cases in geotechnics include soil-
+structure interaction, modeling of the interface between distinct soil layers, the slip surface of
+an unstable slope etc.
+2Dinterfaceelementstopologicallyconsistoffournodesandarecharacterizedbyaverysmall
+thickness to length ratio, being ideally zero-thickness elements in the unloaded configuration.
+Therefore, two edges are formed, with the edge defined between the first two nodes being
+the interface edge, which lies on the side where the interface is defined. The local coordinate
+system is defined with local x-axis perpendicular to the interface edge and pointing towards
+theoppositeedge(Fig. 2.3). 2DRigidFrictionalInterfacescanbegeneratedalongastructural
+line with the use of record SOFIMSHC: SLNS and option TYPE INTF.
+X
+1' 2'
+0.0
+1 Y 2
+Figure2.3: 2Dinterfaceelementinitsunloadedstate
+RigidFrictionalInterfaceelementsarecharacterizedbytwodistinctactions: anaxialone,along
+local x-axis, and a shear one, along local y-axis (Fig. 2.4). Their material properties can be
+defined with the use of record AQUA: BMAT. The initial stiffness of interface elements is ex-
+pected to be very high, compared to the surrounding elements, in order to ensure an initial
+rigidconnectivitybetweenthetworegions. Insteadofexplicitlydefiningstiffnessconstants,the
+elements may derive their stiffness by the Young’s and Shear Moduli of the material associ-
+ated with the bedding properties. This is possible by defining a reference thickness H, which
+correspondstothefinitethicknessofthephysicalmatterthattheinterfaceelementsrepresent,
+despite their zero (or other) thickness on the generated mesh. An additional reduction of the
+shear strength may be applied, with the use of the corresponding factor RFAC.
+Hint
+If parameter H is not provided, then an appropriate finite material thickness is calculated
+internally, which will provide quasi-rigid but numerically robust interface elements. The
+automatic determination of interface material thickness is recommended.
+2' X
+X 1' 2'
+1' Δu
+1 Y 2
+1 Y 2
+Δv
+Figure2.4: Axialandsheardeformationof2Dinterfaceelements
+As a general rule, however, the contact conditions along an interface are described by a non-
+linear material behavior. The element’s reaction in axial direction is governed by a material
+model characterized by brittle tensile failure, while compressive stress transfer is unlimited.
+The shearing response is ruled by an elasto-plastic model with a yield condition of Coulomb
+2-4 SOFiSTiK2023TheoreticalPrinciples|TALPA
+type,
+(cid:114)
+ƒ(σ)= τ 2+τ2 +tn(ϕ)·σ −c≤0
+z y 
+effectively limiting the shear stress for the 2D case to
+|τ |≤c−tn(ϕ)·s , here s =min(σ ,0) (compresson)
+y   
+Hint
+While in cracked state, the interface element is unable to bear any axial or shear stress.
+Uponcrackclosureandsubsequentcompression,theelementresumesitshighstiffness,
+in order to avoid element interpenetration.
+2.3.4 Beam Element
+Three different choices are available for beam elements. In all cases, the element obeys a
+linear geometry, topologically definedby startand endnodes, respectively. Timoshenko beam
+theoryisthebasisoftheelementformulations;accordingly,sheardeformationsareaccounted
+for. Processing of optional hinge effects at the beam ends is incorporated in the formulation,
+as well. Details regarding control options for the various beam types are given in the input
+description, record CTRL BEAM. Subsequently, a short summary of important characteristics
+is given.
+Extended Beam Element (Default)
+Extended finite element beam formulation (Timoshenko). In particular, allows for
+• Implicit hinges (=beam hinges with assigned work law).
+• Haunched cross-sections.
+• Extended scope of beam load types (e.g. single forces).
+• Variable number of beam sections.
+Fiber Beam Element
+The linear properties are almost identical with those of the ’Extended Beam Element’. Beyond
+that, internal discretization of cross-sections into single ’fibers’, directly integrates the contin-
+uum mechanical material reaction (stress-strain) into beam theory. Important characteristics
+are:
+• Optional nonlinear material reaction for steel and concrete materials.
+• Damage model for crack evolution in concrete.
+• Account for the steel-concrete bond action in between cracks (tension stiffening).
+• Temperature dependent material degradation: ’Hot’ work laws + nonlinear temperature
+strain according to EN 1992-1-2:2004.
+• 100% compatibility with primary states (initial loading states).
+The fiber beam element has been designed particularly for application in material nonlinear
+analyses. For this reason, the underlying formulation abandons provision for a particular so-
+SOFiSTiK2023 2-5TALPA|TheoreticalPrinciples
+lution with respect to beam loads. Accordingly, an element discretization (h-discretization)
+adequate to the nature of the problem under consideration is required - just as it is for other
+element types.
+Limitations of the element:
+• Fiberdiscretizationiscurrentlysupportedforrectangularcross-sectionsoftypeSREC,only.
+• Beam excentricities/ excentric cross-sections are not supported.
+• No support of imperfection loads and prestressing loads.
+• Implicit hinges (= hinges with underlying work law) cannot be assigned to a fiber beam
+element.
+Standard Beam Element
+Efficient two-dimensional ’standard’ beam element (Timoshenko) with a prismatic cross-
+section. The scope of permitted beam load types is limited. Linear material behavior, only.
+Haunches are accounted for in an approximate manner based on averaged cross-sectional
+values.
+2.3.5 Plane Continuum Finite Elements
+TheSOFiSTiKdefaultansatzfora2Dcontinuumelementisbasedontheconceptofenhanced
+assumed strains (EAS). The essential characteristics of this ansatz are shortly motivated and
+described in the following.
+Geometry of the plain element is topologically described by 4 nodes in the element corner
+points (QUAD). The standard ansatz space of a corresponding isoparametric element formu-
+lation using bilinear ansatz functions provides for relatively limited kinematics of the element,
+only. Asanimportantconsequence,atendencytowards’locking’canbeobservedforelements
+of this type. The well-known example of a QUAD element subjected to centric planar uniaxial
+bending illustrates this behavior. The element’s bilinear function space for the displacements
+is not able to reproduce the bending kinematics accurately - resulting in parasitic (unphysical)
+shear strains that induce a significant artifical stiffening of the element’s response. This effect
+is commonly known as (shear) ’locking’.
+Toalleviatethisproblem,normallyastrongrefinementoftheelementdiscretizationisrequired.
+Alternative, more efficient, options to overcome the phenomenon are
+• a)asufficientincreaseoftheorderoftheelementansatzspace(=moredegreesoffreedom
+per element), e.g., using ansatz functions for the displacements of quadratic, cubic and
+higher order;
+• b) an element technological, internal enhancement of the element kinematics.
+Methods falling in class b), have received great attention also adressing the issue of efficient
+shellelementformulations. Thistriggeredthedevelopmentofnumerousstrategiesforelement
+enhancement.
+The Enhanced Assumed Strain approach
+ThebasicideaoftheEASconceptisbasedonthenotionthatparasiticstrainsareresponsible
+for the observed locking effects. As a consequence, the EAS directly aims at enhancing the
+2-6 SOFiSTiK2023TheoreticalPrinciples|TALPA
+ansatz space for the strains by terms that are not directly induced by the ansatz for the dis-
+placements (assumed). This is done in such a way that the parasitic strains, possibly induced
+by the insufficient ansatz space for the displacements, are compensated (eliminated) by the
+assumed strains...
+It can be shown that it is permissible to derive an element local formulation of the assumed
+strains - provided that certain constraints are considered (Simo and Hughes [1] and Simo and
+Rifai [2]). The essential benefit is: Elimination of the additional degrees of freedom corrspond-
+ing to the enhanced terms already on element level, i.e., they do not add to the global number
+of system unknowns (→ efficiency)!
+Further benefits:
+• Choice of element ansatz not required until computation; no remeshing required in case of
+changes.
+• MPC’s(multipointconstraints)thatallow,e.g.,forconsistentconnectionbetweenquadratic
+and linear elements, are not required.
+• In contrast to many other approaches for element enhancement, adoption of the EAS con-
+cept in a nonlinear framework is rather straight forward and can be achieved with minor
+overhead, only.
+The well established Wilson/Taylor element with so called "incompatible modes" is a special
+case of the more general EAS concept (Simo and Rifai [2]).
+Optionally,theEASansatzcanbesuppressedviaCTRLoptionQART0. Inthiscase,element
+behavior is controlled by isoparametric bilinear ansatz functions.
+Thenon-conformingtypesaresuppressedinthecaseoftriangularelements. Forgeneralload-
+ing states these elements are of very limited use since they show a strong tendency towards
+shear-locking - resulting in a far too stiff prediction of the system response. The adoption of
+this element for the analysis of general type problems is discouraged.
+For additional reading regarding this topic see, e.g., Bischoff [3] or Klinkel and Wagner [4].
+Various state-of-the-art nonlinear continuum material laws are available. For details, please
+refer to the AQUA manual AQUA: NMAT.
+2.4 Preliminaries on Nonlinear Material Modeling
+2.4.1 Primary states (initial stress states)
+Primarystates(primaryloadcases)arefrequentlyusedinnonlinearanalyses,inparticularthey
+are the standard means for the numerical simulation of staged construction processes. To this
+end, an already reached system state is adopted as primary state for the directly succeeding
+computation step (construction stage).
+Moreover, the load carrying behavior of soils is often characterized by pronounced nonlinear
+reactions, which also introduces a certain sensitivity with respect to the loading history. For
+example, for the current reaction it makes a difference, wether previous unloading has been
+encounteredornot. Alsohere,theadoptionofprimarystateshelpstoadequatelysimulatethe
+relevant loading history.
+SOFiSTiK2023 2-7TALPA|TheoreticalPrinciples
+The basic concept of primary states is subsequently illustrated ba means of a finite element
+subjected to uniaxial compression.
+Nodal balance of forces (equilibrium)
+• We assume, that a (compressive) element stress state is given (red).
+• Then, inherent internal nodal forces (=expansive forces) are obtained via integration of the
+stresses over the element domain (green).
+• Balanceofforces: Ifexternalnodalloads(blue)ofsamemagnitudecounteracttheinternal
+nodal forces at each node of the element, the element is in a state of equilibrium.
+Figure2.5: Nodalbalanceofforces
+Accounting for primary states
+Adoptionofaprimarystateforthecurrentcomputationstepisreadilyillustratedincontinuation
+of the example above. First, transfer of stresses from the referenced primary state is accom-
+plishedalongwiththecorrespondinginternalnodalforces(FACL).Thefollowingscenariosare
+obtained:
+a) For the current computation step, the same external loads apply as for the referenced
+primary state. Balance of forces then yields a resulting force vector with zero magnitude
+(assuming, the referenced primary state represents a state of equilibrium). The element is
+in a state of equilibrium, no further deformation/ change of stress evolves.
+b) Currently applied external loading has changed in comparison to the referenced primary
+state. The resulting force is no longer of zero magnitude. In consequence, a change of
+deformation/ stress state will occur.
+c) No external loading in the current computation step is applied, e.g., due to deactivation of
+adjacent elements and consequential loss of nodal reset forces. Then, the resulting force
+ontheelementemergesfromtheinternalforcestate,only. Theelementexpands,incaseof
+free deformability and elastic material behavior it will reattain its unstrained initial position.
+2-8 SOFiSTiK2023TheoreticalPrinciples|TALPA
+This scenario is merely a special case of scenario b).
+PLF LF xx
+FAKP
+FAKL
+Figure2.6: Initialstressstatetransfer: balanceofforces
+The same observations apply for a complex finite element model. If some elements are re-
+moved from a primary state configuration - including the corresponding loads - the original
+equilibrium is disturbed and unbalanced forces emerge at the boundary nodes of the removed
+parts.
+In real problems either part only of the loading is used, or the primary state is reduced (relax-
+ation, stiffness reduction method), or parts of the system are removed, replaced or modified
+regarding their stiffness. In all cases, corresponding unbalanced forces evolve, initiating load-
+ing or unloading response of the structure. In order to cover all situations encountered in
+practice, TALPA features flexible and element group specific options for control of the various
+scenarios (see record GRP).
+2.4.2 The in-situ stress state
+For geotechnical analyses with the finite element method, it is usually required account for the
+in-situstressstateofthesoil(i.e.,thesoil’sstressstatepriortobeginningofconstructionwork).
+Sincetheloadcarryingbehaviorofsoilsisoftencharacterizedbypronouncedinelasticbehav-
+ior, an appropriate numerical incorporation of the in-situ soil state is of particular importance.
+Whilethehistoricalloadinghistoryofthesoilisunknowntoalargeextent,thedescriptionofthe
+currentstateisusuallyobtainedbasedonthesoil’sbulkdensityandthelateralearthpressure
+coefficient K . Accordingly, a point’s vertical stress σ ,0 results from the overburden load,
+whereasthehorizontalstress isobtainedviathelateralearthpressure coefficient K according
+to
+σ h,0 =σ ,0·K . (2.4)
+To generate a corresponding initial loading state of the finite element model, two procedures
+SOFiSTiK2023 2-9TALPA|TheoreticalPrinciples
+PLF LF xx
+FAKP
+FAKL
+Figure2.7: Initialstressstatetransfer: unbalanced(residual)forces
+are available:
+• The K-procedure (computation under gravity loading).
+• The analytical primary state (prescribing stresses analytically).
+Parameters describing the initial stress state are assigned element group wise. For this pur-
+pose, the input parameters K, as well as GAM, GAMA, H, SIGN and SIGH are available (cf.
+GRP).
+K-procedure
+Using the K-procedure, a standard finite element computation of the model subjected to spec-
+ified external loads (i.e. gravity loading) is executed. The procedure is activated by specifying
+the lateral earth pressure coefficient K, only – input of GAM, GAMA, H, SIGN and SIGH is not
+applicable, in this case.
+The procedure is based on a temporary modification of the linear-elastic material properties.
+Assuming laterally constrained conditions, the constitutive law is adjusted such that the de-
+sired stress ratios K = σ h,0/σ ,0 of horizontal and vertical stresses are achieved. Essential
+characteristics of the procedure are:
+• The procedure is universal, no particular model geometries like horizontal soil surfaces or
+horizontal soil layer interfaces are required.
+• After successful computation, the obtained stress state represents a state of numerical
+system-equilibrium.
+• The lateral earth pressure coefficient is not limited to values K <1.0.
+• Computation of the corresponding element groups for this loading step should normally be
+carried out nonlinearly (SYST PROB NONL). Further, a combination with the option GRP
+... PLC ’SITU’ is recommended. This assures that the computed stress state is compatible
+2-10 SOFiSTiK2023TheoreticalPrinciples|TALPA
+with material strength properties and possibly also provides for a consistent calibration of
+the material internal state variables. In case significant local strength violations already
+take place in this initial stage (plastic stress redistribution), a split into two computation
+stepsmaybefeasible: AlinearlycomputedloadstepusingtheK-procedure,supplemented
+by a second, nonlinear load step which references this primary stress state. Doing so, the
+secondloadstepservesasacorrectorsteptoaccountforthenonlinearmaterialproperties
+(limited material strength).
+Hint
+For generation of the initial stress state, use of the K-procedure is encouraged. Due
+to its universal applicability, it is also adopted as the standard procedure for the TALPA
+Construction Stage Manager mode (TASK CSG).
+Analytical primary state
+This procedure internally combines two substeps as follows:
+• First,asystemstressstateisgeneratedpurelyanalytical,basedontheprovideduserinput
+(see below). This means, initially, no finite element computation is executed.
+• Inasecondstep,afiniteelementcomputationwithgivenexternalloads(gravityloading)is
+executed, based on the so-obtained analytical stress state as primary state.
+This second step follows exactly the same lines as an ordinary computation step with primary
+loadcase: transferofstressstateandinternalforcesfollowstheproceduredescribedinsection
+2.4.1. In this case, however, the initial stress state is not inherently derived from equilibrium
+considerations but defined by analytical means. Therefore, attention is required: the imposed
+stress state and activated external loading should represent a balanced state of equilibrium -
+otherwise the emerging unbalanced forces will trigger a succesive system reaction with corre-
+sponding stress redistribution effects. For this reason, when using the analytical primary state
+approach, the resulting system state should be checked carefully.
+Computation of the analytical stress state procedes as outlined in the following (cf. Figure
+Figure 2.8). The vertical stress portion σ ,0 is determined for each associated element of
+the designated group from the stress SIGN acting at a reference height H (global coordinate,
+positive in gravity direction) and a depth position dependent increase via GAM/ GAMA:
+σ ,0 =GAM·(t−H)+SGN (2.5)
+The horizontal stress component is obtained via
+σ h,0 =K·σ ,0+SGH . (2.6)
+In the example of Figure 2.8, the vertical stress component acting at level H2 (upper edge of
+group 2) is determined by
+SGN2=GAM·(H2−H1)+SGN1 . (2.7)
+This value has to be provided as input parameter SIGN for group 2 along with H = H2. Us-
+SOFiSTiK2023 2-11TALPA|TheoreticalPrinciples
+H1 SGN1
+
+GAM1 Group 1
+y
+H2
+SGN2
+GAM2 Group 2
+H3
+σ v
+Figure2.8: Analyticalstressstate
+ing the literal AUTO for SIGN, the program TALPA tries to sort the groups in gravity direc-
+tion according to their H level and to automatically calculate the respective stress amplitudes
+SIGN.
+Hint
+The parameters GAM/ GAMA logically correspond to the specific weight parameters
+GAM/ GAMA of the respective materials, they should therefore have the same value –
+however, computationally they are independent. This may require special consideration
+regarding the definition of element groups.
+2.4.3 The initial pre-consolidation stress
+Soils that have been subjected to a historically higher loading than present are termed over-
+consolidated. The pre-consolidation stress identifies the corresponding historic loading level.
+The degree of over-consolidation is commonly expressed by the over-consolidation ratio OCR
+as the ratio between the maximum historical effective vertical stress σ(cid:48) and the in-situ effec-
+,p
+σ(cid:48)
+tive vertical stress .
+,0
+σ(cid:48)
+,p
+OCR= (2.8)
+σ(cid:48)
+,0
+An alternative description uses the pre-overburden pressure POP which is defined as
+(cid:12) (cid:12)
+POP=(cid:12)σ(cid:48) −σ(cid:48) (cid:12) (2.9)
+(cid:12) ,p ,0(cid:12)
+Based on the in-situ vertical stress, the complete pre-consolidation stress state is established
+as
+σ(cid:48) =σ(cid:48)
+and (2.10a)
+3 ,p
+σ 1(cid:48) =σ 2(cid:48) =K 0ncσ ,p (2.10b)
+Knc
+where denotes the lateral earth pressure coefficient for normally consolidated states of
+0
+Knc
+stress. is an input value for the Hardening Plasticity Soil model (AQUA: NMAT.GRAN).
+0
+2-12 SOFiSTiK2023TheoreticalPrinciples|TALPA
+Theinternalmaterialmodelspecificstatevariablesarefinallycalibratedonthebasisofthisso
+derivedhistoricpre-consolidationstressstate–yieldingamodelstate,asifunloadingfromthe
+pre-consolidation stress state to the in-situ stress state actually had occurred.
+Hint
+The optional pre-consolidation stress takes effect for the advanced Hardening Plasticity
+Soil model with activated cap surface (GRAN-extended), only.
+−σ(cid:48)
+
+σ(cid:48)
+,p
+1−μ
+μ
+σ(cid:48)
+,0
+1
+Knc
+0
+σ(cid:48) σ(cid:48) −σ(cid:48)
+h,0 h,p h
+Figure2.9: Unloadingfromapreconsolidatedstressstate
+Inordertoderiveappropriatein-situstressesforanover-consolidatedsituation,weconsidera
+laterally constrained soil specimen that is preloaded to σ(cid:48) =σ(cid:48) and subsequently unloaded
+ ,p
+toa stresslevel of σ(cid:48) =σ(cid:48) , cf. figure2.9. Theunloadingprocess isunderstoodas anelastic
+ ,0
+process and obeys Hooke’s law. The corresponding stress increments during unloading can
+therefore be identified as
+Δσ(cid:48) σ(cid:48) −σ(cid:48) Kncσ(cid:48) −σ(cid:48) μ
+h = h,p h,0 = 0 ,p h,0 =! . (2.11)
+Δσ(cid:48) σ(cid:48) −σ(cid:48) σ(cid:48) −σ(cid:48) 1−μ
+ ,p ,0 ,p ,0
+Eliminating σ(cid:48) by inserting Eq. 2.8 and reordering yields
+,p
+σ(cid:48)
+μ
+K ≡ h,0 = KncOCR− (OCR−1) . (2.12)
+σ(cid:48) 0 1−μ
+,0
+Ifthealternativedefinition2.9isadoptedandinsertedintoEq. 2.11,thelateralin-situstressis
+SOFiSTiK2023 2-13TALPA|TheoreticalPrinciples
+obtained as
+μ
+σ(cid:48) = Knc(cid:128) σ(cid:48) −POP(cid:138) +POP
+h,0 0 ,0 1−μ
+(cid:18) μ (cid:19)
+= Kncσ(cid:48) − POP Knc− . (2.13)
+0 ,0 0 1−μ
+(cid:124) (cid:123)(cid:122) (cid:125)
+Δσ(cid:48)
+h,POP
+Inthislattercase,thelateralstressσ(cid:48) andverticalstressσ(cid:48)
+arenolongercharacterizedby
+h,0 ,0
+aconstantratioK. Thepreconsolidationstress’constantoffsetPOP,triggersanadditionalcor-
+respondinglateralstressoffsetΔσ(cid:48)
+. Consequently,anin-situstressstateobeyingEq. 2.13
+h,POP
+cannot be established by modifying K alone. Instead, an analytical primary state according to
+SGH=Δσ(cid:48)
+section 2.4.2 that additionally involves should be used.
+h,POP
+Hint
+It should be noted that the above initial stress ratios are suggested values, only. Al-
+ternative definitions may be given; EN 1997-1:2004, e.g., proposes a value of K =
+(cid:112)
+(1−sinφ) OCR unless values for OCR are ’very high’.
+(cid:124) (cid:123)(cid:122) (cid:125)
+≈Knc
+0
+The initial K value should be chosen with care. Very low or very high values may cause the
+initial stress state to violate the strength criterion. For a cohesionless material, the MOHR-
+COULOMB failure condition (cf. AQUA: NMAT.MOHR) directly implicates that failure is avoided
+if K obeys
+1−sinφ 1+sinφ
+<K < . (2.14)
+1+sinφ 1−sinφ
+2.4.4 2-phase model
+Undrained Soil
+Soil is a porous material consisting of solid particles which together represent the grain skele-
+ton. The pores can be filled with fluid (commonly water) and air. Hence we talk about soil as a
+three phase system (Figure 2.10).
+V  Air n 
+V n
+n
+V  Water n 
+V 1
+Solid
+V 1−n
+s
+Particles
+(a)Soilelement (b)Volumeandporosity
+Figure2.10: Soilasthreephasesystem
+2-14 SOFiSTiK2023TheoreticalPrinciples|TALPA
+For quasi-saturated soils, an explicit consideration of the air volume V  (Figure 2.10b) can be
+neglected and a corresponding 2-phase approach can be established. The 2-phase model
+explicitly accounts for (excess) pore water pressure p  and effective stress σ(cid:48) acting on the
+grain skeleton. It relies on Terzagi’s principle of effective stresses
+σ =σ(cid:48)+p  , (2.15)
+where σ denotesthe totalstress. Combining thiswiththe assumption ofundrainedconditions,
+i.e. flow of pore water is prevented, a relation between volumetric change and change of
+pore water pressure can be derived. Together, this facilitates a differentiated simulation of the
+evolutionofporewaterpressureandeffectivestress. Detailsofthemodelaregivenin(AQUA:
+NMAT, TYPE UNDR).
+The 2-phase model is activated by assigning undrained or drained conditions via the group
+control GRP TYPE UNDR/ DRAI.
+Undrained Effective Stress Analysis using Effective Material Parameters
+When undrained material parameters are defined and the undrained analysis is activated (cf.
+GRP TYPE) the stiffness of the pore water is automatically added to the stiffness of the soil
+skeleton.
+Distinction is then made between the effective stresses Δσ(cid:48) and pore pressures Δσ , which
+are saved separately in the data base.
+The second part of the Terzaghi’s principle states that all quantifiable effects of the changes
+in soil stresses (e.g. volume changes, shape changes, shear resistance) are a direct conse-
+quenceofachangeineffectivestressesσ(cid:48). Asarepercussionofthisstatement,thenon-linear
+soil analysis according to the method described in this subsection is based solely on the ef-
+fective stresses σ(cid:48) and the effective strength (e.g. φ(cid:48), c’) and stiffness parameters (e.g. E(cid:48) ,
+ν(cid:48)).
+Figures 2.11 and 2.12 show typical results of the consolidated undrained (CU) triaxial test for
+the normally consolidated (NC) and the overconsolidated (OC) clay samples. It is a know
+fact that the most real soils will experience some change of the volume when subjected to
+shearing under drained conditions. In the undrained conditions the soil is prevented from
+volume change and the tendency of soil to change the volume due to shear will manifest itself
+trough development of excess pore water pressure even when subjected to pure shearing.
+This is exactly what is depicted in the Figures 2.11 and 2.12.
+Soft, normallyconsolidatedorlightlyoverconsolidatedclayshavethetendencytoreduce their
+volume (contraction) when subjected to shear (deviatoric) stress in drained conditions. As
+a consequence NC soil under undrained conditions experience increase in the pore water
+pressure under shear. The pore pressure Δp  monotonically increases with the increase of
+theaxialdeformation ε  andtheincreaseofthedeviatoricstress q (Figures2.11aand2.12a).
+The effective stress path in p− q diagram (Fig. 2.12) shows that the mean effective stress
+p(cid:48) is reduced during the loading stage and the undrained strength is smaller than the drained
+strength.
+Overconsolidatedclaysaftersomesmallinitialrangeofcompressiontendtoexpand(dilate)in
+volumeundershearstressindrainedconditions. AsaresultOCclayscanexperiencedecrease
+in the pore water pressure under undrained loading conditions, sometimes followed by the
+SOFiSTiK2023 2-15TALPA|TheoreticalPrinciples
+q,Δp q,Δp
+ 
+q
+q
+Δp
+
+OCR=1 OCR>1
+ε ε
+ 
+Δp
+
+(a)Normalyconsolidatedsoil(NC) (b)Overconsolidatedsoil(OC)
+Figure2.11: Deviatoricstress (q = σ 1−σ 3)/ porepressure (Δp ) -axialstrain (ε ) relationship
+inconsolidatedundrained(CU)triaxialtest
+q q
+OCR=1 OCR>1
+Δp
+
+Δp
+
+ESP TSP
+p,p(cid:48) p,p(cid:48)
+(a)Normalyconsolidatedsoil(NC) (b)Overconsolidatedsoil(OC)
+Figure2.12: Stresspathsinconsolidatedundrained(CU)triaxialtest
+complete reversal of the sign and negative excess pore water pressure at large strains, thus
+having larger undrained than the drained strength (Figures 2.11b and 2.12b).
+Hint
+Undrained strength of normally consolidated soft clay can be smaller than the drained
+strength due to the contractive nature of NC clays. On the other hand, the undrained
+strength of overconsolidated clay can be larger than the drained strength due to the ten-
+dency of OC clays to expand when subjected to drained shear.
+Special care must be taken when selecting appropriate model of the soil. For example, Mohr-
+Coulomb model can significantly overestimate the undrained shear strength c , especial for
+the normally consolidated (NC) soil. This is illustrated in the Figure 2.13 where the effective
+stress path in the CU triaxial test are compared to the theoretical path obtained by the MC
+model.
+Hint
+In the undrained effective stress analysis using effective parameters the undrained shear
+strength c  is a consequence of the model, not an input parameter.
+In the case of the MC model the material behaves linear elastic until the MC yield criterion is
+2-16 SOFiSTiK2023TheoreticalPrinciples|TALPA
+q
+3
+1
+2c
+,MC
+2c
+,re
+rety MC
+p,p(cid:48)
+Figure 2.13: Stress paths in consolidated undrained (CU) triaxial test for NC soil: Mohr-Coulomb
+model(bluesolidline)vs. reality(blacksolidline).
+reached. According to the theory of linear elasticity the change of the effective mean stress
+Δp(cid:48) is linearly proportional to the change of the volumetric strain Δε , i.e. Δp(cid:48) = K(cid:48)Δε . For
+the undrained conditions of soil saturated with water, the change of the volumetric strain Δε 
+is very small due to the fact that the water is almost incompressible, i.e. Δε  ≈0. This in turn
+means that the change of the effective mean stress Δp(cid:48) will be approx. zero - the stress paths
+for MC model of the triaxial CU test in p−q diagram rise vertically (see Fig. 2.13, blue line)1.
+IntheMCmodeltherewillbenodevelopmentoftheexcessporepressureduetoshearstress.
+Asaforementioned(seeFigures2.11and2.12)thisdoesnotcorrespondtotherealitybecause
+most realsoils will experiencechange ofthe pore waterpressure when subjectedto shearing.
+This means that the Mohr-Coulomb model in the analysis based on the effective stress and
+strength parameters can overestimate the undrained shear strength (c ,MC > c ,re) of NC
+soil with contractive tendency under shearing (Figure 2.13). Neglecting this fact can have
+serious consequences on the structures founded on such soil, followed by the catastrophic
+outcome (Nicoll Highway collapse, COI et al. [5]).
+More advance models can provide better estimate for the undrained strength than the Mohr -
+Coulombmodel. InparticulartheHardeningSoilmodelisabletomodelthechangeofthepore
+water pressure occurring under undrained shear loading conditions, providing a more realistic
+effective stress paths and values for undrained shear strength c  than the MC model (Figure
+2.14). However, the results of the analysis with the Hardening Soil model are very sensitive to
+the used model parameters and the choice of the dilatancy model2.
+Thefinalchoiceofmodelparametersshouldingeneralinvolvelaboratorytestsunderthesame
+conditions as in situ (plane strain, simple shear, triaxial, initial stresses, etc.). In particular, the
+undrained shear strengths c  from laboratory tests should closely mach the values obtained
+bythenumericalanalysis. Ifthisisnotthecase,calibrationofthemodelparametersshouldbe
+performed until satisfactory results are obtained.
+1IntheFE-calculationusingMC-modelthestresspathsinp−qdiagramwilldeviateslightlyfromthetheoretical
+verticalpathsduetothelargebutfinitevalueofthewaterstiffness.
+2For more readings about the dilatancy models see Subsection AQUA: NMAT.GRAN or consult the literature
+Rowe[6],Wehnert[7],andBenz[8].
+SOFiSTiK2023 2-17TALPA|TheoreticalPrinciples
+q t
+3
+1 3
+2c c 1
+,MC ,MC
+2c c
+,HS ,HS
+1
+HS MC 1
+p,p(cid:48) s,s(cid:48)
+Figure 2.14: Stress paths in consolidated undrained (CU) triaxial test for NC soil: Mohr-Coulomb
+(bluesolidline)vs. HardeningSoilmodel(redsolidline)
+Hint
+Specialcaremustbetakenwhenselectingappropriatemodelofthesoil. Mohr-Coulomb
+model can significantly overestimate the undrained shear strength for the normally con-
+solidated (NC) soil. On the other hand, for Hardening Soil model the results are very
+sensitive to the model parameters and the choice of the dilatancy model. In general, fi-
+nal choice for the model and model parameters for the undrained soil should be made
+after laboratory test have been conducted and the results compared with those from the
+numerical simulation.
+Theexample undrained_wall_hs_vs_mc.datillustratesthedifferencesbetweenHardeningSoil
+and Mohr-Coulomb modeling approaches for a 2-phase analysis of a retaining wall.
+For more information regarding the effect of different modeling approaches on the
+volumetric deformation behavior of soil under undrained conditions, also refer to
+the documented benchmark “Triaxial Consolidated Undrained (CU) Test” in VERIFICA-
+TION_MANUAL_MECHANICAL: BE48.
+The basic priniple of the 2-phase analysis model in contrast to the total stress approach is
+illustrated by example undrained_ts_vs_2phase.dat.
+2.5 Nonlinear Analysis
+2.5.1 General
+TALPAaccountsfortheelements’variousphysicalnonlinearitiesthathavebeenoutlinedabove
+when the nonlinear analysis mode is activated (SYST PROB NONL).
+Solution of the nonlinear system is done iteratively. To this end, starting from the initial state
+of the system (primary load case) the system displacements are varied until the correspond-
+ing system reactions, together with the specified external loading, form a balanced state of
+equilibrium (= convergence wihtin apredefined tolerance). Theiterative change ofthe system
+deformationstateisessentiallybasedonasuccessivesolutionofmodifiedlinearproblems. For
+this purpose, several procedures are available. They are described in subsequent sections.
+If a numerically state of equilibrium cannot be achieved within the specified maximum number
+of iterations, the solution is terminated and labeled non-convergent.
+2-18 SOFiSTiK2023TheoreticalPrinciples|TALPA
+2.5.2 Iteration procedures
+The implemented methods are essentially based on a modified Newton-Raphson technique
+adopting a constant system stiffness. To assure performance, the procedure is enriched by
+so-called secant related acceleration strategies (Crisfield / BFGS) which rely on a smart im-
+provement of the current standard iterative displacement update (stemming from the standard
+modified Newton-Raphson) according to mathematical methods, that account for information
+of preceding iteration steps. Doing this, the convergence process is generally accelerated
+significantly.
+The following procedures are available:
+• Standard Modified Newton-Raphson with initial system stiffness
+• Crisfield Acceleration Method
+• BFGS Acceleration Method
+Control of these methods is achieved via CTRL KITE.
+Default-wise, an additional ’slack’ line-search is applied (cf. subsection 2.5.3).
+Crisfield Acceleration Method
+The CRISFIELD method is based on a modification of the standard iterative displacement up-
+δ∗
+date of the following form (2-vector-update):
+
+δ  =F·δ∗  +E·δ −1 (2.16)
+The scaling factor stemming from an optional line-search procedure is, for the sake of clarity,
+not considered in this notation. Apparently, the new update is composed of the standard up-
+date and the update from the previous iteration step. The influence of the previous update is
+accounted for via the factor E. The calculation rules for the factors E and F are not reproduced
+here–detailedinformationcanbefoundinChrisfield[9]andChrisfield[10]. Setting E=0 and
+F=1 the formulation reduces to the standard update.
+To improve robustness of the solution procedure, permissible ranges for E and F are defined
+by additional control parameters FMN, FMAX and EMAX, please refer to CTRL KITE.
+BFGS Acceleration Method
+WhiletheCrisfieldmethodincorporatesadditionalinformation −1 fromtheprecedingiteration
+step only, the BFGS (BROYDEN-FLETCHER-GOLDFARB-SHANNO) method uses information of
+the preceding k iterations to establish an improved update δ  for the current iteration step.
+For details of the method, please refer to Crisfield [11] and Luenberger [12].
+2.5.3 Line-search
+Theline-searchprocedureaimsatmodifyingthecurrentdisplacementincrement’ssteplength
+insuchawaythattheenergypotentialisminimizedinthecurrentsearchdirectionδp . Hence,
+
+theessentialgoalistofindanoptimumsteplengthinthecurrentsearchdirection. Tothisend,
+a line-search factor η is introduced. The iterative update of the displacements can then be
+SOFiSTiK2023 2-19TALPA|TheoreticalPrinciples
+written as
+  = −1+η·δ . (2.17)
+In order to minimize the potential energy we require the scalar product of residual force vec-
+tor and displacement increment vector (=energy) to vanish, or more practically, to satisfy a
+specified tolerance. From this condition the line-search factor η can be determined.
+The implementation of the adopted line-search procedure follows the lines given in Crisfield
+[11].
+The line-search can be very useful to control the solution process for problems that exhibit a
+volatile nonlinear response.
+Control of the line-search procedure is achieved via CTRL LSRC.
+2.5.4 Load stepping continuation method
+Nonlinearelastoplasticsystemsareingeneralsensitivetothemagnitudeoftheloadincrement
+(→formationofplasticzones). Fornumericalsimulationsofstructuresthatexhibitasignificant
+nonlinearresponse, anincrementalincrease ofthesystemloadisreasonablein ordertotrack
+the nonlinear system response (continuation method). Moreover, such a load stepping ap-
+proach can also be adopted for limit analyses, e.g., continuous loading of the system until
+failure occurs, i.e. (numerical) equilibrium can no longer be achieved.
+Thebackboneoftheapproachistheintroductionofaloadlevelfactorλthatscalestheeffective
+system load vector F eƒ. Doing this, the system equilibrium condition reads
+g()≡(cid:2)F ()−F (cid:0)σ pc(cid:1)(cid:3)−λ·(cid:2)P−F (cid:0)σ pc(cid:1)(cid:3)=! 0 (2.18)
+(cid:124) (cid:123)(cid:122) (cid:125)
+F
+eƒ
+with
+F () internal reaction forces as functions of the displacements 
+F (cid:0)σ pc(cid:1) internal reaction forces resulting from the primary stress state σ pc
+P external load vector
+F eƒ effective external system load vector
+Startingfromastateofequilibrium(primaryloadcase),theprocedurethengraduallyincreases
+the load level factor λ until its final value λ m (normally, λ m = 1.0) is reached. For every
+processed load level, equilibrium iterations are performed.
+Two flavors of stepping methods are available, the Constant Stepping Scheme and the Adap-
+tive Stepping Scheme.
+Control of the stepping scheme is achieved via CTRL STEP.
+2-20 SOFiSTiK2023TheoreticalPrinciples|TALPA
+Constant stepping scheme
+The Constant stepping scheme applies a subdivision of the effective system load vector q
+eƒ
+into N integral increments of equal magnitude
+Δλ=const.=λ m/N . (2.19)
+Adaptive stepping scheme
+For the adaptive stepping scheme, as a starting point, only the magnitude of the starting in-
+crement Δλ 0 is specified. The magnitude of the subsequent increments Δλ n is determined
+automatically.
+Choiceof theincrementsize isbasedon theconvergence behaviour –a smoothconvergence
+for the current load increment will result in an increase of the increment for the next load step
+Δλ n+1 >Δλ n (2.20)
+Problematic convergence on the other hand will cause the increment to be reduced
+Δλ n+1 <Δλ n (2.21)
+In case convergence is not achieved within the maximum number of iterations, a reduction of
+the corresponding load increment’s magnitude and a restart of iterations is performed.
+The load stepping procedure is terminated either in case of the maximum load level factor
+λ m being reached, or in case of undershooting the specified minimum step length Δλ mn
+after repeated increment reduction.
+For details regarding step-length control and increment reduction, please refer to Chrisfield
+[10].
+Adaptive stepping scheme with arc-length control
+For the adaptive stepping scheme with arc-length control, the residual force iterations for one
+load step are not carried out at a prescribed constant load level. Instead, the load increment
+Δλ is considered as an additional variable which is determined by imposing a complementary
+condition
+!
+Δ=Δ(Δ)=const (2.22)
+onto the system of equations (May and Duan [13] and Chrisfield [14]).
+From the provided starting load level factor λ 0, the initial arc-length Δ 0 is automatically deter-
+mined. For subsequent steps, Δ n+1 is then adapted automatically following the same lines
+as for the load factor in the standard adaptive scheme, i.e., under account of the convergence
+behavior of the current loading step n.
+In case convergence is not achieved within the maximum number of iterations, a reduction of
+the corresponding load increment’s magnitude and a restart of iterations is performed.
+The load stepping procedure is terminated as soon as one of the following criteria is met:
+• The specified maximum load level factor λ m is reached.
+SOFiSTiK2023 2-21TALPA|TheoreticalPrinciples
+• The specified maximum number of load steps is reached.
+• Undershooting of the specified minimum step length Δλ mn after repeated load increment
+reduction.
+For further details regarding arc-length control, please refer to Chrisfield [14], May and Duan
+[13] and Heidkamp [15].
+2.5.5 Safety assessment by the phi-c reduction method
+In the context of geotechnical engineering, system failure and/ or system stability is frequently
+governed by the soil’s shear strength. This notion is reflected by the FELLENIUS rule which
+defines safety as the ratio between actual shear strength and mobilized shear strength for the
+system limit state (system state at failure)
+tn(cid:0)φ (cid:1) c
+np np
+η φ = and η c = (2.23)
+tn(φ ) c
+mobzed mobzed
+Adopting this concept, the task is to determine the mobilized shear strength – i.e., the shear
+strength that is actually required to assure balance of a given loading state.
+Tothisend,thealgorithmicframeworkoftheloadsteppingscheme,initiallyaimingatagradual
+increase of the effective system load, is now used in order to simulate a gradual decrease of
+the system’s resistance. To illustrate this, Equation 2.18 is rewritten as
+g()≡(cid:2)F (,η)−F (cid:0)σ pc(cid:1)(cid:3)=! 0 (2.24)
+In this notation, the material safety factor η has been introduced. Furthermore, it is assumed
+thattheprocedureislaunchedfromabalancedsystemstate,whichmeansthatfortheeffective
+system load F eƒ = 0 holds. Starting with η = 1.0, the algorithm decreases the system’s
+resistance by increasing the material safety in a step-wise manner. Adopting a synchronized
+increaseofthesafetyfactors η φ =η c =η,theeffectiveshearstrengthforstep n isdetermined
+according to
+tn(cid:0)φ (cid:1) c
+np np
+tn(φ n)= nd c n = (2.25)
+η η
+n n
+If – as a result of the reduced strength parameters – local strength violations are induced
+by the given loading state, stress redistribution takes place and the iterative procedure tries to
+establishanewsystemdeformationstatethatbothconformswiththestrengthconditionsand
+representsastateofequilibrium. Thisway,thesystemresistanceisgraduallyreduceduntilno
+further stress redistribution is possible and a (numerical) failure mechanism has formed.
+Similar to the standard load stepping algorithm, also the phi-c reduction scheme is extended
+by an additional arc-length control. The arc-length control provides for an automatic adaption
+of the safety level η n within one load step n. Doing this, the (most critical) system collapse
+mechanism can be numerically tracked in a robust manner; thus, allowing for a significantly
+improved identification of the stability limit. Just as for the standard arc-length procedure (cf.
+subsection 2.5.4), the new arc-length Δ n+1 is continuously adapted depending on the actual
+iteration performance.
+2-22 SOFiSTiK2023TheoreticalPrinciples|TALPA
+Stepping without arc-length control leaves the adopted safety level η n constant for each load
+stepn;thus,theprocedureincrementallyapproachesthe(mostcritical)systemcollapsemech-
+anism.
+Similartotheloadstepping,cf. subsection2.5.4,theprocedureterminatesifoneofthefollow-
+ing criteria is met:
+• The specified maximum safety level η m is reached.
+• The specified maximum number of load steps is reached.
+• Undershooting of the specified minimum safety increment Δη mn after repeated load incre-
+ment reduction.
+Aftersucessfulcomputation,asequenceofsystemstatesisestablished,eachassociatedwith
+acertainsafetylevel η. Assessingthesesystemstateshelpstoanalyzethesystem’ssensitiv-
+itywithrespecttostrengthinducedfailureandalsoprovidessomeinsightintotheformationof
+possible failure mechanisms. Having identified the ultimate permissible system state, the as-
+sociatedsafetyfactorηdirectlyrepresentsthecorrespondingcomputational FELLENIUS safety
+according to Equation 2.23.
+Hint
+Itshouldbenoted,thatthephi-creductiontechniquebynomeanscanreplaceengineer-
+ing judgement. It can provide valuable additional information for safety assessment – the
+assessment itself, however, remains the engineer’s very own task.
+The phi-c reduction applies to all nonlinear soil material models incorporating a suitable
+strength criterion, cf. AQUA: NMAT:
+VMIS Strength criterion according to VON MISE
+DRUC Strength criterion according to DRUCKER-PRAGER
+MOHR Strength criterion according to MOHR-COULOMB
+GRAN Hardening Plasticity Soil Model with strength criterion according to MOHR-
+COULOMB
+ROCK Base material with strength criterion according to MOHR-COULOMB, additional ori-
+ented shear plane with limited shear strength
+FAUL Oriented shear plane with limited shear strength
+The particular hardening capabilities of advanced soil models (GRAN) are irrelevant for the
+stabilityanalysis. Inthecontextofthephi-creduction,theformulationisthereforeautomatically
+reduced to standard elastoplastic behavior with a MOHR-COULOMB failure criterion (MOHR).
+Material properties of beam, spring, truss and cable elements are not affected by the phi-c
+reduction.
+Control parameters of the phi-c reduction method are entered via CTRL STEP.
+SOFiSTiK2023 2-23TALPA|TheoreticalPrinciples
+2-24 SOFiSTiK2023InputDescription|TALPA
+3 Input Description
+3.1 Input Language
+Input is written in text using the free format of the CADINP input language (see the general
+manual ’SOFiSTiK Basics’).
+The static system must have been generated without any errors and it must have been stored
+in the database.
+The input is divided into blocks ending with the record END. Inside each block a particular
+system or certain load cases (in case of non-linear analysis only one) can be analysed. The
+program ends when it finds an empty block (END/END).
+Three categories of units are distinguished:
+mm Fixed unit. Input is always required in the specified unit.
+[mm] Explicit unit. Input defaults to the specified unit. Alternatively, an explicit as-
+signment of a related unit is possible (eg. 2.5[m] ).
+[mm] Implicit unit. Implicit units are categorised semantically and denoted by a cor-
+1011
+responding identity number (shown in green). Valid categories referring to the
+unit ”length” are, for example, geodetic elevation, section length and thickness.
+Thedefaultunitforeachcategoryisdefinedbythecurrentlyactive(designcode
+specific) unit set. This input default can be overridden as described above. The
+specified unit in square brackets corresponds to the default for unit set 5 (Eu-
+rocodes, NORM UNIT 5).
+Itisadvisedtodefineeachloadcaseinaseparateinputblock;incaseoflimitedmainmemory
+this is even urgently necessary.
+SOFiSTiK2023 3-1TALPA|InputDescription
+3.2 Input Records
+ThefollowingrecordsanditemsarespecificfortheFiniteElementAnalysismode(TASKFEA):
+Record Items
+TASK OPT
+SYST TYPE PROB ITER PLC
+CTRL OPT VAL FMAX FMIN EMAX EMIN IDES
+- - SAVE FACQ
+PHRS HW LC T
+PLC LC TYPE LADD FADD FS2L
+TPLC LC1 T1 LC2 T2 TREF
+GRP NO VAL FACS PLC GAM H K
+SIGN SIGH FACL FACD FACT HW
+GAMA GFS PLQ FACQ MNO HPLC ALP0
+HING OCR POP TYPE FACU PTSZ
+LC NO FACT DLX DLY DLZ T GAMF
+GAMC CRI3 TITL TYPWE GAMF PSI0 PSI1
+PSI2 PS1S GAMA
+LCC NO FACT NOG NFRO NTO NINC
+HIST TYPE NO
+NSTR KMOD KSV KSB
+ECHO OPT VAL
+The following records and items are specific for the Construction Stage Manager Geotechnics
+mode (TASK CSG):
+Record Items
+TASK OPT
+CSYS PROB
+CCRL OPT VAL FMAX FMIN EMAX EMIN -
+- - SAVE
+CS NO DT PCS - - - -
+- - TITL
+CGRP NO ACT ACT2 FACS ALPH HW K
+P PTYP PLQ MNO PTSZ TYPE
+OCR POP
+CLOA NO OPT FACT
+Tablecontinuedonnextpage.
+3-2 SOFiSTiK2023InputDescription|TALPA
+Record Items
+CGW HW
+CTXT
+ECHO OPT VAL
+The following records and items are valid for both modi:
+Record Items
+TASK OPT
+ECHO OPT VAL
+TALPA processes either in CSG mode or FEA mode, i.e. both modes cannot be executed at
+the same time.
+The order of the records is arbitrary.
+The records HEAD and END are described in the general manual SOFiSTiK: ’Basics’.
+The description of the individual records follows.
+SOFiSTiK2023 3-3TALPA|InputDescription
+3.3 TASK – Program Mode
+TASK
+Item Description Unit Default
+OPT Task option LT -
+FEA Finite Element Analysis
+CSG Construction Stage Manager
+TASK determines the task (mode) of the program. In case the program mode is not set explic-
+itly, TALPA tries to determine it from the context of the input specification. Combining different
+tasks within one input block is not possible.
+The user can choose between the tasks FEA (Structural analysis according to the Finite Ele-
+ment Method) and CSG (automatic generation of the analysis sequence via a description of
+the construction stages, using the Construction Stage Manager Geotechnics).
+3-4 SOFiSTiK2023InputDescription|TALPA
+3.4 SYST – Global Control Parameters
+Seealso: CTRL,GRP,LC
+SYST
+Item Description Unit Default
+TYPE Analysis model for the system obsolete, already pro-
+vided with system definition
+PROB Type of analysis LT LINE
+LINE Linear analysis
+NONL Physically non-linear analysis
+ITER obsolete
+PLC Primary load case of the system − -
+The parameter TYPE, which specifies the analysis model, must already be defined during
+mesh generation. TALPA treats system types PAIN (plane strain), PESS (plane stress) and
+AXIA(axialsymmetry). EvenforPAINtheelement’sthicknessesareaccountedforindividually.
+Varyingelementthicknessesincombinationwithanalyticalprimarystressstatesshouldnotbe
+used.
+The value of PLC defines a global primary load case. Input is obsolete, record PLC should be
+used, instead.
+SOFiSTiK2023 3-5TALPA|InputDescription
+3.5 CTRL – Control of Analysis
+Seealso: ECHO,SYST,GRP,LC
+CTRL
+Item Description Unit Default
+OPT A literal from the following list: LT -
+ITER Iteration control
+KITE Iteration method
+LSRC Line-search control
+STEP Load stepping continuation method
+EPOL Displacements of 1st iteration step by ex-
+trapolation from previous load increment
+SPRI Spring, truss, cable elements
+BEAM control of beam elements
+QART Type of plane elements
+FIRE ’Hot’ material laws
+CONC Controls for concrete material
+TSTF Tension stiffening control
+GRAN Adaption for the material law GRAN
+MSTE Control material integration
+DEFO Storage of nodal displacements
+LSEQ Load case sequences
+AFIX Automatic support conditions
+SOLV Solver options for LSE
+CORE Parallel computing control
+VAL Value of analysis option − *
+FMAX Additional parameter for analysis option − *
+FMIN Additional parameter for analysis option − *
+EMAX Additional parameter for analysis option − *
+EMIN Additional parameter for analysis option − *
+IDES Additional parameter for analysis option − *
+SAVE Storage interval of load increments − *
+FACQ Apply incrementation to FACQ − NO
+TREF Reference temperature [◦C] 20
+TCRL Temperature control, material reaction upon cooling LT4 C1,S0
+PTSZ Number of cross-section fibers (local-z) − 9
+Tablecontinuedonnextpage.
+3-6 SOFiSTiK2023InputDescription|TALPA
+Item Description Unit Default
+REFZ Refinement of points towards edges (option currently LT4 equidist.
+not available)
+FCT Concrete tensile strength [MP] as
+1092
+GF Concrete tensile fracture energy N/mm AQUA:
+CONC
+MNO Selector of material number − all mat’s
+MTYP Selector of material type − PLAS
+MSTP Maximum number of load steps − *
+By means of the record CTRL additional analysis parameters are specified.
+3.5.1 ITER iteration control
+ITER Description Unit Default
+VAL maximum permitted number of structural iterations − 15
+FMAX defines the requested tolerance – relative (if positive) or − 0.001
+absolute (if negative)
+FMIN thresholdforacceptedrelativenumberofinaccuratemate- − 0.000
+mpt mpt !
+rial points (n /n ≤FMN)
+nccrte tot
+3.5.2 KITE Iteration procedure
+KITE Description Unit Default
+VAL − *
+0 Modified Newton-Raphson with intial stiffness.
+1 Acceleration method according to Crisfield.
+N>1 BFGSwithuptoNvectors(suggested: 6≤N≤
+16)
+FMAX Parameter iteration control − *
+FMIN Parameter iteration control − *
+EMAX Parameter iteration control − *
+Crisfield Acceleration Method
+The Crisfield Acceleration Method (cf. subsection 2.5.2) is selected by VAL=1. For nonlinear
+calculations, this is the default. To improve robustness, the acceleration factors E and F are
+restricted to permissible ranges. This is assured by means of the control parameters FMAX,
+FMN and EMAX. Upper and lower bounds for F are defined, such that
+FMN≤F≤FMAX (3.1)
+SOFiSTiK2023 3-7TALPA|InputDescription
+with the default values being
+FMAX=3.5 and FMN=1/FMAX (3.2)
+Additionally, the ratio E/F is controlled by the input parameter EMAX, such that
+(cid:18)E(cid:19)
+−EMAX≤ ≤EMAX (3.3)
+F
+By default, EMAX=0.3.
+In case F exceeds the specified limits, instead of the acceleration the standard update (E = 0
+and F = 1) is activated (cut-out criterion according to Chrisfield [20]). For the factor E, on the
+other hand, no cut-out is performed – it is bounded to the specified range, only.
+BFGS Acceleration Method
+The BFGS Acceleration Method (cf. subsection 2.5.2) is selected by VAL ≥ 2. In this case,
+VAL specifies the maximum number of vectors that are used to determine the improved dis-
+placement update. The suggested range is 6≤VAL≤16.
+Standard Modified Newton-Raphson
+The Standard Modified Newton-Raphson approach is triggered by specifying VAL = 0. In this
+case, the iterative displcacement update is purely based on the initial linear system stiffness.
+3.5.3 LSRC Line-search
+LSRC Description Unit Default
+VAL tolerance, input of VAL=0 deactivates line-search − 0.7
+FMAX maximum step width − 4.0
+FMIN minimum step width − 0.1
+EMAX maximum amplification factor − 2.0
+Parameters of the line-search procedure (cf. subsection 2.5.3) are controlled via the CTRL
+LSRC option.
+By default, a ’slack’ line-search with a tolerance limit of VAL = 0.7 is applied for nonlinear
+problems. For cases showing a pronounced nonlinear behavior, a more tightened tolerance is
+possibly reasonable. The line search can be deactivated by specifying VAL = 0. Modification
+of the remaining control parameters FMAX, FMN and EMAX is usually not required.
+If the line-search is activated, the iteration protocol is complemented by printout of the line-
+search factor ETA and the corresponding (energy-)NORM.
+STEP LFAC ITER RES TOL ENERGY E F ETA NORM
+--------------------------------------------------------------------------
+1 0.10 1 35.833 0.006610 1.274E+00 0.000 1.000 1.000 0.000
+1 27.762 0.005121 5.202E-01 0.000 1.000 0.408 -1.448
+2 42.625 0.007863 6.326E-01 0.216 1.000 1.000 0.000
+2 15.069 0.002780 5.769E-01 0.216 1.000 0.504 -0.983
+3-8 SOFiSTiK2023InputDescription|TALPA
+3 33.352 0.006153 5.946E-01 0.313 1.000 1.000 0.000
+4 26.362 0.004863 6.000E-01 0.301 0.608 1.000 -0.646
+5 17.702 0.003266 6.024E-01 0.451 0.743 1.000 -0.347
+6 10.238 0.001889 5.861E-01 0.351 0.685 1.000 -0.460
+7 5.508 0.001016 5.929E-01 0.346 0.702 1.000 -0.424
+3.5.4 STEP Load stepping procedure
+Constant stepping scheme
+STEP Description Unit Default
+VAL number of load steps N − !
+SAVE storage interval − 0
+FACQ apply incrementation to FACQ − NO
+NO
+YES
+TheConstantSteppingSchemeisselectedbyspecifyingCTRLSTEPN,withN>0indicating
+thenumberofsubsteps. Fordetailsregardingthefunctionality,pleaserefertosubsection2.5.4.
+SAVE determines the interval at which intermediate results of the load incrementation proce-
+dure are stored to the database. SAVE n stores the results of every n-th load step under a
+separate load case number to the database. Starting form the current load case number LC
+NO, the load case number is increased by 1 for every storage. SAVE 0 (default) stores results
+of the final increment, only.
+In case of calculations with swellable material (AQUA: NMAT SWEL) the factor for swelling
+strainsGRPPLQFACQ)canbeincrementedaccordingtotheCTRLSTEPspecification. This
+effects an approximation of the swelling processes time evolution. However, for such a case
+it is recommended to employ the viscous extension of the swelling material model – therefore
+the default setting is FACQ NO to suppress the incrementation.
+Adaptive stepping scheme
+STEP Description Unit Default
+VAL AUTO − !
+FMAX starting load level factor λ 0 − !
+FMIN maximum load level factor λ m − 1.0
+EMAX maximum step length Δλ m − λ m/3
+EMIN minimum step length Δλ mn − λ m/100
+(termination criterion)
+IDES target value number of iterations − 10
+SAVE storage interval − 0
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-9TALPA|InputDescription
+STEP Description Unit Default
+FACQ apply incrementation to FACQ − NO
+NO
+YES
+The Adaptive Stepping Scheme is activated by specifying CTRL STEP AUTO. For details re-
+garding the functionality, please refer to subsection 2.5.4.
+Parameter IDES controls computation of the new step length Δλ n+1 taking into account the
+convergence behavior of the current loading step.
+For parameters SAVE and FACQ, please see the comments given above for the Constant
+Stepping Scheme.
+Adaptive stepping scheme with arc-length control
+STEP Description Unit Default
+VAL ARCL − !
+FMAX starting load level factor λ 0 − !
+FMIN maximum load level factor λ m − 1.0
+EMAX maximum step length Δλ m − λ m/3
+EMIN minimum step length Δλ mn (termination criterion) − λ m/100
+IDES target value number of iterations − 10
+SAVE storage interval − 0
+MSTP maximum number of steps (termination criterion) − 100
+The adaptive stepping scheme with arc-length control is requested by specifying CTRL STEP
+ARCL.
+The input parameters are essentially the same as for the adaptive stepping, only extended by
+an additional termination criterion, the maximum number of computational load steps MSTP.
+For details regarding the functionality, please refer to subsection 2.5.4.
+Hint
+Forimprovedperformance,thearc-lengthcontroldoesnotbecomeeffectiveuntilthenew
+step length Δλ n+1 falls below a critical threshold which is taken as Δλ m/3.
+Stability analysis by the phi-c reduction method
+3-10 SOFiSTiK2023InputDescription|TALPA
+STEP Description Unit Default
+VAL − !
+PHIC Automaticadaptionofsafetylevelη n withinload
+step n (arc-length control)
+FELL Constant safety level η n per load step n
+FMAX upper bound of Fellenius-safety η m − !
+(target value)
+FMIN starting increment − η m/10
+EMAX maximum step length Δη m − η m/3
+EMIN minimum step length Δη mn − η m/100
+(termination criterion)
+IDES target value number of iterations − 10
+SAVE storage interval − 1
+MSTP maximum number of steps (termination criterion) − 100
+The phi-c reduction method (FELLENIUS rule) is activated by specifying CTRL STEP PHIC
+(stepping with arc-length control) or CTRL STEP FELL (stepping without arc-length control).
+Hint
+Forimprovedperformance,thearc-lengthcontroldoesnotbecomeeffectiveuntilthenew
+step length Δη n+1 falls below a critical threshold which is taken as Δη m/3.
+Steppingwithoutarc-lengthcontrol(FELL)leavestheadoptedsafetylevelη n constantforeach
+load step n; thus, the procedure incrementally approaches the (most critical) system collapse
+mechanism.
+In case a negative value for FMIN is entered, the automatic incrementation is deactivated and
+a fixed incrementation of the interval with Δη=|FMN| is applied.
+For the parameter SAVE, please see the comments given above for the constant stepping
+scheme.
+For details regarding the functionality, please refer to subsection 2.5.5.
+Hint
+The phi-c reduction must be executed as a separate load case LC which references the
+loading state to be examined as primary load case PLC. The primary load case shall
+constituteastateofequilibrium. Incomparisontothisstate,nochangesinloadorsystem
+configurationshallbemadeforthephi-creductionloadcase,i.e.,nofurtherloadingshall
+be applied to the system nor shall loads be removed.
+Hint
+Specialattentionshouldalsobemaderegardingthecontrolsettingsforthestrucuraliter-
+ations(CTRLITER).Ifthetolerancesspecifiedforterminationoftheequilibriumiterations
+SOFiSTiK2023 3-11TALPA|InputDescription
+(Hintcontinued...)
+are too ’slack’, the significance of the analysis is likely to be spoiled. As a rule of thumb,
+an upper bound of 1 % =0.01 should not be exceeded (default 0.001).
+3.5.5 EPOL Extrapolation
+In case of an incremental calculation (CTRL STEP) the iterative process can possibly be ac-
+celerated significantly by specification of CTRL EPOL. Doing so, the displacements of the first
+iteration step are simply obtained by extrapolation from the previous load increment instead
+of computing them from the (linear) system stiffness. Often, this procedure yields apparently
+improved starting values for the iteration process.
+3.5.6 SPRI Spring, truss, cable elements
+Default-wise, the extended element routines with full functionality regarding material non-
+linearity (possibility of stress-strain curve definition). If desired, via CTRL SPRI 0 the old
+routines with reduced functionality are activated.
+3.5.7 BEAM Beam elements
+Fordetailedinformationregardingcharacteristicsofthevariousbeamformulations,pleasesee
+section 2.3.4.
+Extended Beam Element (Default)
+BEAM Description Unit Default
+VAL DBM − DBM
+Extended finite element beam formulation (Timoshenko). In particular, allows for
+• Implicit hinges (=beam hinges with assigned work law).
+• Haunched cross-sections.
+• Extended scope of beam load types (e.g. single forces).
+• Variable number of beam sections.
+Fiber Beam Element
+BEAM Description Unit Default
+VAL FIBR − !
+PTSZ Number of fibers across the section (local z-direction) − 9
+Tablecontinuedonnextpage.
+3-12 SOFiSTiK2023InputDescription|TALPA
+BEAM Description Unit Default
+REFZ Distributionoffibersinlocalz-direction,refinementtowards − equi-
+edges (currently not available) distant
+POS Progression (refinement) towards edge (pos.
+coord.-dir.)
+XPOS extreme refinement
+NEG Progression (refinement) towards edge (neg.
+coord.-dir.)
+XNEG extreme refinement
+BID Bidirectional refinement
+XBID extreme refinement
+Internal discretization of cross-sections into single ’fibers’, directly integrates the continuum
+mechanical material reaction (stress-strain) into beam theory. Important characteristics are:
+• Optional nonlinear material reaction for steel and concrete materials.
+• Damage model for crack evolution in concrete.
+• Account for the steel-concrete bond action in between cracks (tension stiffening).
+• Temperature dependent material degradation: ’Hot’ work laws + nonlinear temperature
+strain according to EN 1992-1-2:2004.
+• 100% compatibility with primary states (initial loading states).
+Standard Beam Element
+BEAM Description Unit Default
+VAL STD − !
+Efficient two-dimensional ’standard’ beam element (Timoshenko) with a prismatic cross-
+section. The scope of permitted beam load types is limited. Linear material behavior, only.
+3.5.8 QART Ansatz control for the quadrilateral element
+QART Description Unit Default
+VAL − 1
+0 conforming elements
+1 non-conforming elements
+(cf. section 2.3.5)
+3.5.9 FIRE Analysis of temperature dependent material behavior/ material degrada-
+tion for concrete and steel materials
+SOFiSTiK2023 3-13TALPA|InputDescription
+FIRE Description Unit Default
+VAL Selection of element types: LT4 BEAM
+BEAM beam elements (fiber beam)
+QUAD not available
+CABL not available
+TRUS not available
+SPRI not available
+TREF Reference temperature/ base temperature [◦C] 20
+1215
+TCRL Temperature control, material reaction upon cooling LT4 C1,S0
+Concrete:
+C0 recovery of strength/ stiffness
+C1 recovery suppressed
+Steel:
+S0 see C0
+S1 see C1
+In a general way, the temperature dependent mechanical strength and stiffness evolution can
+be described by means of a family of work laws and dedicated temperature strains - i.e., one
+worklawforeachdefinedtemperaturelevel. Ifnocorrespondingexplicituserinputisprovided
+(AQUA SSLA), the program adopts work laws and temperature strains according to EN 1992-
+1-2:2004.
+Hint
+Inthecasethatauser-definedsetof temperature dependentworklawsshallbeadopted
+– the work laws are defined as being associated with the ultimate limit state – a cor-
+responding selection via NSTR KSV UL(D) and KSV KSB UL(D), respectively, in the
+corresponding TALPA runs is mandatory (cf. section 3.13).
+Warning
+The option EPST SHIFT is not allowed in this context.
+Activating the option triggers evaluation of the material reaction based on the actual temper-
+ature level of the material point under consideration. By default, concrete materials are sup-
+posed to not exhibit re-hardening and re-stiffening effects due to cooling; they remain in the
+damaged state corresponding to the maximum reached temperature in loading history. Steel
+materials, on the contrary, are assumed to regain stiffness and strength during cooling. Nu-
+merical evalulation is therefore based on the current temperature level (default setting). The
+default settings regarding the cooling behavior can be changed via CTRL FIRE TCRL.
+The option CTRL FIRE is effective for the fiber beam element, only. Provision of a tem-
+perature profile is possible with constant and linear variation over the cross-section depth;
+achieved simply by specifying corresponding standard beam temperature loads (BEAM TYPE
+DT, BEAM TYPE DTZ), i.e. temperature increments. As of SP 2014-3, additionally, the input
+and processing of general nonlinear temperature profiles is supported (absolute temperatures
+3-14 SOFiSTiK2023InputDescription|TALPA
+viaBEAMTYPETEZA).Thesimulationexamples uniaxial-compression-fire.datand test-fire-
+temp-nonl.dat illustrate the mechanical behavior of concrete at high temperatures.
+Hint
+Generally, structural analysis under fire loading is based on the assumption of concrete
+not carrying any tensile stresses. A temperature dependent reduction of the concrete
+tensile strength is not performed by the program.
+3.5.10 CONC Concrete material controls
+CONC Description Unit Default
+FCT Concrete tensile strength, effective for nonlinear material [MP] FCTK
+1092
+reaction (AQUA:
+CONC)
+GF Concretetensilefractureenergy,effectivefornonlinearma- N/mm GF
+terial reaction. (AQUA:
+CONC)
+MNO Material number (selector). − all mat’s
+MTYP Material type − PLAS
+PLAS The work law characterizes stress-based
+elastoplastic material behavior; unloading
+and reloading follows a linear elastic stress
+path.
+HYPE The material behaves hyperelastic; no plas-
+tic deformation; unloading follows the pri-
+mary loading path (=work law).
+Redifinition of material properties is temporary (takes effect for the current analysis run, only;
+no permanent storage of properties). Overrides the properties by material definition. If no
+specificmaterialnumberisaddressed,theinputappliestoallconcretematerialsthatareactive
+in the current analysis run.
+Hint
+The choice of hyperelastic material behavior may be useful in case of a fire analysis
+in order to simulate the stress relaxation as an effect of stiffness degradation at higher
+temperatures. Doing this, the conservation of ’high’ constraint stresses originating from
+primary loading with lower temperature, hence higher stiffness, can be avoided.
+Apossiblepermanentmaterialdegradationduetotemperature(cf. section3.5.9)remains
+unaffected by this choice.
+This choice also takes effect for the (reinforcing) steel material behavior.
+SOFiSTiK2023 3-15TALPA|InputDescription
+Hint
+The fiber beam’s fracture energy based damage model for concrete is exclusively con-
+trolled by the material parameters fracture energy and tensile strength. A possibly pro-
+vided tensile branch of the concrete material law remains ineffective.
+3.5.11 TSTF Control of steel-concrete bond behavior (tension stiffening)
+TSTF Description Unit Default
+VAL LT4 AUTO
+AUTO Automatic provision for bond behavior.
+OFF No provision for bond behavior.
+FCT Concrete tensile strength, effective for nonlinear material [MP] FCT
+1092
+reaction. (AQUA:
+CONC)
+MNO Material number (selector). − allmat’s
+The automatic provision for steel-concrete bond behavior is based on a modification of the
+steel strain, in accordance with the current state of cracking. Three phases are distinguished:
+• Uncracked state (state I)
+• Crack formation phase
+• Stabilized cracking (state II)
+For details of the adopted procedure, we refer to secondary literature (Comité Euro-
+InternationalduBéton[21],sections3.2.3,7.4.3). Thesimulationexample uniaxial-tension.dat
+nicely illustrates the mechanical ’stiffening’ effect of the steel-concrete bond behavior.
+Redifinition of material properties is temporary (takes effect for the current analysis run, only;
+no permanent storage of properties). If no specific material number is addressed, the input
+applies to all concrete materials that are active in the current analysis run.
+3.5.12 GRAN Control of material law GRAN
+The GRAN model with extended option (cap model) is set as default since version 23.19. If
+required, the old version can be reactivated via CTRL GRAN 0.
+3.5.13 MSTE Material algorithm control
+Most nonlinear material laws (cf.AQUA: NMAT) are formulated in rate form. With a given total
+strain increment the corresponding stress increment therefore is generally established via in-
+tegration of the nonlinear strain rates. For this procedure powerful and robust algorithms are
+used–mostlyimplicitalgorithms(Backward-Euler),insomecasesexplicitones(Runge-Kutta,
+Forward-Euler).
+For the SOFiSTiK standard materials, control parameters of these algorithms are internally
+preset and not subject to user input.
+Foruserdefinedmaterialmodels(cf.AQUA:NMAT),upto5controlparameterscanbemodified
+3-16 SOFiSTiK2023InputDescription|TALPA
+by user input. The corresponding input is passed via the interface routine NMAT3D_USD() by
+means of the array Ctrl.
+MSTE Description Unit Default
+VAL 1st parameter → Ctrl(1) − 0.0
+FMAX 2nd parameter → Ctrl(2) − 0.0
+FMIN 3rd parameter → Ctrl(3) − 0.0
+EMAX 4th parameter → Ctrl(4) − 0.0
+EMIN 5th parameter → Ctrl(5) − 0.0
+3.5.14 DEFO Storage of nodal displacements
+Prior to storage in the database, the computed displacements of the current load step are
+scaled by means of the factor provided here. This option is useful in the context of an in-situ
+stress state computation by means of the K-procedure (gravity loading), which is a common
+means for geomechanical analyses. In other situations, use of this option is discouraged. The
+systemdeformationcomputedbytheK-procedureisofnopracticalrelevance,itisanumerical
+result of generating the desired stress state, only. Specification of CTRL DEFO 0.0 effectively
+sets the nodal displacements to zero. The option CTRL DEFO ’AUTO’ triggers an automatic
+decision making procedure. In this case, the nodal displacements are set to zero, if all three
+subsequent conditions are fulfilled for the respective load step:
+• no primary load case is referenced
+• the K-procedure is used
+• equilibrium (convergence) is achieved
+3.5.15 LSEQ Load case sequences
+LSEQ Description Unit Default
+VAL − 0
+0 No load case sequences active.
++1 Specification of a TALPA primary stress state is
+interpreted as load case sequence, i.e. the last
+actual load case of the sequence is referenced.
++2 The load case number is interpreted as load
+case sequence number, i.e. the actual load
+case number is chosen automatically based on
+a possibly preceding load case sequence (=
+continuous numbering).
+For calculations with automatic load or time incrementation (CTRL STEP AUTO...), results of
+the intermediate steps are normally stored in the data base, as well - as separate load cases
+withconsecutiveloadcasenumbers. Asaresultoftheautomaticincrementation,therequired
+number of increments is not known a priori - the same holds for the number of the load case
+representing the final increment. To enable referencing of this load case as primary load case
+SOFiSTiK2023 3-17TALPA|InputDescription
+for a subsequent calculation step (construction stage), TALPA uses the concept of load case
+sequences. Control specification is done according to bit scheme. To enable both options,
+CTRL LSEQ VAL 3 must be entered.
+3.5.16 AFIX Kinematic DOF control
+AFIX controls the handling of the kinematic degrees of freedom. Recognizable undefined
+degrees of freedom (e.g. node rotations of a truss) are assigned a priori a small stiffness.
+Loads corresponding to such degrees of freedom cause very large displacements.
+AFIX Description Unit Default
+VAL − 2
+0 Degrees of freedom which are exactly movable
+get announced by an error message and the
+program execution is interrupted.
+1 Degrees of freedom which are movable within
+the precision of calculation get announced by
+an error message and the proram execution is
+interrupted (Default).
+2 Degrees of freedom which are exactly movable
+aresuppressedwithawarningandtheprogram
+execution continues.
+3 Degrees of freedom which are movable within
+the precision of calculation get suppressed with
+awarningandtheprogramexecutioncontinues.
+4 Like 0, yet recognizable undefined degrees of
+freedom are provided with a fixes support.
+5 Like 1, yet recognizable undefined degrees of
+freedom are provided with a fixed support.
+6 Like 2, yet recognizable undefined degrees of
+freedom are provided with a fixed support.
+7 Like 3, yet recognizable undefined degrees of
+freedom are provided with a fixed support.
+3-18 SOFiSTiK2023InputDescription|TALPA
+3.5.17 SOLV Equation solver
+SOLV Description Unit Default
+VAL Selection of equation solver − 3
+1 Direct Skyline Solver
+(Gauss/ Cholesky)
+2 Iterative Sparse Solver
+3 Direct Sparse LDL Solver
+4 Direct Parallel Sparse Solver (PARDISO)
+ForsolvingtheequationsystemsoftheFinite-Elementproblem,SOFiSTiKprovidesanumber
+of solvers. Which solver is used best depends highly on the type of the system and requires
+knowledge of relevant system parameters. Following types are available:
+• Direct Skyline Solver (Gauss/Cholesky)
+This is the classical solver of the FE-Method. The current implementation works best on
+a skyline oriented matrix. The storage needed depends on the internal optimization of the
+node numbers and may become quite large for 3D structures.
+• Iterative Solver (Conjugate Gradients)
+One advantage of the iterative solver lies in its reduced requirements for storage, but it
+may also provide reduced computing time compared to the previous two types especially
+in case of large volume structures.
+• Direct Sparse Solver
+These types of solvers correspond to state of technology. A quite efficient version based
+on the work of Davis [22] is available as well as a direct parallel solver PARDISO.
+The advantage of the direct solvers is especially given in case of multiple right hand sides, as
+theeffortforsolvingthemisverysmallcomparedtothetriangulizationoftheequationsystem.
+Thus they are the first choice for any dynamic analysis or in case of many load cases.
+Inordertominimizecomputationaleffort,thesolversneedanoptimizedsequenceofequation
+numbers. Thisoptimizationstepisusuallyperformedduringsystemgeneration. Theprograms
+SOFIMSHA/Cbydefaultalwayscreateasequencewhichissuitableforthedirectsparsesolver
+(3). Thesolvers(1)or(2)howeverrequireaskylineorientednumberingwhichmaybeobtained
+using the option (CTRL OPTI 1) or (CTRL OPTI 2) during system generation. The correct
+settingwillbecheckedandawarningwillbeissuedincaseacorrectnumberingisnotavailable.
+The iterative (CTRL SOLV 2) and the parallel sparse solver (CTRL SOLV 4) can be run in par-
+allel providing an additional reduction in computing time. A parallelization basically requires
+a license of type ”HISOLV”. More information about parallelization can be found in subsec-
+tion 3.5.18 describing the input parameter (CTRL CORE).
+The equation solvers are selected using the parameter (CTRL SOLV). The first value defines
+the type of the solver, followed by optional additional parameters.
+Direct Skyline Solver (Gauss/ Cholesky)
+SOFiSTiK2023 3-19TALPA|InputDescription
+SOLV Description Unit Default
+VAL 1 Direct Skyline Solver (Gauss/ Cholesky) − !
+Noadditionalparametersarerequired. Howeveritismandatorytooptimizetheequationnum-
+bersinSOFIMSHA/Cusing(CTRLOPTI1)or(CTRLOPTI2)inordertominimizecomputation
+time as well as storage requirements.
+Iterative equation solver
+SOLV Description Unit Default
+VAL 2 Iterative equation solver − !
+V2 Maximum number of iterations − *
+V3 Tolerance in numeric digits (5 to 15) − *
+V4 Type of preconditioning: − 1
+0 Diagonal Scaling (not recommended)
+1 Incomplete Cholesky
+2 Incomplete Inverse
+V5 Threshold value of preconditioning − *
+V6 Maximum bandwidth in preconditioning − *
+Theiterativesolverusesaconjugategradientmethodincombinationwithpreconditioning. For
+the preconditioning, following variants are supported:
+• Diagonal scaling (V4=0)
+Although this is the fastest method with the least memory requirements, it will need a
+considerable high amount of iterations and is therefore not recommended in most cases.
+• Incomplete Cholesky (V4=1)
+Thistypeofpreconditioningperformsapartialtriangulizationoftheinputmatrix. Compared
+to a full triangulization with the Cholesky method, the Incomplete Cholesky saves time by
+ignoring the so called Fill-In during decomposition.
+• Incomplete Inverse (V4=2)
+This type of preconditioning is generally inferior to the Cholesky method. This applies to
+the convergence-rate as well as the time required for computing the inverses. It shows
+however better performance in case of more densely populated matrices (Recommended
+threshold V5: 0.01).
+Foranykindofpreconditioningthenumberofmatrixentriestakenintoaccountduringprecon-
+ditioning can be reduced either by giving a relative threshold value at V5 or via a maximum
+bandwidth size at V6. The optimum choice depends on the type of the structure and may only
+be found by some tests.
+Hint
+3-20 SOFiSTiK2023InputDescription|TALPA
+(Hintcontinued...)
+The correctness of the solution of the iterative solver depends primarily on the tolerance
+threshold. Therefore, changing the default setting V3 is not recommended. In any case
+the analyst should carry out a proper assessment of the computation results.
+Direct Sparse LDL Solver (Default)
+SOLV Description Unit Default
+VAL 3 Direct Sparse LDL Solver − !
+Additional parameters are not required. The mesh generators SOFiMSHA/C generate by de-
+fault an equation numbering required for this type of solver which minimizes the so-called Fill
+In of the matrix.
+PARDISO - direct parallel sparse solver
+SOLV Description Unit Default
+WERT 4 Direct parallel sparse solver − !
+ThissolverPARDISOusesprocessoroptimizedhighperformancelibrariesfromtheIntelMath
+Kernel Library MKL. It usually provides the least computing times. It does not require an a
+priori optimization of the equation numbers during system generation. Hence, the equation
+optimization in SOFiMSHA/C could also be deactivated using (CTRL OPTI 0) in order to save
+memory during system generation. On the other hand however, this solver does not allow
+reusing the factorized stiffness matrix in other programs. Thus, a usage in combination with
+the program ELLA is not possible.
+Further options
+CTRL SOLV 0 suppresses the solution of the system. This is a useful feature to check the
+effective system loads.
+3.5.18 CORE Parallel computation control
+CORE Description Unit Default
+VAL Number of used threads − *
+SOFiSTiK supports parallel computing for selected equation solvers. Additionally, some pro-
+grams offer parallel element processing capabilities – independent of the chosen equation
+solver (CTRL SOLV).
+Activation of parallel computing
+By default parallel computing is triggered automatically where it is feasible.
+Parallel computing requires corresponding hardware and operation system support. In addi-
+SOFiSTiK2023 3-21TALPA|InputDescription
+tion, availability of an adequate SOFiSTiK license is obligatory.
+Hint
+Parallel computing requires availability of a HISOLV license (ISOL granule).
+Number of available threads for parallel computing
+If parallel computing is active, the number of adopted threads is determined as follows (listed
+with increasing priority):
+a) The software retrieves the information about the number of available physical processor
+cores on the system. This number defines the default number of threads that are used
+when a parallel computation is activated.
+b) This default can be modified via the environment variable SOF_NUM_THREADS, which is
+also available as sofistik.def parameter.
+c) Finally, an explicit statement CTRL CORE NN (or as relative input CTRL CORE NN[%])
+temporarily assigns the number of available threads for the respective run.
+Hint
+Neither option b) nor option c) state an explicit parallel computation request. The deci-
+sionif a parallelcomputation istriggered, dependson theactual analysisoption (parallel
+processing must be supported for the specific task) and the availability of an adequate
+license. Parallel computing can be suppressed by explitly setting the number of available
+threads to 1 (or 0).
+Parallel options for equation solvers
+License
+Solver CTRL SOLV Serial Parallel
+Skyline Gauss/ Cholesky 1 – n.a.
+Iterativ 2 HISOLV HISOLV
+Sparse LDL (default) 3 – n.a.
+Sparse Parallel (Pardiso) 4 HISOLV HISOLV
+3-22 SOFiSTiK2023InputDescription|TALPA
+3.6 PHRS – Phreatic Surface
+PHRS
+Item Description Unit Default
+HW Ordinate of phreatic level [m] -
+1006
+LC Reference number of hydraulic load case with poten- [−] -
+tial heights
+T Reference time of potential distribution [sec] -
+1290
+Record PHRS facilitates a phreatic surface definition. According to their relative position re-
+garding the specified phreatic level, the finite elements’ self-weight is then automatically com-
+puted using either the "specific weight" or the "specific weight under buoyancy" (see AQUA
+manual, command MAT/ MATE).
+HW defines a horizontal phreatic surface by specification of the corresponding ordinate on the
+gravity axis (analogous to HW option in record GRP).
+Alternatively, via load case number LC and time T a hydraulic potential distribution may be
+referenced, from which the program automatically computes position of the phreatic surface.
+Using this option, curved phreatic surface shapes - which may arise, e.g., as a result from a
+local ground water lowering - can be treated in a convenient and consistent manner.
+SOFiSTiK2023 3-23TALPA|InputDescription
+3.7 PLC – Primary Load Case
+Seealso: CTRL,GRP,LC,TPLC
+PLC
+Item Description Unit Default
+LC Load case number − !
+TYPE Type of primary load case LT ACTI
+ACTI Loads are total loads, stresses will be acti-
+vated as loading
+FULL Displacements are added additionally
+S2L Transformation of stress state to corre-
+sponding nodal load
+LADD Additive load case − -
+FADD Factor for additive load case − 1.0
+FS2L Load factor for S2L transformation − -1.0
+TherecordPLCselectsaprimarystressstatethatdefaultsforallelementgroupsthatareactive
+in the current anaylsis step. Default settings may still be changed via the GRP command.
+Entering PLC in record SYST is equivalent to specifying TYPE FULL. Displacements of the
+primary load case are added to the ones of the currently active load case if and only if PLC
+has TYPE FULL or PLC has been provided in the record SYST.
+Further you may select with LADD an additional load case, which contains eigenstresses or
+eigen mode shapes, to be added to the primary state with a factor. Stresses above the yield
+limit will then be reduced with a non-linear analysis. As there are no equivalent external load
+patterns available in general, a calculation as activated primary load case is only reasonable
+in special cases.
+TheoptionS2Lgeneratesanodalloadconfigurationfromacorrespondingstressstate. Thisis
+usefulparticularlyforthecaseofgivensystemstressstateswhereacorrespondingconstituting
+loading state is missing (e.g. analytical primary stress state, stress state from eigenmode
+analysis). This constituting loading state might e.g. be required for a nonlinear analysis with
+totalloads. Calculationoftheloadvectorisessentiallyanalogoustotheassemblyoftheglobal
+system of equations’ load vector ("right hand side"). Thus, the resulting load vector originates
+fromthesummationof"inner"loadsfromtheprimarystressstateasstatedintheGRPcontrol
+(FACL) and all referenced "external" loads. The so obtained nodal load vector finally is scaled
+with the factor FS2L and stored under the current load case number. Any other loads that are
+possibly stored under the current load case number are deleted by this procedure! The actual
+solution of the FE system is omitted in the S2L mode, the program terminates after the load
+generationprocess. InS2Lmode,GRPcontrolfactorsFACLandFACDdefaultto1.0and0.0,
+respectively. Along with FS2L=-1.0, for this case a nodal load configuration is generated that
+exactly resembles the generating one of the referenced primary load case.
+3-24 SOFiSTiK2023InputDescription|TALPA
+The simultaneous use of the record PLC and the group control via the record GRP requires
+special attention regarding default settings.
+SOFiSTiK2023 3-25TALPA|InputDescription
+3.8 TPLC – Primary Load Case Temperature
+Seealso: CTRL,GRP,LC,PLC
+TPLC
+Item Description Unit Default
+LC1 Load case number from program HYDRA − -
+T1 Time value for LC1 [sec] -
+1290
+LC2 Load case number from program HYDRA − LC1
+T2 Time value for LC2 [sec] -
+1290
+TREF Reference temperature [◦C] 0.
+1215
+With TPLC you may select temperature distributions from the database calculated by the pro-
+gram HYDRA. As loading you may select an absolute temperature or the difference between
+two temperatures. The loading is:
+delta T = T(LC2(T2)) - T(LC1(T1)) - TREF
+In case of LC1=LC2 always the difference between temperature distributions of larger and
+lower time value is computed:
+delta T = T( max(T1,T2) ) - T( min(T1,T2) ) - TREF
+With that definition all factors FACT of the groups will be set to 1.0. However, then you may
+change them via GRP, of course. Especially the default value 0.0 is set with a first group
+definition with GRP in a block after TPLC again.
+3-26 SOFiSTiK2023InputDescription|TALPA
+3.9 GRP – Element Groups
+Seealso: SYST,LC,TPLC
+GRP
+Item Description Unit Default
+NO Group number − !
+VAL Group selection LT FULL
+OFF Group deactivated
+YES Group activated
+FULL Group activated, including result printout
+LIN YES, all elements linear
+LINE FULL, all elements linear
+FACS Element stiffness factor − 1.0
+PLC Number of primary load case (primary stress state) − *
+SITU automaticcalibrationofhardeningvariables
+according to achieved stress state
+(cid:2)kN/m3(cid:3)
+GAM Parameters of an analytical 0.0
+1091
+H primary stress state [m] 0.0
+1006
+K − -
+SIGN σ ,0 =GAM·(t−H)+SGN (cid:2)kN/m2(cid:3) 0.0
+1089
+SIGH σ h =K·σ ,0+SGH (cid:2)kN/m2(cid:3) 0.0
+1089
+FACL Factor for loads from primary stress state − 1.0
+FACD Factor for gravity loading in specified system gravity − 0.0
+direction
+FACT Factor for temperature loads from TPLC − 0
+HW Groundwater level (global coordinate) [m] ±∞
+1006
+(cid:2)kN/m3(cid:3)
+GAMA Analytical primary stress state Gravity load under GAM-10
+1091
+buoyancy
+GFS Definition of a linear stiffness increase depending on − 0.0
+depth position of QUAD elements:
+FACS =FACS+t·GFS
+pp
+PLQ Number of primary load case for swelling − -
+FACQ Factor for swelling − 0.0
+MNO Assignmentofmaterial(temporaryforthecurrentcal- − -
+culation step, QUADS only)
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-27TALPA|InputDescription
+Item Description Unit Default
+HPLC Number of a hydration load case (from program HY- − -
+DRA)
+ALP0 Lower threshold for stiffness development − -
+HING Effect of hinges for beam elements (also involves im- − ACTI
+plicit hinges)
+ACTI activate hinges
+FIX ignore hinges
+OCR Over-Consolidation Ratio − -
+(cid:2)kN/m2(cid:3)
+POP Pre-Overburden Pressure -
+1089
+TYPE 2-phase model (continuum elements, only) − NONP
+NONP Non-porous material (1-phase model)
+UNDR undrained conditions (flow of pore water is
+suppressed)
+DRAI drained conditions
+FACU Faktor for excess pore water pressures from primary − *
+stress state
+PTSZ Number of cross-sectional fibers (Fiber Beam, only) − see CTRL
+General remarks
+TherecordGRPcontrolstheelementsthatarepartofthecalculationstep,e.gforsimulationof
+construction stages. Additionally, a stress state that is present at the beginning of the analysis
+(→ analytical primary stress state) can be specified here. The group specification is valid for
+all load cases of the input block.
+Each element is associated with an element group via its element number. The classification
+can be done either with equally sized element groups using the group divisor GDIV or with
+variable group sizes (please refer to SOFIMSHA: SYST).
+In absence of any GRP specification, by default all elements are used. If GRP is specified,
+however, only the referenced element groups are activated - all others are considered inactive
+forthecomputationstep. Withinonecalculationrun(PROGTALPA)thedefaultgroupselection
+is the one of the previous calculation step. In case of change of group control the element
+stiffnesses are reassembled.
+Standard group factors
+FACD controls the group’s elements gravity loading for the current calculation step by fac-
+torizing the self-weigth computed from the respective specific material weights (GAM/GAMA
+specification, cf. AQUA: MAT).
+FACS enables factorization of the group’s elements elastic stiffness for the current calculation
+step.
+3-28 SOFiSTiK2023InputDescription|TALPA
+Primary stress states
+For the selected element group, PLC references the construction stage (load case number)
+thatthecurrentcalculationstepisbasedon. ItdefaultstotheglobalPLCasspecifiedbyPLC.
+Ifanelementgroupisnotmeanttobebasedonaprimaryloadcase(e.g. installationofanew
+element group), GRP ... PLC 0 or GRP ... PLC ’SITU’ must be specified.
+The extended option PLC ’SITU’ is motivated by the special characteristics of the Hardening
+Plasticity Soil Model (cf. AQUA: NMAT.GRAN). PLC ’SITU’ deactivates the hardening behav-
+ior of the referenced elements for the respective load step; the material’s strength properties
+remain unaffected, however. For the achieved (equilibrium) stress state, subsequently an au-
+tomaticcalibrationofthematerial-internalhardeningparametersisconducted. Altogether,this
+procedure therefore consistently captures the material state with respect to stress, strength
+and hardening.
+FACL controls the adoption of the internal forces and stress state from the referenced primary
+state primary load case.
+For further information on the concept of primary states, please refer to section 2.4.1.
+Hint
+For the special case of an (artificial) relaxation of element groups (frequently used in
+tunneling simulations) a common calibration factor α is adopted for the group factors
+such that
+FACL=FACS=FACG (=FACU)=α with 0.0<α<1.0 (3.4)
+The initial stress state (in-situ stress state)
+Twoproceduresareavailabletogenerateaninitialloadingstatewhichreflectsthein-situstate:
+• The K-procedure (computation under gravity loading).
+• The analytical primary state (prescribing stresses analytically).
+The K-procedure is activated by specifying the lateral earth pressure coefficient K, only - input
+ofGAM,GAMA,H,SIGNandSIGHisnotapplicable. DetailsaregiveninK-procedure,section
+2.4.1.
+When defining an analytical primary state, in addition to the lateral earth pressure coefficient
+K, the parameters GAM, GAMA, H, SIGN and optionally SIGH are required. Details are given
+in analytical primary state, section 2.4.1.
+Hint
+Provision of an in-situ stress state (parameters K, GAM, GAMA, H, SIGN or SIGH) is
+inadmissibleifthegroupunderconsiderationalreadyreferencesaregularstressstateas
+primary state (GRP ... PLF).
+SOFiSTiK2023 3-29TALPA|InputDescription
+Over-consolidated initial stress state
+Over-consolidated initial stress states can be assigned element group wise using either of the
+twoalternativedefinitionsviatheover-consolidationratioOCRorthepre-overburdenpressure
+POP. Please refer to section 2.4.3 for further information.
+Ground water level
+The parameter HW specifies the groundwater level for the corresponding group. Elements
+whose center point is located below HW are subjected to buoyancy forces. This is accounted
+for by applying the material’s specific weight under buoyancy GAMA (cf. AQUA: MAT).
+Calculation of the analytical primary stress is accordingly based on the value GAMA specified
+in the GRP input, cf. analytical primary state, section 2.4.1.
+The default setting for HW is infinite depth.
+2-phase model
+For continuum elements (QUAD under plane strain conditions or axial symmetry), by se-
+lecting undrained (TYPE UNDR) or drained (TYPE DRAI) boundary conditions, the 2-phase
+model with an explicit account of excess pore water pressures can be activated (cf. AQUA:
+NMAT.UNDR).
+Selecting undrained conditions (TYPE UNDR), the flowout of pore water is suppressed. This
+option results in:
+• A (significantly) increased material’s bulk stiffness due to the contribution of pore water.
+• Apossiblegenerationand/orchangeofexcessporewaterpressurescausedbyvolumetric
+deformation.
+For drained conditions (TYPE DRAI), pore water flow is unrestrained. This means:
+• No contribution of pore water to the material’s bulk stiffness.
+• New excess pore water pressures cannot be generated and possibly existing excess pore
+water pressures (from PLC) will vanish (FACU=0.0).
+Hint
+For the 2-phase approach to be active for a particular element, both the corresponding
+undrainedmaterialproperties(AQUA:NMAT.UNDR)mustbeprovidedand TYPEUNDR/
+DRAI must be specified. If this is not the case, the corresponding element is taken as
+non-porous.
+For the non-porous option (TYPE NONP), the material is assumed to behave independent
+of pore water content. Consequently, possibly defined undrained material properties take no
+effect,nodifferentiationbetweeneffectivestressesand(excess)porewaterpressuresismade.
+Parameter FACU controls the initial excess pore water pressure state for the present loading
+step. The initial state for the present loading step is established by factorizing excess pore
+water pressures from the referenced primary load case by FACU. FACU defaults to:
+3-30 SOFiSTiK2023InputDescription|TALPA
+FACU=1.0 for TYPE UNDR.
+FACU=0.0 for TYPE DRAI. Due to the unrestrained pore water flow, possibly existing
+excess pore water pressures will completely vanish.
+Hint
+The2-phasematerialmodelissensitivetothevolumetricdeformationbehaviorofthesoil
+skeleton. Therefore, special care is required regarding the choice of material model and
+corresponding parameters. In particular, adoption of a standard elastoplastic model (e.g.
+DRUC/MOHR)mayleadtoanoverestimationofthematerial’sundrainedshearstrength!
+For a detailed elaboration, please refer to section 2.4.4.
+Temperature distribution from HYDRA
+With record TPLC a temperature field from the program HYDRA can be imported to calculate
+the stresses for the temperature load. To achieve this, FACT 1.0 must be entered.
+Varying material stiffness due to different hydratation degrees can be taken into account. The
+reference of the hydration load case (calculation with HYDRA) is done via HPLC lc ALP0
+alpha0, where alpha0 denotes the lower threshold for stiffness development.
+Swelling of Soils
+The number of primary load case for swelling PLQ and the factor for swelling FACQ allow the
+explicit activation of the swelling process for individual groups with adequate material proper-
+ties. PLQdefinestheprimaryloadcaseforswelling(NMATSWEL).Withregardtoswellingthis
+loadcaseisinastateofequilibrium. Theinitialstateofthesoilbeforestartoftheconstruction
+work usually satisfies this prerequisite. The influence of swelling effect can be scaled by the
+factor FACQ. An input of FACQ not equal to 0.0 activates swelling (default 0.0).
+Effect of hinges for beam elements
+Possibly specified beam hinge effects during system generation can be deactivated element
+group wise via HING. This takes effect both for explicit (=ordinary) and implicit (=work law
+controlled) hinges.
+SOFiSTiK2023 3-31TALPA|InputDescription
+3.10 LC – Load Case
+Seealso: GRP,LCC
+LC
+Item Description Unit Default
+NO Load case number − 1
+FACT Factor for all loads − 1.0
+DLX Dead load factor in global X direction − 0.0
+DLY Dead load factor in global Y direction − 0.0
+DLZ Dead load factor in global Z direction − 0.0
+DT Time period of total load step [sec] 0.0
+1290
+GFRI Safety factor for friction − 1.0
+GCOH Safety factor for strength/cohesion − 1.0
+CRI3 Free criteria for post processing − 0.0
+TITL Title of load case LT24 *
+TYPE Designation of the action − -
+GAMU Unfavourable safty factor − *
+GAMF Favourable safty factor − *
+PSI0 Rare combination value rare − *
+PSI1 Frequent combination value frequent − *
+PSI2 Quasi-permanent combination value − *
+PS1S Non-frequent combination value − *
+GAMA Safety factor accidental − *
+LCactivatesaloadcase. AllloadsprovidedaftertheLCrecordareassignedtothatloadcase.
+The factor FACT in principle affects all loads, with following exceptions. It does not apply for
+• temperature loading, strain loading and prestressing loads
+• gravity loading (DLX, DLY).
+Dead load can also be defined via the group control (record GRP). If a ground water level is
+specified in the GRP record then a distinction will be made between regular dead load and
+dead load under buoyancy.
+DLZisonlyprovidedduecompatibilitytotheprogramsSEPPandASE.Itcannotbeusedwith
+TALPA.
+DT Time step:
+3-32 SOFiSTiK2023InputDescription|TALPA
+VAL time period Δt of the load step (0.0)
+For time-dependant material laws. Input is interpreted as total increment that possibly is
+further sub-incremented in case of incremental calculation (CTRL STEP).
+The safety factors GFRI (friction) and GCOH (cohesion) are relevant for all general (soil-) ma-
+terial laws. In case of an incremental calculation they are interpolated linearly between the
+initial state and the given value.
+IfnodesignationTITLisspecified,theprogramautomaticallygeneratesatitlefromthesumof
+activated forces and/or details concerning the load increment (in case of incremental calcula-
+tion).
+Theactiontypeandthecorrespondingsafetyfactorsandcombinationcoefficientsmayalready
+be defined here for a subsequent superposition with the program MAXIMA. Several literals
+which are described in detail in the ACT record of the program SOFiLOAD are possible for
+TYPE. If safety factors and combination coefficients other than the default values are to be
+used, these can be provided here. If the superposition factors are defined with the program
+SOFiLOAD or MAXIMA, the parameters TYPE to PS1S should not be specified here.
+SOFiSTiK2023 3-33TALPA|InputDescription
+3.11 LCC – Load Copying
+Seealso: LC
+LCC
+Item Description Unit Default
+NO Number of an already defined load case − !
+FAKT Load factor − 1.0
+NOG Group number for loaded elements − -
+NFRO Smallest node number − -
+NTO Largest node number − NFRO
+NINC Increment of node numbers − 1
+LCC can be used to copy loads from other load cases into the current load case. All loads –
+with the exception of gravity loads DLX-DLZ – that are stored under the referenced load case,
+are transferred.
+All loads can be multiplied by a factor during copying. The respective loads are stored in the
+databasealwaysasresultants,i.e.,apossiblyspecifiedloadfactorcannolongerbeidentified
+after storage.
+Moreover, in case of nodal loads one can copy specific loads only through the selection of a
+region NFRO to NTO in steps of NINC. In case of element loads, NOG can be used for an
+element group wise selection.
+3-34 SOFiSTiK2023InputDescription|TALPA
+3.12 HIST – Iteration History Monitoring
+HIST
+Item Description Unit Default
+TYPE Type of the item to be monitored − -
+UX nodal displacement ux
+UX nodal displacement ux
+NO Number of the corresponding node − -
+For non-linear calculations an iteration log is set up (CDB-key 80/LC). This iteration log by de-
+faultmonitorsthemaximumabsolutenodalresidual,deformationenergyandcurrenttolerance
+for each iteration step.
+Specification of HIST enables the inclusion of further parameters into the iteration log.
+SOFiSTiK2023 3-35TALPA|InputDescription
+3.13 NSTR – Control of Material Limit State
+NSTR
+Item Description Unit Default
+KMOD unused − -
+KSV control for basis material − SL
+KSB unused − -
+With NSTR the kind of investigated material limit state is specified, in particular, serviceability
+and ultimate limit state are distinguished, here. Depending on the choice, the appropriate
+material working law (cf. AQUA manual, input records SSLA and SFLA) is processed for
+evaluation of the material response.
+Possible specifications for KSV are::
+EL linear elastic, but without tension if concrete
+ELD linear elastic with material safety factor
+SL service nominal without material safety factor
+SLD service design with material safety factor
+UL ultimate nominal without material safety factor
+ULD ultimate design with material safety factor
+CAL Calculatoric mean values
+CALD Calculatoric mean values with safety factors from AQUA
+PL plastic nominal without material safety factor
+PLD plastic design with material safety factor
+In case of force work laws (cf. AQUA: SFLA), only serviceability state and ultimate state work
+lawsareavailable. Additionalconsiderationofpossiblematerialsafetyfactorsisnotaccounted
+for, i.e., the UL and ULD statements are eqivalent in this case (the same holds for SL and
+SLD).
+3-36 SOFiSTiK2023InputDescription|TALPA
+3.14 CSYS – General System Characteristics (CSG)
+Seealso: CS,CCRL
+CSYS
+Item Description Unit Default
+PROB Type of analysis LT NONL
+LINE linear analysis
+NONL physical non-linear analysis
+General remarks
+CSYSisrelatedtorecordSYST-however,inputrequirementsarereducedtoabasicdefinition
+of the type of problem.
+In case CSYS is specified prior to the first CS-description, the specified settings serve as a
+default for all construction stages.
+SOFiSTiK2023 3-37TALPA|InputDescription
+3.15 CCRL – Control of Analysis (CSG)
+Seealso: CS,CSYS,CTRL
+CCRL
+Item Description Unit Default
+PT A literal from the following list: LT -
+ITER Iteration control
+KITE Iteration method
+LSRC Line-search control
+STEP Load stepping continuation method
+EPOL Displacements of 1st iteration step by ex-
+trapolation from previous load increment
+SPRI Spring, truss, cable elements
+BEAM control of beam elements
+FIRE ’Hot’ material laws
+CONC Controls for concrete material
+TSTF Tension stiffening control
+GRAN Adaption for the material law GRAN
+AFIX Automatic support conditions
+SOLV Solver options for LSE
+SLCT Selection of active construction stages
+VAL Value of analysis option − *
+FMAX Additional parameter for analysis option − *
+FMIN Additional parameter for analysis option − *
+EMAX Additional parameter for analysis option − *
+EMIN Additional parameter for analysis option − *
+SAVE Storage interval of load increments − *
+General remarks
+CCRLisstronglyrelatedtorecordCTRL-forexplanationoftheoptions,pleaserefertoCTRL.
+In case CCRL is specified prior to the first CS-description, the specified settings serve as a
+default for all construction stages.
+The option SLCT features activation of a selected range of construction stages (computation
+of the remaining construction stages is suppressed).
+3-38 SOFiSTiK2023InputDescription|TALPA
+SLCT Description Unit Default
+VAL First active construction stage CS − 0
+FMAX Final construction stage CS of the active sequence − ∞
+FMIN Mode for inactive construction stages: − 0
+0 inactive construction stage controls are printed
+but set inactive (-PROG TALPA)
+-1 printingofinactiveconstructionstagecontrolsis
+fully suppressed
+SOFiSTiK2023 3-39TALPA|InputDescription
+3.16 CS – Construction Stages (CSG)
+Seealso: CGRP,CSYS,CCRL
+CS
+Item Description Unit Default
+NO Construction stage number − -
+DT Duration of construction stage [sec] -
+1290
+PCS Preceeding construction stage − *
+DEFO Deformation of preceeding construiction stage − FULL
+INC Displacement increments of the current
+construction stage are stored (deforma-
+tion of preceeding construction stage is ig-
+nored).
+FULL The total displacements are stored (=
+deformation from preceeding construction
+stage + displacement increment).
+TITL Description of construction stage (possibly truncated LT -
+to 30 characters)
+General remarks
+Record CS initiates a construction stage description. It only contains general descriptors that
+relatetotheconstructionstageasawhole(cs-number,duration,labelling). Theactualspecifi-
+cation of what happens during this construction phase results from subsequent CGRP, CLOA
+and CGW specifications. Sequence of construction stages in the input specification corre-
+sponds to the actual construction sequence. Therefore, construction stage description is lim-
+ited to indication of changes with respect to the foregoing construction phase - e.g. removal of
+an element group from the system -which reduces input effort significantly (→ CGRP, CLOA,
+CGW).
+Ifnoconstructionstagenumberisspecified,numberingisperformedautomatically. Withman-
+ual assignment, assure that numbering is in ascending order. In case of illegal numbering the
+program switches to automatic assignment.
+Durationoftheconstructionphaseisamongotherthingsrelevantformodellingoftimedepen-
+dent material characteristics.
+Asdescribedabove,theconstructionstagespecificationreflectsthelogicofastagedconstruc-
+tion sequence: the reference state for each construction stage is defined by the description of
+thepreceedingone. ThisdefaultbehaviourcanbeoverriddenbyPCSreferringtoanarbitrary,
+previously defined construction stage number.
+3-40 SOFiSTiK2023InputDescription|TALPA
+3.17 CGRP – Group Control (CSG)
+Seealso: CS,CSYS,CCRL
+CGRP
+Item Description Unit Default
+NO Group number or −/LT !
+ALL
+ACT Action of group LT MODI
+SITU in-situ state
+RLX relaxation (alpha-method)
+EX removal of group
+IN installation of group
+PRE prestressing (not yet activated)
+MODI modification of group properties
+ACT2 Action of group cont’d LT FULL
+FULL group active with printed output
+LINE group linear with printed output
+FAKS Factor for stiffness of group − 1.0
+ALPH Alpha-factor for relaxation − 1.0
+HW Ordinate of ground water level [m] -
+1006
+K Lateral earth pressure coefficient for primary state − !
+OCR Over-Consolidation Ratio − -
+(cid:2)kN/m2(cid:3)
+POP Pre-Overburden Pressure -
+1089
+P Prestressing force (not yet available) kN !
+PTYP Type of prestressing LT FFIN
+FFIN P is final force in member
+FINI P is initial force in member, final force de-
+pends on structural response upon pre-
+stressing
+PLQ Swelling analysis, primary load case for swelling − -
+MNO Material number − -
+PTSZ Number of cross-sectional fibers (Fiber Beam, only) − see CTRL
+TYPE 2-phase model (continuum elements, only) − NONP
+NONP Non-porous material (1-phase model)
+UNDR undrained conditions (flow of pore water is
+suppressed)
+DRAI drained conditions
+SOFiSTiK2023 3-41TALPA|InputDescription
+General remarks
+Record CGRP describes the action of an element group in a construction stage. It relates to
+the foregoing CS specification in an attributive manner.
+To reduce input effort, only element groups that are subject to changes compared to the fore-
+going construction stage (e.g. installation, removal, change of properties) are specified here.
+Groupsthatremainunchanged(andthereforearebasedontheforegoingconstructionstage),
+are treated automatically and should n o t be specified explicitly.
+Options
+ACT specifies the action of the group:
+SITU Calculation of the in-situ primary stress state.
+Evaluation of the lateral earth pressure coefficient K, ground water level HW, ma-
+terial number MNO, number of cross-sectional fibers PTSZ and the 2-phase model
+TYPE.
+RLX Relaxation of the element group.
+Evaluation of relaxation factor ALPH,ground water level HW, number of cross-
+sectional fibers PTSZ and the 2-phase model TYPE.
+EX Removal (excavation) of element group.
+IN Installation of element group.
+EvaluationofstiffnessfactorFACS,groundwaterlevelHW,prestressingtypePTYP,
+material number MNO, number of cross-sectional fibers PTSZ and the 2-phase
+model TYPE.
+MODI Modification of group properties.
+Evaluation of stiffness factor FACS, ground water level HW, material number MNO,
+primary load case for swelling PLQ, number of cross-sectional fibers PTSZ and the
+2-phase model TYPE.
+3-42 SOFiSTiK2023InputDescription|TALPA
+3.18 CLOA – Load Reference (CSG)
+Seealso: CS,CSYS,CCRL
+CLOA
+Item Description Unit Default
+NO Number of referenced load case − !
+OPT Action of group LT ACT
+ACT Activation
+DEAC Deactivation of load group
+TEMP only temporarily active for current construc-
+tion stage
+FACT Factor for the loads − 1.0
+General remarks
+CLOA references a load group that has previously been defined and stored in a separate load
+case and activates it for the current construction stage.
+Hint
+Once activated, the load group remains active also for subsequent construction stages
+as long as it is not explicitly deactivated (exception: OPT TEMP)!
+SOFiSTiK2023 3-43TALPA|InputDescription
+3.19 CGW – Global Ground Water Level (CSG)
+Seealso: CS,CSYS,CCRL,PHRS
+CGW
+Item Description Unit Default
+HW Ground water level (global coordinate, positive in [m] -
+1006
+gravity direction)
+LC Reference number of hydraulic load case with poten- − -
+tial heights
+T Reference time of potential distribution [sec] -
+1290
+General remarks
+CGW defines a global phreatic surface that is accounted for by all active element groups. It is
+possible to define a horizontal phreatic level by specifying the corresponding ordinate HW on
+the gravity axis; alternatively, a hydraulic potential distribution can be referenced via load case
+number LC and time T (for details, please refer to record PHRS).
+The ground water level settings remain valid also for subsequent construction stages as long
+as they are not changed explicitly!
+3-44 SOFiSTiK2023InputDescription|TALPA
+3.20 CTXT – Arbitrary Text (CSG)
+Seealso: CS
+CTXT
+Item Description Unit Default
+Text line LT72 -
+General remarks
+CTXT allows the definition of a text string that is passed through to the CSG generated calcu-
+lation file. The insertion point is determined by the position of the CTXT command within the
+definition of the construction stage sequence. Enclosing inverted commas prevent a possible
+interpretation by the parser, which allows, e.g., passing through of commentary lines.
+...
+CTXT ! Now a file is included:
+CTXT '#include system_sketch.draw'
+CS NO 1 TITL 'In-situ state'
+...
+SOFiSTiK2023 3-45TALPA|InputDescription
+3.21 ECHO – Output Extent
+Seealso: CTRL,SYST,GRP,LC
+ECHO
+Item Description Unit Default
+OPT A literal from the following list: LT *
+NODE Node parameters (NO)
+MAT Material parameters (NO)
+ELEM Elements (except for BOUN) (NO)
+BOUN Boundary elements (NO)
+LOAD Loads (YES)
+DEFO Displacements (NO)
+STRE Element results (NO)
+BEDD Bedding stresses (NO)
+REAC Reaction and coupling forces (NO)
+LINE Distributed support reactions (YES)
+RESI Residual forces (iteration) (YES)
+NOST Averaged element results at nodes (NO)
+ERIN Error estimates (OFF)
+STAT Material point statistics (YES)
+CSPL Plot option for CSG mode (YES)
+CSIG Plot of cross-sectional stress distribution (NO)
+(fiber beams)
+FULL All options
+VAL Echo level LT FULL
+OFF No calculation or output
+NO No output
+YES Regular output
+FULL Extended output
+EXTR Extreme output
+4 For OPT LOAD:
+Output only of applied loads on movable
+nodes
+FROM Starting number of selection sequence or literal GRP −/LT4 !
+TO End number of selection sequence or GRP number − FROM
+INC Increment − !
+3-46 SOFiSTiK2023InputDescription|TALPA
+3.21.1 Element results
+The internal forces and stresses are printed for each QUAD element at the element center
+(ECHO STRE YES). Additional output of the element reactions at the integration points is
+obtained by requesting ECHO STRE FULL.
+The internal forces for each beam element are printed at its beginning and at its end.
+The displacements and the axial forces are printed for all spring and truss elements.
+3.21.2 Averaged element results at nodes
+Foreachnode,internalforcesorstressesofadjacentQUAD-elementsareaveragedandstored
+in the database.
+Averaging of the internal forces occurs group-wise, accounting for the groups defined at sys-
+tem generation. Subgroups are formed automatically at nodes at which the thickness of the
+bordering elements or the material number do not correspond. Hence, two or more results at
+one node may be generated even within one group.
+3.21.3 Distributed support reactions
+Forboundariesthathavebeenassignedaname,thecalculateddistributedreactionforcesare
+printed. ECHO LINE YES only provides for the sums of the boundaries, while ECHO LINE
+FULL additionally triggers printout of the boundary-associated nodal reactions.
+3.21.4 Residual forces
+For non-linear calculations, by default the maximum residual forces per iteration are provided
+in as an iteration log. The iteration log is suppressed by specifying ECHO RESI NO.
+3.21.5 Material point statistics
+Whenrunningproblemswithnon-linearmaterialresponse,theoptionECHOSTATprovidesthe
+possibilityofoutputofmaterialpointstatisticsforallnon-linearQUADintegrationpoints. These
+statistics contain information like, e.g., the number of linearly/ nonlinearly loaded integration
+points and the number of integration points that have reached the tension/ compression limit
+or the apex.
+DefiningECHOSTATYESprovidesforsummarizingstatisticsattheendoftherespectiveload
+case. ECHO STAT NO suppresses this output. ECHO STAT EXTR effects output after each
+iteration step. This option may help to track or localize convergence problems.
+3.21.6 Plot of cross-sectional stress distribution (Fiber Beams)
+For the option CSIG, an optional selection set can be specified. Two possibilities exist:
+• Direct selection of elements or an element sequence via the element ID’s. Example:
+ECHO CSIG FROM 1 TO 10 INC 1 selects all elements with ID’s in the range of 1 to 10.
+• Selection of elements via primary or secondary group affiliation. Example:
+ECHO CSIG GRP ’A2’ selects all elements belonging to (secondary) group A2.
+SOFiSTiK2023 3-47TALPA|InputDescription
+3-48 SOFiSTiK2023Bibliography |TALPA
+Bibliography
+[1] J.C. Simo and T.J.R. Hughes. On variational foundations of assumed strain methods.,
+53:51-54. Journal of Applied Mechanics, 1986.
+[2] J.C.SimoandM.S.Rifai.Aclassofmixedassumedstrainmethodsandthemethodofin-
+compatiblemodes.InternationalJournalforNumericalMethodsinEngineering,29:1595-
+1638, 1990.
+[3] M. Bischoff. Advanced Finite Element Methods. Lecture-Notes. Technische Universität
+München: Lehrstuhl für Statik, 2005.
+[4] S. Klinkel and W. Wagner. A geometrical non-linear brick element based on the EAS
+method. International Journal for Numerical Methods in Engineering, 40:4529-4545,
+1997.
+[5] COIetal.ReportontheIncidentattheMRTCircleLineWorksitethatLedtotheCollapse
+of the Nicoll Highway on 20 April 2004. Ministry of Manpower, 2005.
+[6] P.W.Rowe.“Thestress-dilatancyrelationforstaticequilibriumofanassemblyofparticles
+in contact”. In: Proceedings of the Royal Society of London. Series A. Mathematical and
+Physical Sciences 269.1339 (1962), pp. 500–527.
+[7] M. Wehnert. “Ein Beitrag zur drainierten und undrainierten Analyse in der Geotechnik”.
+PhD thesis. Universität Stuttgart, Institut für Geotechnik, 2006.
+[8] T. Benz. “Small-strain Stiffness of Soils and Its Numerical Consequences”. PhD thesis.
+Universität Stuttgart, Institut für Geotechnik, 2006.
+[9] M.A. Chrisfield. “A faster modified Newton-Raphson iteration”. In: Computer Methods in
+Applied Mechanics and Engineering 20 (1979), pp. 267–278.
+[10] M.A. Chrisfield. Non-linear Finite Element Analysis of Solids and Structures. Volume I,
+Essentials. Wiley & Sons, 1991.
+[11] M.A. Crisfield. A Quadratic Mindlin Element Using Shear Constraints. Computers &
+Structures, Vol. 18, 833-852, 1984.
+[12] D.G. Luenberger. Linear and Nonlinear Programming. 2nd. Springer, 2005.
+[13] I.M. May and Y. Duan. “A local arc-length procedure for strain softening”. In: Computers
+and Structures 64 (1997), pp. 297–303.
+[14] M.A. Chrisfield. “An arc-length method including line searches and accelerations”. In:
+International Journal for Numerical Methods in Engineering 19 (1983), pp. 1269–1289.
+[15] H. Heidkamp. “Solution of Nonlinear Equilibrium Equations in FE-Analysis of Concrete
+Structures”. Master thesis. Department of Structural Mechanics, Chalmers University of
+Technology, 2000.
+[16] R.L. Taylor, P.J. Beresford, and E.L. Wilson. A Non-Conforming Element for Stress Anal-
+ysis. International Journal for Numerical Methods in Engineering, Vol. 10:1211-1219,
+1976.
+[17] O.C.ZienkiewiczandR.L.Taylor.ThefiniteElementMethod,FourthEditionMcGraw-Hill,
+London. London: Fourth Edition McGraw-Hill, 1989.
+[18] K. Schikora and T. Fink. Berechnungsmethoden moderner bergmännischer Bauweisen
+beim U-Bahn-Bau. Bauingenieur, 57 (1982) 193-198, 1982.
+[19] B. Ostermeier and K. Schikora. Ein Rechenmodell zur Erfassung unterschiedlicher Ab-
+schlagsfolgen bei der Spritzbetonbauweise. Bauingenieur, 66 (1991) 529-538, 1991.
+[20] M.A. Chrisfield. Non-linear Finite Element Analysis of Solids and Structures. Volume II,
+Advanced Topics. Wiley & Sons, 1997.
+[21] Comité Euro-International du Béton. CEB-FIP Model Code 90. Thomas Telford Services
+Ltd., London, 1993. ISBN: 0-7277-1696-4.
+SOFiSTiK2023 3-49TALPA|Bibliography
+[22] Timothy A. Davis. LDL: a consise sparse Cholesky factorization package. http://www.
+cise.ufl.edu/research/sparse/ldl. 2003-2012.
+3-50 SOFiSTiK2023

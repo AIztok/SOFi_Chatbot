@@ -1,0 +1,83 @@
+!#!Info Example:    Design with symmetric and centre reinforcement
+!#!Info Program:    BEMESS
+!#!Info Keyword:    symmetric reinforcement; centre reinforcement
+!#!Info Date:       06/19/2007
+
+!#!KAPITEL Material and System generation
++PROG AQUA URS:3
+HEAD Symmetric and centre reinforcement
+NORM 'NS' 'en199X-200X'
+CONC 1 C 30 MUE 0
+STEE 2 S 500
+END
+
+
++PROG Sofimsha urs:4
+HEAD Symmetric and centre reinforcement
+$        Design for symmetric and centre reinforcement implemented.
+$        DIRE LOW=SYM  defines a symmetric reinforcement,
+$        DIRE LOW=CENT defines an (upper) centered reinforcement (without lower reinforcement)<BR>
+$        For hight concrete cover, the upper and lower reinforcement often are close together.
+$        Defining a symmetric reinforcement it is now taken into account that the reinforcement at the
+$        concrete compression side also gets tension and helps the tension side reinforcement. An
+$        increase of lever arm is taken into account.<BR>
+$        In the moment this option is activated only for ULS design in shells. In SLS design
+$        an error message appears.
+UNIT 0
+SYST SPAC GDIR ZZ GDIV 1000
+ECHO FULL NO ; ECHO SYST YES
+NODE NO X Y Z
+   1 0 2  0   ;  2 5 2 0   ;  3 5 -2  0   ;  4 0 -2 0
+TRAN node 1 4 1 DY  5 DNO 100
+TRAN node 1 4 1 DY 10 DNO 200
+
+QUAD NO  N1  N2   N3   N4   T
+   1001   1   2    3    4 0.20[m]
+   2002 101 102  103  104 0.20[m]
+   3003 201 202  203  204 0.20[m]
+NODE 1,4,101,104,201,204 FIX f
+END
+
+!#!KAPITEL Analysis
++PROG ASE URS:2
+HEAD
+LC 1 FACD 1
+LC 2 FACD -0.6
+END
+
++PROG BEMESS URS:9
+HEAD Definition of design parameters
+$ group 1 :
+GEOM - HA 75[mm] DHA 10[mm] HB 75[mm] DHB 10[mm]
+DIRE  0 0
+PARA NOG - DU 10[mm] WKU 0.40[mm]
+
+$ group 2 :
+GEOM - HA 75[mm] DHA 10[mm] HB 75[mm] DHB 10[mm]
+DIRE  0 SYM
+PARA NOG 2 DU 10[mm] WKU 0.40[mm]
+
+$ group 3 :
+GEOM - HA - $ no input to HA for centric reinforcement!
+DIRE  0 CENT
+PARA NOG 3 DU 10[mm] WKU 0.40[mm]
+END
+
++PROG BEMESS URS:8
+HEAD
+CTRL ULTI
+LC   1,2
+END
+
++PROG WING URS:13
+HEAD
+SIZE SPLI 2x1
+SCHH H6 0.60
+VIEW TYPE DIRE X 0 Y 0 Z 1 AXIS NEGX
+QUAD TYPE ASU UNIT DEFA SCHH YES STYP ELEM FILL NO REPR DTXT AVER NO
+QUAD TYPE ASL UNIT DEFA SCHH YES STYP ELEM FILL NO REPR DTXT AVER NO
+END
+
+$ Clean file folder:
++sys del $(project).$d?
+

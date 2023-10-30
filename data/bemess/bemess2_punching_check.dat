@@ -1,0 +1,78 @@
+!#!Info Example:    EC2 punching check slab
+!#!Info Program:    BEMESS
+!#!Info Keyword:    design; stress range; crack width; SLS
+
+!#!Kapitel System
++prog template urs:1
+HEAD EC2 punching check slab
+STO#L  3.00  $ m slab
+STO#h  0.24  $ m h
+STO#d  0.19  $ m d
+STO#b  0.45  $ m column  (quadratic)
+STO#P   809  $ kN P in ULS
+END
+
++PROG AQUA urs:2
+HEAD EC2 punching check slab
+NORM 'DIN' NDC 'en199X-200X'
+CONC 1  C  35
+STEE 2  S 500
+END
+
++PROG SOFIMSHA urs:3
+HEAD EC2 Pilotprojekte - Durchstanzen Decke - Beispiel 4
+SYST GIRD GDIV 1000
+NODE NO   X     Y   fix
+    101 -#L/2[m] -#L/2[m]
+    102 -#L/2[m]  #L/2[m]
+    103  #L/2[m]  #L/2[m]
+    104  #L/2[m] -#L/2[m]
+    500   0     0    F
+GRP 0
+  QUAD - 101 102 103 104 M 10 N 10 T #H[m]
+END
+
++PROG BEMESS urs:4
+HEAD Definition of reinforcement parameters and minimum reinforcement
+$ vgl. bemess6_design.dat
+let#s 1000*(#h-#d) $ senter distance reinforcement
+GEOM - HA #s[mm] DHA 0.01[mm] HB #s[mm] DHB 0.01[mm]
+DIRE  0 0
+PARA NOG - DU 10 $ mm bar
+END
+
++PROG SOFILOAD urs:9
+head
+LC 901
+  let#pm #P/#L/4 $ line load at boundary
+  LINE x1 -#L/2 y1 -#L/2 x2 dxy #L  0 type PZZ P1 #pm
+  LINE x1 -#L/2 y1 -#L/2 x2 dxy  0 #L type PZZ P1 #pm
+  LINE x1  #L/2 y1 -#L/2 x2 dxy  0 #L type PZZ P1 #pm
+  LINE x1 -#L/2 y1  #L/2 x2 dxy #L  0 type PZZ P1 #pm
+end
+
+!#!KAPITEL Analysis
++PROG ASE urs:6
+head
+LC 9 FACT 1.00 DLZ 0 titl ULS
+  LCC 901
+end
+
++PROG BEMESS urs:7
+HEAD ULS design
+ECHO PUNC FULL
+CTRL ULTI $ loadcase on ULS level
+punc  D #b[m] B #b[m]   ro_l 1.66 $ as used in german eurocode example 4
+LC   9
+END
+
++PROG WING urs:50
+head
+QUAD TYPE PUNC SCHH 0.40 $
+QUAD TYPE ASPS SCHH 0.40 $
+QUAD TYPE ASLH SCHH 0.30 $
+end
+
+$ Clean file folder:
++sys del $(project).$d?
+

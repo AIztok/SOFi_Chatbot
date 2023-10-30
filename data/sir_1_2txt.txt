@@ -1,0 +1,618 @@
+SIR
+Sectional Results
+SOFiSTiK | 2023SIR
+SectionalResults
+SIRManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|SIR
+Contents
+Contents i
+1 Task Description 1-1
+2 Theoretical Principles 2-1
+3 Input Description 3-1
+3.1 Input Language . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.2 Input Records. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-2
+3.3 CTRL – Control Parameter . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-3
+3.4 SIZE – Size and Scale of the Representation . . . . . . . . . . . . . . . . . 3-6
+3.5 SCHH – Text Size . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-8
+3.6 COLO – Selection of Colours and Line Types . . . . . . . . . . . . . . . . . 3-9
+3.7 GRP – Group Selection . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-10
+3.8 LC – Load Cases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-11
+3.9 SECT – Geometry of the Section Plane . . . . . . . . . . . . . . . . . . . . . 3-12
+3.10 ECHO – Output Control . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-16
+4 Output Description 4-1
+4.1 List of the Forces and Moments . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.2 List of the Section Geometry . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.3 List of the Considered Load Cases . . . . . . . . . . . . . . . . . . . . . . . . 4-2
+4.4 AQUA and AQB Input . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-2
+4.5 Graphical Representations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-2
+SOFiSTiK2023 iSIR|Contents
+ii SOFiSTiK2023TaskDescription|SIR
+1 Task Description
+TheprogramSIRallowsthedefinitionofthree-dimensionalsectionsthroughanarbitrarystruc-
+ture. Then the following tasks are performed in this section:
+• Representationoftheintersectedelements(TRUS,BEAM,CABL,QUAD,BRIC,SPRI)and
+the graphical representation of their results
+• Calculation of the resultant forces and moments including the support reactions
+• OutputofadatarecordforthedimensioningofthesectionwiththeprogramAQBconsisting
+of:
+– thin-walled cross section parts (from QUAD elements)
+– thick-walled cross section parts (fom QUAD and BRIC elements)
+– tendons
+– internal forces and moments
+Thus SIR may be used for the check of FE calculations concerning the global equilibrium and
+for the visualisation of the results.
+On the other side SIR is an important link for the design of FE structures in the ultimate limit
+state. The standard FE design codes treat every element individually and do not fulfill the
+global compatibility of those strain states. This may lead to uneconomical or unsure results
+dependently on the problem.
+A consistent analysis with the limit load theory requests a considerable CPU time. If the user
+does not want to consider this, SIR allows to apply a classic beam design also for plane struc-
+tures by excising of reasonable subsystems. In this case a global ultimate limit state can be
+verified.
+SIR generates cross sections and internal forces and moments which can be used directly by
+the programs AQUA and AQB or AQBS.
+SOFiSTiK2023 1-1SIR|TaskDescription
+1-2 SOFiSTiK2023TheoreticalPrinciples|SIR
+2 Theoretical Principles
+Firstthesectionplaneisdefined. Thiscontainsalocalcoordinatesystemwhichcorrespondsto
+abeamcoordiantesystem. A"‘beam"’numberandanabscissaXareusedforthedesignation
+of the plane.
+First SIR determines the elements which are intersected by the defined section plane. In this
+casethelimitsatwhichitispossibletointersectareconsideredinthelocalcoordinatesystem
+of the section.
+Then the stress state at the intersection area element - section plane is determined for the
+intersectedelements. Inthiscasealinearstressdistributionintheelementbasedattheresults
+in the Gauss points is placed as a basis. The internal forces and moments of the element at
+the intersection area are calculated from the stress state via an integration.
+Forces of axial symmetric systems are calculated per m circumference (=QUAD thickness).
+SIR integrates at a circle sector. The QUAD thickness increases in radial direction. The thick-
+ness at cuts reference point is 1 m.
+The internal forces and moments at the intersection point beam - plane are determined with a
+cubic interpolation for the intersected beam and truss elements.
+SIR calculates the resultant forces and moments around the reference point after the transfor-
+mation of the internal forces into the local coordinate system.
+SIR is saving all forces in the database directly. Maybe the reference point is not equal to
+the centre of gravity of the new generated cross section. In this case additional moments are
+calculated due to normal force * lever arm (= distance between reference point and centre of
+gravity of the cross section). The reference point position should be checked therefore before
+further processing, e.g. a design calculation with program AQB. Perhaps the calculation has
+to be repeated with an adapted reference point. With the program WinGRAF it is possible
+to perform this iterative step interactively. Otherwise the generated input file (.SR) should be
+running, so that AQB may transforme all forces into the centre of gravity of cross section.
+Tendon forces lead to a stress level in the whole area element. But the tendon forces are
+missedduringtheintegrationofforcesandmomentsifthecutdonothitthetendon. Thiscould
+lead to unexpected results (jumps). SIR displays a warning in this case.
+AsanfurtheroptionSIRaddsallsupportreactionsinaboxwhichisdefinedviaasectionplane
+and an area in front of that and behind that. All nodes and elastic bedded elements within this
+area, depending on the control with ECHO REAC, are used for this purpose.
+SOFiSTiK2023 2-1SIR|TheoreticalPrinciples
+2-2 SOFiSTiK2023InputDescription|SIR
+3 Input Description
+3.1 Input Language
+The input occurs in a free format with the CADINP input language (see the general manual
+SOFiSTiK: ’Basics’).
+Three categories of units are distinguished:
+mm Fixed unit. Input is always required in the specified unit.
+[mm] Explicit unit. Input defaults to the specified unit. Alternatively, an explicit as-
+signment of a related unit is possible (eg. 2.5[m] ).
+[mm] Implicit unit. Implicit units are categorised semantically and denoted by a cor-
+1011
+responding identity number (shown in green). Valid categories referring to the
+unit ”length” are, for example, geodetic elevation, section length and thickness.
+Thedefaultunitforeachcategoryisdefinedbythecurrentlyactive(designcode
+specific) unit set. This input default can be overridden as described above. The
+specified unit in square brackets corresponds to the default for unit set 5 (Eu-
+rocodes, NORM UNIT 5).
+SOFiSTiK2023 3-1SIR|InputDescription
+3.2 Input Records
+The following records and items are defined:
+Record Items
+CTRL OPT VAL KIND TEXT
+SIZE TYPE SC W H MARG FORM SPLI
+X Y Z OPT
+SCHH H1 H2 H3 H4 H5 H6 HE
+HL HF ND
+COLO C1 C2 C3 C4 C5 C6
+GRP NO OPT LAY ETYP
+LC NO CSMI CSMA
+SECT NO XS XM YM ZM NX NY
+NZ NR XMIN XMAX YMIN YMAX ZMIN
+ZMAX REF SNO MNO SX SY SZ
+SPEC TYPM TYPT YSC ZSC
+ECHO OPT VAL
+The input consists of blocks ending with the record END. Within a block the controls CTRL or
+groups GRP are adjustable at will. It is also possible to define so many sections SECT as the
+user wants. But these sections have to be input in a pure monotonic way with respect to the
+identifying beam numbers and X values.
+The records HEAD, END and PAGE are described in the general manual SOFiSTiK: ’FEA /
+STRUCTURAL Installation and Basics’.
+It follows the description of the individual records.
+3-2 SOFiSTiK2023InputDescription|SIR
+3.3 CTRL – Control Parameter
+Seealso: GRP
+CTRL
+Item Description Unit Default
+OPT A literal from the following list: LT FULL
+AQUA Input file for program AQUA − *
+0 does not create the file
+1 thin-walled sections
+2 thick-walled sections with minimum
+polygon points
+3 thick-walled sections condensed ele-
+ment edges
+4 thick-walled sections elements=single
+polygons
+6 as 2, create SREC cross sections if
+possible
+14 as6,ignoredifferentmaterialnumbers
+in section parts
+SCUT control of shear cuts in program AQUA − -1
+<0 without control, use the AQUA default
+0 without shear cuts
+>0 see AQUA manual
+SPT Additional stress points in the AQUA output − *
+0 does not create
+1 create
+SMIN Default of the first cross section numbers − 0
+<0 Not used SIR cross sections are
+deleted additionally from database (if
+CTRL AQUA > 0)
+>0 without deleting
+0 find a minimum cross section number
+-10000 like 0, with deleting
+AQBS Input file for AQBS
+0 does not create the file
+1 file with internal forces
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-3SIR|InputDescription
+Item Description Unit Default
+2 file with cuts and internal forces
+V2MT does add the parts from the plate shear − 1
+force to the torsional moments
+0 does not add, but the m-xy part of
+QUAD elements is added twice
+1 add, the m-xy part of QUAD elements
+is added once
+TOLG Geometric tolerance for cutting m/− -1.0
+<0 factor of the default
+>0 in m
+TOLP Geometric tolerance for generating the m/− -1.0
+polygon
+<0 factor of the default
+>0 in m
+LCR design case number of QUAD reinforce- − -1
+ments
+-1 don’t use reinforcements
+BRIC control of integration of volume elements − 0
+0 extrapolation of node values from
+Gauss points
+1 use value of element middle for whole
+element
+TEND control of integration of QUAD tendons − 1
+0 no integration of tendons
+1 perform integration of tendons
+VAL Value of the option − FULL
+KIND Kind of OPT SPT LT -
+Z- Point at min.Z, middle
+Z+ Point at max.Z, middle
+Y+ Point at max.Y, middle
+Y- Point at min.Y, middle
+Construction stage of cross section of OPT AQUA − -1
+with ’-1’ the construction stage is read from the given
+load cases
+TEXT Input to CTRL AQUA and CTRL AQB − -
+The results of SIR can be stored in an input file for the programs AQUA and AQB for the use
+3-4 SOFiSTiK2023InputDescription|SIR
+of a classical beam design. The kind and the extent of these dates are described with the
+corresponding CTRL options.
+If nothing is input for CTRL AQUA, CTRL AQUA 2 is used as default if BRIC elements were
+found in database. The same default is set if the first cut beam cross section is thick-walled.
+Otherwise CTRL AQUA 1 is used as default for sections with beams, trusses or cables. The
+defaultofsectionswhichintersectonlyQUADelementsisCTRLAQUA2. Inthecaseofcurved
+structures the QUAD elements can be intersected each other. Because such intersection is
+unrepresentable for solid elements in AQUA, it is recommended to use CTRL AQUA 1.
+The stress points ’Z-’ and ’Z+’ are generated as default of CTRL SPT for thickwalled cross
+sections.
+For SIR, it is relatively difficult to find a suitable default of CTRL TOLG / TOLP for any system.
+Unfortunately, the oriention to the system dimensions is not possible, because even in a large
+systemtherecanbeareaswithverysmallelementsthataretobecut. Thisleadstoveryshort
+polygonal edges. A too large CTRL TOLP (= maximum length of polygon edges in the gener-
+ated cross-section) causes these edges to disappear completely, which can lead to unusable
+cross-sections. Therefore it is sometimes more useful to set the geometrical tolerance of the
+cuts with CTRL TOLG more wide / finer. Then the decision for one of the two found QUAD
+elements is more clearly when cutting nearby QUAD edges.
+Instead of an input with SECT in the program AQUA for every section the cross section num-
+berscanbedefinedalsoinapuremonotonicwaywithrespecttothisnumberviaCTRLSMIN.
+SIR calculates the sum of a QUAD reinforcement determined by BEMESS with CTRL LCR >
+0 and ECHO REIN YES/FULL.
+SOFiSTiK2023 3-5SIR|InputDescription
+3.4 SIZE – Size and Scale of the Representation
+Seealso: SCHH,COLO
+SIZE
+Item Description Unit Default
+TYPE Paper size − -4
+Positive value landscape format
+Negative value portrait format
+SC Scale − *
+0 format filling
+* engineering scale, best possible for filling
+the page
+W Paper width cm TYPE
+H Paper height cm TYPE
+MARG Draws a border LT FULL
+NO draws an inner border + scale here W and
+H define the size of the area to be drawn at
+(for single sheet plotters and laserprinters)
+YES draws a free border around the drawing W
+and H define the size of the paper (2cm
+margin, otherwise .5cm)
+FULL an additional border to cut the drawing at
+the outer paper limits is drawn (for drum
+plotters)
+FORM Form of the border LT *
+STAN standard frame
+ZTVK ZTVK-88 frame
+URS Report Browser definition
+SPLI Partitioning of the paper LT 1x1
+HxW height x width
+X Angle of the X axis against the horizontal degree 330
+Y Angle of the Y axis against the horizontal degree 180
+Z Angle of the Z axis against the horizontal degree 270
+OPT Option of the graphical representation − 1
+1 sorted according to load cases
+2 sorted according to components
+3,4 as 1,2 but more compact
+3-6 SOFiSTiK2023InputDescription|SIR
+• The user selects the paper format either implicitly using TYPE or explicitly by the width W
+and the height H.The program can set the scale itselfby picking the largest possible scale
+with the common values of 1:1, 1:2 and 1:5 or their multiples. An explicit setting of the
+scale SC will be used, if technically feasible. Setting SC to 0 results in the largest possible
+drawing regardless of the scale.
+• The user specifies the scale and by setting W and/or H to zero the appropriate paper size
+is automatically chosen. If only one of the two values is set to zero, then the drawing size
+will be automatically calculated to fit in the second direction, the scale does not need to be
+defined in this case.
+WhenusingTYPEyoucanalsospecifytheAmericanformatsorthespecialformatforHewlett-
+Packard Plotters instead of the DIN sizes. A preceeding minus sign selects the portrait orien-
+tation:
+URS,-URS The maximum picture size usable within Report Browser
+A,-A ANSI Paper A (11 x 8.5 inch)
+B,-B ANSI Paper B (17 x 11 inch)
+C,-C ANSI Paper C (22 x 17 inch)
+D,-D ANSI Paper D (34 x 22 inch)
+HPA,-HPA Hewlett Packard Paper A (259 x 199 mm)
+HPB,-HPB Hewlett Packard Paper B (416 x 259 mm)
+HPC,-HPC Hewlett Packard Paper C (529 x 378 mm)
+HPD,-HPD Hewlett Packard Paper D (809 x 528 mm)
+HP4,-HP4 Hewlett Packard Paper 4 (276 x 193 mm)
+HP3,-HP3 Hewlett Packard Paper 3 (404 x 276 mm)
+HP2,-HP2 Hewlett Packard Paper 2 (564 x 366 mm)
+HP1,-HP1 Hewlett Packard Paper 1 (787 x 564 mm)
+MP,-MP Matrix-printers with 8 x 12 inch (200 x 287 mm)
+LP,-LP Laserprinters with A4 paper (198.4 x 280 mm)
+MPW Wider Matrix-printers 14 x 12 inch paper For these formats the default is
+MARG NO.
+If some representations are desired at the sheet, this may be defined with SIZE SPLI. In this
+case a new sheet is used for every section, for OPT 1 and 2 also for every change of an
+important criteria (load case or component).
+SOFiSTiK2023 3-7SIR|InputDescription
+3.5 SCHH – Text Size
+Seealso: SIZE,COLO
+SCHH
+Item Description Unit Default
+H1 Legend cm *
+Default according to the paper size
+H2 Element numbers cm H1
+H3 Stresses cm H2·0.7
+H4 not used cm
+H5 Scales cm H3
+H6 not used cm
+HE Maximum size for single forces cm 4.0
+HL Maximum size for line forces cm 3.0
+HF Maximum size for area forces cm 2.0
+ND Number of decimal places after comma − -
+- default from from
+SOFISTIK units
+The text sizes are re-initialized for every input of the record SIZE. If a text size is defined with
+zero, no designation occurs.
+The values HE to HF are preset in a little bit smaller way for multiple representations (SIZE
+SPLI).
+3-8 SOFiSTiK2023InputDescription|SIR
+3.6 COLO – Selection of Colours and Line Types
+Seealso: SIZE,SCHH
+COLO
+Item Description Unit Default
+C1 Line type of the legend − 1001
+C2 Line type of the intersection lines − 1001
+C3 Line type of the positive stresses − 4001
+C4 Line type of the negative stresses − 2001
+C5 reserved for further line type −
+C6 reserved for further line type −
+A four-digit number nnnn can be defined for the line type. The meaning is described in detail
+in the general manual SOFiSTiK: ’FEA / STRUCTURAL Installation and Basics’. The last digit
+means e.g.:
+1 = solid 6 = tight dots
+2 = dashed 7 = tight dots and dashes
+3 = dotted 8 = spaced dashes
+4 = dots and dashes 9 = spaced dots
+5 = tight dashes 10 = spaced dots and dashes
+The first digit describes the pen number. For example the line type 3003 draws a dotted line
+with the third pen (green). Default of the colours:
+1 = black or white 5 = yellow
+2 = red 6 = magenta
+3 = green 7 = cyan
+4 = blue 8 = brown
+SOFiSTiK2023 3-9SIR|InputDescription
+3.7 GRP – Group Selection
+Seealso: CTRL,SECT
+GRP
+Item Description Unit Default
+NO Group number − *
+OPT Option LT FULL
+OFF do not use
+YES use
+FULL use and print the members
+LAY Layer of the reinforcement − -
+ETYP Element type LT -
+- All element types
+BEAM Beam elements
+TRUS Truss elements
+CABL Cable elements
+QUAD QUAD elements and their tendons
+BRIC Volume elements
+SPRI Coupling spring elements
+Only the elements with the selected group numbers are considered for the integration of the
+internalstressesandmoments. Thedefaultistheuseofallgroupnumbers. ThedefaultNOis
+set for all groups with the input of the first record GRP.
+If LAY is defined, the TRUSS and QUAD reinforcements are used as reinforcement with this
+layer for the cross section descriptions.
+The group number of an element is equal to the element number divided by the group divisor
+(see program SOFiMSHA).
+3-10 SOFiSTiK2023InputDescription|SIR
+3.8 LC – Load Cases
+Seealso: SECT
+LC
+Item Description Unit Default
+NO Load case number − !
+CSMI Addition of the statically determinate parts of the pre- − -
+stress for the tendons with the construction stages
+CSMI and CSMA
+CSMA − CSMI
+The integration of the stresses and moments is performed in every following defined section
+for every selected load case.
+The statically determinate parts of the prestress are determined from the selected tendons
+with CSMI and CSMA. These parts are added to the resultant internal forces and moments.
+Without this option the prestress is the inherent stress state. It means that only the statically
+indeterminate parts of the prestress remain in the resultant internal forces and moments.
+Creep+shrinkage for QUAD tendons:
+InprogramASEitispossibletocalculatedifferenceloadcasesfromthesumloadcases(CTRL
+DIFF ...).
+Thelostsduetocreepandshrinkage(withoutprestressingsteel)ofthesedifferenceloadcases
+are necessary for the design with program AQB. They should be calculated therefore with the
+program SIR in order to prevent a new creep calculation in AQB.
+In the program ASE the results of these difference load cases are saved in a special way in
+order to consider only the concrete part. Thus SIR ignores the part of the prestressing steel.
+The SIR results of the difference load cases are therefore not equal to the simple difference of
+the initial (sum) load cases (because the part of the prestressing steel is not available).
+You can find an example for that with more hints in program TEDDY at
+csm4_quad_singlespan.dat
+Example:
+In program ASE the construction stage creep and shrinkage 15 (CS 15) is stored in load case
+4015 (LC 4015) (=sum load case for creep and shrinkage).
+Then in ASE the difference load case 5015 (=difference load case creep and shrinkage) is
+created by using the control LC DIFF 1000 (an automatic procedure in program CSM).
+Now in SIR only the difference load cases (LC 5015) should be used for calculation. Note that
+the construction stages input (LC CSMI) has to be used for load cases with prestress.
+SOFiSTiK2023 3-11SIR|InputDescription
+3.9 SECT – Geometry of the Section Plane
+Seealso: GRP,LC
+SECT
+Item Description Unit Default
+NO Section number − 1
+XS Beam ordinate m 0.
+XM Global coordinates of the reference point m 0.
+YM m 0.
+ZM m 0.
+NX Components of the section normal − 0.
+NY − 0.
+NZ − 0.
+NR Reference axis for the orientation of the local coordi- LT *
+nate system
+XX, YY, ZZ, NEGX, NEGY, NEGZ
+XMIN Depth of the section box m -0.001
+XMAX (for support reactions) m +0.001
+YMIN Local coordinates of the active window of m -99.
+YMAX the section plane with reference m +99.
+ZMIN to the reference point m -99.
+ZMAX m +99.
+REF Reference type or node LT/− -
+SNO Cross section number of the section − *
+MNO Material number of this section + 1000·material num- − *
+ber reinforcement
+SX Components of the local y axis − 0.
+SY − 0.
+SZ − 0.
+SPEC Special options of section Lt4 -
+A related to start of beam
+E related to end of beam
+Tablecontinuedonnextpage.
+3-12 SOFiSTiK2023InputDescription|SIR
+Item Description Unit Default
+B enforce bending member
+C enforce compression member
+TYPM Type of section for main bending LT SECT
+TYPT Type of section for transvers bending LT SECT
+SECT Regular section
+FACE Face of a clamped support
+HFAC Face of a support with articul. connection
+(masonry)
+IFAC Section at the face of an indirect support
+SHEA Critical sect. for shear design
+YSC Coordinates of the shear centre m -
+ZSC m -
+NREF Reference element to REF − -
+In each case a section is defined with SECT. An evaluation of the geometry and the internal
+forces occurs for all sections within an input block for all the defined load cases and groups.
+ThefirstinputforSECTisdeletingallstoredsectionsinthedatabaseandinadditionallresults
+of the sections.
+ThesectionshavetobedefinedinapuremonotonicwaywithrespecttoNOandtheXSvalue.
+Sections are belong together as one "beam" if they have the same number. So they can be
+displayed graphically with program WinGraf. SIR will maintain as default the last defined NO,
+the very first NO default to 1. The distance XS will be calculated from the difference to the last
+reference point (XM,YM,ZM) if a value for XS isnot given.
+EverysectionisidentifiedlikeabeamsectionwithanumberandanordinateXS.Thegeometry
+of a section plane is described via:
+1. the reference point of the plane (corresponds to the origin of the cross section)
+2. a local coordinate system of the section normal vector of area = local x axis direction for
+the orientation of the y axis
+3. a clipping window within the local coordinate system YMIN, YMAX, ZMIN, ZMAX
+4. an active range for the supports (XMIN, XMAX)
+The user defines the orientation of the local y axis with the item NR or the definition of the
+vector with the items SX, SY and SZ .
+There are three possibilities:
+• no input for NR, SX, SY and SZ: The local z axis is aligned in the direction of gravity. If the
+normal of cut is parallel to the direction of gravity (column) the local y axis of the section
+SOFiSTiK2023 3-13SIR|InputDescription
+Figure3.1: Sectionplane
+plane coordinate system is oriented parallelly to the global XY plane.
+• Literal XX, YY, ZZ, NEGX, NEGY, NEGZ as input to NR:
+The local y axis lies in a plane which is defined through the area normal and the global
+coordinate axis according to the above literal.
+• Input to SX, SY and SZ:
+The local y axis lies in a plane which is defined through the area normal and the vector.
+WiththespecificationofanreferencenodeatREFthereferencepointmaybedefinedrelatively
+to a structural node. With an input REF QUAD the reference point is defined relatively to the
+centre of the QUAD element NREF. Then the default for the local coordinate system is taken
+from the element itself.
+Ifnoreferencematerialisinputforthedefinitionofthecrosssectionintheinputfortheprogram
+AQUA, that one of the first intersected element is used.
+If a section lies exactly along a QUAD element edge, the section will find then two QUAD
+elements. Only the element which lies behind the plane in the normal direction of the section
+plane is used then.
+ThewarpingmomentMbfromQUADelementsiscalculatedonlyifthecoordinatesoftheshear
+centre are input at YSC and ZSC.
+if no record SECT is defined, the sections saved in the database are used, which can be
+defined with the program WINGRAF.
+3-14 SOFiSTiK2023InputDescription|SIR
+All sections are saved in the database. They can be checked and changed with the program
+WINGRAF.
+SOFiSTiK2023 3-15SIR|InputDescription
+3.10 ECHO – Output Control
+ECHO
+Item Description Unit Default
+OPT A literal from the following list: LT -
+FULL All options
+GEO Geometry of the section YES
+REAC Support reactions in the section NO
+REIN QUAD reinforcements YES
+FORC Internal forces and moments YES
+YES total internal forces
+FULL single components
+EXTR singlecomponentswithcoordinates
+LC Considered load cases YES
+PLOT All grafic options *
+NX Plot option normal force YES
+VY Plot option shear force YES
+VZ Plot option shear force YES
+MX Plot option torsional moment YES
+MY Plot option bending moment YES
+MZ Plot option bending moment YES
+V Plot option resultant shear force YES
+M Plot option resultant moment YES
+W Plot option warping parts YES
+VAL Value of output option LT -
+NO No output
+YES Regular output
+FULL Extensive output
+The output of SIR consists of two tables for each section. The first table is optional and de-
+scribes the geometry of the section and of all intersected elements.
+The second table lists the sum of all resultant section components for each load case. The
+user gets also the parts of all individual elements with ECHO FORC.
+Agraphicalrepresentationmaybeproducedforeveryloadcaseandeverysectioncomponent.
+3-16 SOFiSTiK2023InputDescription|SIR
+The individual components may be switched on or off with PLOT or the suboptions NX to W.
+The section definition and the forces for each load are saved in the data base for a later inter-
+pretation. In this case all already existing SIR-dates in the data base are overwritten and/or
+deleted.
+SOFiSTiK2023 3-17SIR|InputDescription
+3-18 SOFiSTiK2023OutputDescription|SIR
+4 Output Description
+ThecontentandtheextentoftheoutputaredependentonthedefinitionoftherecordECHO.
+4.1 List of the Forces and Moments
+ThelistoftheforcesandmomentsisoutputwithECHOFORCYES.Theoverallinternalforces
+andmoments(typeSUM)ofthesingleloadcasesatthesectionsdefinedintherecordsSECT
+are printed.
+FORCES AND MOMENTS
+section Section number
+XS Beam ordinate
+LC Load case number
+Type Element type (e.g. QUAD) or SUM for the forces
+and moments of all elements types
+No Element number of the intersected elements
+N[kN] Normal force
+Vy[kN] Shear force
+Vz[kN] Shear force
+Mt[kNm] Torsional moment
+My[kNm] Bending moment
+Mz[kNm] Bending moment
+Mb[kNm2] Warping moment
+The single forces and moments with the element type and the used load cases are output
+additionally with the input ECHO FORC FULL.
+The type SUPPORTS with the sum of corresponding nodal forces and moments is printed
+additionallyperloadcaseinthelistoftheforcesandmomentsconsideringECHOREACYES,
+FULL or EXTR. All nodes inside the section box are used, independend of the group control.
+WithECHOREACEXTRorECHOREAC4theresultingforcesofbeddingoftheareaelements
+are added. The used area elements are dependend from the group control.
+4.2 List of the Section Geometry
+The list of the section geometry is output with the input ECHO GEO FULL.
+SECTIONAL GEOMETRY
+section Section number
+XS Beam ordinate
+Coordinate Coordiante type X, Y or Z
+SOFiSTiK2023 4-1SIR|OutputDescription
+center Value of the corresponding coordinate
+minimum Depth of the section box for support reactions,
+maximum local coordinates of the active window of the sec-
+tion plane with reference to the reference
+point
+local directions
+Type Element type (e.g. QUAD, BEAM)
+No Element number
+ya[m] , za[m] Distances to the reference node
+ye[m] , ze[m]
+A[m2] area
+t[m] Element thickness
+x[−] Interpolation factor beam length
+4.3 List of the Considered Load Cases
+The list of the considered load cases appears with the input ECHO LC YES or FULL.
+CONSIDERED LOAD CASES
+LC Load case number
+CSMI smallest prestressed construction stage
+CSMA largest prestressed construction stage
+Title of loading case
+4.4 AQUA and AQB Input
+The results of SIR can be stored in an input file for the programs AQUA and AQBS for the
+use of a classical beam design. The kind and the extent of these dates are described with the
+corresponding CTRL options.
+4.5 Graphical Representations
+The corresponding force and moment distributions are represented graphically in Report
+Browser output with the input ECHO PLOT YES or ECHO NX to W YES.
+4-2 SOFiSTiK2023

@@ -1,0 +1,115 @@
+!#!Info  Example:       Reinforced Concrete Sections
+!#!Info  Keyword:       Reinforced Concrete
+!#!Info  Program:       AQB
+!#!Info  Date:          $Date: 2010-12-18 19:47:33 +0100 (Sa, 18 Dez 2010) $
+
+PROG AQUA
+HEAD TUTORIAL EXAMPLE FOR DESIGN 2 / AQB-MANUAL
+NORM DIN EN199X-200X
+ECHO FULL ; PAGE 1
+CONC 1 C 20 ; STEE 10 S 500A
+$ RECTANGLE 40/60 HD'/D=HB'/B=0.1
+$ Cross section 1: symmetrical reinforcement distribution (single reinforcement only 1 layer)
+$ Cross section 2: Single reinforcement above layer 2, below layer 1
+$ Cross section 3: single reinforcement free edges (layer 1-4)
+$ Cross section 4: Line reinforcement free sides (layer 1-4)
+$ Cross section 5: Perimetric reinforcement free, outside layer 1, inside layer 2
+$ Cross section 6: Perimetric reinforcement sequentially, outside layer 0 max. 20 cm2/m = 30.4 cm2
+$                  then inside layer 1
+$ Cross section 7: Perimetric reinforcement pairwise, above+below layer 1, sides layer 2
+$ Cross section 8: Rectangular and plate cross section
+SECT 1 ; POLY OPZ ; VERT 1 200 -300 ; 2 200 300    $ CONSTANT
+         RF 1  160 -240 1. LAY Z1 D 16
+         RF 2  160  240 1. LAY Z1 D 16
+         RF 3 -160 -240 1. LAY Z1 D 16
+         RF 4 -160  240 1. LAY Z1 D 16
+SECT 2 ; POLY OPZ ; VERT 1 200 -300 ; 2 200 300    $ top/bottom
+         RF 1  160 -240 1. LAY Z2 D 16
+         RF 2  160  240 1. LAY Z1 D 16
+         RF 3 -160 -240 1. LAY Z2 D 16
+         RF 4 -160  240 1. LAY Z1 D 16
+SECT 3 ; POLY OPZ ; VERT 1 200 -300 ; 2 200 300    $ absolutely variable
+         RF 1  160 -240 1. LAY Z1 D 16
+         RF 2  160  240 1. LAY Z2 D 16
+         RF 3 -160 -240 1. LAY Z3 D 16
+         RF 4 -160  240 1. LAY Z4 D 16
+SECT 4 ; POLY OPZ ; VERT 1 200 -300 ; 2 200 300 $ absolutely variable
+         LRF 1  160 -240 -160 -240 1. LAY Z1 D 16
+         LRF 2  160  240 -160  240 1. LAY Z2 D 16
+         LRF 3 -160 -240 -160  240 1. LAY Z3 D 16
+         LRF 4  160 -240  160  240 1. LAY Z4 D 16
+SECT 5 ; POLY OPZ ; VERT 1 200 -300 ; 2 200 300    $ Perimetric reinforcement
+         CURF 60[mm] AS 1 LAY Z1 D 12 ; CURF 80[mm] AS 1 LAY Z2 D 12
+SECT 6 ; POLY OPZ ; VERT 1 200 -300 ; 2 200 300    $ Sequential reinforcement
+         CURF 60[mm] AS 1 ASMA 20 LAY S0 D 12 ; CURF 80[mm] AS 1 LAY S1 D 12
+SECT 7 ; POLY OPZ ; VERT 1 200 -300 ; 2 200 300    $ pairwise symmetrically
+         LRF 1  160 -240 -160 -240 1. LAY Z1 D 16
+         LRF 2  160  240 -160  240 1. LAY Z1 D 16
+         LRF 3 -160 -240 -160  240 1. LAY Z2 D 16
+         LRF 4  160 -240  160  240 1. LAY Z2 D 16
+SREC  8  300 300 ASO 2.26 ASU 2.26
+SREC  9  200
+END
+END
+
+PROG AQB
+HEAD TUTORIAL EXAMPLE FOR DESIGN 2
+DESI STAT ULTI SMOD NO
+S 1 1 0.0 N    0 MY 300     ; 2 1 1.0 == ; 3 1 2.0 == ; 4 1 3.0 ==
+                              5 1 4.0 == ; 6 1 5.0 == ; 7 1 6.0 ==
+S 1 2 0.0 N    0 MY 600     ; 2 2 1.0 == ; 3 2 2.0 == ; 4 2 3.0 ==
+                              5 2 4.0 == ; 6 2 5.0 == ; 7 2 6.0 ==
+S 1 3 0.0 N  500 MY 100     ; 2 3 1.0 == ; 3 3 2.0 == ; 4 3 3.0 ==
+                              5 3 4.0 == ; 6 3 5.0 == ; 7 3 6.0 ==
+S 1 4 0.0 N -500 MY 100     ; 2 4 1.0 == ; 3 4 2.0 == ; 4 4 3.0 ==
+                              5 4 4.0 == ; 6 4 5.0 == ; 7 4 6.0 ==
+S 1 5 0.0 N -500 MY 300     ; 2 5 1.0 == ; 3 5 2.0 == ; 4 5 3.0 ==
+                              5 5 4.0 == ; 6 5 5.0 == ; 7 5 6.0 ==
+S 1 6 0.0 N -500 MY 250 250 ; 2 6 1.0 == ; 3 6 2.0 == ; 4 6 3.0 ==
+                              5 6 4.0 == ; 6 6 5.0 == ; 7 6 6.0 ==
+END
+
++PROG AQB
+HEAD Shear Design for Plate Cross Section
+LET#FAK 1.2
+S 9 1 0.0 VZ  20*#FAK MY 100
+S 9 1 1.0 VZ  50*#FAK MY 100
+S 9 1 2.0 VZ  80*#FAK MY 100
+S 9 1 3.0 VZ 150*#FAK MY 100
+DESI ULTI
+END
+TXE +++++ This warning 211 is generated intentionally for demonstration purposes
+LET#FAK 1.2
+S 9 1 0.0 VZ  20*#FAK MY 100   $ VZ =  24 kN/m
+S 9 1 1.0 VZ  50*#FAK MY 100   $ VZ =  60 kN/m
+S 9 1 2.0 VZ  80*#FAK MY 100   $ VZ =  96 kN/m
+S 9 1 3.0 VZ 150*#FAK MY 100   $ VZ = 180 kN/m
+S 9 1 4.0 VZ 250*#FAK MY 100   $ VZ = 300 kN/m
+S 9 1 5.0 VZ 350*#FAK MY 100   $ VZ = 420 kN/m
+S 9 1 6.0 VZ 550*#FAK MY 100   $ VZ = 660 kN/m
+DESI ULTI
+ECHO SHEA FULL
+END
+
+PROG AQB
+HEAD Shear Design in uncracked state
+LET#FAK 1.2
+S 8 1 0.0 N    0*#FAK VZ 100
+S 8 2 0.0 N  -10*#FAK VZ 100    $ N =  -12 kN
+S 8 3 0.0 N -100*#FAK VZ 100    $ N = -120 kN
+S 8 4 0.0 N -550*#FAK VZ 100    $ N = -600 kN
+DESI ULTI
+ECHO SHEA FULL
+END
+
+PROG AQB
+HEAD INTERACTION CURVES
+CAPA 2 TASK "NM"  MY 100           AS1 10 10 CMNT 'N-My'
+CAPA 2 TASK "NM"  MY 200  MZ 100   AS1 10 10 CMNT 'N-My-Mz'
+CAPA 2 TASK "NM"  MY 100  MZ 100   AS1 10 10 CMNT 'N-My-Mz'
+CAPA 2 TASK "NM"  MY 1[-] MZ 1[-]  AS1 10 10 CMNT 'N-ky-kz'
+CAPA 2 TASK "NM"  MY 100           AS1 20 10 CMNT 'N-My'
+CAPA 2 TASK "NM"  MY 200  MZ 100   AS1 20 10 CMNT 'N-My-Mz'
+CAPA 2 TASK "NM"  MY 100  MZ 100   AS1 20 10 CMNT 'N-My-Mz'
+END
+

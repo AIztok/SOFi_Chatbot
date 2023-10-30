@@ -1,0 +1,67 @@
+!#!Info  Example:       Superposition with action groups, record ADA
+!#!Info  Keyword:       Superposition; SIA 262
+!#!Info  Program:       MAXIMA
+!#!Info  Version:       SOFiSTiK 2022
+!#!Info  Date:          $Date: 2021-01-20
+
++PROG AQUA urs:1
+HEAD Example for MAXIMA, Norm SIA 262
+HEAD Norm, Material and Cross Section
+NORM SIA 26x ALT 1500.
+CONC 1 C 30
+STEE 2 B 500B TITL 'bar reinforcement'
+SREC 1 H 0.4 B 0.2 MNO 1 MRF 2 RTYP ASYM ASO 1.0 ASU 1.0 DASO 10 DASU 20
+END
+
++PROG SOFIMSHA urs:2
+HEAD Example for MAXIMA, Norm SIA 262
+HEAD System
+SYST 2D GDIR POSY
+NODE 1 FIX PP ; 2 4.0 -4.0 FIX PY
+BEAM 1 1 2 DIV 4
+END
+
++PROG SOFILOAD urs:3
+HEAD Example for MAXIMA, Norm SIA 262
+HEAD Loads, Actions with Partial Factors and Combination Coefficients
+ACT G  TITL 'Dead Load'
+  LC 1 DLY 1.0
+  BEAM 1 TYPE PYY PA 2.0
+ACT S TITL 'Snow'
+  LC 2
+  BEAM 1 TYPE PYP PA 7.5
+ACT W TITL 'Wind'
+  LC 3
+  BEAM 1 TYPE PZ PA 5.0
+
+ACT B TITL 'Construction stage loading'
+  LC 4
+  BEAM 1 TYPE PYY PA 3.0
+END
+
++PROG STAR2 urs:4
+HEAD Example for MAXIMA, Norm SIA 262
+HEAD Calculation of the Single Load Cases
+CTRL I
+LC all
+END
+
++PROG MAXIMA urs:5
+HEAD Example for MAXIMA, Norm SIA 262
+HEAD Superposition Ultimate Limit State
+ECHO CHCK
+COMB 1 EXPL TYPE DESI
+ ADD {G}  GAM
+ ADD {Q1} GAM
+  ADA S,W                 $  actions S and W are used only
+ ADD {QI} PSI0 0.0
+  ADA S,W                 $  actions S and W are used only
+SUPP 1 MAMI ETYP BEAM TYPE N,VZ,MY
+SUPP 1 MAMI ETYP NODE TYPE PX,PY
+END
+
++PROG AQB urs:22
+HEAD Example for MAXIMA, Norm SIA 262
+HEAD Design
+DESI ULTI
+END

@@ -1,0 +1,321 @@
+!#!Kapitel System definition
+
+PROG AQUA
+HEAD CURVED BRIDGE SYSTEM WITH THREE SPANS
+NORM DIN EN199X-200X
+STO#QUAD 0
+IF #QUAD
+   CONC 1 C 20 ; SREC 1 1600 1200 400 5000 REF PM
+ELSE
+   CONC 1 C 20 ; SREC 1 1600 1200 400 10000 REF PM
+ENDIF
+STEE 2 AW 6061T6 GAM 0.0
+SECT 900 MNO 2 TITL 'Train-Section'
+POLY OPZ ; VERT 1  780 -4280
+                2 1575 -3175
+                3   =      0
+$
+END
+
+PROG SOFIMSHC
+HEAD CURVED BRIDGE SYSTEM WITH THREE SPANS
+SYST SPAC GDIV 1000 GDIR POSZ
+ECHO FULL
+$
+GAX 'AXG' ; GAXB R 500 X1 0.0 X2 90.0
+$
+SPT  1  0.0  0.0  REF AX 'AXG' FIX F
+SPT  2 30.0  0.0  REF AX 'AXG' FIX PP
+SPT  3 60.0  0.0  REF AX 'AXG' FIX PP
+SPT  4 90.0  0.0  REF AX 'AXG' FIX PPLMX
+SPT 11 -2.0  3.0  FIX PP  $ REFERENCE NODES FOR TRAIN VISUALISATION
+    12 -2.0 -3.0  FIX PP  $ REFERENCE NODES FOR TRAIN VISUALISATION
+$
+SLN  1 1 2 REF 'AXG' SNO 1 GRP 1 SDIV 7.5
+SLN  2 2 3 REF 'AXG' SNO 1 GRP 2 SDIV 7.5
+SLN  3 3 4 REF 'AXG' SNO 1 GRP 3 SDIV 7.5
+SLN 10 1 4 REF 'AXG' $ SEQUENCE OF ALL NODES
+IF #QUAD $ FOR BETTER VISUALISATION OF LOADS
+   Spt 101 -5  -5
+       102 -5  +5
+       103 +35 +5
+       104 +35 -5
+   Sln 101 101 102
+       102 102 103
+       103 103 104
+       104 104 101
+   Sar 1 grp 0 t 20[mm] ; Sarb aus 101,102,103,104
+                          Sarb cons 1,2,3
+ENDIF
+CTRL MESH 1
+END
+
+PROG SOFILOAD
+HEAD DEFINE A DEFAULT LANE GEOMETRY ROAD / RAILWAY
+ECHO FULL
+GAX  'AX00'  0.0  X     0.0    0.0  R 500
+     'AX00'  3.0  X    90.0    0.0  R 500
+GAX  'AXIS'  0.0  X     0.0    0.0  R 500
+     'AXIS'  3.0  X    90.0    0.0  R 500
+LANE 'AXIS' RQ20 YCE 0.35
+LANE 'AX00.0' YCE 0.35 HSA 0.60                     HEFF 0.30 BEFF 1.90
+LANE 'AX00.1' YCE 0.35 HSA 0.80 HSE 0.90            HEFF 0.30 BEFF 1.90  DEFF 0.20
+LANE 'AX00.2' YCE 0.35 HSA 0.80 HSE 0.90 INCA +0.05 HEFF 0.30 BEFF 1.90  DEFF 0.20
+END
+
+!#!Kapitel Load trains
+
+-prog sofiload $ TEST OF AVAILABEL TYPES VIA ERROR MESSAGES
+HEAD
+lc 100 ; trai
+lc 101 ; trai slw
+lc 102 ; trai lkwd
+lc 103 ; trai lkwa
+lc 104 ; trai ha
+lc 105 ; trai hb
+lc 106 ; trai NA
+lc 107 ; trai NB
+lc 108 ; trai NC
+lc 109 ; trai irc
+lc 110 ; trai h
+lc 111 ; trai hs
+lc 112 ; trai ht
+lc 113 ; trai hst
+lc 114 ; trai mlc
+lc 115 ; trai JRAT
+lc 116 ; trai JRAL
+lc 116 ; trai CAN
+lc 121 ; trai lm1
+lc 122 ; trai lm2
+lc 123 ; trai lm3
+lc 124 ; trai lm4
+lc 125 ; trai flm1
+lc 126 ; trai flm2
+lc 127 ; trai flm3
+lc 128 ; trai flm4
+lc 129 ; trai SV
+lc 130 ; trai SOV
+lc 131 ; trai uic
+lc 132 ; trai sw
+lc 133 ; trai sw/2
+lc 134 ; trai rl
+lc 135 ; trai rfat
+lc 136 ; trai HSLM
+END
+END
+
+prog sofiload
+HEAD LOADTRAINS
+echo load extr
+lc 101 TYPE NONE ; trai slw 60
+lc 102 TYPE NONE ; trai lkwd 12
+lc 104 TYPE NONE ; trai ha
+lc 105 TYPE NONE ; trai hb
+lc 106 TYPE NONE ; trai hb 30
+lc 107 TYPE NONE ; trai na
+lc 108 TYPE NONE ; trai nb 36
+lc 109 TYPE NONE ; trai h 15
+lc 110 TYPE NONE ; trai hs US
+lc 111 TYPE NONE ; trai ht 10
+lc 112 TYPE NONE ; trai hst SI dir r
+lc 113 TYPE NONE ; trai hst US dir l
+lc 114 TYPE NONE ; trai irc AAT
+lc 115 TYPE NONE ; trai irc AA
+lc 116 TYPE NONE ; trai irc AA 20
+lc 117 TYPE NONE ; trai irc A
+lc 118 TYPE NONE ; trai irc B
+lc 119 TYPE NONE ; trai irc PD
+lc 120 TYPE NONE ; trai irc 18T
+lc 121 TYPE NONE ; trai irc 18S
+lc 122 TYPE NONE ; trai irc 18R
+lc 123 TYPE NONE ; trai irc 70T
+lc 124 TYPE NONE ; trai irc 70R
+lc 125 TYPE NONE TITL 'IRC BOGIE CAR DOUBLE DECK'
+         trai user P5 5.0 P6 1.0 FRB 1.0 0.1 BOGI 1.0 WIDT 3.0
+         trpl 21.5/2 A -5.390/2 BOGI -.12 0.8 0.08 WHEE 1.4 0.6 0.06
+         trpl 21.5/2 A  5.390   BOGI -.12 0.8 0.08 WHEE 1.4 0.6 0.06
+         trbl 3.0 A -(12.280+5.390)/2 L 12.280  B 3.0
+lc 126 TYPE NONE ; trai JRAT B
+lc 127 TYPE NONE ; trai JRAL A
+lc 128 TYPE NONE ; trai JRAL B
+lc 130 TYPE NONE ; trai mlc 20 dir l
+lc 131 TYPE NONE ; trai mlc 40 3 dir r
+lc 132 TYPE NONE ; trai mlc 70 2
+lc 133 TYPE NONE ; trai mlc 150 1
+lc 134 TYPE NONE ; trai AS_M
+lc 135 TYPE NONE ; trai AS_S
+lc 136 TYPE NONE ; trai HLP 320
+lc 137 TYPE NONE ; trai BRO1 1
+lc 138 TYPE NONE ; trai BRO5 2
+lc 139 TYPE NONE ; trai BROF
+$
+lc 140 TYPE NONE ; trai lm1 300
+lc 141 TYPE NONE ; trai lm2 300
+lc 142 TYPE NONE ; trai lm3 3000 240
+lc 143 TYPE NONE ; trai lm4
+lc 144 TYPE NONE ; trai flm1 300
+lc 145 TYPE NONE ; trai flm2 3
+lc 146 TYPE NONE ; trai flm3
+lc 147 TYPE NONE ; trai flm4 3
+lc 148 TYPE NONE ; trai lm3 3000 240 - -180 $ direct axle value
+lc 149 TYPE NONE ; trai lm3 3000 240 -  140 $ loadcase with lm1
+$
+lc 151 TYPE NONE ; trai SV   80  -  -   140 $ loadcase with lm1
+lc 152 TYPE NONE ; trai SV  100  -  -   140 $ loadcase with lm1
+lc 153 TYPE NONE ; trai SV  196  -  -   140 $ loadcase with lm1
+lc 154 TYPE NONE ; trai SOV 250  -  -   140 $ loadcase with lm1
+lc 155 TYPE NONE ; trai SOV 350  -  -   140 $ loadcase with lm1
+lc 156 TYPE NONE ; trai SOV 450  - 10  -140 $ loadcase with lm1
+lc 157 TYPE NONE ; trai SOV 600  - 10   140 $ loadcase with lm1
+lc 158 TYPE NONE ; trai SOV 600 21  -   140 $ loadcase with lm1
+$
+lc 200 TYPE NONE ; trai uic
+lc 201 TYPE NONE ; trai uic A
+lc 202 TYPE NONE ; trai uic B
+lc 203 TYPE NONE ; trai sw
+lc 204 TYPE NONE ; trai sw/2
+lc 205 TYPE NONE ; trai rl
+lc 206 TYPE NONE ; trai rfat 1
+lc 207 TYPE NONE ; trai rfat 3
+lc 209 TYPE NONE ; trai rfat 6
+lc 210 TYPE NONE ; trai rfat 8
+lc 211 TYPE NONE ; trai rfat  1 p4 0.0 DIR R
+lc 212 TYPE NONE ; trai rfat  1 p4 0.0 DIR L
+lc 213 TYPE NONE ; trai rfat  2 p4 0.0
+lc 214 TYPE NONE ; trai rfat  3 p4 0.0
+lc 215 TYPE NONE ; trai rfat  4 p4 0.0
+lc 216 TYPE NONE ; trai rfat  5 p4 0.0
+lc 217 TYPE NONE ; trai rfat  6 p4 0.0
+lc 218 TYPE NONE ; trai rfat  7 p4 0.0
+lc 219 TYPE NONE ; trai rfat  8 p4 0.0
+lc 220 TYPE NONE ; trai rfat  9 p4 0.0
+lc 221 TYPE NONE ; trai rfat 10 p4 0.0
+lc 222 TYPE NONE ; trai rfat 11 p4 0.0
+lc 223 TYPE NONE ; trai rfat 12 p4 0.0
+lc 224 TYPE NONE TITL 'some special railway loading'
+       trai user P5 0.0 P6 1.0
+       trbl p 50*0.875*0.5 a 0 l 36
+       trpl p 180*0.875*0.5 a 1.50
+       trpl p 180*0.875*0.5 a 1.80
+       trpl p 180*0.875*0.5 a 7.80
+       trpl p 180*0.875*0.5 a 1.80
+       trbl p 50*0.875*0.5 a 1.50 l 36
+lc 225 TYPE NONE ; trai ASRT
+lc 231 TYPE NONE ; trai HSLM A1
+lc 232 TYPE NONE ; trai HSLM A2
+lc 233 TYPE NONE ; trai HSLM A3
+lc 234 TYPE NONE ; trai HSLM A4
+lc 235 TYPE NONE ; trai HSLM 2.9
+lc 236 TYPE NONE ; trai HSLM 3.8
+lc 237 TYPE NONE ; trai HSLM 5.9
+lc 238 TYPE NONE ; trai HSLM 7.3
+LC 239 TYPE NONE ; TRAI UIC FRB 1.0 0.1 BOGI -.12 0.8 0.08 WHEE 1.4 0.6 0.06
+$
+$ CREATE VARIANTS OF LOAD TRAIN VISUALISATION
+   lc 241 TYPE NONE ; trai rfat  4 p4 0.0  ; trex 241 901 900 11 1
+   lc 242 TYPE NONE ; trai rfat  4 p4 0.0  ; trex 242 902 900 12 1
+   lc 243 TYPE NONE ; trai rfat  4 p4 0.0  ; trex 243 903 900 11 0
+   lc 244 TYPE NONE ; trai rfat  4 p4 0.0  ; trex 244 904 900 12 0
+END
+END
+
++prog sofiload
+HEAD Explicit generation by load positions
+echo load extr
+CTRL COPY 0  $ DEFAULT SELECTED BASED ON ELEMENTS AVAILABLE
+GRP 0,1,2,3 $ DO NOT USE GROUP 900++
+
+$ LANE GEOMETRY NOW EXPLICIT
+LANE AXIS.0 SA 0.0 SE 1.0 l 10.0
+                   SE 2.0 l 10.0
+                   SE 3.0 l 10.0
+LANE AXIS.1 SA 0.0 SE 1.0 YCA +2.7 YRA +4.4 +0.8 l 10.0
+                   SE 2.0 YCA +2.7 YRA +4.2 +0.8 l 15.0
+                   SE 3.0 YCA +2.7 YRA +4.4 +0.8 l 10.0
+LANE AXIS.2 SA 0.0 SE 1.0 YCA -2.7 YRA -0.8 -4.2 l 10.0
+                   SE 2.0 YCA -2.7 YRA -0.8 -4.2 l 15.0
+                   SE 3.0 YCA -2.7 YRA -0.8 -4.2 l 10.0
+LC 901 TYPE NONE ; TRAI SLW 60 P5 2.0
+LC 902 TYPE NONE ; TRAI SLW 30 DIR N
+LC 903 TYPE NONE ; TRAI UIC
+LC 905 TYPE NONE ; TRAI user v 200 fuga 1 P5 0 0 0 0 1.8 phi 1 1 XCON 10
+         trpl 225.0/2 A -       y -0.75  $ coach 1
+         trpl 225.0/2 A 0       y  0.75
+         trpl 225.0/2 A 1.7     y -0.75
+         trpl 225.0/2 A 0       y  0.75
+         trpl 225.0/2 A 1.7     y -0.75
+         trpl 225.0/2 A 0       y +0.75
+
+LOOP#1 10
+   LC 910+#1 TYPE L ; COPY 901 REF AXIS.1 DX #1/3.0 WIDE 9.99
+                      COPY 902 REF AXIS.2 DX #1/3.0 WIDE 9.99
+ENDLOOP
+$
+LOOP#1 10
+   LC 920+#1 TYPE L ; COPY 901 INC MAX REF AXIS.1 DX #1/3.0 WIDE 9.99
+                      COPY 902 INC MAX REF AXIS.2 DX #1/3.0 WIDE 9.99
+ENDLOOP
+$
+IF #QUAD==0
+TXB +++ Warnungen in Lastfällen 231-233 und 236-238 sind durch
+TXB     Abweichungen der Stabachse und der Geometriachse bedingt
+TXB     dadurch werden kleine Lastsegmente ausgeblendet
+ENDIF
+LOOP#1 10
+   LC 930+#1 TYPE L ; COPY 903 REF AXIS DX #1/3.0
+                      COPY 903 REF AXIS DX #1/3.0 DY  3.5   WIDE 9.99
+                      COPY 903 REF AXIS DX #1/3.0 DY -3.5   WIDE 9.99
+ENDLOOP
+LOOP#1 10
+   LC 940+#1 TYPE L ; COPY 903 REF AX00.0 DX #1/3.0                    $ OHNE DEFF
+                      COPY 903 REF AX00.1 DX #1/3.0 DY  3.5 WIDE 9.99  $ EBEN
+                      COPY 903 REF AX00.2 DX #1/3.0 DY -3.5 WIDE 9.99  $ UEBERHOEHT
+ENDLOOP
+
+LOOP#1 10
+   LC 950+#1 TYPE L ; COPY 905 REF AX00.0 DX #1/3.0  WIDE 0.01         $ OHNE DEFF
+ENDLOOP
+$
+END
+
++PROG WING
+HEAD PICTURES OF LOADINGS
+GRP 0,1,2,3
+SIZE TYPE WIN SC 0 MARG NO FORM STAN
+VIEW TYPE DIRE X 0.8648 Y -0.4224 Z 0.2715 AXIS POSZ ROTA 0
+LOOP#1 40
+  LC NO 910+#1 ; LOAD ALL
+ENDLOOP
+END
+END
+
+!#!Kapitel Dynamics
+
+PROG DYNA
+HEAD DYNAMIC PASSING OF TRAINS
+GRP 1,2,3
+GRP 901 FACS 0.0
+CTRL RLC 1001 7
+LET#1 20.0                 $ SPEED in m/sec
+STEP 0.01 300.0/#1         $ TOTAL TIME FOR TRAVELING
+LC 241                     $ LOAD TRAIN
+CONT REF AXIS NR 10 #1 2.0 $ AUTOMATIC TIMEVALUES IN NODES FROM EDGE
+$
+HIST U-Z 13 21 1 LCST 241
+HIST A-Z 13 21 1 LCST 241
+HIST MY 1001 1004 1 XREF -0.0 LCST 241
+HIST MY 2001 2004 1 XREF -0.0 LCST 241
+HIST MY 3001 3004 1 XREF -0.0 LCST 241
+EXTR U
+EXTR MY  11 0  $ DO NOT USE LC 241 !!
+END
+END
+
+PROG DYNR
+HEAD
+HIST 241 U-Z 14 2002 17 4001 20 3002
+HIST 241 A-Z 14 2002 17 4001 20 3002
+HIST 241 MY 1002 2001 2002 4001 3002 3001
+HIST 241 MY 1004 2001 2004 4001
+end
+end

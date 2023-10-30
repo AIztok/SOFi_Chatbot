@@ -1,0 +1,1725 @@
+TENDON
+Geometry and forces of pre- and post-tensioning
+tendons
+SOFiSTiK | 2023TENDON
+Geometryandforcesofpre-andpost-tensioningtendons
+TENDONManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|TENDON
+Contents
+Contents i
+1 TENDON - task description 1-1
+1.1 Process in TENDON . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-1
+1.2 Embedding in the SOFiSTiK process . . . . . . . . . . . . . . . . . . . . . . . 1-1
+2 Theoretical principles 2-1
+2.1 General information . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.1.1 Designation of geometries . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.1.2 Coordinate systems . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.1.3 Tendon position in the duct . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.2 Force distribution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.2.1 Force distribution due to friction . . . . . . . . . . . . . . . . . . . 2-2
+2.2.2 Elongation of tendons . . . . . . . . . . . . . . . . . . . . . . . . . 2-3
+3 Input Description 3-1
+3.1 Input language . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.2 Units . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.3 Default values . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.4 Input records . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.5 General input records. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-3
+3.5.1 ECHO – Output Extent . . . . . . . . . . . . . . . . . . . . . . . . . 3-4
+3.5.2 TDEL – Delete tendon records . . . . . . . . . . . . . . . . . . . . 3-5
+3.5.3 EXPO – Export from database . . . . . . . . . . . . . . . . . . . . 3-6
+3.5.4 GEOX – Export Geometry . . . . . . . . . . . . . . . . . . . . . . . 3-7
+3.6 Prestressing systems . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-9
+3.6.1 SYSP – Prestressing system . . . . . . . . . . . . . . . . . . . . . 3-10
+3.6.2 SYSS – Prestressing system for pre-tensioning . . . . . . . . . 3-12
+3.7 Geometry generation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-13
+3.7.1 AXES – Reference axes . . . . . . . . . . . . . . . . . . . . . . . . 3-15
+3.7.2 TOPP – Top Positions . . . . . . . . . . . . . . . . . . . . . . . . . . 3-17
+3.7.3 GRP – Group control . . . . . . . . . . . . . . . . . . . . . . . . . . 3-19
+3.7.4 TGEO – Duct geometry. . . . . . . . . . . . . . . . . . . . . . . . . 3-20
+3.7.5 PTUV – Constraining points of the spline duct geometry. . . . 3-22
+3.7.6 PTSV – Constraining points of the polygonal duct geometry . 3-25
+3.8 Tendon generation. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-28
+3.8.1 CS – Construction stages . . . . . . . . . . . . . . . . . . . . . . . 3-30
+3.8.2 PDAT – Additional data of the prestressing . . . . . . . . . . . . 3-31
+3.8.3 FRIC – Additional Friction Losses . . . . . . . . . . . . . . . . . . 3-32
+3.8.4 PSIG – Prestressing limits according to Eurocode . . . . . . . . 3-33
+3.8.5 PAAS – Prestressing limits according to AASHTO . . . . . . . . 3-36
+SOFiSTiK2023 iTENDON|Contents
+3.8.6 PFAC – Prestressing limits with factors . . . . . . . . . . . . . . . 3-37
+3.8.7 PDEF – Manual prestressing . . . . . . . . . . . . . . . . . . . . . 3-38
+3.8.8 TEND – Tendon. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-39
+3.9 Prestressing of flat slabs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-42
+3.9.1 SLAB – General data of the slab tendon . . . . . . . . . . . . . . 3-44
+3.9.2 SLBS – Constraining points of the slab tendon . . . . . . . . . . 3-46
+3.10 Graphic representation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-47
+3.10.1 PLOT – Graphical representation . . . . . . . . . . . . . . . . . . 3-48
+3.10.2 AND – Link multiple PLOT commands . . . . . . . . . . . . . . . 3-50
+3.10.3 COLO – Colours, lines and fill patterns . . . . . . . . . . . . . . . 3-51
+3.10.4 SCHH – Font size . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-52
+Bibliography 3-53
+ii SOFiSTiK2023TENDON-taskdescription|TENDON
+1 TENDON - task description
+TENDONisusedforthecalculationofprestressingloadsforbeam,slabsandshellstructures.
+Essential components of the module are the generation of duct and tendon geometries, the
+intersection of the ducts with the static system as well as the simulation of the prestressing
+process and the friction losses.
+Theforcesoftheprestressingarestoredasloadsontheintersectedbeamandquadelements
+in the database.
+ElasticshorteningisnotconsideredinTENDON,butcanbedeterminedwiththecorresponding
+structural analysis modules of SOFiSTiK, especially ASE.
+Important
+Thedimensioningoftheprestressingiscriticalforthestabilityofaprestressedstruc-
+ture. The user of TENDON should therefore convince himself about the accuracy and
+sensitivityoftheprestressingparametersincludingtheireffects. Acheckoftheresultsby
+means of rough engineering estimates is indispensable.
+1.1 Process in TENDON
+The classical calculation process of TENDON is as follows:
+1. Definition of the prestressing systems (SYSP).
+2. Determination of the reference axes (AXES).
+3. Determination of the duct geometries (TGEO).
+4. Determination of the prestressing sequence (PSIG, PAAS, PFAC or PDEF).
+5. Determination of the tendons and prestressing forces (TEND).
+6. Tabular and graphical output of the reference axes, duct geometries, tendons and pre-
+stressing forces (ECHO and PLOT).
+Inthecaseofthecalculationofflatslabs,thereisanalternativeinput(SLAB),wherereference
+axes, duct geometries and tendons are generated simultaneously.
+1.2 Embedding in the SOFiSTiK process
+In the classical and the graphical environment of SOFiSTiK, it is possible to prestress differ-
+ent structures with TENDON, e.g., shell structures, beams, flat slabs and bridge structures in
+CABD(Computer-AidedBridgeDesign). Onlytheprestressingofvolumestructuresiscurrently
+not supported.
+In the simulation process, TENDON is typically executed after the system generation.
+An exemplary workflow in the CABD environment could look as follows:
+1. Definition of a parametric master cross-section.
+2. Modelling of the global system axis with placements and variables.
+SOFiSTiK2023 1-1TENDON|TENDON-taskdescription
+3. Modelling of secondary- and sub-structures.
+4. Generation of the static system (meshing).
+5. Definition of the prestressing system (TENDON).
+6. Determination of the prestressing geometries along the system axis and evaluation of
+prestressing loads (TENDON).
+7. Definition of further loads.
+8. Definition of the construction stages.
+9. Calculation and design.
+1-2 SOFiSTiK2023Theoreticalprinciples|TENDON
+2 Theoretical principles
+2.1 General information
+2.1.1 Designation of geometries
+Tendons and ducts are usually modelled in an unrolled form along a reference axis. The
+definition of the tendon is hierarchically based on the following data structures:
+Reference axis Thereferenceaxisisthebasicgeometryonwhichtheconstrainingpointsof
+theductgeometryaredefined. Thereferenceaxiscanbetakenfromanother
+programme (e.g. SOFiMSHC, SOFiPLUS) or can be created in TENDON.
+Several ducts can refer to the same reference axis.
+Duct The duct geometry is usually defined relative to the reference axis with u-
+and v-values, but can also be generated with an existing curve. A duct can
+contain several tendons.
+Tendon Tendongeometriesaredefinedonductgeometries. Thedifferencebetween
+tendon and duct geometry is that (i) the tendon can be defined only on a
+sectionoftheductand(ii)itcanhaveaneccentricitywithrespecttotheduct
+geometry.
+2.1.2 Coordinate systems
+Whendescribingtendons,threedifferentcoordinatesystemscanbedistinguished(seeFigure
+2.1):
+Global coordinate system The orientation of the global coordinate system is defined during
+system generation (e.g. in SOFiMSHC or SOFiPLUS). It must be described
+as a Cartesian coordinate system with the Z-axis usually pointing in the di-
+rection of gravity (downwards).
+Local coordinate system For curved reference axes, the local coordinate system can vary
+along the curve. The origin is at the corresponding point S on the reference
+axis and the local x-direction points in the tangential direction. The local y-
+andz-axesareorthogonalandaredefineddifferentlydependingonhowthe
+reference axis was created:
+• Beam sequence: For the case that the reference axis was created with
+beams, the reference axis is orthogonal to the beam cross-sections and
+the local y- and z-directions are defined according to the cross-sectional
+coordinate system.
+• 3D curve: If the reference axis was defined with a 3D curve, the y- and
+z-axis are referred to the global coordinates. Usually the local z-axis lies
+on the plane spanned by the local x-axis and the global Z-axis.
+Local coordinates U or V always refer to the local y- or z-axis of the coordi-
+nate system of the reference axis.
+Element coordinate system The prestressing loads are stored in the respective coordinate
+system of the elements. In the case of beams, this is the cross-sectional
+coordinatesystem,whichisnormallyidenticaltothelocalcoordinatesystem
+SOFiSTiK2023 2-1TENDON|Theoreticalprinciples
+of the reference axis.
+
+X
+local CoSy global CoSy
+y
+Y
+Z
+z
+Figure2.1: Coordinatesytems.
+2.1.3 Tendon position in the duct
+The geometry of the tendons is defined by the duct geometry. The user must ensure that all
+edgeandaxisrestrictionsoftheductaremaintainedaccordingtotherespectiveapproval. The
+shape of the evaluated geometries can be checked with the help of the graphical representa-
+tion.
+Since a tendon does not completely fill the inside of a duct, the tendon will lean against one
+side of the wall in areas of curvature. The maximum deviation from the duct axis to the centre
+of gravity of the wire bundle is called eccentricity (see figure 2.2). The user can specify
+the maximum eccentricity ϵ m in the prestressing system (SYSP ECC). If no eccentricity
+is specified, the tendon geometry corresponds to the duct geometry (on the corresponding
+section).
+ϵ ϵ
+m m
+ϵ ϵ
+m m
+Figure2.2: Maximumeccentricityϵ m.
+2.2 Force distribution
+2.2.1 Force distribution due to friction
+For post-tensioning tendons, the losses of stressing force due to frictions are calculated as
+follows:
+·(cid:128) 1−e−μ(θ+β·)(cid:138)
+ΔP μ() = P m Stressng (2.1)
+ΔP(cid:48) μ() = P m ·(cid:128) 1−e+μ(θ+β·)(cid:138) Reesng (2.2)
+2-2 SOFiSTiK2023Theoreticalprinciples|TENDON
+with
+P m Jacking force
+μ Friction coefficient between tendon and duct
+ Arc length from the jacking location
+θ Sum of intentional angular displacements along the tendon until x
+β Wobble factor, i.e., the unintentional angular displacements per length due to
+e.g. imperfections
+Remark: IntheAASHTO,thecorrespondingfactorK containsalreadythefriction
+coefficient μ. This must be taken into account when defining β (see explanation
+on BETA in the SYSP record).
+K
+K =β·μ⇒β= (2.3)
+μ
+TENDON allows the specification of additional friction losses via the record FRIC. These are
+assigned to a section of the tendon as angular displacements per length (similar to β).
+Figure 2.3 shows the qualitative tension force curve due to friction losses. The system is
+stressed from two sides, with additional releasing and re-tensioning on both sides.
+right:
+5 1
+1 stressing
+7 3 2 releasing
+3 re-stressing
+4 slip
+8 4 left
+5 stressing
+6 2
+6 releasing
+7 re-stressing
+8 slip
+Figure2.3: Stressingforcesduetofrictionlossesfortensioningfrombothsides.
+2.2.2 Elongation of tendons
+Theelongationofatendon Δ iscalculatedfromtheelasticsteeldeformation Δ p andfromthe
+compression and bending of the concrete Δ c [1]:
+Δ=Δ p+Δ c (2.4)
+with
+(cid:90) P(s)
+Δ p = ds (2.5)
+E ·A (s)
+ p p
+p
+(cid:90) P() (cid:90) M ()
+p
+Δ c = d+ ·z pd (2.6)
+E ·A () E · ()
+ c c  c c
+c c
+SOFiSTiK2023 2-3TENDON|Theoreticalprinciples
+However, in TENDON currently only the portion Δ p from pure steel strain is taken into ac-
+count. The elongations also do not take into account mutual dependencies if multiple tendons
+are stresses subsequently. These effects must be considered separately when creating a pre-
+stressing protocol.
+The elongations of each individual tensioning step can be taken from the report. Elongations
+(pull-out) are given as positive values, release lengths and slip are given as negative values.
+Important
+Fortheprestressingprotocol,thefollowingtwopointsmustbeconsideredseparately:
+– Loss of prestressing force due to concrete compression and bending.
+– Mutual influence of multiple tendons.
+2-4 SOFiSTiK2023InputDescription|TENDON
+3 Input Description
+3.1 Input language
+The input in TENDON is generally carried out in CADINP language. More information on this
+can be found in the general SOFiSTiK manual ’FEA / STRUCTURAL Installation and Basics’.
+3.2 Units
+SOFiSTiK programs offer the possibility to perform both the input and the output of data in
+different unit systems. Further information can be found in the SOFiSTiK manual: ’Basics’.
+Three categories of units are distinguished:
+mm Fixed unit. Input is always required in the specified unit.
+[mm] Explicit unit. Input defaults to the specified unit. Alternatively, an explicit as-
+signment of a related unit is possible (eg. 2.5[m] ).
+[mm] Implicit unit. Implicit units are categorised semantically and denoted by a cor-
+1011
+responding identity number (shown in green). Valid categories referring to the
+unit ”length” are, for example, geodetic elevation, section length and thickness.
+Thedefaultunitforeachcategoryisdefinedbythecurrentlyactive(designcode
+specific) unit set. This input default can be overridden as described above. The
+specified unit in square brackets corresponds to the default for unit set 5 (Eu-
+rocodes, NORM UNIT 5).
+3.3 Default values
+If possible, the default values of the individual records are preset. Otherwise, one of the sym-
+bols listed below is in the default column:
+! These values are mandatory.
+- These values are optional.
+* These values have different defaults (e.g. depending on the standard used) and are ex-
+plained below the respective table.
+3.4 Input records
+Record Items
+ECHO OPT VAL
+TDEL TYPE NO
+EXPO OPT TO
+GEOX NOG TYPG FROM TO INC OUTP CSP
+DU DV FACH EXPO AXID TITL
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-1TENDON|InputDescription
+Record Items
+SYSP NOPS MAT AZ LITZ ZV SP SF
+MUE MUE- BETA BETG ECC MINR DA
+LPRE LFIX CDIS CEDG TITL
+SYSS NOPS MAT ZV AZ LITZ TITL
+AXES NOH TYPE VAL1 VAL2 VAL3 KIND S
+TITL
+TOPP NOH KIND S SP
+GRP NO CMD
+TGEO NOG NOH NOPS NOPS XREF TITL GUID
+PTUV TYPE S X CSP U V DUS
+DVS DL DR RH RV RL KIND
+PTSV TYPE S X U V R BLCK
+KIND
+CS ICS1 ICS2 ICS3 TITL
+PDAT FTL FTYP MATA AR UZ DZ
+FRIC FROM TO BETA BETE TYPE
+PSIG KIND ANWS KAPA KAPL K1 K2 K3
+K4 K5 K6 K7 K8
+PAAS KIND ANWS K1 K2 K3
+PFAC KIND ANWS FAC FACA FACE FACF
+PDEF KIND STR RER RSR SLR STL REL
+RSL SLL
+TEND NOT NOG NTEN TYPE FROM TO SFRO
+STO EFRO ETO LC LC0 TITL GUID
+SLAB NOT REFS NOPS TYPG ICS1 ICS2 ICS3
+S0 ZSPT ZSPB FRLT FRLL LC TITL
+SLBS NOT BIT S ZS DZS DL DR
+RV RL
+PLOT SHOW NO FACH TYPG PCS
+AND -
+COLO C1 ... C14
+SCHH H1 ... H8
+The records HEAD, END, UNIT, SIZE and PAGE are described in the general manual
+SOFiSTiK: ’Basics’.
+Thesequenceofrecordsdescribedinthismanualissimilartotherecommendedsequencefor
+the input.
+3-2 SOFiSTiK2023InputDescription|TENDON
+The order of the records in the manual corresponds to the recommended order for data input
+(see Figure 3.1).
+Prestressing System
+SYSP Material prestressing steel
+Geometry
+Beams/nodes
+Existing axis
+AXES
+Structural line(s)
+Polygon
+TOPP
+PTUV
+TGEO PTSV
+Existing duct curve
+Tendon
+PSIG
+CS
+PAAS
+PDAT TEND
+PFAC
+FRIC
+PDEF
+Figure 3.1: Standard input for prestressing (no slabs). The input is divided into three sections: (i)
+definitionofprestressingsystems,(ii)creationofreferenceaxesandductgeometries,and(iii)defi-
+nition of prestressing sequences and tendons. Dotted lines mark optional inputs; when branching,
+exactlyoneofthepossibleoptionsmustbespecified.
+3.5 General input records
+The following general input records are available:
+ECHO Control of the output scope.
+TDEL Deletion of TENDON data from the database.
+EXPO Export from the database to a .dat file.
+GEOX Export of duct and tendon geometries.
+SOFiSTiK2023 3-3TENDON|InputDescription
+3.5.1 ECHO – Output Extent
+Seealso: SYSP,AXES,TOPP,TGEO,TEND,GEOX,SLAB
+ECHO
+Item Description Unit Default
+OPT A literal from the following list: LT4 FULL
+SYSP Prestressing system
+AXES Reference axis
+TOPP Span definitions
+TGEO Duct geometry
+TEND Tendon overview, geometry and
+force distribution
+SLAB Slabs (FULL=Export to .dat)
+GEOM External list of geometries
+MASS Overview over steel masses
+COND Overview over all tendons
+PLOT (De-)activation of plots
+FULL All options
+VAL Extent of the output LT4 YES
+NO No output
+YES Regular output
+FULL Extensive output (if applicable)
+The echo command determines which data is written into the report and to what extent.
+Examples:
+ECHO FULL YES
+ECHO TGEO FULL
+ECHO MASS NO
+3-4 SOFiSTiK2023InputDescription|TENDON
+3.5.2 TDEL – Delete tendon records
+Seealso: AXES,TGEO,TEND
+TDEL
+Item Description Unit Default
+AXES Id of the reference axis − 0
+TGEO Id of the duct geometry − 0
+TEND Id of the tendon − 0
+This record allows to delete selected prestressing information in the database. In addition to
+tendon information, also all loadings created by TENDON will be deleted. Loadings which
+have been generated by other programs than TENDON will not be considered (e.g. with AQB
+TEND).
+An input of value 0 deletes all elements of the given type.
+AXES TGEO TEND Erase action Affects also
+0 - - All reference axes all TGEO/TEND/loadings ⇒ everything
+NOH - - Reference axis NOH corresponding TGEO/TEND/loadings
+- NOG - Duct geometry NOG corresponding TEND/loadings
+- - NOT Tendon NOT corresponding loadings
+In general, it is recommended to place the TDEL command in a separate PROG TENDON
+block in order to avoid incorrect or incomplete deletion of values when tendon input records
+are being processed.
+Examples:
+$ Delete everything
+TDEL 0
+$ Delete reference axis 100 with all children and all tendons (and loadings)
+TDEL AXES 100 TEND 0
+SOFiSTiK2023 3-5TENDON|InputDescription
+3.5.3 EXPO – Export from database
+Seealso: SYSP,AXES,TOPP,TGEO,TEND
+EXPO
+Item Description Unit Default
+OPT A literal from the following list: LT4 ALL
+ALL All data in the database
+SYSP Only prestressing systems
+WOSY Everything except prestressing systems
+TO Output file name LT32 *
+The EXPO command can be used to write data from the database to a .dat file. It is important
+to note that the records are written as they are stored in the database and not as they were
+originally entered – for example, all span positions are converted internally to stations.
+TO If no value is given, the default output file is:
+<project name>_ten.dat
+Examples:
+$ Minimum example
+EXPO
+$ Export of the prestressing systems
+EXPO OPT SYSP TO "prestressing_systems.dat
+3-6 SOFiSTiK2023InputDescription|TENDON
+3.5.4 GEOX – Export Geometry
+Seealso: TGEO,TEND
+GEOX
+Item Description Unit Default
+NOG Id of the duct geometry or tendon (see TYPG) − !
+FROM start station − *
+TO end station − *
+INC > 0: Distance of output points − 0.5
+< 0: Number of output points
+TYPG Type of geometry: LT4 DUCT
+DUCT Duct geometry
+TEND Tendon geometry
+OUTP Output scope {S,U,V,X,Y,Z} LT SUVXYZ
+CSP Reference to cross-section point LT4 -
+DU Offset in local y-direction [m] 0.0
+1001
+DV Offset in local z-direction [m] 0.0
+1001
+FACH Superelevation factor − 1.0
+EXPO Destination of the output LT4 PLB
+TXT Text file (.uv file)
+GAX Database – Geometry axis
+PLB Into report
+CSV .csv file
+AXID Identifier of the new axis LT4 *
+TITL Title of the output LT32 -
+With the help of this record, the geometry of a tendon or duct can be exported for further use,
+e.g. for detailed designs. The geometry can be exported (i) in three-dimensional coordinates
+(OUTP XYZ) or (ii) along the reference axis (OUTP SUV).
+By specifying multiple records, the geometry can also be exported section by section (FROM
+TO) with different distances (INC) for the output points. For this, all other values must be
+identical. In addition, the segments must be given in ascending order.
+NOG Depending on GEOX TYPG either the identifier of the duct geometry TGEO (TYPG
+DUCT) or of the tendon TEND (TYPG TEND) shall be given.
+FROM/TO By default the whole curve is output.
+OUTP The scope of the text output (EXPO TXT) can be specified by combining the follow-
+ing literals at OUTP:
+S Station along the reference axis
+U Distance from the reference axis in local y-direction
+V Distance from the reference axis in local z-direction
+SOFiSTiK2023 3-7TENDON|InputDescription
+X,Y,Z 3D coordinates of the tendon
+Each literal creates its own column in the output file. In the other export cases all
+parameters are printed.
+CSP If a cross section point is given, the u- and v- coordinates refer to the CSP instead
+to the reference axis. Remark: If for some reason no CSP (or beam) is found at the
+respective station, u and v refer to the reference axis.
+FACH The superelevation factor applies only to the u and v coordinates: U ne = (U od+
+DU)·FACH.
+EXPO The output of the curve can be in the report (PLB), to the database (GAX)
+or as .uv (TXT) or .csv (CSV) file. The file name is by default ’project-
+name’+_GEOX_+AXID.uv. If AXID is not set, ’projectname’+_GEOX_+NRG.uv is
+used instead.
+AXID Identifier of the new axis. AXID is mandatory for output to the database (EXPO
+GAX).
+Examples:
+$ Minimal example
+GEOX 1
+$ Example of a 3D-curve of a tendon
+GEOX 2 TYPG TEND FROM 1.0 TO 24.5 INC -100 OUTP XYZ EXPO TXT
+3-8 SOFiSTiK2023InputDescription|TENDON
+3.6 Prestressing systems
+All relevant values of a tendon system are explained in the record SYSP.
+Inpreviousversions,theusualprocedurefordefiningaprestressingsystemwastoenteroneof
+theexistingsystemsfromthebridgeconstructiontableinthetendon.tabfile. Themaintenance
+and quality assurance of the numerous tendon procedures is very extensive and is therefore
+no longer supported.
+SOFiSTiK2023 3-9TENDON|InputDescription
+3.6.1 SYSP – Prestressing system
+SYSP
+Item Description Unit Default
+NOPS Id of the prestressing system − !
+MAT Material number of the prestressing steel − !
+ZV Reference force [kN] !
+1028
+(cid:2)mm2(cid:3)
+AZ Steal area of the tendon (all wires/strands) !
+1027
+LITZ Number of wires/strands − 1
+MINR Minimum permissible curvature radius [m] !
+1001
+BETA Wobble coefficient [deg/m] !
+BETG Wobble coefficient for straight PTSV geometries [deg/m] BETA
+MUE Friction coefficient for stressing − !
+MUE- Friction coefficient for releasing − MUE
+ECC Maximum eccentricity of the tendon inside the duct [mm] 0.0
+CDIS Minimum distance between ducts [mm] 0.0
+CEDG Minimum distance between duct and boundary [mm] 0.0
+SP Slip at the jacking anchor [mm] !
+SF Additional elongations [mm] 0.0
+LPRE Straight at the jacking anchor [m] 0.50
+LFIX Straight at the dead anchor [m] LPRE
+DO Outer diameter of the duct [mm] !
+TITL Title of the prestressing system LT32 -
+Remark: Please note that for compatibility reasons the SYSP record contains further items
+which are no longer documented. It is therefore necessary to always write the name of the
+item (e.g. MINR) in front of the respective value (e.g. MINR 8.3).
+In the prestressing system, general parameters are defined for the jacking procedure and for
+generating the duct geometry.
+ZV The reference force is required for the input “Prestressing limits with factors” PFAC
+and the force distribution in the report (see ECHO TEND and PLOT FACT).
+AsensiblevalueforZVistheprestressingforceafteranchorset P m0. However,the
+user can set the value arbitrarily.
+BETA/BETG IntheAASHTO,thewobblecoefficientK Astho isdefineddifferentlycomparedto
+the Eurocode β EC. TENDON is using the wobble factor β EC. For conversion, divide
+the AASHTO wobble factor by the friction coefficient μ,
+K
+Astho
+β EC = . (3.1)
+μ
+3-10 SOFiSTiK2023InputDescription|TENDON
+Example:
+SYSP ... MUE 0.17 BETA 0.0002/0.17[1/ft] ...
+BETG This input is only active if the duct geometry TGEO was defined via constraining
+pointsoftypePTSV.Inthiscase,straightsectionsarecalculatedwithBETGinstead
+of BETA.
+SF can be used to specify additional elongations during the first stressing (e.g., slip at
+thedeadanchororbetweencouplings). SFhasnoinfluenceonthestressingforces
+or the tendon geometry.
+LPRE/LFIX enable the modelling of a straight duct geometry at the jacking and dead anchor.
+For this purpose PTUV KIND or PTSV KIND of respective points must be set ac-
+cordingly.
+CDIS/CEDG can be used to check the distances of the duct geometries to each other and to
+the edge of the elements. Deactivated with 0.
+Note: The checks take into account the respective duct tube diameters, i.e. the
+check applies to the thickness of the concrete between the ducts or to the edge.
+Example:
+SYSP NOPS 1 MAT 2 ZV 3898.8 AZ 19*150 LITZ 19 MUE 0.17 BETA 0.005[1/m] $$
+ECC 10 MINR 8.3 SP 6 DO 50 TITL "Prestressing System"
+SOFiSTiK2023 3-11TENDON|InputDescription
+3.6.2 SYSS – Prestressing system for pre-tensioning
+SYSS
+Item Description Unit Default
+NOPS Id of the prestressing system − !
+MAT Material number of the prestressing steel − !
+ZV Reference force [kN] !
+1028
+(cid:2)mm2(cid:3)
+AZ Steal area of the tendon (all wires/strands) !
+1027
+LITZ Number of wires/strands − 1
+TITL Title of the prestressing system LT32 -
+The SYSS record is a simplification of the SYSP record for pre-tensioning tendons.
+Please note that when using the SYSS record, it is expected that the construction phases for
+installation ICS1 and grouting ICS2 of the CS record are identical.
+ZV The reference force is required for the input “Prestressing limits with factors” PFAC
+and the force distribution in the report (see ECHO TEND and PLOT FACT).
+AsensiblevalueforZVistheprestressingforceafteranchorset P m0. However,the
+user can set the value arbitrarily.
+Example:
+SYSS NOPS 1 MAT 2 ZV 3898.8 AZ 19*150 LITZ 19 TITL "Pre-tensioning System"
+3-12 SOFiSTiK2023InputDescription|TENDON
+3.7 Geometry generation
+Inordertocreateageometryforatendon,areferenceaxismustbecreatedfirst. Oneormore
+duct curves can then be defined on the reference axis. A duct can then contain one or more
+tendons.
+SYSP
+Geometry
+Beams/nodes
+Existing axis
+AXES
+Structural line(s)
+Polygon
+TOPP
+PTUV
+TGEO PTSV
+Existing duct curve
+Figure3.2: OverviewofgeometrygenerationinTENDON.
+The following records are used to generate the geometry:
+AXES The record AXES creates a reference axis on which the stations and optionally
+spans are defined.
+There are several ways to create a reference axis:
+• Through a sequence of beams or beam nodes.
+• Via structural lines (e.g. SOFiMSHC SLN).
+• Via an existing geometry axis (e.g. SOFiMSHC GAX).
+• Via the input of vertices of a polygon.
+For the plan and elevation drawings, the duct and the intersected elements are
+unrolled along the reference axis (see PLOT).
+TOPP Using the TOPP record, the reference axis can be divided into individual spans
+(optional).
+TGEO The record TGEO creates a duct geometry with respect to a reference axis. There
+are three possibilities to generate a curve:
+• Spline: ByspecifyingconstrainingpointsofthetypePTUV.Herepointsandtan-
+gentsaredefinedwithrespecttothereferenceaxisthroughwhichasplinecurve
+is interpolated. The resulting duct curve follows the curvature of the reference
+axis.
+• Polygon: By specifying constraining points of the type PTSV. Here, a polygon
+isdefinedwithrespecttothereferenceaxiswhosecornerscansubsequentlybe
+rounded via deflection blocks. In contrast to the spline geometry, the edges of
+thepolygonareindependentofthecurvatureofthereferenceaxis,i.e.,astraight
+connection between two constraint points remains straight.
+• Reference: By specifying an already existing duct geometry, analogous to
+SOFiSTiK2023 3-13TENDON|InputDescription
+AXES.
+PTUV Constraining points of the spline duct geometry. The points are given with respect
+to the reference axis.
+PTSV Constraining points of the polygonal duct geometry (e.g. for an external tendon).
+The points are given with respect to the reference axis.
+3-14 SOFiSTiK2023InputDescription|TENDON
+3.7.1 AXES – Reference axes
+Seealso: TOPP,TGEO,PTUV,PTSV
+AXES
+Item Description Unit Default
+NOH Id of the reference axis − 1
+TYPE Type of definition: LT4 NODE
+BEAM Sequence of beams*
+NODE Sequence of nodes*
+AUTO Start and end node/beam*
+REFX External geometry
+SLN Structural lines*
+POLY Polygon
+VAL1 Values according to input of TYPE: −/LT4 !
+VAL2 BEAM from - to - delt
+VAL3 NODE from - to - delt
+AUTO start - end
+REFX Id geometry axis - (Id secondary)
+SLN Id of the structural line
+POLY X - Y - Z coordinates ([m] )
+1001
+KIND Kind of prestressed elements LT4 BEAM
+BEAM Beam elements
+QUAD Quad elements
+AUTO Beam- and quad elements
+S Startstation(onlythevalueofthefirstrecordisused) − 0.00
+TITL Title of the Reference Axis LT32 -
+(max. 32 characters)
+* TYPE: BEAM, NODE, AUTO and SLN are only available for beam systems (KIND BEAM).
+This record defines a reference axis along which duct geometries can be generated. The
+description of an axis can consist of several records of the same TYPE.
+TYPE A reference axis can be defined in several ways:
+BEAM Definition of a reference axis via a sequence of beam elements.
+Input: from - to - delt (default delt=1)
+NODE Default over a sequence of member nodes.
+Input: from - to - delt (default delt=1)
+AUTO Inputofstartandendnodeorstartandendbeamelementincaseofneg-
+ative number. All beam elements in between are automatically searched
+for and sorted into a coherent sequence.
+Input: from - to
+REFX Reference to an existing geometry axis previously defined in another
+module (e.g. in SOFiMSHC GAX or SOFiPLUS). The Id of the axis is
+SOFiSTiK2023 3-15TENDON|InputDescription
+specifiedatVAL1. Inaddition,theidentifierofasecondaryaxis(’A’to’Z’)
+can be specified at VAL2.
+SLN Definitionalongstructurallinespreviouslycreatedinanothermodule(e.g.
+in SOFiMSHC SLN or SOFiPLUS). If the axis is to run along several
+structural lines, several AXES records of TYPE SLN can be specified in
+succession.
+POLY Input of a polygon course via XYZ coordinates at VAL1 to VAL3. Sev-
+eral nodes are entered consecutively via several AXES records of TYPE
+POLY.
+KIND KIND is used to specify which type of elements are to be prestressed:
+BEAM Only beam elements are prestressed.
+QUAD Only quad elements are prestressed.
+AUTO Beam and quad elements can be prestressed.
+Explanation: Those beam or quad elements are selected for which the
+duct curve runs inside or the least outside.
+Note: The KIND of the prestressed elements can be overwritten with the record
+TGEO ELEM. Thus, it is possible to intersect a duct geometry, e.g., with quad ele-
+ments although the underlying reference axis had to be defined with KIND BEAM
+(e.g., because it was defined along a structural line).
+examples:
+$ Example with multiple structural lines
+AXES NOH 1 TYPE SLN VAL1 42 KIND BEAM TITL "Axis SLN"
+AXES NOH 1 TYPE SLN VAL1 43 KIND BEAM
+$ Example with externally defined axis
+AXES NOH 1 TYPE REFX VAL1 "A1" KIND AUTO TITL "Axis REFX"
+3-16 SOFiSTiK2023InputDescription|TENDON
+3.7.2 TOPP – Top Positions
+Seealso: AXES,TGEO,PTUV,PTSV,TEND
+TOPP
+Item Description Unit Default
+NOH Id of the reference axis − !
+KIND Kind of the given points: LT4 NODE
+NODE Beam nodes.
+REFX Stations on the reference axis.
+S Position of the top position (see KIND) − !
+SP Span position − !
+With TOPP, top positions can be created on the reference axis (e.g. at supports), which divide
+the reference axis into spans. Each reference axis can only be divided into spans once. Each
+span has a referenced length of 1.0.
+S Ifthestation,orbeamnode,isnotonthereferenceaxis,thestart/endstationofthe
+reference axis is used.
+SP specifies the span position at the beginning of a new span or concludes the last
+span. SPmustbeanascendinginteger. Exception: Thelastvaluemaybenegative.
+The following rules apply (see examples below):
+Geometry Rule Example
+No cantilever at start SP 1 =1 SP: 1, 2, 3,...
+No cantilever at end SP n <0 SP: ...3, 4, -5
+Cantilever at start SP 1 =0 SP: 0, 1, 2,...
+Cantilever at end SP n >0 SP: ...3, 4, 5
+begin span 1 inner span 2 inner span 3 end
+SP 0.0 1.0 2.0 3.0 4.0 5.0
+S 0.0 0.4 10.4 20.4 30.4 30.8
+Figure3.3: SystemA:toppositionswithexcessatstartandend.
+SOFiSTiK2023 3-17TENDON|InputDescription
+begin span 1 inner span 2 inner span 3 end
+SF 0.0=1.0 2.0 3.0 4.0=5.0
+S 0.0 10.0 20.0 30.0
+Figure3.4: SystemB:toppositionswithoutexcessatends
+Examples according to picture:
+System A
+TOPP 1 KIND REFX S 0.0 SP 0 $ Cantilever: 0.4 m
+TOPP 1 KIND REFX S 0.4 SP 1 $ Support 1: Begin span 1
+TOPP 1 KIND REFX S 10.0 SP 2 $ Support 2: Begin span 2
+TOPP 1 KIND REFX S 20.4 SP 3 $ Support 3: Begin span 3
+TOPP 1 KIND REFX S 30.4 SP 4 $ Support 4: End span 3
+TOPP 1 KIND REFX S 30.8 SP 5 $ Cantilever: 0.4 m
+Example span position X:
+X: 0.00 is the begin of the reference axis
+1.40 in the first span at 40% of the span width
+3.50 in the middle of the last span
+5.00 is the end of the reference axis
+System B
+$ No cantilever at the begin
+TOPP 1 KIND REFX S 0.0 SP 1 $ Support 1: Begin span 1
+TOPP 1 KIND REFX S 10.0 SP 2 $ Support 2: Begin span 2
+TOPP 1 KIND REFX S 20.0 SP 3 $ Support 3: Begin span 3
+TOPP 1 KIND REFX S 30.0 SP -4 $ Support 4: End span 3
+$ No cantilever at the end
+The span positions 0.0 and 5.0 will be created automatically.
+3-18 SOFiSTiK2023InputDescription|TENDON
+3.7.3 GRP – Group control
+Seealso: TGEO
+GRP
+Item Description Unit Default
+NO Number of the group −/LT4 ALL
+CMD Command LT4 ON
+ON Enable group
+OFF Disable group
+Remark: This record is an attribute record and must be given prior to TGEO. Other groups
+can be selected for subsequent duct curves.
+The GRP record can be used to select the primary and secondary element groups with which
+a duct curve (TGEO) is to be intersected.
+NO The three different possibilities are:
+Primary Primary groups are defined by a number.
+Secondary Secondary groups are defined by a literal.
+’ALL’ With ’ALL’ all groups can be (de-)activated.
+CMD CMD is used to (de-)activate groups. The following rules apply (see examples be-
+low):
+– By default, all element groups are active.
+– If a single group is added for the first time (e.g.: GRP NO 100 CMD ON), only
+this group is active. Further groups can be added with further records.
+– A command to a secondary group overrides a command to a primary group.
+– WithacommandGRPNO’ALL’CMDON/OFFthegroupcontrolisresetaccord-
+ingly.
+Examples:
+$ TGEO 1 can be intersected with elements of primary groups 100 and 200 only
+GRP NO 100 CMD ON
+GRP NO 200 CMD ON
+TGEO 1 ...
+$ TGEO 2 can be intersected with elements of all groups
+GRP NO 'ALL' CMD ON
+TGEO 2 ...
+$ TGEO 3 is not intersected with elements from the secondary group 'SEC1'
+GRP NO 'SEC1' CMD OFF
+TGEO 3 ...
+SOFiSTiK2023 3-19TENDON|InputDescription
+3.7.4 TGEO – Duct geometry
+Seealso: AXES,TOPP,PTUV,PTSV,TEND
+TGEO
+Item Description Unit Default
+NOG Id of the duct geometry − !
+NOH Id of the reference axis − !
+NOPS Id of the prestressing system − !
+XREF Reference to existing geometry LT4 -
+ELEM Kind of prestressed elements LT4 AXES
+AXES As defined by the reference axis
+BEAM Beam elements
+QUAD Quad elements
+AUTO Beam- and quad elements
+TITL Title of the duct geometry LT32 -
+(max. 32 characters)
+GUID 128 bit code given as hexadecimal string LT36 -
+Remark: Please note that for compatibility reasons the TGEO record contains further items
+which are no longer documented. It is therefore necessary to always write the name of the
+item (e.g. NOPS) in front of the respective value (e.g. NOPS 42).
+Thedescriptionoftheductgeometrystartswiththisrecord. Thecurvecaneitherbegenerated
+in TENDON or an external curve can be used:
+• Generation of a spline geometry by the subsequent input of constraining points of type
+PTUV.
+• Generation of a polygonal geometry by the subsequent input of constraining points of type
+PTSV.
+• Specifying an existing curve at XREF.
+XREF Referencetoanexistingcurveearlierdefinedinanothermodule(e.g. inSOFiMSHC
+orSOFiPLUS).Theexistinggeometryistakenfromthedatabaseand,ifnecessary,
+adapted to the stationing of the reference axis.
+ELEM ELEMisusedtodefinewhichtypeofelementsaretobeprestressed. Originallythis
+is defined in the reference axis AXES KIND and can be overwritten here.
+AXES The type of elements to be prestressed is taken from the reference axis.
+BEAM Only beam elements are prestressed.
+QUAD Only quad elements are prestressed.
+AUTO Beam and quad elements can be prestressed.
+Explanation: Those beam or quad elements are selected for which the
+duct curve runs inside or the least outside.
+3-20 SOFiSTiK2023InputDescription|TENDON
+Examples:
+AXES NOH 101 TYPE SLN VAL1 42 KIND BEAM TITL "Axis SLN"
+$ Example of a spline curve that overwrites the type of prestressed elements
+$ of the reference axis.
+TGEO NOG 201 NOH 101 NOPS 23 ELEM QUAD TITL "Duct 1"
+PTUV S U V DVS TYP=REFX
+0.0 0.0 0.4
+15.0 0.0 0.9 0.0
+30.0 0.0 0.4
+$ Example with externally defined curve:
+TGEO NOG 202 NOH 101 NOPS 23 XREF "AX1" TITL "Duct 2" $$
+GUID "7e914a50-f149-40f5-ba93-1d64bb533b2b"
+SOFiSTiK2023 3-21TENDON|InputDescription
+3.7.5 PTUV – Constraining points of the spline duct geometry
+Seealso: AXES,TGEO,TOPP,PTSV
+PTUV
+Item Description Unit Default
+TYPE Type of position definition: LT4 BEAM
+NODE Beam node
+BEAM Beam
+SPAN Span position
+REFX Station on reference axis
+S Input according to TYPE − 0.0
+X Local x-coordinate (only for TYPE BEAM) [m] 0.0
+1001
+CSP Cross-section point LT4 -
+U Local y-coordinate [m] -
+1001
+V Local z-coordinate [m] -
+1001
+DUS Inclination in local y-direction − -
+DVS Inclination in local z-direction − -
+DL Straight line in negative direction [m] -
+1001
+DR Straight line in positive direction [m] -
+1001
+RH Horizontal radius [m] -
+1001
+RV Vertical radius [m] -
+1001
+RL Influence length of radius [m] -
+1001
+KIND Kind of point LT4 -
+PRES Jacking anchor
+FIX Dead anchor
+This record defines a constraining point of a spline duct geometry and is entered after TGEO.
+Multiple constraining points are specified with repeated entries.
+S The position of the constraining point shall be indicated according to the TYPE:
+NODE Number of a beam node.
+BEAM Numberofabeam. Inaddition,therelativepositiononthebeamelement
+must be specified at X.
+SPAN Span position. Only possible if, with TOPP, spans have been created
+along the reference axis.
+REFX Station on the reference axis.
+X Relative position on the beam element: X ∈ [0, bem], where  bem is the beam
+length.
+CSP Reference to a cross-section point earlier created (e.g. in AQUA). When a CSP is
+specified, the origin of the local coordinate system shifts from the reference axis to
+thepointCSP–consequentlyUandVarespecifiedwithrespecttoCSP(seeLocal
+3-22 SOFiSTiK2023InputDescription|TENDON
+coordinate system).
+In the special case that only one PTUV record with a CSP and S=0.0 was entered,
+thegeometryiscontinuouslyguidedthroughthecross-sectionpointCSPinallbeam
+cross-sections. Inallothercases,theCSPappliesonlytothestationspecifiedatS.
+U/V The items U and V determine the horizontal, respectively vertical position of the
+constrainingpointwithinthelocalcoordinatesystem. Umovesthepointinthelocal
+y-direction and V in the local z-direction (see Local coordinate system).
+The origin is by default the point S on the reference axis and can be moved by
+entering a cross-section point CSP if necessary.
+DUS/DVS Inclinations in horizontal and vertical direction of the local coordinate system (see
+Local coordinate system).
+DL/DR Straightlinesegmentstotheleft(negatives-direction)andright(positives-direction)
+ofthepointSonthereferenceaxis. Inthesesectionstheductgeometryisreplaced
+by a straight line.
+RH/RV Specification of a radius in the horizontal or vertical construction plane respectively.
+Thelengthoftheradiusisdefinedinsuchawaythatthetransitiontotheneighbour-
+ing constraining points is as straight as possible.
+RL The length of the radius can also be specified manually. However, an unsuitable
+length specification may result in strong curvatures at the ends of the arc segment.
+KIND If the KIND of the point is specified – PRES or FIX, a straight line segment is gen-
+erated on the duct geometry. The respective lengths are defined in SYSP LPRE or
+LFIX.
+Local coordinate system: The parameters of the PTUV points are entered in the local coor-
+dinate system of the reference axis, where the origin can be shifted with CSP (see Figure 3.5
+and Section 2.1.2).
+CSP
+
+C
+O y
+C
+ C  C
+z
+C
+
+y
+
+
+z
+1
+ds
+Figure 3.5: Local coordinate systems with origin (i) on the reference axis O (equals the cross-
+sectionorigin)and(ii)shiftedintothecross-sectionpointCSP.
+SOFiSTiK2023 3-23TENDON|InputDescription
+Curve generation:
+WhenmodellingasplinegeometrywithPTUV,twoauxiliarycurvesaregeneratedinhorizontal
+and vertical construction planes respectively –i.e. in plan view and elevation of the unrolled
+reference axis. Subsequently, they are joined into a 3D geometry. As a result, the geometry
+follows the curvature of the reference axis.
+Example:
+TGEO NOG 201 NOH 101 NOPS 23
+PTUV TYPE REFX S 0.0 U 0.0 V -0.5 DVS 0.2 KIND FIX
+PTUV TYPE REFX S 10.0 U 0.0 V 0.5 DVS -
+PTUV TYPE REFX S 20.0 U 0.0 V 0.0 DVS 0.0 DL 0.5 DR 0.5
+PTUV TYPE REFX S 30.0 U 0.0 V 0.5 DVS -
+PTUV TYPE REFX S 40.0 U 0.0 V -0.5 DVS -0.2 KIND PRES
+3-24 SOFiSTiK2023InputDescription|TENDON
+3.7.6 PTSV – Constraining points of the polygonal duct geometry
+Seealso: AXES,TOPP,TGEO,PTUV
+PTSV
+Item Description Unit Default
+TYPE Type of position definition: LT4 BEAM
+NODE Beam node
+BEAM Beam
+SPAN Span position
+REFX Station on reference axis
+S Input according to TYPE − 0.0
+X Local x-coordinate (only for TYPE BEAM) [m] 0.0
+1001
+U Local y-coordinate [m] -
+1001
+V Local z-coordinate [m] -
+1001
+R Radius of the bending [m] MINR
+1001
+BLCK Length of the bending block [m] -
+1001
+KIND Kind of point LT4 -
+PRES Jacking anchor
+FIX Dead anchor
+This record defines a constraining point of a polygonal duct geometry with bending blocks,
+which is usually used for external tendons. PTSV is entered after TGEO. Multiple constraining
+points are specified with repeated entries.
+S The position of the constraining point shall be indicated according to the TYPE:
+NODE Number of a beam node.
+BEAM Numberofabeam. Inaddition,therelativepositiononthebeamelement
+must be specified at X.
+SPAN Span position. Only possible if, with TOPP, spans have been created
+along the reference axis.
+REFX Station on the reference axis.
+X Relative position on the beam element: X ∈ [0, bem], where  bem is the beam
+length.
+U/V The items U and V determine the horizontal, respectively vertical position of the
+constrainingpointwithinthelocalcoordinatesystem. Umovesthepointinthelocal
+y-direction and V in the local z-direction (see Local coordinate system).
+R/BLCK Bending radius and length of the bending block (see Figure 3.7). The minimum
+radius is MINR – defined in the prestressing system SYSP. Depending on the input
+of radius and block length, the bending block results as follows:
+SOFiSTiK2023 3-25TENDON|InputDescription
+R BLCK processing
+- - R becomes MINR. Block length is determined.
+>00 - R must be greater than MINR. Block length is
+determined.
+- >0.0 Found radius for BLCK must be greater than MINR,
+otherwise block widening.
+>0.0 >0.0 R is reduced to MINR if BLCK is too small. If necessary,
+a new block length is determined with MINR.
+KIND If the KIND of the point is specified – PRES or FIX, a straight line segment is gen-
+erated on the duct geometry. The respective lengths are defined in SYSP LPRE or
+LFIX.
+Local coordinate system
+TheparametersofthePTSVpointsareenteredinthelocalcoordinatesystemofthereference
+axis (see Figure 3.6 and Section 2.1.2).
+
+O
+
+y
+
+z
+Figure 3.6: Local coordinate system with origin O on the reference axis (equals the cross-section
+origin).
+Curve generation:
+In contrast to spline duct geometry (using PTUV), with the polygonal geometry PTSV a 3D
+curve is generated directly from the constraining points – without prior unrolling in horizon-
+tal and vertical planes of the reference axis. As a result, a straight connection between two
+constraining points remains straight, even if the reference axis is curved.
+A constraining point defines the position of the tangent intersection between two segments
+(see Figure 3.7), at which the curve is rounded out via a bending block.
+3-26 SOFiSTiK2023InputDescription|TENDON
+S
+reference axis
+R
+
+BLCK
+Figure3.7: Bendingblockattangentintersection.
+Example:
+TGEO NOG 201 NOH 101 NOPS 23
+PTSV TYPE REFX S 0.0 U 0.0 V -0.5 R - BLCK - KIND FIX
+PTSV TYPE REFX S 10.0 U 0.0 V 0.5 R 50 BLCK 4 KIND -
+PTSV TYPE REFX S 30.0 U 0.0 V 0.5 R 50 BLCK 4 KIND -
+PTSV TYPE REFX S 40.0 U 0.0 V -0.5 R - BLCK - KIND PRES
+SOFiSTiK2023 3-27TENDON|InputDescription
+3.8 Tendon generation
+A tendon TEND is defined on an duct geometry TGEO. The geometric difference between
+the tendon geometry and the duct geometry results from the eccentricity of the tendon (SYSP
+ECC) and the length – the tendon can be defined over the entire duct or only on a section.
+TGEO
+Tendon
+PSIG
+CS
+PAAS
+PDAT TEND
+PFAC
+FRIC
+PDEF
+The following input records are available for creating a tendon:
+CS Construction stages for installation, grouting and removal (optional).
+PDAT Additional calculation data (optional).
+FRIC Additional friction losses (optional).
+PSIG Prestressing limits according to Eurocode.
+PAAS Prestressing limits according to AASTHO.
+PFAC Prestressing limits with factors.
+PDEF Manual prestressing.
+TEND Definition of the tendon.
+AllinputrecordsdescribingthepropertiesofthetendonTEND(CS,PDAT,FRIC,PSIG,PAAS,
+PFAC and PDEF) must be specified before the TEND record. If subsequent tendons are to
+have different properties, they can be overwritten individually.
+Example:
+CS 11 12 0
+PSIG KIND RI ANWS TS
+TEND NOT 1 NOG 101
+CS 13 14 0
+TEND NOT 2 NOG 102
+Before the TEND record, at least the prestressing sequence must be defined with one of the
+following records: PSIG or PAAS or PFAC or PDEF. These are categorized into (i) defining
+stress limits (PSIG, PAAS, and PFAC) and (ii) manual prestressing PDEF.
+Figure 3.8 shows the different stress limits. Table 3.18 lists the corresponding items for the
+three possible input records.
+3-28 SOFiSTiK2023InputDescription|TENDON
+σ
+p,m
+1
+3
+σ
+pm0
+σ
+jck
+4
+1 Stressing
+2
+2 Releasing
+σ ded 3 Re-stressing
+4 Slip
+Figure3.8: Prestressingwithstresslimits.
+Limit PSIG PAAS PFAC Description
+σ p,m k1,k2 k1 FACA Maximum stress during stressing
+σ pm0 k3,k4 k3 FAC General stress limit after anchor set
+σ jck k5,k6 k2 FACE Stress limit at jacking anchor
+σ ded k7,k8 k2 FACF Stress limit at dead anchor
+Table3.18: Inputitemsforstresslimits.
+SOFiSTiK2023 3-29TENDON|InputDescription
+3.8.1 CS – Construction stages
+Seealso: PDAT,PSIG,PAAS,PFAC,PDEF,FRIC,TEND
+CS
+Item Description Unit Default
+ICS1 Construction stage installation − 1
+ICS2 Construction stage grouting − ICS1
+ICS3 Construction stage removal − 0
+TITL Title of the construction stages LT32 -
+Remark: This record is an attribute record and must be given prior to TEND.
+The record CS defines construction stage numbers for installation, grouting and removal of a
+tendon.
+For the case ICS3 0, the tendon is not removed.
+Example:
+CS ICS1 11 ICS2 12 ICS3 0 TITL "Construction stages"
+3-30 SOFiSTiK2023InputDescription|TENDON
+3.8.2 PDAT – Additional data of the prestressing
+Seealso: CS,PSIG,PAAS,PFAC,PDEF,FRIC,TEND
+PDAT
+Item Description Unit Default
+FTL Force transition length for tendons without anchor [m] 0.00
+FTYP Kind of force transition LT4 LINE
+LINE linear on both sides
+PARA parabolic on both sides
+LLIN linear left side only
+RLIN linear right side only
+LPAR parabolic left side only
+RPAR parabolic right side only
+MATA Id of the subtracted material. Only required, if not −
+equal to cross-section material.
+AR Reference area for design of crack width [mm2] *
+UD Circumference of tendon for crack width [mm] *
+DZ Effective diameter [mm] *
+Remark: Please note that for compatibility reasons the PDAT record contains further items
+which are no longer documented. It is therefore necessary to always write the name of the
+item (e.g. AR) in front of the respective value (e.g. AR 2000).
+Remark: This record is an attribute record and must be given prior to TEND.
+FTL Force transition length of tendons without anchors.
+A slip is processed but should be checked. Anchorages by force transition length
+areconsideredaccordingtothetypeFTYP.FTLstartsatpositionSFROresp. ends
+at STO (see TEND).
+AR, UZ DZ: All values refer to the total number of summarized tendons NTEN. Without input
+the following defaults apply (for more information see AQB manual):
+AR=AZ·NTEN
+(cid:112)
+UZ=1.6·π· AR
+(cid:118)
+(cid:117)AR
+DZ=2·(cid:116)
+π
+WhereAZisthesteelcross-sectionalareaofasingletendon(seeSYSP)andNTEN
+is the number of summarized tendons (see TEND).
+Example:
+PDAT FTL 1.2 FTYP 'PARA' AR 0.00285 UZ 0.268 DZ 0.06
+SOFiSTiK2023 3-31TENDON|InputDescription
+3.8.3 FRIC – Additional Friction Losses
+Seealso: CS,PDAT,PSIG,PAAS,PFAC,PDEF,TEND
+FRIC
+Item Description Unit Default
+FROM Station of the start of the friction − 0
+TO Station with the end of friction − 0
+BETA Additional wobble at the begin [deg/m] 0
+BETE Additional wobble at the end [deg/m] BETA
+TYPE Type of superposition: LT4 ADD
+ADD additive (β est+β dd)
+VECT vectorial ((cid:113) β est2+β dd2 )
+Remark: This record is an attribute record and must be given prior to TEND.
+This record can be used to apply additional friction in a specific area. If the record is stated
+without parameters, all values are internally reset to the default settings.
+The friction inputs from this record are processed analogously to SYSP BETA and BETG and
+do not influence in the geometry of the tendons.
+Example:
+FRIC FROM 10.0 TO 15.0 BETA 0.005[1/m] TYPE ADD
+3-32 SOFiSTiK2023InputDescription|TENDON
+3.8.4 PSIG – Prestressing limits according to Eurocode
+Seealso: CS,PDAT,FRIC,PAAS,PFAC,PDEF,TEND
+PSIG
+Item Description Unit Default
+KIND Type of the prestressing LT4 RI
+RI Prestressing from right
+LE Prestressing from left
+RILE Prestressing first from right, then from left
+LERI Prestressing first from left, then from right
+ANWS Prestressing sequence LT4/− TS
+1 or T Stressing
+2 or R Releasing
+4 or W Re-stressing
+8 or S Slip
+KAPA Friction safety factor to prevent overstress − *
+KAPL Influence length of KAPA for tensioning from both LT4 SYMM
+sides
+SYMM Symmetrical
+OPT Optimised
+K1 Maximum stress during tensioning - *
+K2 σ p,m =min(cid:0)k 1·ƒ pk,k 2·ƒ p0,1k(cid:1) - *
+K3 General stress limit after anchor set - *
+K4 σ pm0 =min(cid:0)k 3·ƒ pk,k 4·ƒ p0,1k(cid:1) - *
+K5 Stress limit at jacking anchor − K3
+K6 σ jck =min(cid:0)k 5·ƒ pk,k 6·ƒ p0,1k(cid:1) − K4
+K7 Stress limit at dead anchor − K3
+K8 σ ded =min(cid:0)k 7·ƒ pk,k 8·ƒ p0,1k(cid:1) − K4
+Remark: This record is an attribute record and must be given prior to TEND. It overwrites all
+previously set attribute records PFAC, PSIG, PAAS or PDEF.
+In the case of two-sided prestressing, a different prestressing sequence for the second side
+can be specified with another PSIG record. Only ANWS is updated, not the k-values or KAPA.
+ANWS ThedesiredprestressingsequenceisdefinedbythecombinationoftheliteralsT,R,
+WandS.Thedefaultis”Stressing+Slip=TS”. Alternatively,thedesiredsequence
+canbecombinedusingabitmaskwiththenumbers1,2,4and8,e.g. ”Stressing+
+Slip = 1 + 8 = 9”.
+KAPA Safety friction factor κ to prevent overstress. According to the German national
+SOFiSTiK2023 3-33TENDON|InputDescription
+annex (NCI to 5.10.2.1), the maximum jacking force must be reduced.
+* If no value is given, it is set according to the national annex.
+0.0 disables the consideration of the safety factor.
+≤1.0 is not allowed and will be set to the value of the national annex.
+KAPL Influence length of κ when prestressing from both sides: While for the first side the
+whole tendon is included in the calculation, for the second side only the part of the
+tendon can be considered where additional forces are applied.
+SYMM Symmetrical: Analogous to the first side, the entire tendon is also taken
+into account for the second side, resulting in the same reduction of the
+maximum jacking force on both sides.
+OPT Optimised: For the second side, only the part of the tendon where ad-
+ditional forces are applied is taken into account. This leads to a lower
+reduction of the jacking force on the second side.
+Note: It is possible that this optimisation problem has no solution. In this
+case, a symmetric reduction is assumed.
+K1...K8 Input of the stress limits (see Figure 3.8):
+* If no value is given, it is taken from the corresponding standard.
+k  <10 Values k  < 10 are interpreted as factors for the ultimate strength ƒ pk
+(also ƒ p), or yield strength ƒ p0,1k (also ƒ py).
+Remark: If not calculated according to Eurocode, it may be more useful
+to enter the limits directly with the record PFAC.
+k  ≥10 Values k  ≥ 10 are used directly as stress limits. In this case, the re-
+spective second value are not used (i.e., either K1 or K2 and K3 or K4,
+respectively).
+Remark: For a manual, direct input of stresses (or forces) the record
+PDEF is recommended.
+Note: Forhistoricalreasons,thenumberingofthek-valuesdiffersfromthenumber-
+ing in the Eurocode.
+TENDON Eurocode
+K1 k 1
+K2 k 2
+K3 k 7
+K4 k 8
+Examples:
+$ Factors and KAPA according to Eurocode
+PSIG KIND RILE ANWS 15
+$ Directly applied stress limits
+PSIG KIND RI ANWS 9 K1 1320 K3 1150 $ without k2 and k4
+$ Tensioning on both sides with different prestressing sequence
+PSIG KIND RILE ANWS 15 KAPA 1.5 KAPL SYMM K1 0.8 K2 0.9 K3 0.7 K4 0.8
+3-34 SOFiSTiK2023InputDescription|TENDON
+PSIG KIND RILE ANWS 9
+SOFiSTiK2023 3-35TENDON|InputDescription
+3.8.5 PAAS – Prestressing limits according to AASHTO
+Seealso: CS,PDAT,FRIC,PSIG,PFAC,PDEF,TEND
+PAAS
+Item Description Unit Default
+KIND Type of the prestressing LT4 RI
+RI Prestressing from right
+LE Prestressing from left
+RILE Prestressing first from right, then from left
+LERI Prestressing first from left, then from right
+ANWS Prestressing sequence LT4/− TS
+1 or T Stressing
+2 or R Releasing
+4 or W Re-stressing
+8 or S Slip
+K1 Stress limit prior to seating − !
+σ =k1·ƒ (=k ·ƒ )
+m py 1 p0,1k
+K2 Stress limit at anchorages − !
+σ =k2·ƒ (=k ·ƒ )
+nchor p 2 pk
+K3 General stress limit after anchor set − !
+σ =k3·ƒ (=k ·ƒ )
+sonst p 3 pk
+Remark: This record is an attribute record and must be given prior to TEND. It overwrites all
+previously set attribute records PFAC, PSIG, PAAS or PDEF.
+In the case of two-sided prestressing, a different prestressing sequence for the second side
+can be specified with another PAAS record. Only ANWS is updated, not the k-values.
+ANWS ThedesiredprestressingsequenceisdefinedbythecombinationoftheliteralsT,R,
+WandS.Thedefaultis”Stressing+Slip=TS”. Alternatively,thedesiredsequence
+canbecombinedusingabitmaskwiththenumbers1,2,4and8,e.g. ”Stressing+
+Slip = 1 + 8 = 9”.
+K1...K3 Input of the stress limits (see Figure 3.8).
+Examples:
+PAAS KIND RI ANWS 15 K1 0.9 K2 0.7 K3 0.74
+$ Prestressing from both sides with different sequences
+PAAS KIND RILE ANWS 15 K1 0.9 K2 0.7 K3 0.74
+PAAS KIND RILE ANWS 9
+3-36 SOFiSTiK2023InputDescription|TENDON
+3.8.6 PFAC – Prestressing limits with factors
+Seealso: CS,PDAT,FRIC,PSIG,PAAS,PDEF,TEND
+PFAC
+Item Description Unit Default
+KIND Type of the prestressing LT4 RI
+RI Prestressing from right
+LE Prestressing from left
+RILE Prestressing first from right, then from left
+LERI Prestressing first from left, then from right
+ANWS Prestressing sequence LT4/− TS
+1 or T Stressing
+2 or R Releasing
+4 or W Re-stressing
+8 or S Slip
+FAC General force factor after anchor set − 1.05
+FACA Maximum force factor during tensioning − 1.18
+FACE Force factor at jacking anchor − FAC
+FACF Force factor at dead anchor − FAC
+Remark: Please note that for compatibility reasons the PFAC record contains further items
+which are no longer documented. It is therefore necessary to always write the name of the
+item (e.g. FACE) in front of the respective value (e.g. FACE 0.95).
+Remark: This record is an attribute record and must be given prior to TEND. It overwrites all
+previously set attribute records PFAC, PSIG, PAAS or PDEF.
+Inthecaseoftwo-sidedprestressing,adifferentprestressingsequenceforthesecondsidecan
+be specified with another PFAC record. Both ANWS and the factors FAC... can be overridden.
+ANWS ThedesiredprestressingsequenceisdefinedbythecombinationoftheliteralsT,R,
+WandS.Thedefaultis”Stressing+Slip=TS”. Alternatively,thedesiredsequence
+canbecombinedusingabitmaskwiththenumbers1,2,4and8,e.g. ”Stressing+
+Slip = 1 + 8 = 9”.
+FAC... Input of the stress limits or force limits (see Figure 3.8). The factors refer to the
+reference force ZV of the SYSP record.
+Examples:
+PFAC KIND RILE ANWS 15 FAC 1.0 FACA 1.1 FACE 0.9 FACF 0.9
+$ Prestressing from both sides with different sequences
+PFAC KIND RILE ANWS 15 FAC 1.0 FACA 1.1 FACE 0.9 FACF 0.9
+PFAC KIND RILE ANWS 9 FAC 1.05 FACA 1.18 FACE 1.0 FACF 1.0
+SOFiSTiK2023 3-37TENDON|InputDescription
+3.8.7 PDEF – Manual prestressing
+Seealso: CS,PDAT,FRIC,PSIG,PAAS,PFAC,TEND
+PDEF
+Item Description Unit Default
+KIND Type of the prestressing LT4 RI
+RI Prestressing from right
+LE Prestressing from left
+RILE Prestressing first from right, then from left
+LERI Prestressing first from left, then from right
+STR Right stressing [kN],[mm] 0
+RER Right releasing [kN],[mm] 0
+RSR Right re-stressing [kN],[mm] 0
+SLR Right slip [kN],[mm] 0
+STL Left stressing [kN],[mm] 0
+REL Left releasing [kN],[mm] 0
+RSL Left re-stressing [kN],[mm] 0
+SLL Left slip [kN],[mm] 0
+Remark: This record is an attribute record and must be given prior to TEND. It overwrites all
+previously set attribute records PFAC, PSIG, PAAS or PDEF.
+STR...SLL The values are interpreted differently:
+<0.0 Values < 0.0 are interpreted as elongations, release lengths or slip (of
+the respective prestressing step).
+0.0 A value of 0.0 deactivates the step.
+]0.0,2.0] Valuesintheinterval]0.0,2.0] areinterpretedasfactorsofthereference
+force ZV of the SYSP record.
+>2.0 Values >2.0 are interpreted as jacking forces.
+Examples:
+$ Length controlled
+PDEF KIND RILE STR -80 SLR -4 STL -20 SLL -4
+$ Force controlled
+PDEF KIND RILE STR 2000 SLR 1800 STL 2000 SLL 1800
+$ Factor controlled
+PDEF KIND RILE STR 1.0 SLR 0.9 STL 1.0 SLL 0.9
+$ Mixed
+PDEF KIND RILE STR 2000 SLR -4 STL 1.0 SLL -4
+3-38 SOFiSTiK2023InputDescription|TENDON
+3.8.8 TEND – Tendon
+Seealso: CS,PDAT,FRIC,PSIG,PAAS,PFAC,PDEF
+TEND
+Item Description Unit Default
+NOT Id of the tendon − !
+NOG Id of the duct geometry (TGEO) − !
+NTEN Number of summarized tendons − 1
+TYPE Reference system is: LT4 REFX
+NODE Nodes (beams only)
+BEAM Beams
+REFX Reference axis
+SPAN Span position (TOPP)
+FROM Start of the tendon geometry − *
+TO End of the tendon geometry − *
+SFRO Correction distance for FROM − 0.00
+STO Correction distance for TO − 0.00
+EFRO Start of effective prestressing − 0.00
+ETO End of effective prestressing − 0.00
+LC Load case id − 0
+LC0 Forbeams: Unconstrainedforcesduetoprestressing − LC
+TITL Title of the tendon LT32 -
+GUID 128 bit code in hexadecimal notation LT36 -
+This record defines a tendon along a duct geometry (TGEO) and activates the friction calcu-
+lation. All data necessary for the friction calculation (CS, PDAT, FRIC, PSIG, PAAS, PFAC,
+PDEF) must be defined beforehand.
+Remark: Please note that elastic shortening effects are NOT taken into account in the friction
+calculation.
+In case no eccentricity was specified in the prestressing system (SYSP ECC 0), the tendon
+geometry corresponds to the duct geometry (in the corresponding section).
+NTEN This parameter allows several tendons to be summarized and treated as one ten-
+don. In this case, the friction calculation is performed on only one tendon and the
+results are multiplied by NTEN.
+FROM/TO Startandend(ifnocorrectionwithSFRO/STO)ofthetendonontheductgeometry,
+depending on the selected TYPE (see figure 3.9):
+* If no value is given, the start or end of the duct is selected.
+NODE Beam node at the start and end of the tendon.
+BEAM Beam element at the start and end of the tendon.
+REFX Start and end station on the reference axis.
+SOFiSTiK2023 3-39TENDON|InputDescription
+SPAN Start and end span station (if spans have been created with the TOPP
+record).
+Note: The maximum length of the tendon is equal to the length of the duct. If the
+start and/or end are not on the duct geometry, the tendon is shortened accordingly.
+SFRO/STO CorrectionvaluesforFROMandTO.SFROandSTOarealwaystobeunderstood
+as the increment of the station on the reference axis – regardless of the TYPE
+selected (see Example 2 and Figure 3.9).
+The actual tendon on which the friction calculation is performed thus ranges from
+“FROM + SFRO” to “TO + STO”. The sign for SFRO and STO must be chosen
+according to the direction of the reference axis, i.e., normally STO is negative.
+EFRO/ETO Statically effective area of the tendon. Although the friction calculation is carried
+outintherange“FROM+SFRO”to“TO+STO”,prestressingloadsareonlyapplied
+to the elements in the range “FROM + SFRO + EFRO” to “TO + STO + ETO”.
+Analogous to SFRO/STO, EFRO and ETO are station increments on the reference
+axis.
+LC Ifaloadcasenumber >0 isspecified,theloadsfromtheprestressingarestoredin
+the database and can be calculated in a subsequent module (e.g. ASE).
+LC0 If a number > 0 is given AND a different number is chosen for LC0 than for LC
+(LC0 (cid:54)= LC), the unconstrained forces from pure prestressing, i.e. on the statically
+determined system without other loads and supports, are calculated – for beams
+only – and stored in the database.
+Span 1
+s=0 s=2.0 s=12.0
+Reference axis
+Beam 1 Beam 2 Beam 3 Beam 4 Beam 5 Beam 6
+Nodes 1 2 3 4 5 6 7
+Duct
+FROM TO
+EFRO ETO
+SFRO STO
+Figure3.9: Definitiondomainsintendongeneration. Frictioncalculationisperformedontheentire
+(blue) tendon. Loads from prestressing are only transferred to the elements (i.e., beam 2 to beam
+5)inthestaticallyeffectivearea(yellow).
+Example 1: Five summarized tendons that are defined on the entire duct:
+TEND NOT 201 NOG 101 NTEN 5 LC 1 TITL "Tendon 1"
+3-40 SOFiSTiK2023InputDescription|TENDON
+Example2: OnthebeamsysteminFigure3.9,severaltendonsarecreateddifferently,butall
+have the same length and effective range:
+$ Definition on reference axis
+TEND NOT 202 NOG 102 TYPE REFX FROM 0.0 SFRO 1.0 EFRO 1.0 $$
+TO 12.0 STO -1.0 ETO -1.0
+$ Definition with beam nodes
+TEND NOT 203 NOG 102 TYPE NODE FROM 1 SFRO 1.0 EFRO 1.0 $$
+TO 7 STO -1.0 ETO -1.0
+$ Definition with rods
+TEND NOT 204 NOG 102 TYPE BEAM FROM 1 SFRO 1.0 EFRO 1.0 $$
+TO 6 STO -1.0 ETO -1.0
+$ Definition with spans
+TEND NOT 205 NOG 102 TYPE SPAN FROM 1.0 SFRO 1.0 EFRO 1.0 $$
+TO 2.0 STO -1.0 ETO -1.0
+SOFiSTiK2023 3-41TENDON|InputDescription
+3.9 Prestressing of flat slabs
+For prestressing flat slabs, there is an alternative input of tendons with the records SLAB and
+SLBS.
+Prerequisites:
+The prerequisite is that the position of the tendons in the plan view is known. With SLAB and
+SLBS the missing data for the elevation – heights and inclinations – are then added. The plan
+geometry can be generated with SOFiMSHC or graphically with SOFiPLUS.
+The following rules apply:
+• The slab is parallel to the global XY-plane.
+• The plan geometry is parallel to the global XY-plane and already exists as an axis in the
+database.
+• Tendon heights are given as edge distances in relation to the mean slab thickness of the
+QUAD elements.
+Geometry generation:
+The input of the slabs supports (i) the ”Free tendon layout” and (ii) the spline duct geometry
+analogous to PTUV.
+Free tendon layout: With the free tendon layout only the support (top) points have to be
+defined. Assuming that the tendon otherwise runs in the lower layer, midspan
+points are automatically generated internally (see Figure 3.10).
+Spline geometry: For the spline geometry the input is analogous to PTUV. Both support
+and midspan points are to be entered (see Figure 3.11).
+Internally, the model is always converted to PTUV. The system created in this way can be
+exported to a separate file with ECHO SLAB FULL.
+2·FRLT FRLL FRLL FRLT
+ZSPT
+ZSPB
+BIT 4 1 8+1
+Figure 3.10: Slab prestressing with free tendon layout. The bit describes the type of point (see
+BIT).
+3-42 SOFiSTiK2023InputDescription|TENDON
+ZSPT
+ZSPB
+DL DR
+BIT 4 1 2 8+1
+Figure 3.11: Slab prestressing with spline geometry (analogous to PTUV). The bit describes the
+typeofpoint(seeBIT).
+Input:
+The order of the records must be followed:
+1. SLAB Generaldataontheslabtendon. Eachtendonmuststartwiththisblock. Allgeneral
+settings are given here.
+2. xxxx stands for supplementary data records from the general TENDON input, e.g:
+PDAT Additional data for prestressing
+PFAC Prestressing limits with factors
+PSIG Prestressing limits according to Eurocode
+...
+3. SLBS Constraining points of the slab tendon: start, end, support and midspan points.
+SOFiSTiK2023 3-43TENDON|InputDescription
+3.9.1 SLAB – General data of the slab tendon
+Seealso: SLBS,PTUV
+SLAB
+Item Description Unit Default
+NOT Number of tendon − !
+(= No. reference axis = No. duct geometry)
+REFS Reference to the plan geometry LT4 !
+NOPS Number of the prestressing system − !
+TYPG Type of geometry generation −/LT4 PTFV
+PTFV or 1 Free tendon layout
+PTUV or 2 Spline geometry (analogous to PTUV)
+ICS1 Construction stage installation − 1
+ICS2 Construction stage grouting − 1
+ICS3 Construction stage removal − 1
+S0 Start station on the plan geometry REFS − 0.00
+ZSPT Distance from top edge [m] 0.05
+ZSPB Distance from bottom edge [m] 0.05
+FRLT Length of the straight line at supports * [m] 0.30
+FRLL Length of the transition section* [m] 3.00
+LC Load case id (siehe TEND) − 0
+TITL Title of the tendon LT32 -
+TheSLABrecordcreatesanewslabtendon. Thegeometryisthendefinedbyenteringseveral
+support and span stations using record SLBS.
+* FRLT and FRLL are only used for the free tendon layout (TYPG PTFV).
+ZSPT/ZSPB Defaults heights of supports and spans. ZSPT: height of the support points (up-
+per layer) – measured from the upper concrete edge. ZSPB: height of the spans
+(lowerlayer)–measuredfromthelowerconcreteedge. Withoutavalue,themiddle
+layer is used.
+FRLT Length of the straight section at the support points (see Figure 3.10) – both in the
+left and right direction.
+FRLL In the transition section the duct runs from the upper to the lower layer (see Figure
+3.10).
+Example:
+SLAB NOT 1 REFS 'TND1' NOPS 23 TYPG PTFV ICS1 11 ICS2 12 $$
+ZSPT 0.1 ZSPB 0.1 FRLT 0.3 FRLL 3.0
+PSIG ...
+3-44 SOFiSTiK2023InputDescription|TENDON
+SLBS ...
+SOFiSTiK2023 3-45TENDON|InputDescription
+3.9.2 SLBS – Constraining points of the slab tendon
+Seealso: SLAB,PTUV
+SLBS
+Item Description Unit Default
+NOT Number of tendon − !
+(= No. reference axis = No. duct geometry)
+BIT bit of the constraining point − 1
+1 Support point
+2 Midspan point
+4 Start point
+8 End point
+S Station on plan geometry SLAB REFS − S0
+ZS Position of the tendon from the edge [m] *
+0.00 Middle layer
+>0.00 Distance from top edge
+< 0.00 Distance from bottom edge
+DZS Inclination of the tendon in vertical direction − -
+Properties of the spline geometry – see PTUV: [m] -
+DL Straight line in negative axis direction* [m] -
+DR Straight line in positive axis direction* [m] -
+RV Vertical radius* [m] -
+RL Influence length of radius* [m] -
+Remark: Please note that for compatibility reasons the SLBS record contains further items
+which are no longer documented. It is therefore necessary to always write the name of the
+item (e.g. DL) in front of the respective value (e.g. DL 2.3).
+* DL, DR, RV und RH are only used with the spline geometry (SLAB TYPG PTUV).
+BIT In order to have a clear definition of the properties when specifying the individual
+stations, each point has a bit key. E.g. the key for a support at the end is: BIT = 1 +
+8 = 9.
+Bit 1 support point horizontal tendon
+2 midspan point horizontal tendon
+4 start point
+8 end point
+ZS Ifnovalueisgiven,theelevationZSPT,orZSPBoftheSLABrecordisused. Positive
+(resp. negative)valuesareinterpretedasthe(absolute)distancefromthetop(resp.
+bottom)ofthequadelements. WithZS=0.0,theaverageheightofthequadisused.
+3-46 SOFiSTiK2023InputDescription|TENDON
+Examples:
+$ Example of a free tendon layout
+SLAB NOT 1 REFS 'TND1' NOPS 23 TYPG PTFV ICS1 11 ICS2 12 $$
+ZSPT 0.1 ZSPB 0.1 FRLT 0.3 FRLL 3.0
+PSIG ...
+SLBS NOT 1 BIT 4 S 0.0
+SLBS NOT 1 BIT 1 S 5.0
+SLBS NOT 1 BIT 9 S 20.0
+$ Example of a spline geometry
+SLAB NOT 2 REFS 'TND2' NOPS 23 TYPG PTUV ICS1 11 ICS2 12 $$
+ZSPT 0.1 ZSPB 0.1
+PSIG ...
+SLBS NOT 2 BIT 4 S 0.0
+SLBS NOT 2 BIT 1 S 5.0 DL 0.15 DR 0.15
+SLBS NOT 2 BIT 2 S 12.5 DL 2.5 DR 2.5
+SLBS NOT 2 BIT 9 S 20.0 DL 0.15
+3.10 Graphic representation
+The graphical representation of the prestressing is designed for a clear assignment of the
+tendons and not for a complete three-dimensional representation, which is reserved for the
+programs WinGRAF and ANIMATOR.
+For the sake of clarity, the representations are related to a horizontal projection (x-y-plane)
+and to a side view/elevation transverse to the reference axis (x-z-plane). Elements, ducts and
+tendonsare’unrolled’alongthereferenceaxis,whichisthusalwaysastraightline–regardless
+of the actual curvature.
+The following input records are available for the generation of the graphical representations:
+PLOT Main command for generating plan and elevation views as well as force diagrams.
+AND Linking command to combine multiple PLOTs.
+COLO Sets colours, line widths, fill pattern and line types, or disables plot elements.
+SCHR Sets font sizes, or disabled plot elements.
+SOFiSTiK2023 3-47TENDON|InputDescription
+3.10.1 PLOT – Graphical representation
+Seealso: AND
+PLOT
+Item Description Unit Default
+SHOW Selection: LT4 TNDE
+TNDE Tendon in elevation view
+TNDP Tendon in plan view
+GEOE Duct in elevation view
+GEOP Duct in plan view
+FACT Force diagram
+NO ID corresponding to SHOW: −/LT4 ALL
+ALL or 0 for all
+NOT for TNDE, TNDP and FACT
+NOG for GEOE and GEOP
+FACH Superelevation factor − 10
+TYPG Type of representation: LT4 ALL
+DUCT Duct
+TEND Tendon
+DUTE Duct and tendon
+ALL DUTE plus reference and gravity axis
+FROM Station start − *
+TO Station end − *
+PCS Tendon overview − 0
+0 Don’t show
+(cid:54)=0 Show
+Remark: Please note that for compatibility reasons the PLOT record contains further items
+which are no longer documented. It is therefore necessary to always write the name of the
+item (e.g. TYPG) in front of the respective value (e.g. TYPG ALL).
+Record for drawing instructions for plan and elevation views of duct geometries and tendons
+as well as force diagrams. General drawing instructions can be controlled via the SOFISTIK:
+SIZE record.
+The reference system for plan and elevation views is the reference axis, which is drawn as
+a straight line regardless of its actual curvature. Elements, ducts and tendons are ’unrolled’
+along the reference axis.
+SHOW Plan/elevation views and force diagrams.
+Whereas with GEOP and GEOE the entire duct and, if applicable, all contained
+tendons are drawn, with TNDP and TNDE only the section of the duct is drawn on
+which the tendon is defined.
+NO According to the selection in SHOW either the id of the duct geometry NOG (see
+3-48 SOFiSTiK2023InputDescription|TENDON
+TGEO)orofthetendonNOT(TEND)mustbegiven. Alternatively,0orALLcanbe
+used to output all ducts or tendons contained in the database.
+FACH Superelevationfactorforplanandelevationviews. Inthecaseoftheforcediagram
+(SHOWFACT),values<10.0shifttheforcezeroupwards(compressedrepresen-
+tation) and values >10.0 downwards (stretched representation).
+TYPG It is possible to draw only the duct, only the tendon, only duct and tendon or all
+curves.
+FROM/TO This Option is only available for plan/elevation views. By the default, limits are set
+according to the duct and tendon curve(s) to be drawn.
+PCS If a value other than 0 is set, the definition domains of the tendons are also drawn
+– in the case of plan and elevation views.
+Examples:
+$ Minimum example of the standard output
+PLOT GEOE
+PLOT FACT
+$ Example for the sole output of a duct and tendon overview
+PLOT GEOE NO 102 FACH 15.0 TYPG DUCT PCS 1
+SOFiSTiK2023 3-49TENDON|InputDescription
+3.10.2 AND – Link multiple PLOT commands
+Seealso: PLOT
+AND
+Item Description Unit Default
+Record without content
+SpecifyingthisrecordcausestwoormorePLOTstobedrawntogether. ThePLOTparameters
+of the first input apply to the combined drawing.
+The following conditions must be met:
+• It is a plan or elevation view. PLOT FACT is not possible.
+• Only PLOT commands are linked that share the same PLOT SHOW.
+• A specific id PLOT NO is given with each linked PLOT command, ALL or 0 is not allowed.
+Example:
+PLOT SHOW GEOE NO 204 TYPG DUTE PCS 1
+AND
+PLOT SHOW GEOE NO 205
+AND
+PLOT SHOW GEOE NO 206
+3-50 SOFiSTiK2023InputDescription|TENDON
+3.10.3 COLO – Colours, lines and fill patterns
+Seealso: PLOT,AND,SCHH
+COLO
+Item Description Unit Default
+F1 Legend − 1101
+F2 Tendon − 2251
+F3 Force in force diagram − 2251
+F4 Evaluation points in the force diagram − 7101
+F5 Contour of elements − 1101
+F6 Axis of gravity − 8204
+F7 Indicated prestressing sequence − 1106
+F8 Force levels − 1101
+F9 Reference axis − 4102
+F10 Characteristic points in the force diagram − 8101
+F11 Fill pattern of beam elements − 5001
+F12 Fill pattern of quad elements − 9001
+F13 Contour of the duct − 1101
+F14 Mid axis of the duct − 8206
+This record can be used to specify the colour, line type and line width of lines and the colour
+and fill pattern of areas within the output. The individual properties are determined with a
+four-digit number, which is structured according to the following scheme:
+=1000·coor+100·dth+type
+icolour Colour index: 1: black, 2: red, 3: green, 4: blue, 5: yellow, 6: brown, 7: grey,
+8: light blue, 9: orange
+width Width factor: e.g. i=2251 → width = 2.5
+itype Stroke type for lines: 1: solid, 2: dashed, 3: dotted, 4: dash dotted,
+5: narrow dashed, 6 narrow dotted
+itype Fill pattern for areas: 1: dotted, 2: crossed, 3: blank, 4: filled
+A value equal to zero suppresses the corresponding representation of the elements.
+Example:
+$ Blue legend with line width 2.0 and dotted lines.
+COLO C1 2203
+SOFiSTiK2023 3-51TENDON|InputDescription
+3.10.4 SCHH – Font size
+Seealso: PLOT,AND,COLO
+SCHH
+Item Description Unit Default
+H1 Legend − 1.0
+H2 Arc length, distances (u,v) and inclinations − 1.0
+H3 Forces and stresses − 1.0
+H4 Stations and force factors − 1.0
+H5 Element ids − 1.0
+H6 Node ids − 1.0
+H7 Tendon and duct labels − 1.0
+H8 Force levels − 1.0
+This record can be used to adjust the font sizes. The value is interpreted as a factor of the
+default font size. If a font size of 0.0 is specified, the corresponding caption is suppressed.
+Example:
+$ Legend with double font size
+SCHH H1 2.0
+3-52 SOFiSTiK2023Bibliography |TENDON
+Bibliography
+[1] G. Rombach. Spannbetonbau. Wilhelm Ernst & Sohn, Berlin.
+SOFiSTiK2023 3-53

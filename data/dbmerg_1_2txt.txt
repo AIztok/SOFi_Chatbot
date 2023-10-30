@@ -1,0 +1,438 @@
+DBMERG
+Database Manipulator
+SOFiSTiK | 2023DBMERG
+DatabaseManipulator
+DBMERGManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|DBMERG
+Contents
+Contents i
+1 Task Description 1-1
+2 Input Description 2-1
+2.1 Input Language . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.2 Input Records. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.3 CDB – Selection of a database. . . . . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.4 CTRL – Control options . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-3
+2.4.1 REST Restart-Steuerung. . . . . . . . . . . . . . . . . . . . . . . . 2-3
+2.5 LC – Load Cases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-4
+2.6 GRP – Group Assignment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-5
+2.7 NODE – Nodal Values . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-7
+2.8 BEAM – Beam Elements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-8
+2.9 TRUS – Truss Elements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-9
+2.10 CABL – Cable Elements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-10
+2.11 SPRI – Spring Elements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-11
+2.12 QUAD – Plane Elements. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-12
+2.13 BRIC – 3D Continua Elements . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-13
+2.14 EXTR – Data mapping 2D-3D . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-14
+2.15 ECHO – Volume of Output . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-15
+3 Example 3-1
+3.1 Example . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+SOFiSTiK2023 iDBMERG|Contents
+ii SOFiSTiK2023TaskDescription|DBMERG
+1 Task Description
+Program DBMERG allows the modification or transfer of data within a data base or between
+data bases of the SOFiSTiK-Software. The program may be used for merging results from
+different tasks, the treatment of multiple used parts or the transfer of primary load states.
+The program has functions as follows:
+- Import of loads or results
+- Distribution or results or properties of elements
+- Changing results with factors
+Thesefunctionsrequireaspecialresponsabilityoftheuser,becausethecheckofthoseresults
+may become extremely difficult.
+DBMERG uses one or two SOFiSTiK-databases, each of them needs a static system. When
+callingtheprogramaseconddatabasewillbeopenedwiththenameoftheinputfile. Thiswill
+be the source, while the project data base is the target.
+Elementsandnodesoftheprojectdatabasewillbeassignedtothoseinthesourcedatabase
+via groups and load cases. Grouping within DBMERG extends beyond the general SOFiSTiK
+group mechanisms.
+DBMERG will copy all results from the source to the target and will replace load cases and or
+element or node numbers.
+SOFiSTiK2023 1-1DBMERG|TaskDescription
+1-2 SOFiSTiK2023InputDescription|DBMERG
+2 Input Description
+2.1 Input Language
+The input occurs in a free format with the CADINP input language (see the general manual
+SOFiSTiK: ’FEA / STRUCTURAL Installation and Basics’).
+2.2 Input Records
+The following records are defined:
+Record Items
+CDB FROM PASS
+MAT FROM TO INC BY
+SECT FROM TO INC BY
+LC NO NOS
+GRP NO NOS
+NODE TYPE FX FY FZ FXX FYY FZZ
+BEAM TYPE FN FVY FVZ FMT FMY FMZ
+FMB
+TRUS TYPE FN
+CABL TYPE FN
+SPRI TYPE FN
+QUAD TYPE FMX FMY FMXY FVX FVY FNX
+FNY FNXY
+BRIC TYPE FSX FSY FSZ FTAU
+ECHO OPT VAL
+Inputisorganizedinblocks. EveryblockendswiththerecordEND.Anemptyblock(END/END)
+will terminate the program. Within every Block a single external database may be used.
+The records HEAD, END and PAGE are described in the general manual SOFiSTiK: ’FEA /
+STRUCTURAL Installation and Basics’.
+It follows the description of the records:
+SOFiSTiK2023 2-1DBMERG|InputDescription
+2.3 CDB – Selection of a database
+CDB
+Item Description Unit Default
+FROM File name of a database Lt256 !
+PASS optional password for protected database Lt16 -
+For the merging this command selects a database to be used as source for any import. If the
+record name is given only, the master project will be used again. A definition is only possible
+once in every input block.
+2-2 SOFiSTiK2023InputDescription|DBMERG
+2.4 CTRL – Control options
+CTRL
+Item Description Unit Default
+OPT One of the following options: LT -
+REST restart control
+2.4.1 REST Restart-Steuerung
+By defualt, possibly existing results of the target load case are deleted pior to copying.
+The restart option CTRL REST 1 suppresses deletion of load case dependent data (results)
+for the target load case. This allows, e.g., to realize different mapping rules (GRP ...) for nodal
+results and elemental results in subsequent DBMERG runs.
+SOFiSTiK2023 2-3DBMERG|InputDescription
+2.5 LC – Load Cases
+LC
+Item Description Unit Default
+NO New load case number − *
+NOS Old load case number − NO
+AnyactionofDBMERGwillusetheselectedloadcasesonly. WithinputofNOSyoumaycopy
+results to other load case numbers.
+In combination with the grouping of the elements you may assign in different blocks results
+of different elments of the same load case to different load cases of the same element. The
+default NO=NOS is only posssible, if you have two data bases open.
+2-4 SOFiSTiK2023InputDescription|DBMERG
+2.6 GRP – Group Assignment
+GRP
+Item Description Unit Default
+NO Group number source data − !
+NOS Group number target data − NO
+NDIV Group divisor − *
+Forthetransferofdataelementsoftheprojectbasewillbeassignedtoelementsofthesource
+database. Without any input a 1 to 1 assignement is in effect.
+The group number is given as division of the node or elementnumber by NDIV. Two elements
+will be assigned to each other if the modulus will be the same and the group numbers follow
+the specified assignment. In DBMERG you may define completely other groups than those
+which are defined in the database.
+Beam elements, however, will be assigned to each other only if the beam length is also identi-
+cal.
+Ifthenodenumbersdonotfollowthesamerulesastheelements,youhavetousetoseperate
+blocks with different assignements.
+This feature can be used to multiply the properties of prefabricated parts.
+Example:
+In the project data base are the elements 1001, 1002, 1003 as well as 1101, 1102,
+1103 and 2001, 2002, 2003 defined. In the additional data base are the Elements 101, 102,
+103 defined. Input of
++PROG DBMERG
+HEAD
+GRP NO 9999 NOS 0
+END
+defines the assignments:
+1101 := 101 , 1102 := 102 and 1103 := 103
+Elements 1001 to 1003 resp. 2001 to 2003 are without assignment. The results of elments
+101 to 103 will be assigned to the elements 1101 to 1103.
+Input of:
+SOFiSTiK2023 2-5DBMERG|InputDescription
++PROG DBMERG
+HEAD
+GRP NO 10 NOS 1 NDIV 100
+GRP NO 11 NOS 1 NDIV 100
+END
+defines the assignments:
+1001 < = 101 , 1002 < = 102 und 1003 < = 103
+1101 < = 101 , 1102 < = 102 und 1103 < = 103
+and will thus copy the results multiple to the elements. And finally
++PROG DBMERG
+HEAD
+GRP NO 9999 NOS 1 NDIV 100
+END
+will assign:
+1001 < = 101 , 1002 < = 102 und 1003 < = 103
+1101 < = 101 , 1102 < = 102 und 1103 < = 103
+2001 < = 101 , 2002 < = 102 und 2003 < = 103
+Forthedatatransferthefirstvalidassignmentisused,multipleassignementsarenotchecked,
+which allows to define a general default as last assignment, while more specific ones are
+defined first.
+2-6 SOFiSTiK2023InputDescription|DBMERG
+2.7 NODE – Nodal Values
+NODE
+Item Description Unit Default
+TYPE Type of results to work on LT ALL
+NONE deactivated all values
+ALL selected all values
+LINK Forces of kinematic constraint
+LOAD Nodal loads
+DISP Nodal diesplacements
+REAC Support reactions
+VELO Nodal velocities
+ACCE Nodal accelerations
+MPHY Multiphysics results
+FX Factor for displacements/forces in X − 1.0
+FY Factor for displacements/forces in Y − FX
+FZ Factor for displacements/forces in Z − FY
+FXX Factor for rotations/moments in X − FZ
+FYY Factor for rotations/moments in Y − FXX
+FZZ Factor for rotations/moments in Z − FYY
+For the selected load cases and groups the results will be copied.
+SOFiSTiK2023 2-7DBMERG|InputDescription
+2.8 BEAM – Beam Elements
+BEAM
+Item Description Unit Default
+TYPE Type of results to work on LT ALL
+NONE deactivated all values
+ALL selected all values
+LOAD Loading
+FORC Internal forces and moments
+STIF Stiffnesses
+EIGE Secondary forces and moments
+STRE Stresses
+REIN Reinforcements
+TEND Tendons
+FN Factor for normal forces − 1.0
+FVY Factor for shear forces in y − FN
+FVZ Factor for shear forces in z − FVY
+FMT Factor for torsional moments − FVZ
+FMY Factor for bending moments in y − FMT
+FMZ Factor for bending moments in z − FMY
+FMB Factor for warping moments − FMZ
+For the selected load cases and groups the results will be copied.
+2-8 SOFiSTiK2023InputDescription|DBMERG
+2.9 TRUS – Truss Elements
+TRUS
+Item Description Unit Default
+TYPE Type of results to work on LT ALL
+NONE deactivated all values
+ALL selected all values
+LOAD Loading
+FORC Internal forces and moments
+STRE Design stresses
+FN Factor for normal forces − 1.0
+SOFiSTiK2023 2-9DBMERG|InputDescription
+2.10 CABL – Cable Elements
+CABL
+Item Description Unit Default
+TYPE Type of results to work on LT ALL
+NONE deactivated all values
+ALL selected all values
+LOAD Loading
+FORC Internal forces and moments
+STRE Design stresses
+FN Factor for normal forces − 1.0
+2-10 SOFiSTiK2023InputDescription|DBMERG
+2.11 SPRI – Spring Elements
+SPRI
+Item Description Unit Default
+TYPE Type of results to work on LT ALL
+NONE deactivated all values
+ALL selected all values
+LOAD Loading
+FORC Internal forces and moments
+FN Factor for normal forces − 1.0
+SOFiSTiK2023 2-11DBMERG|InputDescription
+2.12 QUAD – Plane Elements
+QUAD
+Item Description Unit Default
+TYPE Type of results to work on LT ALL
+NONE deactivated all values
+ALL selected all values
+BLOA Free loads
+FLOA Element loading
+FORC Internal forces and moments
+NFOR Forces in nodes
+ERRO Error estimator
+BEDD Foundation stresses
+CRAC Crack orientations
+YIEL Nonlinear shell stress parameters
+STRE Stresses in elements
+NSTR Stresses in nodes
+ERRS Error estimator from stresses
+DESI Design stresses
+NDES Design stresses in nodes
+REIN Reinforcements
+NREI Reinforcements in nodes
+TEND Tendons
+FMX Factor for bending moment m-xx − 1.0
+FMY Factor for bending moment m-yy − FMX
+FMXY Factor for torsional moment m-xy − FMY
+FVX Factor for shear force q-x − FMXY
+FVY Factor for shear force q-y − FVX
+FNX Factor for membrane force n-x − FVY
+FNY Factor for memebrane force n-y − FNX
+FNXY Factor for membrane shear force n-xy − FNY
+For the selected load cases and groups the results will be copied. Factors should not be
+missused to supress torsional moments.
+2-12 SOFiSTiK2023InputDescription|DBMERG
+2.13 BRIC – 3D Continua Elements
+BRIC
+Item Description Unit Default
+TYPE Type of results to work on LT ALL
+NONE deactivated all values
+ALL selected all values
+LOAD Loading
+STRE Stresses in elements
+NSTR Stresses in nodes
+ERRS Error estimator from stresses
+MPHY Multiphysics results
+FSX Factor for normal stresses sig-x − 1.0
+FSY Factor for normal stresses sig-y − FSX
+FSZ Factor for normal stresses sig-z − FSY
+FTAU Factor for shear stresses − FSZ
+For the selected load cases and groups the results will be copied.
+SOFiSTiK2023 2-13DBMERG|InputDescription
+2.14 EXTR – Data mapping 2D-3D
+EXTR
+Item Description Unit Default
+TYPE Type of extrusion LT PCA
+PCA cyclic permutation of coordinate axes
+STYP Subtype [−] 1.0
+TREF Reference depth for sectional forces at [m] 1.0
+2D-system
+2-14 SOFiSTiK2023InputDescription|DBMERG
+2.15 ECHO – Volume of Output
+ECHO
+Item Description Unit Default
+OPT Select an option LT FULL
+FULL All options
+LC Selected load cases
+GRP Selected groups
+VAL Value of option LT YES
+NO no output
+YES normal output
+FULL extended output
+Output of the program is a protocol of the transfered or assigned data volume. The content is
+controlled by the record ECHO.
+SOFiSTiK2023 2-15DBMERG|InputDescription
+2-16 SOFiSTiK2023Example|DBMERG
+3 Example
+3.1 Example
+A bridge with identical prefabricated girders in longitudinal and transverse direction and an in
+situ concrete plate is analyzed. As the prestress is the same in all girders, first a system with
+just one girder is defined and prestress and all design for the transport and handling in the
+factory are performed. This girder should consist of six beam elements with the numbers 102,
+103 to 107. The name of this database should be SINGLE.
+First we create an intermediate system for the longitudinal system, as there are no effects in
+transverse direction from dead load, prestress or creep. Numbers of those beamelements of
+thedatabaseSYSTEMLhavenumbers1102to1107inthefirstspanand5102to5107inthe
+fifth span. To copy the tendons from SINGLE to SYSTEML is done via
++PROG DBMERG
+HEAD COPY THE TENDONS TO FULL SPAN SYSTEM
+CDB "single.cdb"
+ECHO OPT GRP
+BEAM TYPE TEND
+GRP NO NOS NDIV
+11 1 100
+21 2 100
+31 2 100
+41 2 100
+51 5 100
+END
+Output is as follows:
+LOADCASES
+0 COPIED FROM 1
+GROUPING
+PROJECT DIVISOR SOURCE
+11 100 1
+21 100 2
+31 100 2
+41 100 2
+51 100 5
+TRANSFERED ELEMENTDATA
+BEAM 1102 TRANSFERED FROM 102
+BEAM 1103 TRANSFERED FROM 103
+BEAM 1104 TRANSFERED FROM 104
+BEAM 1105 TRANSFERED FROM 105
+BEAM 1106 TRANSFERED FROM 106
+BEAM 1107 TRANSFERED FROM 107
+SOFiSTiK2023 3-1DBMERG|Example
+BEAM 2102 TRANSFERED FROM 202
+BEAM 2103 TRANSFERED FROM 203
+BEAM 2104 TRANSFERED FROM 204
+BEAM 2105 TRANSFERED FROM 205
+BEAM 2106 TRANSFERED FROM 206
+BEAM 2107 TRANSFERED FROM 207
+BEAM 3102 TRANSFERED FROM 202
+BEAM 3103 TRANSFERED FROM 203
+BEAM 3104 TRANSFERED FROM 204
+BEAM 3105 TRANSFERED FROM 205
+BEAM 3106 TRANSFERED FROM 206
+BEAM 3107 TRANSFERED FROM 207
+BEAM 4102 TRANSFERED FROM 202
+BEAM 4103 TRANSFERED FROM 203
+BEAM 4104 TRANSFERED FROM 204
+BEAM 4105 TRANSFERED FROM 205
+BEAM 4106 TRANSFERED FROM 206
+BEAM 4107 TRANSFERED FROM 207
+BEAM 5102 TRANSFERED FROM 502
+BEAM 5103 TRANSFERED FROM 503
+BEAM 5104 TRANSFERED FROM 504
+BEAM 5105 TRANSFERED FROM 505
+BEAM 5106 TRANSFERED FROM 506
+BEAM 5107 TRANSFERED FROM 507
+Now all beams have the same prestress from one span. Then all analysis is done which
+acounts for construction stages and other effects which are the same for all longitudinal girder
+systems.
+In the mean time a database SYSTEMG has been created with the total system. Beam ele-
+mentsofthedifferentlongitudinalgirdershavenumberswhichchangeinthe100-digitcolumn.
+Beam1201 is therefore between 1101 and 1301. Transverse girders have numbers greater
+than 10000. With this system live loads and other have been analyzed.
+To copy the results from that system to a single longitudinal girder is no done in such a way,
+thatresultsfromdifferentgirdersarecopiedasdifferentloadcasesofthesamegirdersystem.
+Then a superposition with MAXIMA or AQB can be done in system SYSTEML.
++PROG DBMERG
+HEAD GET LIVELOAD FROM GLOBAL SYSTEM
+CDB "systemg.cdb"
+! LOAD CASE 3 DEAD LOAD G2 (OUTER GIRDERS)
+! LOAD CASE 81 TO 86 LIVELOAD
+! LOAD CASE 31 TO 35 CONSTRUCTION SPAN 1
+! LOAD CASE 51 TO 56 CONSTRUCTION SPAN 3
+LC NO 3 NOS 3
+LC (181 186 1) (81 1)
+LC (191 196 1) (91 1)
+LC (131 135 1) (31 1)
+3-2 SOFiSTiK2023Example|DBMERG
+LC (151 156 1) (51 1)
+GRP (11 61 10) (11 10) 100
+BEAM TYPE FORC
+END
+LC (281 286 1) (81 1)
+LC (291 296 1) (91 1)
+LC (231 235 1) (31 1)
+LC (251 256 1) (51 1)
+GRP (11 61 10) (12 10) 100
+BEAM TYPE FORC
+END
+LC (381 386 1) (81 1)
+LC (391 396 1) (91 1)
+LC (331 335 1) (31 1)
+LC (351 356 1) (51 1)
+GRP (11 61 10) (13 10) 100
+BEAM TYPE FORC
+END
+END
+Nowthedesigncanbedoneonthesimplersystem. Itwouldbealsopossibletogobacktothe
+system SINGLE. In this case however due to a rather complicated creep stress ditribution this
+is not of a great benefit.
+SOFiSTiK2023 3-3

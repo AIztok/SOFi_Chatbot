@@ -1,0 +1,242 @@
+!#!Info Example:    Overview of all SLS checks
+!#!Info Program:    BEMESS
+!#!Info Keyword:    design; crack width; SLS; minimum reinforcement; robustness reinforcement
+
+!#!Kapitel System
++PROG AQUA urs:1
+HEAD
+NORM 'NS' 'en199X-200X'
+CONC 1 C 30
+STEE 2 S 500
+END
+$
++PROG SOFIMSHA urs:2
+HEAD Overview of all SLS checks
+SYST GIRD GDIV 10000
+ECHO FULL NO ; ECHO SYST YES
+NODE  NO   X=[m]   Y=[m]
+       1   0.0   0.0
+       2   4.0   0.0
+       3   5.5   0.0
+       4   8.5   0.0
+       5  10.0   0.0
+      43   5.5   7.5
+      44   8.5   7.5
+$ horizontal boundaries
+BOUN  NA   NE   DIV
+       1    2      8
+       2    3      3
+       3    4      6
+       4    5      3
+$ generates the boundary from node 1 to node 5
+BOUN 1 5 FIT
+$
+$ transformation of the nodes
+TRAN NODE FROM 1 TO 5 FIT DY  1.154[m]  DNO 10
+TRAN NODE FROM 1 TO 5 FIT DY  4.615[m]  DNO 20
+TRAN NODE FROM 1 TO 5 FIT DY  5.769[m]  DNO 30
+$
+$ vertical boundaries
+BOUN  NA   NE   DIV
+       1   11      2
+      11   21      6
+      21   31      2
+      33   43      3
+$
+$ generation of the QUAD elements
+GRP 1
+  QUAD PROP T 0.22[m] MNO 1  $ properties of QUAD elements
+  QUAD  NO  N1  N2  N3  N4
+       FIT   1  11  12   2
+       FIT  11  21  22  12
+       FIT  21  31  32  22
+GRP 2
+  QUAD PROP T 0.22[m] MNO 1  $ properties of QUAD elements
+  QUAD  NO  N1  N2  N3  N4
+       FIT   2  12  15   5
+       FIT  12  22  25  15
+       FIT  22  32  35  25
+GRP 3
+  QUAD PROP T 0.18[m] MNO 1  $ properties of QUAD elements
+  QUAD  NO  N1  N2  N3  N4
+       FIT  33  43  44  34
+$
+GRP 0
+BOUN 1 TITL outer_wall_1 ; BOUN  1  3 FIT TYPE CZ CA 500000
+BOUN 2 TITL outer_wall_2 ; BOUN  4  5 FIT TYPE CZ CA 500000
+BOUN 3 TITL outer_wall_3 ; BOUN 31 33 FIT TYPE CZ CA 500000
+BOUN 4 TITL outer_wall_4 ; BOUN 34 35 FIT TYPE CZ CA 500000
+BOUN 5 TITL outer_wall_5 ; BOUN  1 31 FIT TYPE CZ CA 500000
+BOUN 6 TITL outer_wall_6 ; BOUN  5 35 FIT TYPE CZ CA 500000
+BOUN 7 TITL inner_wall_1 ; BOUN  2 12 FIT TYPE CZ CA 500000
+BOUN 8 TITL inner_wall_2 ; BOUN 22 32 FIT TYPE CZ CA 500000
+END
+
+
+!#!Kapitel Loading, Analysis
++PROG SOFILOAD urs:3
+HEAD Actions
+UNIT 5 $ units: sections in mm, geometry+loads in m
+$ The definition of all actions which are used in the calculation
+$ It can be done in a separate SOFILOAD run
+$
+$ This SOFILOAD run is actual not necessary, because all gamma and psi values
+$ for G and Q_A-Q_E are preset. For information the action are defined here
+$ once more explicitly.
+
+ECHO ACT FULL
+  ACT G     TITL 'permanent loads G'
+   $ACT Q_A GAMU 1.50 0.0 PSI0 0.7  0.5  0.3  TITL 'Q_A Housing'
+  ACT Q_B GAMU 1.50 0.0 PSI0 0.7  0.5  0.3  TITL 'Q_B Offices'
+   $ACT Q_C GAMU 1.50 0.0 PSI0 0.7  0.7  0.6  TITL 'Q_C Assembly rooms'
+   $ACT Q_D GAMU 1.50 0.0 PSI0 0.7  0.7  0.6  TITL 'Q_D Sales rooms'
+   $ACT Q_E GAMU 1.50 0.0 PSI0 1.0  0.9  0.8  TITL 'Q_E Storage rooms'
+
+LC 1 TYPE G FACD 1.0 TITL 'dead load'
+  QUAD GRP 1 TYPE PG P 2.6 $ 2.6 = screed+cover in addition to dead load =1
+  QUAD GRP 2 TYPE PG P 2.6
+  QUAD GRP 3 TYPE PG P 1.2
+$
+LC 2 TYPE Q_B TITL 'span_1'
+  QUAD GRP 1 TYPE PG P 2.0
+$
+LC 3 TYPE Q_B TITL 'span_2'
+  QUAD GRP 2 TYPE PG P 2.0
+$
+LC 4 TYPE Q_B TITL 'balcony'
+  QUAD GRP 3 TYPE PG P 5.0
+END
+
++PROG ASE urs:5
+HEAD
+LC ALL
+END
+
++PROG MAXIMA urs:17
+HEAD Standard superpositioning without further input - ULS and SLS
+$ Manual MAXIMA see bemess6...dat
+END
+
+!#!Kapitel Design parameter and ULS design
++PROG BEMESS urs:9
+HEAD Definition of reinforcement parameters and minimum reinforcement
+$ normal area - inner roms:
+GEOM - HA 25[mm] DHA 10[mm] HB 25[mm] DHB 10[mm] $ exposition class XC1
+DIRE  0  0
+PARA NOG - DU 10[mm] WKU 0.40[mm]        $ class F
+$ WKU for crack witdh check acc. table bar diameter
+$ If check shall be done for table bar distance, directly the steel stress
+$ can be defined with PARA...SSU. For parallel input of
+$ WKU and SSU, SSU is used for the check. WKU will always be used for
+$ minimum reinforcement check!
+$
+$ Balcony:
+GEOM - HA 40[mm] DHA 10[mm] HB 40[mm] DHB 10[mm] $ exposition class XC4
+DIRE 90 90
+PARA NOG 3 DU 20[mm] WKU 0.30[mm]        $ class E
+$ 20 mm diameter only to get a result in the crack witdh check
+$ Here minimum one PARA line has to be input, also if only PARA is defined
+$ without further values!
+$
+$ Minimum reinforcement in corners - in areas A1 defined in SOFIMSHA -> see bemess6....dat
+END
+
++PROG BEMESS urs:10
+HEAD Short Design 2 elements
+ctrl lcr 9 ; REIN TITL 'Short Design 2 elements'
+LC   DESI ; elem 20058,30010 ; echo punc full
+END
+
++PROG BEMESS urs:16
+HEAD Design with factor 0.1 to better see effects of SLS with CTRL LCRI
+CTRL WARN 303 $ Switch off warning: differing element thickness
+ctrl lcr 10 ; REIN TITL 'Design with factor 0.1'
+LC desi fact 0.1 ; elem 20058,30010   $ factor 0.1 to better see effects of SLS with CTRL LCRI
+END
+
+!#!Kapitel SLS design
++PROG BEMESS urs:14
+HEAD LCR 11 CRAC WK TAB check according tables or steel stress SSU
+CTRL SLS ; ctrl lcri 10 lcr 11 ; LC 1101,1102 ; REIN TITL 'WK TAB check'
+CRAC WK TAB
+elem 20058,30010
+END
+
++PROG BEMESS urs:4
+HEAD LCR 12 CRAC WK PARA Analysis of crack width
+CTRL SLS ; ctrl lcri 10 lcr 12 ; LC 1101,1102 ; REIN TITL 'WK PARA check'
+CRAC WK PARA
+elem 20058,30010
+END
+
++PROG BEMESS urs:7
+HEAD LCR 13 CRAC XMIN 50 compression height
+CTRL SLS ; ctrl lcri 10 lcr 13 ; LC 1101,1102 ; REIN TITL 'XMIN 50 compression height'
+CRAC XMIN 50
+elem 20058,30010
+END
+
++PROG BEMESS urs:8
+HEAD LCR 14 DECO - see prestressed_slab.dat
+CTRL SLS ; ctrl lcri 10 lcr 14 ; LC 1101,1102 ; REIN TITL 'Decompression'
+NSTR DECO 100
+elem 20058,30010
+END
+
++PROG BEMESS urs:6
+HEAD LCR 15 Stress checks NSTR CHKC and CHKR
+CTRL SLS ; ctrl lcri 10 lcr 15 ; LC 1101,1102 $ permanent should be frequent or rare !
+NSTR CHKR 0.8 CHKC -0.6 $ CHKR increases reinforcement if necessary, CHKC negative not - only check concrete pressure
+elem 20058,30010
+END
+
++PROG BEMESS urs:11
+HEAD LCR 16 NSTR SIGS  50 stress range
+CTRL SLS ; ctrl lcri 10 lcr 16 ; LC 1101,1102 $ permanent should be frequent or rare !
+NSTR SIGS  50
+elem 20058,30010
+END
+
++PROG BEMESS urs:12
+HEAD LCR 17 Minimum reinforcement centric restraint
+CTRL SLS ; ctrl lcri 10 lcr 17 ; REIN TITL 'Minimum reinforcement'
+MREI FFCT 0.5 KC 1.0
+elem 20058,30010
+END
+
++PROG BEMESS urs:13
+HEAD LCR 18 Robustness reinforcement with fctm
+CTRL SLS ; ctrl lcri 10 lcr 18 ; LC 1101,1102 ; REIN TITL 'Robustness'
+MREI ROBU FCTM ; ECHO RTAB yes
+elem 20058,30010
+END
+
+!#!Kapitel Final Reinforcement
++PROG BEMESS urs:26
+HEAD Maximum of the required reinforcement
+$ In LCR 15 we already have a maximum - it would be sufficient to only copy it
+$ into LCR 1 , but to be on the safe side any LCR
+$ can be applied in order to create a maximum from them:
+
+CTRL lcri 9,11,12,13,14,15,16,16,18
+CTRL WARN 610 $ otherwise error here: There are more design cases with element results than with nodal results!
+CTRL LCR  1    $ writes the maximum of the reinforcement to LCR 1
+REIN TITL 'Maximum of reinforcement'
+$ because if you open WINGRAF, the default is LCR 1 and you would like
+$ to see the maximum first - not to miss the maximum !
+END
+
++PROG RESULTS urs:15
+HEAD
+SIZE TYPE "-URS"
+PICT SC DEFA W DEFA H DEFA SPLT NO
+FLT 1 NAME "quad_rei.nr" 20058
+LC   DESI all ; QUAD TYPE  ASU,ASL STYP ELEM REPR DLST
+$
+FLT 1 NAME "quad_rei.nr" 30010
+LC   DESI all ; QUAD TYPE  ASU,ASL STYP ELEM REPR DLST
+END
+
+$ Clean file folder:
++sys del $(project).$d?
+

@@ -1,0 +1,123 @@
+!#!Info Example:    Russian SNIP 52101
+!#!Info Program:    BEMESS
+!#!Info Keyword:    Static Analysis, Design
+!#!Info Date:       06/21/2007
+
+!#!KAPITEL Material and System generation
++PROG AQUA URS:1
+HEAD
+UNIT 0 ; ECHO MAT FULL
+NORM SP 63-13330   $ Russian SNiP SP 63.13330.2012
+CONC 1  SNIP  35
+STEE 2  SNIA 400
+SREC 1 H .60 B .30 HO .20 BO 1.20
+END
+
++PROG SOFIMSHA urs:2
+HEAD
+UNIT 0 ; SYST GIRD GDIV 10000 POSZ ; ECHO FULL NO ; ECHO SYST YES
+NODE  NO     X     Y
+       1    0.0   0.0
+       2    0.0   4.5
+       3    0.0   9.0
+       4    0.0  13.5
+NODE MESH  1 2 DIV 9
+NODE MESH  2 3 DIV 9
+NODE MESH  3 4 DIV 9
+NODE FIT   1 4
+TRAN NODE 1 4  FIT DX  6.0  DNO 10
+NODE FIT   1 3
+TRAN NODE 1 3  FIT DX 12.0  DNO 20
+$
+NODE MESH  1 11 DIV 12
+NODE MESH 11 21 DIV 12
+$
+GRP 1
+  QUAD FIT 1 2 22 21 T 0.25[m] MNO 1
+GRP 2
+  QUAD FIT 2 3 23 22 T 0.25[m] MNO 1
+GRP 3
+  QUAD FIT 3 4 14 13 T 0.25[m] MNO 1
+$
+GRP 0
+  BEAM FIT 21 23 NCS 1
+$
+NODE  1,2,11,12,21,22,23 FIX PP
+$
+GRP 3
+  BOUN 1 TITL 'Wall 1' ;   BOUN  3  4 FIT TYPE CZ CA 1000000 REF YY
+  BOUN 2 TITL 'Wall 2' ;   BOUN 13 14 FIT TYPE CZ CA 1000000 REF YY
+  BOUN 3 TITL 'Wall 3' ;   BOUN 13 23 FIT TYPE CZ CA 1000000 REF XX
+  BOUN 4 TITL 'Wall 4' ;   BOUN  4 14 FIT TYPE CZ CA 1000000 REF XX
+END
+
+
++PROG SOFILOAD urs:8
+head
+ACT G_C                              $ dead load concrete
+ACT Q                                $ uniform distributed loads >= 2 kPa
+LC 1 FACD 1 TYPE G_C
+  quad GRP 1,2,3 TYPE PZZ P 4.5
+LC 2       TYPE Q
+  quad GRP 1 TYPE PZZ P 3.5
+LC 3       TYPE Q
+  quad GRP 2 TYPE PZZ P 3.5
+LC 4       TYPE Q
+  quad GRP 3 TYPE PZZ P 3.5
+end
+
+!#!KAPITEL Analysis
++PROG ASE URS:3
+HEAD
+LC ALL
+END
+
++PROG MAXIMA URS:4
+HEAD
+$ combination acc. to SP 20.13330.2016 equation 6.1
+$ here only one variable short-term action
+ECHO FULL NO ; ECHO TABS YES
+  COMB 1 extr EXPL type desi base 2100
+     ADD {G}  FACU gamu FACF gamf                $ dead loads
+      ADA G_C
+     ADD {Q1} FACU psiu FACF 0                   $ first leading short-term action
+      ADA Q                                      $ use only short-term action Q
+
+  SUPP 1 EXTR MAMI ETYP QUAD TYPE M     TITL 'ULS_QUAD'
+  SUPP 1 EXTR MAMI ETYP QNOD TYPE M     TITL 'ULS_QUAD'
+  SUPP 1 EXTR MAMI ETYP QUAD TYPE VX,VY TITL 'ULS_QUAD'
+  SUPP 1 EXTR MAMI ETYP QNOD TYPE VX,VY TITL 'ULS_QUAD'
+  SUPP 1 EXTR MAMI ETYP NODE TYPE PZ    TITL 'ULS_NODE'
+  $SUPP 1 EXTR MAMI ETYP qbed ZUST p     BEZ 'ULS_QUAD' $ QUAD-bedding, if available
+  SUPP 1 EXTR MAMI ETYP BEAM TYPE MY    TITL 'ULS_BEAM'
+END
+
++PROG BEMESS URS:5
+HEAD
+GEOM - HA 25[mm] DHA 10[mm] HB 25[mm] DHB 10[mm] $ mm
+DIRE  0  0
+PARA NOG - DU 10 SSU 220
+$ SSU = steel stress for possible checks for serviceability limit state
+$ SSO = Stahlspannung für eventuellen Gebrauchslastnachweis
+PUNC D 0.40[m] B 0.40[m]
+END
+$
+$ For modification of the safety class an AQUA run can be input only with
+$ a NORM definitions.
+$
++PROG BEMESS URS:6
+HEAD
+CTRL SNIP 1.0  $ gamma-b1 for short-term loading
+CTRL ULTI ; LC DESI
+END
+
++PROG AQB URS:7
+HEAD
+LC TYPE (D)       $ design load cases
+DESI STAT ULTI
+END
+
+$ Clean file folder:
++sys del $(project).$d?
+
+

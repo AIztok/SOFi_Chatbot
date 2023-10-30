@@ -1,0 +1,111 @@
+!#!Info Example:    Multi Layer Reinforcement
+!#!Info Program:    BEMESS
+!#!Info Keyword:    Multi Layer Reinforcement
+
+!#!KAPITEL Material and System generation
++PROG AQUA urs:1
+HEAD
+NORM 'DIN' 'en199X-200X'
+CONC 1 C 30
+STEE 2 S 500
+END
+
++PROG SOFIMSHC urs:2
+HEAD System incl. definition of support width for Vz-reduction near supports
+PAGE UNII 0
+SYST GIRD  GDIV 10000
+$
+CTRL MESH 1
+CTRL HMIN 0.2
+
+SPT  NO    X    Y
+     1,3  0,5   .5
+    11,13 0,5  -.5
+$
+SLN 1    1    3
+SLN 2    3   13 ; SLNS DRZ 1 CA 100000 bfix 0.20
+SLN 3   13   11
+SLN 4   11    1 ; SLNS DRZ 1 CA 100000 bfix 0.20
+$
+SAR  1 MNO 1 MRF 2 T 0.6[m] grp 1
+SARB OUT 1,2,3,4
+END
+
++PROG SOFILOAD urs:5
+HEAD
+LC 901 TYPE NONE ; QUAD GRP 1 TYPE PZZ P 500
+LC 902 TYPE NONE ; QUAD GRP 1 TYPE PZZ P 400
+END
+
++PROG BEMESS urs:4
+HEAD Multi-Layer-Definition
+LAY       POS    Z DIRE   D  AS ASMA WK
+         'UPP'  45    0  20  0  31.4 0.15
+         'UPP'  55   90  20  0  31.4 0.15
+         'UPP'  65    0  20  0     -
+         'UPP'  75   90  20  0     - $ the most inner layer may not have an ASMA
+
+         'LOW'  95   90  20  0     -
+         'LOW'  85    0  20  0     -
+         'LOW'  75   90  20  0  31.4
+         'LOW'  65    0  20  0  31.4
+         'LOW'  55   90  20  0  31.4 0.15
+         'LOW'  45    0  20  0  31.4 0.15
+PARA -   $ - =  all groups
+<TEXT> Comments Bellmann:
+- Best input a minimum reinforcement for the first two outer layers - AS
+- Input maximum reinforcement for all layers - except the two inner ones at each side
+- Input WK 0.30 for the first two outer layers (only they are checked for crack width)
+</TEXT>
+END
+$  Multilayer - Layerdesign
+$  If you are interested there is a YOUTUBE Video on the layerdesign:
+$  https://www.youtube.com/watch?v=wIzO8YNLCn4
+
+!#!KAPITEL Analysis
++PROG ASE urs:3
+HEAD
+LC 101 FACD 1.35
+  LCC 901
+LC 102 FACD 1.00
+  LCC 902
+END
+
++PROG BEMESS urs:6
+HEAD Normal Design
+$ CTRL BOUN 0 $ To compare: Without Vz-reduction near supports
+ctrl ulti lcr 1 ; lc 101 ; echo punc full
+END
+
+-PROG BEMESS urs:9
+HEAD echo elem
+ctrl ulti lcr 8 ; lc 101
+echo elem 10047,10006,10037 $ design of all elements but outprint only for some elements
+                            $ -> automatically extended output, plot only for first element 10047
+END
+
+-PROG BEMESS urs:8
+HEAD elem
+ctrl ulti lcr 9 ; lc 101
+elem 10047 $ design of only one single element -> automatically extended output
+           $ -> Then LRC 9 only contains this element
+END
+
++PROG BEMESS urs:10
+HEAD Crack width Design
+ctrl crac lcri 1 lcr 2
+lc 102
+crac wk para
+END
+
++PROG ASE urs:7
+HEAD
+SYST PROB NONL NMAT YES
+REIQ LCR 2
+LC 102 FACD 1.0 TITL 'non-linear SLS 0.70'
+  LCC 901 FACT 0.70
+END
+
+$ Clean file folder:
++sys del $(project).$d?
+

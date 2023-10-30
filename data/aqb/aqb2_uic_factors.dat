@@ -1,0 +1,261 @@
+PROG AQUA
+HEAD T-BEAM PRESTRESSED CONCRETE
+NORM DIN 4227
+ECHO SECT EXTR
+CONC 1 SB 35
+STEE 11 BST  500 ES 205000
+     12 PST 1450 FT 1600 ES 205000 R 0.4
+SECT 1 MRF 11 FSYM YES TITL "Cross section A-A"
+SV  YSC 2.325     $ SHEAR CENTRE IN THE MIDDLE OF THE BEAM
+POLY O
+VERT 10 0.00 0.00
+   11 3.23 0.00
+   12 3.27 -.04
+   13 3.27 -.09
+   20 3.50 -.09
+   21 3.50 0.04
+   22 2.65 0.27
+   30 2.65 1.10
+   31 2.00 1.10
+   32 2.00 0.35
+   33 1.70 0.25
+   34 0.00 0.25
+SPT RU 2.65 1.10
+    RO 2.65 0.00
+CUT 1 ZB 0.35 BMAX 0.11 LAY 1
+CUT 2 ZB 0.55 ==
+CUT 3 ZB 0.75 ==
+CUT 4 ZB 0.95 ==
+CUT 11 YB 2.66 TYPE FLAN LAY 2 WTM 0.0 WTD 0.0 MS -1.78
+$ MINIMUM OF REINFORCEMENT FOR TORSIONAL AREA
+LRF  1 2.60 0.05 2.60 1.05 AS 14.82 LAY M0 D 14 TORS ACTI DIST INS
+LRF  2 2.60 1.05 2.05 1.05 AS 14.82 LAY M0 D 14 TORS ACTI DIST FULL
+LRF  3 2.05 1.05 2.05 0.05 AS 14.82 LAY M0 D 14 TORS ACTI DIST INS
+LRF  4 2.05 0.05 2.60 0.05 AS 14.82 LAY M0 D 14 TORS ACTI DIST FULL
+LRF 11 2.60 1.05 2.05 1.05 AS 14.82 LAY Z1 D 20           DIST EVEN
+LRF 12 0.01 0.05 3.23 0.05 AS  2.00 LAY M2 D 12           DIST EVEN
+END
+
+PROG AQB
+HEAD T-BEAM PRESTRESSED CONCRETE SYSTEM
+HEAD DEFINITION OF THE SYSTEM AND THE TENDONS
+HEAD CALCULATION OF CREEP AND SHRINKAGE
+BEAM 1 X  1.00 NCS 1 TYPE SECT BETA -2.0 CS0 0 CS1 1
+     1 X 11.00 NCS 1 TYPE SECT BETA -2.0 CS0 0 CS1 1
+BEAM 1 X  1.0,11.0 NCS ASV CS1 40.0
+TEND 1 10 12 0 1 0 X  1.00 Y 2.19 Z .478 ZZ 2770. AZ 3200 NZ 1/9
+     1 11 12 0 1 0 X  1.00 Y 2.46 Z .478 ZZ 2720. AZ 3200 NZ 1/9
+     1 10 12 0 1 0 X 11.00 Y 2.19 Z .970 ZZ 2770. AZ 3200
+     1 11 12 0 1 0 X 11.00 Y 2.46 Z .970 ZZ 2720. AZ 3200
+$
+LC 1 TYPE 'V'  TITL 'Prestress'
+S No 1  1.00 -5456.42 VZ  -606.27 MY  -749.68
+S No 1 11.00 -5490.00 VZ     0.00 MY -3420.00
+LC 2 TYPE 'G1' TITL 'Dead_Load'
+S No 1  1.00 VZ   376. MY   451.
+S No 1 11.00           MY  2070.
+LC 3 TYPE 'G2' TITL 'Track+Sidewalk'
+S No 1  1.00 VZ    82. MY    98.
+S No 1 11.00           MY   450.
+LC 4 TYPE 'P'  TITL 'P (SLW 60)'
+S No 1  1.00 VZ  395.3  MT -201  MY   474.
+S No 1 11.00                     MY  1962.
+LC 5 TYPE 'K'  TITL 'C+S'
+$
+CTRL AXIA ZSYM
+ECHO EIGE
+ECHO FORC,SECT
+COMB SUM LC1 G1 1.0 G2 1.0 V 1.0 LCST 5
+EIGE 1 1.5 -6.8E-5 REL 0.8
+EIGE 12 T 1000
+$
+ECHO COMB,REIN,SHEA
+COMB SOLO LC1 V
+COMB SOLO LC1 G1
+COMB SOLO LC1 G2
+COMB SOLO LC1 P
+COMB SUM  LC1 G1 1.0 V 1.0
+COMB SUM  LC1 G1 1.0 V 1.0 G2 1.0
+COMB SUM  LC1 G1 1.0 V 1.0 G2 1.0 P 1.0 K 1.0
+STRE E BH
+$
+END
+$ CREATE UIC-FIELD INCL. LINEAR DEPENDING VALUES
+STO#UIC 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 $ Value 0-10
+END
+
+PROG AQB
+<TEXT> Preliminary remark
+The evaluation of a UIC-value as needed for railway bridges is defined by
+the search for a load factor on some load cases which lead to a total usage
+of 1.0 for the total structure. While this is straight forward for simple
+linear stress values, the task may be solved only iteratively for the very
+general case of a prestressed concrete design.
+
+This is why we use an iteration of the load factor X with a Regula Falsi in
+CADINP.
+
+Prerequisite are of course the specification of the real reinforcements
+either with the section in AQUA or with BEAM NCS AS/ASV in AQB.
+
+as the factors are specifically  requested, a suitable iteration of each non linear
+case has to be performed. .
+
+The resistance factors are in CADINP as Array USAGE(0:20) available
+thereby are USAGE(9)  = Safety against rupture in BEME
+            USAGE(11) = Elastic compressive stress
+            USAGE(12) = Elastic tensile stress
+            USAGE(13) = Shear sth. principal tension stress
+            USAGE(14) = yield sth. principal compression stress
+            USAGE(15) = Prestressing steel stress
+            USAGE(16) = Longitudinal reinforcement
+            USAGE(17) = Shear reinforcement
+            USAGE(18) = Crack width
+            USAGE(19) = Stress range
+            USAGE(20) = Lower limit stress for shear design
+</TEXT>
+
+LOOP#UICLOOP 10
+LET#UICVAL 9-#UICLOOP $ REVERSE COUNT TO HAVE THE TOTAL FACTOR LAST
+
+LET#XMIN   0.0     $ lower limit of load factor (0 may be a problem some times)
+LET#XMAX   0.0     $ upper limit (must to be preset with zero!)
+LET#FMIN   0.0     $ Function value for usage iteration at lower limit
+LET#FMAX   0.0     $ Function value for usage iteration at upper limit
+LET#CONT   1.0     $ will be set to zero if iteration is terminated
+LET#X      #XMIN   $ the loadfactor
+LET#F      0.0     $ the target function #AQB_USAGE-1.0
+
+LOOP#L      20     $ Maximum 20 iterations
+IF #L              $ Regula Falsi not to be performed on initial loop
+  LET#0 0          $ debug option for regula falsi if set to 2 / 0 otherwise
+  LET#UIC(#uicval) #X
+  IF #UICVAL==0
+     LET#F #AQB_USAGE-1.0 $ function value, #AQB_USAGE-array is set by AQB
+  ENDIF
+  IF #UICVAL==1 ; LET#F MAX(#AQB_USAGE(11),#AQB_USAGE(5),#AQB_USAGE(6))-1.0 ; ENDIF  $ concrete compressive stress
+  IF #UICVAL==2 ; LET#F #AQB_USAGE(12)-1.0 ; ENDIF                                   $ concrete edge tensile stress
+  IF #UICVAL==3 ; LET#F #AQB_USAGE(12)-1.0 ; ENDIF                                   $ concrete corner tensile stress
+  IF #UICVAL==4 ; LET#F #AQB_USAGE(13)-1.0 ; ENDIF                                   $ principal tensile stress
+  IF #UICVAL==5 ; LET#F #AQB_USAGE(15)-1.0 ; ENDIF                                   $ prestressing steel stress
+  IF #UICVAL==6 ; LET#F #AQB_USAGE(9)-1.0  ; ENDIF                                   $ safety against rupture
+  IF #UICVAL==7 ; LET#F #AQB_USAGE(14)-1.0 ; ENDIF                                   $ principal compression stress
+  IF #UICVAL==8 ; LET#F #AQB_USAGE(17)-1.0 ; ENDIF                                   $ shear reinforcement
+  IF #UICVAL==9 ; LET#F #AQB_USAGE(20)-1.0 ; ENDIF                                   $ lower stress limit for shear
+  IF ABS(#F)<0.001
+     LET#CONT 0.0  $ standard end of iteration
+  ELSE
+    IF #L==1       $ set only lower bound, check for improper problem
+       LET#XMIN #X ; LET#FMIN #F
+       IF #F>0.0
+            TXB "The resistance =1.0 with the lowest load factor is not possible !"
+          LET#CONT 0.0
+       ELSE
+          LET#X MAX(1.0,2.0*#X)
+       ENDIF
+    ELSE
+       IF #F>0.0   $ exchange intervall limits
+          LET#XMAX #X ; LET#FMAX #F
+       ELSE
+          LET#XMIN #X ; LET#FMIN #F
+       ENDIF
+       IF #XMAX==0 $ increase/search Intervall
+          IF #X>9.998
+             LET#XMAX=9.999 ; LET#X #XMAX
+          ELSE
+             LET#X 1.4*#X
+          ENDIF
+       ELSE        $ REGULA FALSI
+          IF #XMAX<#XMIN+0.0005
+             LET#CONT 0.0
+          ELSE
+             IF #FMIN<#FMAX
+                LET#CC #FMIN/(#FMIN-#FMAX)
+             ELSE
+                LET#CC 0.5
+             ENDIF
+             LET#CC MAX(#CC,0.10)
+             LET#CC MIN(#CC,0.90)
+             LET#X  #XMIN*(1.-#CC)+#XMAX*#CC
+          ENDIF
+       ENDIF
+    ENDIF
+  ENDIF
+  LET#0 0 $ switch off debug option for regula falsi
+ENDIF
+$ THE INPUT ITSELF:
+TXB "Load factor of superimposed load  = #(X,10.3) (Iteration #L of Values #UICVAL)"
+BEAM 1 TYPE SECT BETA -2.0 CS0 0 CS1 1
+BEAM 1 X 1.0,11.0 NCS ASV CS1 40.0
+LC 1 TYPE 'V'
+LC 2 TYPE 'G1'
+LC 3 TYPE 'G2'
+LC 4 TYPE 'P'
+LC 5 TYPE 'K'
+IF #CONT|(#UICVAL>0)  $ SMALLER PRINTOUT FOR EACH ITERATION
+   ECHO FULL NO ; ECHO USEP
+ELSE      $ THE FINAL EXTENDED PRINTOUT
+   ECHO FORC,SECT ; ECHO USEP EXTR ; ECHO COMB,REIN,SHEA
+   COMB SOLO LC1 V,G1,G2
+   COMB SOLO LC1 P #X
+ENDIF
+IF (#UICVAL<6)
+   COMB SUM  LC1 G1 1.0 V 1.0
+   COMB SUM  LC1 G1 1.0 V 1.0 G2 1.0
+   COMB SUM  LC1 G1 1.0 V 1.0 G2 1.0 P #X K 1.0
+   IF (#UICVAL==1) $ ß1  compressive stress / supress tensile stresses
+      STRE SMOD STYP  ST  SBT  SBBT
+           1    BH    -1   -1    -1
+           E    BH
+   ENDIF
+   IF (#UICVAL==2) $ ß2  edge stress / suppress corner stress
+      STRE SMOD STYP  ST  SBT  SBBT    SC
+           1    BH    -1  2.5    -1    -1
+           E    BH
+   ENDIF
+   IF (#UICVAL==3) $ ß3  corner stress / suppress edge stress
+      STRE SMOD STYP  ST  SBT  SBBT    SC
+           1    BH    -1   -1   2.8    -1
+           E    BH
+   ENDIF
+   IF (#UICVAL==0)|(#UICVAL>3)
+      STRE E BH
+   ENDIF
+ENDIF
+$
+IF (#UICVAL==0)
+   COMB SUM LC1 G1 1.0 V 0.9 K 0.9 P #X ; STRE E RL
+ENDIF
+$
+IF (#UICVAL==0)|(#UICVAL>5)
+   COMB SUM MY LC1 G1 1.75 V 1.0 G2 1.75 P 1.75*#X K 1.0
+   STRE E UL ; DESI STAT ULTI
+ENDIF
+$
+IF (#UICVAL==0)
+   COMB SUM MY LC1 G1 1.0 V 0.9 G2 1.0 P #X RMY 1.0 K 0.9
+   NSTR S0 CRAC 4227
+ENDIF
+END
+ENDLOOP #CONT
+ENDLOOP $ UICLOOP
+
+LET#UIC(10) MAX(#UIC(8),#UIC(9))
+LET#UIC(0) MIN(#UIC(1),#UIC(2),#UIC(3),#UIC(4),#UIC(5),#UIC(6),#UIC(7),#UIC(10))
+
+<TEXT> Summarization of UIC-Factors
+ SLS
+    concrete compressive stress          ß-UIC = #(#UIC(1),8.2)
+    concrete edge tensile stress         ß-UIC = #(#UIC(2),8.2)
+    concrete corner tensile stress       ß-UIC = #(#UIC(3),8.2)
+    principal tensile stress             ß-UIC = #(#UIC(4),8.2)
+    prestressing steel stress            ß-UIC = #(#UIC(5),8.2)
+ ULS:
+    safety against rupture               ß-UIC = #(#UIC(6),8.2)
+    principal compression stress         ß-UIC = #(#UIC(7),8.2)
+    shear reinforcement                  ß-UIC = #(#UIC(8),8.2)
+    lower stress limit for shear         ß-UIC = #(#UIC(9),8.2)
+ complete system :
+    Minimum of all checks                ß-UIC = #(#UIC(0),8.2)
+</TEXT>
+END

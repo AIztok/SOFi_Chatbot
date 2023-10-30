@@ -1,0 +1,98 @@
+!#!Info Example:    Static of a Construction Plate with Balcony
+!#!Info Program:    BEMESS
+!#!Info Keyword:    column head; punching
+
+!#!KAPITEL Material and System generation
++PROG AQUA urs:1
+HEAD Example punching column heads
+NORM 'DIN' 'en199X-200X' COUN 49
+CONC 1    C '30'
+STEE 2,3,4 S 500            $ Reinforcement steel
+CONC 5    C  30
+END
+
++PROG SOFIMSHC urs:2
+HEAD Example punching column heads
+UNIT 5
+SYST GIRD GDIV 10000 GDIR POSZ
+CTRL MESH 1
+CTRL HMIN 0.30 $ sonst entstehen bei den hohen Lasten Einzeldurchstanzpunkte
+               $ to avoid punching problems at high point loads.
+
+SPT 1 X  2  2 FIX pz   BX 0.40 0.40                                  $ ohne Stützenmakro   $ without macro
+SPT 2 X  6  2 FIX pz   BX 0.40  -                                    $  "  rund            $  "  circular
+SPT 3 X 10  2 FIX pz   BX 0.40 0.40 ; SPTP SUPP X 0.40 0.40          $ mit Stützenmakro    $ with macro
+
+SPT 4 X  2  6 FIX pz   BX 0.40 0.40 ; SPTP SUPP X 0.60 0.60 VAL 0.40 $ Stützenkopf klein   $ column head small
+SPT 5 X  6  6 FIX pz   BX 0.30 0.30 ; SPTP SUPP X 1.30 1.30 VAL 0.40 $ Stützenkopf groß    $   " wide
+SPT 6 X 10  6 FIX pz   BX 0.30 0.30 ; SPTP VOUT X 0.70 0.70 VAL 0.40 $ nur Voute           $ only haunch
+
+SPT 7 X  2 10 FIX pz   BX 0.30 0.30 ; SPTP SUPP X 1.20 1.20 VAL 0.40 $ Kopf und Voute      $ head and haunch
+                                      SPTP VOUT X 1.40 1.40 VAL 0.40
+
+SPT 8 X  6 10 FIX pz   BX 0.30  -   ; SPTP SUPP X 0.60  -   VAL 0.40 $ Kopf klein rund     $ small circular
+SPT 9 X 10 10 FIX pz   BX 0.30  -   ; SPTP SUPP X 1.20  -   VAL 0.40 $ Kopf und Voute rund $ head and haunch
+                                      SPTP VOUT X 1.40  -   VAL 0.40 $                     $      circular
+
+SAR       1 GRP 1 MNO 1 MRF 2 T 0.22[m] TITL "Fläche"
+SARB  OUT
+SLNB X1       0.0       0.0       0.0 X2   12.0000       0.0       0.0
+SARB  OUT
+SLNB X1   12.0000       0.0       0.0 X2   12.0000   12.0000       0.0
+SARB  OUT
+SLNB X1   12.0000   12.0000       0.0 X2       0.0   12.0000       0.0
+SARB  OUT
+SLNB X1       0.0   12.0000       0.0 X2       0.0       0.0       0.0
+END
+
++PROG SOFILOAD urs:4
+HEAD
+UNIT 5 $ units: sections in mm, geometry+loads in m
+LC 99 TYPE none
+  let#x 0.225 $ to get equal punching forces in node 1-2-3
+  AREA TYPE PG P1 20 X1 #x #x X2 DXY 12-2*#x 12-2*#x
+END
+
+!#!KAPITEL Analysis
++prog ase urs:7
+HEAD
+LC 1 ; LCC 99 FACT 1
+LC 2 ; LCC 99 FACT 2
+LC 3 ; LCC 99 FACT 3
+LC 4 ; LCC 99 FACT 4
+LC 5 ; LCC 99 FACT 5
+END
+
++PROG BEMESS urs:9
+HEAD Definition of reinforcement parameters and minimum reinforcement
+GEOM   -  30[mm]  10[mm]  30[mm]  10[mm]  $ mm depending on exposition class
+DIRE 0 0
+PARA NOG - DU 20[mm] WKU 0.30[mm]
+END
+
++PROG BEMESS URS:24
+HEAD  Ultimate Limit State Design
+CTRL ULTI ; ECHO PUNC FULL
+CTRL LCR 1
+LC       1
+END
+
++PROG BEMESS URS:6
+HEAD  Design with higher load
+CTRL ULTI ; ECHO PUNC FULL
+PUNC RO_V 0.20 $ then stirrups also occur in column head
+PUNC 1,2,3,4,6,8 HEAD CHEK
+CTRL LCR 3
+LC       3
+END
+
++PROG WING urs:3
+HEAD
+LC  DESI 1 ; QUAD TYPE PUNC UNIT DEFA SCHH 0.27
+LC  DESI 3 ; QUAD TYPE PUNC UNIT DEFA SCHH 0.27
+END
+
+$ Clean file folder:
++sys del $(project).$d?
+
+

@@ -1,0 +1,59 @@
+!#!Info  Example:       Steelsection with welds
+!#!Info  Keyword:       Stresses
+!#!Info  Program:       AQB
+!#!Info  Date:          $Date: 2015-05-14 13:57:22 +0200 (Do, 14 Mai 2015) $
+
+PROG AQUA
+HEAD Tutorial example 1 for design with weld
+NORM DIN EN199X-200X
+ECHO SECT EXTR
+STEE 1 S 355
+$
+SECT 11
+PLAT 1   50 -86.6  100   0.0  8
+     2  100   0.0   50  86.6  8
+     3   50  86.6  -50  86.6 12
+     4  -50  86.6 -100   5.0  8
+     5 -100  -5.0  -50 -86.6  8
+     6  -50 -86.6   50 -86.6 12
+WELD 10 -100 5.0 -100 -5.0   -8
+SPT  P3   0  86.6
+     P6   0 -86.6
+END
+
+
++PROG AQB
+HEAD Default ECHO
+S 11 1 0  150  150 -120 0.9 42 25
+   = = 1 -150 -120  150 0.9 25 42
+STRE E M0
+STRE C M0
+END
+
++PROG AQB
+HEAD ECHO FULL
+ECHO FULL FULL
+S 11 1 0  150  150 -120 0.9 42 25
+   = = 1 -150 -120  150 0.9 25 42
+STRE E M0
+STRE C M0
+END
+
++PROG AQB
+HEAD ECHO EXTR
+ECHO FULL EXTR
+ECHO STRE FAT
+S 11 1 0  150  150 -120 0.9 42 25
+   = = 1 -150 -120  150 0.9 25 42
+STRE E M0
+END
+
++PROG AQB
+HEAD ECHO EXTR+ALL
+ECHO STRE ALL '*'
+ECHO STRE FAT
+S 11 1 0  150  150 -120 0.9 42 25
+   = = 1 -150 -120  150 0.9 25 42
+STRE E M0
+END
+

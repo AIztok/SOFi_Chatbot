@@ -1,0 +1,151 @@
++PROG AQUA urs:1
+HEAD SOFILOAD - Load Distribution Areas for Frameworks
+NORM DIN EN199X-200X
+STEE 1 S 355
+PROF 1 HEA 400 MNO 1
+END
+
++PROG SOFIMSHA urs:2
+HEAD SOFILOAD - Load Distribution Areas for Frameworks
+SYST SPAC GDIV 10000 GDIR POSZ
+NODE        1 X    25.000000 Y          0.0 Z          0.0 FIX F
+NODE        2 X    25.000000 Y    0.0000000 Z   -5.0000000
+NODE        3 X    25.000000 Y   -10.000000 Z   -5.0000000
+NODE        4 X    25.000000 Y   -10.000000 Z    0.0000000 FIX F
+NODE        5 X    20.000000 Y          0.0 Z          0.0 FIX F
+NODE        6 X    20.000000 Y    0.0000000 Z   -5.0000000
+NODE        7 X    20.000000 Y   -10.000000 Z   -5.0000000
+NODE        8 X    20.000000 Y   -10.000000 Z    0.0000000 FIX F
+NODE        9 X    15.000000 Y          0.0 Z          0.0 FIX F
+NODE       10 X    15.000000 Y    0.0000000 Z   -5.0000000
+NODE       11 X    15.000000 Y   -10.000000 Z   -5.0000000
+NODE       12 X    15.000000 Y   -10.000000 Z    0.0000000 FIX F
+NODE       13 X    10.000000 Y          0.0 Z          0.0 FIX F
+NODE       14 X    10.000000 Y    0.0000000 Z   -5.0000000
+NODE       15 X    10.000000 Y   -10.000000 Z   -5.0000000
+NODE       16 X    10.000000 Y   -10.000000 Z    0.0000000 FIX F
+NODE       17 X    5.0000000 Y          0.0 Z          0.0 FIX F
+NODE       18 X    5.0000000 Y    0.0000000 Z   -5.0000000
+NODE       19 X    5.0000000 Y   -10.000000 Z   -5.0000000
+NODE       20 X    5.0000000 Y   -10.000000 Z    0.0000000 FIX F
+NODE       21 X    0.0000000 Y   -10.000000 Z   -5.0000000
+NODE       22 X          0.0 Y   -10.000000 Z    0.0000000 FIX F
+NODE       23 X          0.0 Y          0.0 Z          0.0 FIX F
+NODE       24 X    0.0000000 Y    0.0000000 Z   -5.0000000
+NODE       25 X    25.000000 Y   -5.0000000 Z   -6.5000000
+NODE       26 X    20.000000 Y   -5.0000000 Z   -6.5000000
+NODE       27 X    15.000000 Y   -5.0000000 Z   -6.5000000
+NODE       28 X    10.000000 Y   -5.0000000 Z   -6.5000000
+NODE       29 X    5.0000000 Y   -5.0000000 Z   -6.5000000
+NODE       30 X    0.0000000 Y   -5.0000000 Z   -6.5000000
+NODE       31 X    9.4382181 Y   -10.000000 Z   -5.0000000
+NODE       32 X    5.1595287 Y    0.0000000 Z   -5.0000000
+BEAM         1        1        2 NCS    1
+BEAM         2        3        4 NCS    1
+BEAM         3        5        6 NCS    1
+BEAM         4        7        8 NCS    1
+BEAM         5        9       10 NCS    1
+BEAM         6       11       12 NCS    1
+BEAM         7       13       14 NCS    1
+BEAM         8       15       16 NCS    1
+BEAM         9       17       18 NCS    1
+BEAM        10       19       20 NCS    1
+BEAM        11       21       22 NCS    1
+BEAM        12       23       24 NCS    1
+BEAM        13        2       25 NCS    1
+BEAM        14       25        3 NCS    1
+BEAM        15        6       26 NCS    1
+BEAM        16       26        7 NCS    1
+BEAM        17       10       27 NCS    1
+BEAM        18       27       11 NCS    1
+BEAM        19       14       28 NCS    1
+BEAM        20       28       15 NCS    1
+BEAM        21       18       29 NCS    1
+BEAM        22       29       19 NCS    1
+BEAM        23       30       21 NCS    1
+BEAM        24       24       30 NCS    1
+BEAM        25       21       19 NCS    1
+BEAM        26       19       31 NCS    1
+BEAM        27       31       15 NCS    1
+BEAM        28       11        7 NCS    1
+BEAM        29        7        3 NCS    1
+BEAM        30       24       18 NCS    1
+BEAM        31       32       14 NCS    1
+BEAM        32       14       10 NCS    1
+BEAM        33       10        6 NCS    1
+BEAM        34        6        2 NCS    1
+BEAM        35       30       29 NCS    1
+BEAM        36       29       28 NCS    1
+BEAM        37       28       27 NCS    1
+BEAM        38       27       26 NCS    1
+BEAM        39       26       25 NCS    1
+BEAM        40       15       11 NCS    1
+BEAM        41       18       32 NCS    1
+END
+
++PROG SOFILOAD urs:3
+HEAD SOFILOAD - Load Distribution Areas for Frameworks
+ECHO LOAD EXTR
+$ roof areas:
+LAR  1   X1 10 -10 -5  X2 10 -5 -6.5 X3 15 -5 -6.5 X4 15 -10 -5 $ roof
+LAR  2   X1 -1.263 -5    -6.5   X2 -1.263 1.829 -4.451 $$
+         X3 26.263 1.829 -4.451 X4 26.263304 -5 -6.50  $ smaller than the roof area
+
+$ longitudinal walls
+let#xa 0.0 ; let#xe 25.0 ; let#za 0.0 ; let#ze  -5.0 ; let#y -10        $ wall
+LAR  3   X1 #xa #y #za   X2 #xa #y #ze   X3 #xe #y #ze   X4 #xe #y #za
+
+$ end walls
+let#ya 0.0 ; let#ye -10. ; let#za 0.0 ; let#ze  -6.5 ; let#x   0
+LAR  4   X1 #x #ya #za   X2 #x #ya #ze   X3 #x #ye #ze   X4 #x #ye #za
+                                                       let#x  25
+LAR  5   X1 #x #ya #za   X2 #x #ya #ze   X3 #x #ye #ze   X4 #x #ye #za
+
+LC 11
+LINE AUTO PROJ N 0 TYPE PG  P1 10 X1 -1.2633029 Y1 -1.5853777 Z1 -5.4756131 $$
+                           P2 10 X2 26.263304  Y2 -1.5853777 Z2 -5.4756131
+LC 12
+LINE AUTO PROJ N 0 TYPE PG  P1 10 X1 10.0       Y1 -7.5000000 Z1 -5.75      $$
+                           P2 10 X2 15.0       Y2 -7.5000000 Z2 -5.75
+LC 13
+LINE AUTO PROJ N 0 TYPE PG  P1 10 X1  0.0       Y1 -10.0      Z1 -2.5       $$
+                           P2 10 X2 10.0       Y2 -10.0      Z2 -2.5
+LC 14
+LINE AUTO PROJ N 0 TYPE PXX P1 10 X1  0.0       Y1 -10.0      Z1 -2.5       $$
+                           P2 10 X2  0.0       Y2   0.0      Z2 -2.5
+LC 15 TITL 'in local z direction'
+AREA AUTO PROJ N 0 TYPE PZ  P1 10 X1 25.0       Y1 -7.1684952 Z1 -1.8660510 $$
+                           P2 10 X2 25.0       Y2 -4.4493489 Z2 -1.5183164 $$
+                           P3 10 X3 25.0       Y3 -3.0098007 Z3 -3.9453983 $$
+                           P4 10 X4 25.0       Y4 -5.3024144 Z4 -4.5986862
+LC 16 TITL 'in local z direction'
+AREA AUTO PROJ N 0 TYPE PZ  P1 10 X1 7.3640609  Y1 -3.3948720 Z1 -6.0184617 $$
+                           P2 10 X2 7.1662946  Y2 -1.3843412 Z2 -5.4153023 $$
+                           P3 10 X3 16.093981  Y3 -1.5147893 Z3 -5.4544368 $$
+                           P4 10 X4 16.390179  Y4 -3.4638011 Z4 -6.0391402
+
+LC 17 ; AREA LAR 1 TYPE PZZ P1 10   $ load acting on the total load distribution area
+LC 18 ; AREA LAR 1 TYPE PZ  P1 10   $ load acting on the total load distribution area local
+ $ Here the sense of rotation of the corner points is decisive for the local z-direction!
+END
+
++PROG WING urs:4
+HEAD
+VIEW TYPE DIRE X 0.864 Y -0.422 Z 0.271 AXIS POSZ
+STRU NUME LDAR FILL NO REPR DTXT UNIT DEFA SCHH 0.5 FROM 1 TO 1
+STRU NUME LDAR FILL NO REPR DTXT UNIT DEFA SCHH 0.5 FROM 2 TO 2
+STRU NUME LDAR FILL NO REPR DTXT UNIT DEFA SCHH 0.5 FROM 3 TO 3
+STRU NUME LDAR FILL NO REPR DTXT UNIT DEFA SCHH 0.5 FROM 4 TO 4
+STRU NUME LDAR FILL NO REPR DTXT UNIT DEFA SCHH 0.5 FROM 5 TO 5
+loop#1 8
+LC NO 11+#1
+  LOAD GTYP INP UNIT -1005      ; AND
+  LOAD TYPE ALL UNIT DEFA SCHH YES SING VECT FILL NO REPR DREP GTYP ELEM
+endloop
+END
+
++PROG ASE urs:6
+HEAD
+LC (11 18 1)
+END
+

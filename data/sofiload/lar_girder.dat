@@ -1,0 +1,108 @@
++PROG AQUA URS:3
+HEAD SOFILOAD - free defined load distribution areas for beam systems
+HEAD Materials and sections
+NORM  DIN EN199X-200X CAT 'B'
+CONC 1  C   40        $ = C40/50
+STEE 2
+SREC 1 H .8[m] B .4[m] HO .2[m] BO 1.2[m]
+END
+END
+
++PROG SOFIMSHA URS:4
+HEAD SOFILOAD - free defined load distribution areas for beam systems
+<TEXT>
+Free loadings on beams:
+=======================
+Free loadings on beams may be creates by a load distribution area.
+
+A load distribution areas may be defined either in SOFIPLUS or in SOFILOAD with
+LAR and its 4 corner points. it will be converted internally into a temporary
+finite element mesh which is then used to distribut the loadings. The support
+reactions of that mesh will be converted to beam loads of the integral system.
+
+It is shown with this example to define the load distribution area with an extra
+outer border to catch for loadings which might be on the pathway of a bridge and
+should be also conevrted to beam loads.
+
+It is recommended to keep the load distribution areas rather small to avoid
+disturbancies like lifting corners. It is suggested to proceed like in this
+example: one area for every span.
+
+         Three Span Beam: three load distribution areas:
+          LAR 1            LAR 2           LAR 3
+    ---------------------------------------------------
+    |                |                |               |
+    |   O************O****************O***********O   |
+    |   *            *                *           *   |
+    |   *            |                |           *   |
+    |   *   span 1   *    span 2      *  span  3  *   |
+    |   *            |                |           *   |
+    |   *            *                *           *   |
+    |   O************O****************O***********O   |
+    |                |                |               |
+    ---------------------------------------------------
+
+        ** = beams   O = supports
+
+(If a single continous load distribution are is used, a point load in one
+span will create lifting forces in the adjacent span)
+
+For extrenal loadings on the cantilevers, it is however anavoidable to have
+lifting forces in the interior.
+
+Example in space see LAR_FRAM.dat
+</TEXT>
+SYST SPAC
+NODE      1,2,3,4,5 X 0,5,10,15,20 Y 0 FIX pp
+NODE 11,12,13,14,15 X 0,5,10,15,20 Y 5 FIX pp
+BEAM (  1   4 1) ( 1 1) ( 2 1)
+BEAM ( 11  14 1) (11 1) (12 1)
+BEAM (101 105 1) ( 1 1) (11 1)
+END
+
++PROG SOFILOAD URS:2
+HEAD
+ECHO LOAD EXTR $ creates also the Animator-Load area visualisation
+
+let#xa  -1.00 ; let#xe  +5.00 ; let#ya  -1.00 ; let#ye  +6.00
+LAR  1   X1 #xa #ya   X2 #xa #ye   X3 #xe #ye   X4 #xe #ya
+
+let#xa  +5.00 ; let#xe +10.00
+LAR  2   X1 #xa #ya   X2 #xa #ye   X3 #xe #ye   X4 #xe #ya
+
+let#xa +10.00 ; let#xe +15.00
+LAR  3   X1 #xa #ya   X2 #xa #ye   X3 #xe #ye   X4 #xe #ya
+
+let#xa +15.00 ; let#xe +20.00
+LAR  4   X1 #xa #ya   X2 #xa #ye   X3 #xe #ye   X4 #xe #ya
+
+let#xa +20.00 ; let#xe +22.00 $ letzte Fläche zum Testen als Kragarm !!
+LAR  5   X1 #xa #ya   X2 #xa #ye   X3 #xe #ye   X4 #xe #ya
+
+LC 21 ; POIN REF AUTO TYPE PZZ P 100 X  0.5 Y 3
+LC 22 ; POIN REF AUTO TYPE PZZ P 100 X  3.0 Y 3
+LC 23 ; POIN REF AUTO TYPE PZZ P 100 X  9.0 Y 3
+LC 24 ; POIN REF AUTO TYPE PZZ P 100 X 22.0 Y 3
+LC 25 ; LINE REF AUTO TYPE PZZ P1 20 X1 2 Y1 -0.90 X2 17
+LC 26 ; AREA X1 1 1 X2 1 0 X3 6 0 X4 6 1 TYPE PZZ P1 10
+
+LC 27 ; AREA LAR 1 TYPE PZZ P1 10   $ belastet die ganze Lastverteilungsfläche
+
+END
+END
+
++PROG ASE URS:1
+HEAD
+LC 21,22,23,24,25,26,27
+END
+
+-PROG WING URS:5
+HEAD
+VIEW TYPE DIRE X 0.8648131 Y -0.4223506 Z 0.2715111 AXIS POSZ ROTA 0
+loop#1 7
+LC NO 21+#1
+  LOAD GTYP INP       ; AND
+  LOAD TYPE ALL UNIT DEFA SCHH YES SING VECT FILL NO REPR DREP GTYP ELEM
+endloop
+END
+

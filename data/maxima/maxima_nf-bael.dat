@@ -1,0 +1,67 @@
+!#!Info  Example:       Superposition with explicit defined combination
+!#!Info  Keyword:       Superposition; NF BAEL
+!#!Info  Program:       MAXIMA
+!#!Info  Version:       SOFiSTiK 2022
+!#!Info  Date:          $Date: 2021-01-21
+
++PROG AQUA urs:1
+HEAD Example for MAXIMA, Norm NF-BAEL batiment
+HEAD Norm, Material and Cross Section
+NORM NF BAEL CAT B ALT 510.
+CONC 1 BAEL 25
+STEE 2 FEE 500 TITL 'bar reinforcement'
+SREC 1 H 0.4 B 0.2 MNO 1 MRF 2 RTYP ASYM ASO 1.0 ASU 1.0 DASO 10 DASU 20
+END
+
++PROG SOFIMSHA urs:2
+HEAD Example for MAXIMA, Norm NF-BAEL batiment
+HEAD System
+SYST 2D GDIR NEGY
+NODE 1 FIX PP ; 2 4.0 4.0 FIX PY
+BEAM 1 1 2 DIV 4
+END
+
++PROG SOFILOAD urs:3
+HEAD Example for MAXIMA, Norm NF-BAEL batiment
+HEAD Loads, Actions with Partial Factors and Combination Coefficients
+ACT G
+  LC 1 DLY -1.0
+  LC 2
+  BEAM 1 TYPE PYY PA -2.0
+ACT QB_A
+  LC 3
+  BEAM 1 TYPE PYY PA -10.0
+ACT S
+  LC 4
+  BEAM 1 TYPE PYP PA -7.5
+ACT W
+  LC 5
+  BEAM 1 TYPE PZ  PA 5.0
+END
+
++PROG STAR2 urs:4
+HEAD Example for MAXIMA, Norm NF-BAEL batiment
+HEAD Calculation of the Single Load Cases
+CTRL I
+LC all
+END
+
++PROG MAXIMA urs:5
+HEAD Example for MAXIMA, Norm NF-BAEL batiment
+HEAD Superposition Ultimate Limit State
+ECHO CHCK
+$ according to INI comb_4100, dominant action QB_A
+COMB 1 EXPL TYPE DESI
+ ADD G    FACU 1.35 FACF 1.0
+ ADD QB_A FACU 1.5  FACF 0.0
+ ADD W    FACU PSIU FACF 0.0
+ ADD S    FACU PSIU FACF 0.0
+SUPP 1 MAMI ETYP BEAM TYPE N,VZ,MY
+SUPP 1 MAMI ETYP NODE TYPE PX,PY
+END
+
++PROG AQB urs:31
+HEAD Example for MAXIMA, Norm NF-BAEL batiment
+HEAD Design
+DESI ULTI
+END

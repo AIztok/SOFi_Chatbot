@@ -1,0 +1,441 @@
+!#!Info Example:    Static of a Construction Plate with Balcony
+!#!Info Program:    BEMESS
+!#!Info Keyword:    design; stress range; crack width; SLS
+
+!#!Kapitel System
++PROG AQUA urs:1
+HEAD Slab with Balcony
+NORM 'NS' 'en199X-200X'
+CONC 1    C '30'
+STEE 2    S 500  $ Reinforcement steel
+STEE 3    S '235'
+END
+
+$ NORM 'DIN' NDC '1045-1'               $ DIN 1045-1
+$ CONC 1 CDIN '30'
+$ STEE 2  BST '500'
+$ STEE 3 SDIN '235'
+
+$ NORM 'DIN' NDC 'en199X-200X' COUN 49  $ Eurocode EN Deutsch
+$ CONC 1    C '30'
+$ STEE 2  SEC '500'
+$ STEE 3    S '235'
+
+$ NORM 'BS' NDC 'en199X-200X' COUN 44   $ Eurocode EN Great Britain
+$ CONC 1    C '30'
+$ STEE 2  SEC '500'
+$ STEE 3    S '235'
+
+$ NORM 'OEN' NDC 'en199X-200X' COUN 43  $ Eurocode EN Austria
+$ CONC 1    C '30'
+$ STEE 2  SEC '500'
+$ STEE 3    S '235'
+
+$ NORM 'EN'  NDC '1992-2004'   COUN 34  $ Eurocode EN Original + Spain  (similar to EHE)
+$ CONC 1    C '30'
+$ STEE 2  SEC '500'
+$ STEE 3    S '235'
+
+$ NORM 'E' NDC 'ehe' COUN 34            $ Spain EHE
+$ CONC 1   HA '25'
+$ STEE 2    B '500'
+$ STEE 3   EA '37'
+
+
++PROG SOFIMSHA urs:2
+HEAD Slab with Balcony
+SYST GIRD GDIV 10000
+NODE  NO   X=[m]   Y=[m]
+       1   0.0   0.0
+       2   4.0   0.0
+       3   5.5   0.0
+       4   8.5   0.0
+       5  10.0   0.0
+      43   5.5   7.5
+      44   8.5   7.5
+$ horizontal boundaries
+BOUN  NA   NE   DIV
+       1    2      8
+       2    3      3
+       3    4      6
+       4    5      3
+$ generates the boundary from node 1 to node 5
+BOUN 1 5 FIT
+$
+$ transformation of the nodes
+TRAN NODE FROM 1 TO 5 FIT DY  1.154[m]  DNO 10
+TRAN NODE FROM 1 TO 5 FIT DY  4.615[m]  DNO 20
+TRAN NODE FROM 1 TO 5 FIT DY  5.769[m]  DNO 30
+$
+$ vertical boundaries
+BOUN  NA   NE   DIV
+       1   11      2
+      11   21      6
+      21   31      2
+      33   43      3
+$
+$ generation of the QUAD elements
+GRP 1
+  QUAD PROP T 0.22[m] MNO 1  $ properties of QUAD elements
+  QUAD  NO  N1  N2  N3  N4
+       FIT   1  11  12   2
+       FIT  11  21  22  12
+       FIT  21  31  32  22
+GRP 2
+  QUAD PROP T 0.22[m] MNO 1  $ properties of QUAD elements
+  QUAD  NO  N1  N2  N3  N4
+       FIT   2  12  15   5
+       FIT  12  22  25  15
+       FIT  22  32  35  25
+GRP 3
+  QUAD PROP T 0.18[m] MNO 1  $ properties of QUAD elements
+  QUAD  NO  N1  N2  N3  N4
+       FIT  33  43  44  34
+$
+GRP 0
+BOUN 1 TITL outer_wall_1 ; BOUN  1  3 FIT TYPE CZ CA 500000
+BOUN 2 TITL outer_wall_2 ; BOUN  4  5 FIT TYPE CZ CA 500000
+BOUN 3 TITL outer_wall_3 ; BOUN 31 33 FIT TYPE CZ CA 500000
+BOUN 4 TITL outer_wall_4 ; BOUN 34 35 FIT TYPE CZ CA 500000
+BOUN 5 TITL outer_wall_5 ; BOUN  1 31 FIT TYPE CZ CA 500000
+BOUN 6 TITL outer_wall_6 ; BOUN  5 35 FIT TYPE CZ CA 500000
+BOUN 7 TITL inner_wall_1 ; BOUN  2 12 FIT TYPE CZ CA 500000
+BOUN 8 TITL inner_wall_2 ; BOUN 22 32 FIT TYPE CZ CA 500000
+END
+
+
+!#!Kapitel Loading, Analysis
++PROG SOFILOAD urs:3
+HEAD Actions
+UNIT 5 $ units: sections in mm, geometry+loads in m
+$ The definition of all actions which are used in the calculation
+$ It can be done in a separate SOFILOAD run
+$
+$ This SOFILOAD run is actual not necessary, because all gamma and psi values
+$ for G and Q_A-Q_E are preset. For information the action are defined here
+$ once more explicitly.
+
+ECHO ACT FULL
+  ACT G     TITL 'permanent loads G'
+   $ACT Q_A GAMU 1.50 0.0 PSI0 0.7  0.5  0.3  TITL 'Q_A Housing'
+  ACT Q_B GAMU 1.50 0.0 PSI0 0.7  0.5  0.3  TITL 'Q_B Offices'
+   $ACT Q_C GAMU 1.50 0.0 PSI0 0.7  0.7  0.6  TITL 'Q_C Assembly rooms'
+   $ACT Q_D GAMU 1.50 0.0 PSI0 0.7  0.7  0.6  TITL 'Q_D Sales rooms'
+   $ACT Q_E GAMU 1.50 0.0 PSI0 1.0  0.9  0.8  TITL 'Q_E Storage rooms'
+
+LC 1 TYPE G FACD 1.0 TITL 'dead load'
+  QUAD GRP 1 TYPE PG P 2.6 $ 2.6 = screed+cover in addition to dead load =1
+  QUAD GRP 2 TYPE PG P 2.6
+  QUAD GRP 3 TYPE PG P 1.2
+$
+LC 2 TYPE Q_B TITL 'span_1'
+  QUAD GRP 1 TYPE PG P 2.0
+$
+LC 3 TYPE Q_B TITL 'span_2'
+  QUAD GRP 2 TYPE PG P 2.0
+$
+LC 4 TYPE Q_B TITL 'balcony'
+  QUAD GRP 3 TYPE PG P 5.0
+END
+
++PROG ASE urs:5
+HEAD Single Load Cases
+LC ALL
+END
+
+$ +PROG MAXIMA
+$ HEAD Standard superpositioning without further input:
+$ Then next maxima and the later SLS MAXIMA can be switched off !
+$ END
+
++PROG MAXIMA urs:18
+HEAD Manual Superposition ULS - Ultimate Limit State
+ECHO FULL NO ; ECHO TABS YES
+  COMB 1 DESI BASE 2100               $ desi = Superposition for Design LC 2100...
+$ Without ACT and LC input MAXIMA combines the load cases automatically in
+$ dependence on load TYPE. Please check the used load cases in the MAXIMA output.
+$ The following input clearly defines that actions G and Q shall be taken
+  ACT G
+    $ LC 1 G      without LC input: Maxima takes all loadcases with action type G and G_1 G_2
+  ACT Q
+    $ LC 2,3,4  Q without LC input: Maxima takes all loadcases with action type Q and Q_A Q_B ....
+  SUPP 1 EXTR MAMI ETYP QUAD TYPE M     TITL 'ULS_QUAD' FROM -
+  SUPP 1 EXTR MAMI ETYP QNOD TYPE M     TITL 'ULS_QUAD' FROM -
+  SUPP 1 EXTR MAMI ETYP QUAD TYPE VX,VY TITL 'ULS_QUAD' FROM -
+  SUPP 1 EXTR MAMI ETYP QNOD TYPE VX,VY TITL 'ULS_QUAD' FROM -
+  ECHO LOAD,FACT YES
+  SUPP 1 EXTR MAMI ETYP NODE TYPE PZ    TITL 'ULS_NODE' FROM 4
+  ECHO LOAD,FACT NO
+  $ from: All nodes are superpositioned, however, a printout is done
+  $ only for node 4.
+  $ If BEAM elements are available, the next line is necessary:
+  $
+  $SUPP 1 EXTR MAMI ETYP BEAM TYPE N,MY,VZ TITL 'ULS_BEAM' FROM -
+  $SUPP 1 EXTR MAMI ETYP QUAD TYPE P       TITL 'GZT_QUAD' FROM -
+  $ If QUAD beddings are available, the previous line is necessary,
+  $ because the bedding stresses are necessary for punching.
+END
+$ List of the most common superposition records in dependence on the system
+$ see at the file end
+
++PROG WING urs:7
+HEAD Plot of the Superposition Moments for ULS
+#define graf1
+SIZE URS 0 FORM STAN SPLI 2x2 SLEG 1 ; SCHH FACW 0.55
+LEGO COOR MAXW 1.2 $ size of the coordinate cross in cm
+MOVE
+  LET#74 2.5                       $ cut in X direction at y=#74m
+  MOVE X -999 Y  #74; DRAW X 999 Y #74 DTYP ZZ
+  LET#74 7.0                       $ cut in Y direction at x=#74m
+  MOVE X  #74 Y -999; DRAW X #74 Y 999 DTYP ZZ
+VIEW STAN 0 0 -1 POSY
+#enddef
+#include graf1
+LC    1 ; SECT TYPE MN UNIT 20 SCHH 0.25 DTYP PPLA
+LC    2 ; SECT TYPE MN UNIT 20 SCHH 0.25 DTYP PPLA
+LC    3 ; SECT TYPE MN UNIT 20 SCHH 0.25 DTYP PPLA
+LC    4 ; SECT TYPE MN UNIT 20 SCHH 0.25 DTYP PPLA
+LC 2101 ; SECT TYPE MN UNIT 20 SCHH 0.25 DTYP PPLA
+LC 2102 ; SECT TYPE MN UNIT 20 SCHH 0.25 DTYP PPLA
+LC 2103 ; SECT TYPE MN UNIT 20 SCHH 0.25 DTYP PPLA
+LC 2104 ; SECT TYPE MN UNIT 20 SCHH 0.25 DTYP PPLA
+END
+
+!#!Kapitel Design parameter and ULS design
++PROG BEMESS urs:9
+HEAD Definition of reinforcement parameters and minimum reinforcement
+$ normal area - inner roms:
+GEOM - HA 25[mm] DHA 10[mm] HB 25[mm] DHB 10[mm] $ exposition class XC1
+DIRE  0  0
+PARA NOG - DU 10[mm] WKU 0.40[mm]        $ class F
+$ WKU for crack witdh check acc. table bar diameter
+$ If check shall be done for table bar distance, directly the steel stress
+$ can be defined with PARA...SSU. For parallel input of
+$ WKU and SSU, SSU is used for the check. WKU will always be used for
+$ minimum reinforcement check!
+$
+$ Balcony:
+GEOM - HA 40[mm] DHA 10[mm] HB 40[mm] DHB 10[mm] $ exposition class XC4
+DIRE 90 90
+PARA NOG 3 DU 20[mm] WKU 0.30[mm]        $ class E
+$ 20 mm diameter only to get a result in the crack witdh check
+$
+$ Minimum reinforcement in corners via XMIN-XMAX input (or secondary groups from SOFIMSHA):
+$   (for possible nonlinear analysis)
+
+DIRE 0 0
+GEOM - HA 25[mm] DHA 10[mm] HB 25[mm] DHB 10[mm] $ exposition class XC1
+PARA ASU 377[mm2/m] 377[mm2/m]    XMIN  -   XMAX 1.60 YMIN  -   YMAX 1.60  $ TYP MOD TYPE MOD see manual
+PARA ASU 377[mm2/m] 377[mm2/m]    XMIN 8.40 XMAX  -   YMIN  -   YMAX 1.60
+$ PARA 'A1' You can also use secondary groups from SOFIMSHA or SOFIPLUS but an
+$           Export in SOFIPLUS deletes all results - so PARA XMIN-XMAX ist easier.
+
+PUNC   D 0.30[m] B 0.30[m] RO_V 1.50 $ default single column
+PUNC TYPE WALL D 0.24[m]           $ default support wall
+$ (All inputs for PUNC are saved in the database and must not be defined
+$  anymore in the following BEMESS inputs!
+$  But if you make PUNC input in following BEMESS, then input all inclusive these lines ! )
+$
+$ Please do not make input for the dimensions for punching, if these inputs
+$ are done already in the grafical input SOFIPLUS (otherwise they are overwritten)!
+$
+$ With PUNC CHEC punching is only checked but BEMESS nevertheless takes into account
+$ the minimum design moments an single supports.
+$ In WINGRAF with INFO-necessary reinforcement the pure bending reinforcement
+$ can be plotted!
+
+END
+
++PROG BEMESS urs:10
+HEAD Short Design Input without further input
+LC   DESI
+END
+
++PROG BEMESS urs:11
+HEAD Design Ultimate Limit State inclusive Punching Check
+CTRL RO_V 0.5 $ Up to this bending reinforcement ratio it is attempted to
+              $ not use shear reinforcement. The shear check increases the
+              $ bending reinforcement up to this value if necessary. The value
+              $ PUNC can be modified for the punching areas:
+$ design task:
+LC   DESI     $ DESI = Design = ultimate limit state
+              $ selects all necessary load cases from MAXIMA-ULS-superposition
+              $ please check the selected load cases in the result file
+END
+
++PROG WING urs:12
+HEAD Plot of the Design in ULS
+#DEFINE UNIT=500
+#include graf1
+SIZE SPLI 1x1
+QUAD ASPS   1 SCHH 0.25 ND 1 STYP QUAD  REVI RAMA DIST 1.2
+#include graf1
+GRID AMAX SIZP -4 $ -4 generates a test grid which is 4* so large as
+                  $ the text height, here 4*0.25cm= 1.00cm
+QUAD ASL   1 SCHH 0.25 ND 1 STYP NODE
+QUAD ASU   1 SCHH 0.25 ND 1 STYP NODE                 ; GRID NO
+SECT TYPE  ASLH UNIT $(UNIT) UMIN 1 SCHH 0.25 DTYP PPLA ; AND
+SECT TYPE  ASUH UNIT $(UNIT) UMIN 1 SCHH 0.25 DTYP NPLA
+SECT TYPE  ASLQ UNIT $(UNIT) UMIN 1 SCHH 0.25 DTYP PPLA ; AND
+SECT TYPE  ASUQ UNIT $(UNIT) UMIN 1 SCHH 0.25 DTYP NPLA
+$ shear:
+$SECT TYPE TAU0 UNIT   0.20 UMIN 0.1 SCHH 0.25 DTYP NPLA
+$SECT TYPE  ASPS UNIT   5.00 UMIN 1 SCHH 0.25 DTYP NPLA
+END
+
+!#!Kapitel SLS design
++PROG MAXIMA urs:13
+HEAD SLS Serviceability Limit State Quasi-permanent Combination
+ECHO FULL NO ; ECHO TABS YES
+let#comb 4 $ used several times !
+COMB #comb PERM BASE 1400               $ perm = quasi-permanent  LC 1400...
+  ACT G
+  ACT Q
+  SUPP #comb EXTR MAMI ETYP QUAD TYPE M     TITL 'SLS_QUADperm'
+  SUPP #comb EXTR MAMI ETYP QNOD TYPE M     TITL 'SLS_QUADperm'
+  SUPP #comb EXTR MAMI ETYP QUAD TYPE VX,VY TITL 'SLS_QUADperm'
+  SUPP #comb EXTR MAMI ETYP QNOD TYPE VX,VY TITL 'SLS_QUADperm'
+  SUPP #comb EXTR MAMI ETYP NODE TYPE PZ    TITL 'SLS_NODEperm'
+END
+
++PROG BEMESS urs:14
+HEAD Crack Width Check Serviceability quasi-permanent
+$ Here a minimum reinforcement is not considered.
+CTRL SLS RMOD SUPE
+$
+         $ ^without input to CTRL LCR, LCR=1 is used = design
+         $ if crack design needs more reinforcement, LCR 1 is increased
+         $ This can be checked in WINGRAF-"Controlling design" "Origin of max. values"
+LC  PERM             $ load cases according to quasi-permament combination SLS
+CRAC WK TAB          $ crack width check according to tables
+$       alternative:   MREI FFCT 1.0 KC .4 K 1.0 $ minimum reinforcement for bending constraint
+$       set only, if the constraint reaches the crack width internal forces and moments!
+END
+
++PROG WING urs:15
+HEAD Superposition Serviceability Limit State quasi-permanent
+HEAD Final Result Design ULS+SLS
+#DEFINE UNIT=500
+#include graf1
+GRID AMAX SIZP -4 $ -4 generates a test grid which is 4* so large as
+                  $ the text height, here 4*0.25cm= 1.00cm
+QUAD ASL   1 SCHH 0.25 ND 1 STYP NODE
+QUAD ASU   1 SCHH 0.25 ND 1 STYP NODE                ; GRID NO
+SECT TYPE  ASLH UNIT $(UNIT) UMIN 1 SCHH 0.25 DTYP PPLA ; AND
+SECT TYPE  ASUH UNIT $(UNIT) UMIN 1 SCHH 0.25 DTYP NPLA
+SECT TYPE  ASLQ UNIT $(UNIT) UMIN 1 SCHH 0.25 DTYP PPLA ; AND
+SECT TYPE  ASUQ UNIT $(UNIT) UMIN 1 SCHH 0.25 DTYP NPLA
+END
+END
+
++PROG BEMESS urs:16
+HEAD Robustness Reinforcement to Consider the Ductile Member Behaviour
+HEAD According EN 1992-1-1 : 9.2.1.1
+CTRL SLS RMOD SUPE
+LC 1
+$ The robustness reinforcement is always below and only in case of tensile
+$ stresses above. Here only the load case 1 is used for that tensile definition.
+$ ctrl robu fctm may be input also additionally in a normal BEMESS calculation.
+$ Here it is done in a separate run in order to show graphically the areas in
+$ which the robustness check leads to an increase of the reinforcement.
+$ The robustness reinforcement is inserted above about a length till a quarter
+$ of the span.
+MREI ROBU FCTM $ robustness reinforcement with fctm
+END
+
+!#!Kapitel Final Reinforcement
++PROG WING urs:17
+HEAD Final Result ULS+SLS+Robustness Reinforcement
+#DEFINE UNIT=500
+#include graf1
+
+QUAD TYPE DCUQ SCHH 0.35 STYP NODE ! Origin of max. values
+
+GRID AMAX SIZP -4 $ -4 generates a test grid which is 4* so large as
+                  $ the text height, here 4*0.25cm= 1.00cm
+QUAD ASL   1 SCHH 0.25 ND 1 STYP NODE
+QUAD ASU   1 SCHH 0.25 ND 1 STYP NODE                 ; GRID NO
+SECT TYPE  ASLH UNIT $(UNIT) UMIN 1 SCHH 0.25 DTYP PPLA ; AND
+SECT TYPE  ASUH UNIT $(UNIT) UMIN 1 SCHH 0.25 DTYP NPLA
+SECT TYPE  ASLQ UNIT $(UNIT) UMIN 1 SCHH 0.25 DTYP PPLA ; AND
+SECT TYPE  ASUQ UNIT $(UNIT) UMIN 1 SCHH 0.25 DTYP NPLA
+END
+END
+
+$Determination of the definition of the load case numbers
+$========================================================
+$Results from MAXIMA:
+$
+$th : t = thousands place 1... = SLS = serviceability limit state
+$                         2... = ULS = ultimate limit state
+$     h = hundreds place  .1.. = rare combination               psi-0
+$                         .2.. = non-frequent combination       psi-1'
+$                         .3.. = frequent combination           psi-1
+$                         .4.. = quasi-permanent combination    psi-2
+$                         .5.. = accidental combination         psi-2
+$                         .9.. = mounting, construction stage
+$
+$For units place and tens place it is provided:
+$th01-..10 Quadforces       mx,my,mxy,vx,vy
+$                           ..01=max-mx ..02=min-mx ..03=max-my ...
+$..11-..16 Quadforces       nx,ny,nxy
+$              -stresses    sigx,sigy,sigxy  for plain strain TALPA
+$..18-..19 Beddingforces
+$..21-..32 Beamforces       STN,STVY,STVZ,STMT,STMY,STMZ
+$..41-..42 Trussforces
+$..43-..44 Cableforces
+$..45-..48 Springforces     P,M
+$..51-..62 Supportforces    PX,PY,PZ,MXX,MYY,MZZ
+$..63-..70 Boundaryforces   RPX,RPY,RPZ,RMN
+$..71-..82 Displacements    u-x,u-y,u-z,PHIX,PHIY,PHIZ
+$..83-..90 Boundaryforces   SRPX,SRPY,SRPZ,SRMN
+$
+$
+$=============================================================
+$=============================================================
+$
+$MAXIMA:
+$Further common superpositions in dependence on the system:
+$
+$ QUAD internal forces and moments
+$  SUPP 1 EXTR mami ETYP quad TYPE M,VX,VY    TITL 'QUAD'
+$  SUPP 1 EXTR mami ETYP qnod TYPE M,VX,VY    TITL 'QUAD'
+$  SUPP 1 EXTR mami ETYP quad TYPE N          TITL 'QUAD'
+$  SUPP 1 EXTR mami ETYP qnod TYPE N          TITL 'QUAD'
+$
+$ QUAD bedding
+$  SUPP 1 EXTR mami ETYP QUAD TYPE p          TITL 'BEDD'
+$
+$ STAB internal forces and moments
+$  SUPP 1 EXTR mami ETYP BEAM TYPE VZ,MT,MY   TITL 'BEAM'
+$  SUPP 1 EXTR mami ETYP BEAM TYPE N,VY,MZ    TITL 'BEAM'
+$
+$ NODE support reactions
+$  SUPP 1 EXTR mami ETYP NODE TYPE px,py,mz   TITL 'NODE'
+$  SUPP 1 EXTR mami ETYP NODE TYPE pz,mx,my   TITL 'NODE'
+$
+$ NODE displacments
+$  SUPP 1 EXTR mami ETYP NODE TYPE ux,uy      TITL 'NODE'
+$  SUPP 1 EXTR mami ETYP NODE TYPE uz         TITL 'NODE'
+$  SUPP 1 EXTR mami ETYP NODE TYPE phix       TITL 'NODE'
+$  SUPP 1 EXTR mami ETYP NODE TYPE phiy       TITL 'NODE'
+$  SUPP 1 EXTR mami ETYP NODE TYPE phiz       TITL 'NODE'
+$
+$ BOUN support reactions
+$  SUPP 1 EXTR mami ETYP BOUN TYPE px,py      TITL 'RAND'
+$  SUPP 1 EXTR mami ETYP BOUN TYPE pz,m       TITL 'RAND'
+$
+$ Other elements
+$  SUPP 1 EXTR mami ETYP TRUS TYPE N          TITL 'TRUS'
+$
+$  SUPP 1 EXTR mami ETYP CABL TYPE N          TITL 'CABL'
+$
+$  SUPP 1 EXTR mami ETYP SPRI TYPE P          TITL 'SPRI'
+$  SUPP 1 EXTR mami ETYP SPRI TYPE M          TITL 'SPRI'
+$
+$=============================================================
+$=============================================================
+
+$ Clean file folder:
++sys del $(project).$d?
+

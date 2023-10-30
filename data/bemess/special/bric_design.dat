@@ -1,0 +1,89 @@
+!#!Info Example:    BRIC Design
+!#!Info Program:    BEMESS
+!#!Info Keyword:    bric; volume elements
+!#!Info Date:       06/19/2011
+
+!#!KAPITEL Material and System generation
++prog aqua urs:1
+HEAD BRIC element wall
+NORM 'NS' 'en199X-200X'
+echo mat
+conc 1 C 30
+STEE 2 S 500
+END
+
++PROG SOFIMSHA urs:2
+HEAD BRIC design
+UNIT 5 ; SYST SPAC GDIV 10000 GDIR POSZ
+NODE NO              X        Y        Z
+  (101 106 1)        0        0   (0 -0.8)
+TRAN NODE 101  106 1 DX       8   DNO  1000
+TRAN NODE 101 1106 1 DY       1   DNO 10000
+grp 1
+  BRIC - N1 101 106 1106 1101  10101 10106 11106 11101  M 5 N 10 K 1 MNO 1
+NODE NO           FIX
+   (1101  1106 1) pxpy
+  (11101 11106 1) pxpy
+    (101   106 1) pp
+  (10101 10106 1) pp
+END
+
++PROG SOFILOAD urs:5
+HEAD
+UNIT 5 $ units: sections in mm, geometry+loads in m
+LC 901 TYPE NONE
+  node 1106,11106 type PG P1 200
+END
+
+!#!KAPITEL Analysis
++prog ase urs:3
+HEAD
+LC 31 FACD 1.35 TITL '1.35*G_1 + Q ULS'
+END
+
++PROG BEMESS URS:23
+HEAD Definition of reinforcement
+DI3D 0[°] 0[°]  $ = BRIC input in rad , for 10 degree please input 10*3.14/180 or 10[°]
+PARA NOG - DU 10[mm]
+END
+
++PROG BEMESS URS:26
+HEAD BRIC Design reinforcement in x and y direction
+CTRL LCR 1
+LC 31
+END
+
++PROG BEMESS URS:4
+HEAD Change of safety gamma
+CTRL LCR 2
+MAT SC1 1.20 SS1 1.05
+LC 31
+END
+
++PROG BEMESS URS:6
+HEAD Change of fc and fy
+CTRL LCR 3
+MAT fc 16 fy 410
+LC 31
+END
+
++PROG WING urs:45
+HEAD
+LC DESI 1
+MOVE X 60 80 UNIT PR SCHH .5 C 1001 DTYP TEXT ; TEXT BRIC
+  BRIC TYPE AS1  UNIT 500 SCHH 0.35 STYP ELEM FILL NO REPR DVEC AVER NO
+
+LC DESI 2
+MOVE X 60 80 UNIT PR SCHH .5 C 1001 DTYP TEXT ; TEXT BRIC
+  BRIC TYPE AS1  UNIT 500 SCHH 0.35 STYP ELEM FILL NO REPR DVEC AVER NO
+
+LC DESI 3
+MOVE X 60 80 UNIT PR SCHH .5 C 1001 DTYP TEXT ; TEXT BRIC
+  BRIC TYPE AS1  UNIT 500 SCHH 0.35 STYP ELEM FILL NO REPR DVEC AVER NO
+
+END
+
+$ Clean file folder:
++sys del $(project).$d?
+
+

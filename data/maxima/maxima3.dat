@@ -1,0 +1,173 @@
+!#!Info  Example:       Combination
+!#!Info  Keyword:       Superposition; DIN EN 1992-1-1/NA; DIN EN 1990/NA; MAXIMA; record LC
+!#!Info  Program:       MAXIMA
+!#!Info  Version:       SOFiSTiK 2022
+!#!Info  Date:          $Date: 2021-01-20
+
++PROG AQUA urs:1
+HEAD Example for MAXIMA
+HEAD Example DIN EN199x-200x Building Construction Plate with Balcony
+ECHO MAT EXTR
+NORM DIN EN199x-200x
+
+CONC 1 C   30
+STEE 2 S 500B
+CONC 5 C   30
+END
+
++PROG SOFIMSHA urs:2
+HEAD Example for MAXIMA
+HEAD System
+SYST 2DSL GDIV 10000 GDIR POSZ
+ECHO FULL NO ; ECHO MAT,SECT YES
+NODE  NO    X     Y
+       1   0.0   0.0
+       2   4.0   0.0
+       3   5.5   0.0
+       4   8.5   0.0
+       5  10.0   0.0
+      43   5.5   7.5
+      44   8.5   7.5
+$ horizontal boundaries
+BOUN  NA   NE   DIV
+       1    2      8
+       2    3      3
+       3    4      6
+       4    5      3
+$ generates the boundary from node 1 to node 5
+BOUN 1 5 FIT
+$
+$ transformation of the nodes
+TRAN NODE FROM 1 TO 5 FIT DY  1.154  DNO 10
+TRAN NODE FROM 1 TO 5 FIT DY  4.615  DNO 20
+TRAN NODE FROM 1 TO 5 FIT DY  5.769  DNO 30
+$
+$ vertical boundaries
+BOUN  NA   NE   DIV
+       1   11      2
+      11   21      6
+      21   31      2
+      33   43      3
+$
+$ generation of the QUAD elements
+GRP 1
+QUAD PROP T 220[mm] MNO 1  $ properties of QUAD elements
+QUAD  NO  N1  N2  N3  N4
+     FIT   1  11  12   2
+     FIT  11  21  22  12
+     FIT  21  31  32  22
+GRP 2
+QUAD PROP T 220[mm] MNO 1  $ properties of QUAD elements
+QUAD  NO  N1  N2  N3  N4
+     FIT   2  12  15   5
+     FIT  12  22  25  15
+     FIT  22  32  35  25
+GRP 3
+QUAD PROP T 180[mm] MNO 5  $ properties of QUAD elements
+QUAD  NO  N1  N2  N3  N4
+     FIT  33  43  44  34
+$
+GRP 0
+BOUN 1 TITL 'outer wall 1' ; BOUN  1  3 FIT TYPE CZ CA 500000
+BOUN 2 TITL 'outer wall 2' ; BOUN  4  5 FIT TYPE CZ CA 500000
+BOUN 3 TITL 'outer wall 3' ; BOUN 31 33 FIT TYPE CZ CA 500000
+BOUN 4 TITL 'outer wall 4' ; BOUN 34 35 FIT TYPE CZ CA 500000
+BOUN 5 TITL 'outer wall 5' ; BOUN  1 31 FIT TYPE CZ CA 500000
+BOUN 6 TITL 'outer wall 6' ; BOUN  5 35 FIT TYPE CZ CA 500000
+BOUN 7 TITL 'inner wall 1' ; BOUN  2 12 FIT TYPE CZ CA 500000
+BOUN 8 TITL 'inner wall 2' ; BOUN 22 32 FIT TYPE CZ CA 500000
+END
+
++PROG SOFILOAD urs:3
+HEAD Example for MAXIMA
+HEAD Actions and Loads
+ACT G  TITL 'Dead load'
+  LC 1 DLZ 1.0
+  QUAD GRP 1 TYPE PG  P 2.6
+  QUAD GRP 2 TYPE PG  P 2.6
+  QUAD GRP 3 TYPE PG  P 1.2
+$
+ACT  Q TITL 'variable load'
+  LC 2  TITL 'span 1'
+  QUAD GRP 1 TYPE PG  P 3.5
+  LC 3  TITL 'span 2'
+  QUAD GRP 2 TYPE PG  P 3.5
+$
+ACT  Q_1 GAMU 1.5 GAMF 0.0 PSI0 0.6 PSI1 0.4 PSI2 0.2 PART Q SUP EXCL TITL 'Q_1'
+  LC 4  TITL 'span 1'
+  QUAD GRP 1 TYPE PG  P 2.5
+  LC 5  TITL 'span 2'
+  QUAD GRP 2 TYPE PG  P 2.5
+ACT  Q_2  GAMU 1.5 GAMF 0.0 PSI0 0.8 PSI1 0.6 PSI2 0.4 PART Q SUP UNSI TITL 'Q_2'
+  LC 6  TITL 'span 1'
+  QUAD GRP 1 TYPE PG  P 1.5
+  LC 7  TITL 'span 2'
+  QUAD GRP 2 TYPE PG  P 1.5
+ECHO ACT
+END
+
++PROG ASE urs:4
+HEAD Example for MAXIMA
+HEAD Internal Forces and Moments of Single Load Cases
+$ECHO DISP,REAC,FORC,NOST,BEDD NO
+ECHO FULL NO
+LC (1 7 1)
+END
+
++PROG MAXIMA urs:5
+HEAD Example for MAXIMA
+HEAD Superposition
+  COMB 1 desi TYPE desi
+  SUPP 1 EXTR MAMI ETYP NODE TYPE PZ    TITL 'ULS_NODE'
+END
+
++PROG MAXIMA urs:6
+HEAD Example for MAXIMA
+HEAD Superposition
+  COMB 2 desi TYPE desi
+    ACT G
+    ACT Q
+  SUPP 2 EXTR MAMI ETYP NODE TYPE PZ    TITL 'ULS_NODE'
+END
+
++PROG MAXIMA urs:7
+HEAD Example for MAXIMA
+HEAD Superposition
+  COMB 3 desi TYPE desi
+    ACT G
+      LC 0
+    ACT Q
+      LC -1
+    ACT Q_1
+      LC -1
+    ACT Q_2
+      LC -1
+  SUPP 3 EXTR MAMI ETYP NODE TYPE PZ    TITL 'ULS_NODE'
+END
+
++PROG MAXIMA urs:8
+HEAD Example for MAXIMA
+HEAD Superposition -> double definition of Q_1 and Q_2
+  COMB 4 desi TYPE desi
+    ACT G
+    ACT Q
+    ACT Q_1
+    ACT Q_2
+  SUPP 4 EXTR MAMI ETYP NODE TYPE PZ    TITL 'ULS_NODE'
+END
+
++PROG MAXIMA urs:9
+HEAD Example for MAXIMA
+HEAD Superposition -> NOT CORRECT
+$ all variable load cases to ACT Q
+  COMB 5 desi TYPE desi
+    ACT G
+      LC 0
+    ACT Q
+      LC 0
+  SUPP 5 EXTR MAMI ETYP NODE TYPE PZ    TITL 'ULS_NODE'
+END
+
+
+
+

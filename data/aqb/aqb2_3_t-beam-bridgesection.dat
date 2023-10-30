@@ -1,0 +1,120 @@
+PROG AQUA
+HEAD T-BEAM PRESTRESSED CONCRETE
+ECHO SECT EXTR
+NORM DIN FB102-2009 CAT C UNIT 5
+CONC  1 C    30
+STEE 11 BST  500SA
+     12 PST  1470
+SECT 1 MRF 11 FSYM YES $ HALF SECTION, SUPPRESS IYZ
+SV  YSC 2325           $ SHEAR CENTRE IN THE MIDDLE OF THE BEAM
+POLY O
+VERT 10    0    0
+     11 3230    0
+     12 3270  -40
+     13 3270  -90
+     20 3500  -90
+     21 3500   40
+     22 2650  270
+     30 2650 1100
+     31 2000 1100
+     32 2000  350
+     33 1700  250
+     34    0  250
+SPT RU 2650 1100
+    RO 2650    0
+CUT  1 ZB 350 BMAX 110
+CUT  2 ZB 550 BMAX 110
+CUT  3 ZB 750 BMAX 110
+CUT  4 ZB 950 BMAX 110
+CUT 11 YB 2660 ZB 300 ZE 0  TYPE AFLA LAY 2 WTM 0.0 WTD 0.0 MS -1.78
+CUT 'STEG' YB 1990 ZB 1100 ZE    0 TYPE ACT
+    'STEG' YB 2660 ZB    0 ZE 1100 TYPE ACT
+$ MINIMUM OF REINFORCEMENT FOR TORSIONAL AREA
+LRF  1 2600   50 2600 1050 AS 14.82 LAY M0 D 16 TORS ACTI DIST INS
+LRF  2 2600 1050 2050 1050 AS 14.82 LAY M0 D 16 TORS ACTI DIST FULL
+LRF  3 2050 1050 2050   50 AS 14.82 LAY M0 D 16 TORS ACTI DIST INS
+LRF  4 2050   50 2600   50 AS 14.82 LAY M0 D 16 TORS ACTI DIST FULL
+LRF 10 2600 1050 2050 1050 AS 14.82 LAY Z1 D 20           DIST EVEN
+$
+END
+
+PROG AQB
+HEAD T-BEAM PRESTRESSED CONCRETE
+HEAD DEFINITION OF THE SYSTEM AND THE TENDONS
+HEAD CALCULATION OF CREEP AND SHRINKAGE
+BEAM 1 X  1.00 NCS 1 TYPE SECT CS0 0 CS1 1
+     1 X 11.00 NCS 1 TYPE SECT CS0 0 CS1 1
+TEND 1 10 12 0 1 0 X  1.00 Y 2190 Z 478 ZZ 2770. AZ 3200 NZ 1/9
+     1 11 12 0 1 0 X  1.00 Y 2460 Z 478 ZZ 2720. AZ 3200 NZ 1/9
+     1 10 12 0 1 0 X 11.00 Y 2190 Z 970 ZZ 2770. AZ 3200
+     1 11 12 0 1 0 X 11.00 Y 2460 Z 970 ZZ 2720. AZ 3200
+$
+$ X = 11.0 N=2770+2720; My=N*(Z-Zs)=5490*(0.970-0.341) $ Zs=0.340605
+$ X =  1.0 N=5490*COS=5490*1/sqr(1+(1/9)^2)
+$          Vz=N*1/9=5456.42*1/9; My=N*(Z-Zs)=5456.42*(0.478-0.341)
+$
+LC 1 TYPE 'P'   TITL 'Prestress'
+   S No 1  1.00 N -5456.42 VZ  -606.27 MY  -749.68
+   S No 1 11.00 N -5490.00 VZ     0.00 MY -3453.21
+LC 2 TYPE 'G_1' TITL 'Self weight'
+   S No 1  1.00 VZ   376. MY   451.
+   S No 1 11.00           MY  2070.
+LC 3 TYPE 'G_2' TITL 'Track+Sidewalk'
+   S No 1  1.00 VZ    82. MY   -98.
+   S No 1 11.00           MY   450.
+LC 4 TYPE 'T'  TITL 'Temperature'
+   S No 1  1.00   MY   300.
+   S No 1 11.00   MY  1200.
+LC 5 TYPE 'C'  TITL 'C+S'
+$
+LC 11 TYPE 'L_T'   $  First part of the Tandem-Axis
+   S No 1  1.00 VZ  225.3  MT -12.3  MY   274.
+   S No 1 11.00 VZ   25.4  MT  -9.0  MY   562.
+LC 12 TYPE 'L_T'   $  First part of the Tandem-Axis
+   S No 1  1.00 VZ  125.3  MT  -8.3  MY   174.
+   S No 1 11.00 VZ   35.4  MT -10.0  MY  1062.
+LC 21 TYPE 'L_U' SUP COND   $  Second part belongs to action L
+   S No 1  1.00 VZ  125.3  MT -17.1  MY   180.
+   S No 1 11.00 VZ   16.2  MT  -2.0  MY   450.
+LC 22 TYPE 'L_U' SUP COND   $  Second part belongs to action L
+   S No 1  1.00 VZ   75.0  MT  -3.0  MY    20.
+   S No 1 11.00 VZ   12.2  MT  -2.0  MY   450.
+$
+CTRL AXIA ZSYM
+ECHO EIGE
+ECHO FORC,SECT
+COMB SUM LC1 G 1.0 P 1.0 LCST 5
+EIGE 1  T 9999 RH 70
+EIGE 12 T 9999
+$
+ECHO TABS SELE 'R*'
+ECHO REIN,DESI
+ECHO COMB EXTR
+COMB SOLO LC1 P
+COMB SOLO LC1 G
+COMB SOLO LC1 G_1
+COMB SOLO LC1 G_2
+COMB SMAX MY  LC1 L    $ SOLO L would address several load cases
+COMB SMAX MY  LC1 L_T
+COMB SMAX MY  LC1 L_U
+COMB MAMD MY  LC1 G                     $ Test gam/gamu
+COMB MAXR LC1 G  -  P  -  C  -  L -  T  $ Leading action L
+COMB MAXR LC1 G  -  P  -  C  -  T -  L  $ Leading action T
+STRE K BZ $ Info individual value of Stresses
+          $ Clarifying 4.4.1.2 (5) if cracked/uncracked
+COMB MAXF LC1 G  -  P  -  C  -  L -  T  $ Leading action L
+COMB MAXF LC1 G  -  P  -  C  -  T -  L  $ Leading action T
+STRE E VH $ Check of decompression category B
+COMB MAXN LC1 G  -  P  -  C  -  L -  T  $ Leading action L
+COMB MAXN LC1 G  -  P  -  C  -  T -  L  $ Leading action T
+STRE E RL      $ Minimum reinforcement 4.4.2.2.
+NSTR S0 CW 0.2 CHKC -0.6 CHKS 0.80 CHKT 1.0
+               $ Check of crack width category B
+               $ Only necessary if fctm is exceeded
+COMB MAXD LC1 G  -  P  -  C  -  L -  T  $ Leading action L
+COMB MAXD LC1 G  -  P  -  C  -  T -  L  $ Leading action T
+DESI STAT ULTI
+$
+END
+
+

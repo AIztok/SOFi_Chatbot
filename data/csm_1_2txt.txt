@@ -1,0 +1,3292 @@
+CSM
+Construction Stage Manager
+SOFiSTiK | 2023CSM
+ConstructionStageManager
+CSMManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|CSM
+Contents
+Contents i
+1 General 1-1
+2 Theoretical Background 2-1
+2.1 General. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.2 Activation of new elements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.3 Numbering. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-3
+2.4 Construction Stages to be Computed . . . . . . . . . . . . . . . . . . . . . . 2-3
+2.5 Load Cases - Primary Load Cases - Difference Load Cases . . . . . . . . 2-3
+2.6 Analysis of Creep and Shrinkage . . . . . . . . . . . . . . . . . . . . . . . . . 2-9
+2.6.1 Loading start T0 and shrinkage start TS . . . . . . . . . . . . . . 2-9
+2.6.2 Real Creep. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-9
+2.6.3 Simple creeping . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-11
+2.6.4 Manipulation of creep and shrinkage values. . . . . . . . . . . . 2-12
+2.6.5 Systems Consisting of Beams with AQB . . . . . . . . . . . . . . 2-13
+2.6.6 Creep and Shrinkage of quad- and bric- and truss elements . 2-13
+2.6.7 Creep of other elements . . . . . . . . . . . . . . . . . . . . . . . . 2-13
+2.6.8 Temperature Effects . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-14
+2.6.9 Further Comments to Creep and Shrinkage. . . . . . . . . . . . 2-14
+2.7 Comparison with Cast-in-one System . . . . . . . . . . . . . . . . . . . . . . 2-14
+2.8 Check-Print and Control-plots of the Calculation . . . . . . . . . . . . . . . 2-15
+2.9 Precamber analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-15
+2.9.1 Principle of linear precamber . . . . . . . . . . . . . . . . . . . . . 2-15
+2.9.2 Workflow in CSM . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-16
+2.9.3 First Construction Stage analysis . . . . . . . . . . . . . . . . . . 2-16
+2.9.4 Perform precamber . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-18
+2.9.5 Main conclusion for linear precamber . . . . . . . . . . . . . . . . 2-20
+2.9.6 Nonlinear precamber analysis . . . . . . . . . . . . . . . . . . . . 2-21
+2.10 Shape and Force Optimization . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-24
+2.10.1 Optimization on final system without construction stages . . . 2-25
+2.10.2 Optimization on systems with construction stages . . . . . . . . 2-27
+2.10.3 Geometry Opitmization . . . . . . . . . . . . . . . . . . . . . . . . . 2-32
+2.11 Incremental Launching . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-32
+2.11.1 Incremental Launching Training - tips and tricks . . . . . . . . . 2-33
+2.11.2 Launching nose. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-37
+2.12 CSM Design . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-40
+2.12.1 Superposition and design concept . . . . . . . . . . . . . . . . . . 2-40
+2.12.2 Superposition with the variable actions . . . . . . . . . . . . . . . 2-41
+2.12.3 Dataflow with superposition container. . . . . . . . . . . . . . . . 2-43
+2.12.4 Design . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-44
+SOFiSTiK2023 iCSM|Contents
+2.12.5 Design check print . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-45
+2.12.6 Sequence of design tasks . . . . . . . . . . . . . . . . . . . . . . . 2-45
+2.12.7 Nonlinear Temperature . . . . . . . . . . . . . . . . . . . . . . . . . 2-46
+2.12.8 Why AQB AND MAXIMA superposition. . . . . . . . . . . . . . . 2-46
+2.12.9 Primary and secondary (hyperstatic) effect of prestress . . . . 2-47
+2.12.10 Fatigue checks beam elements - reinforcement distribution
+numbers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-47
+2.12.11 Fatigue checks quad elements - reinforcement distribution
+numbers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-48
+2.13 CSM Construction Stage Design . . . . . . . . . . . . . . . . . . . . . . . . . 2-49
+2.13.1 Removal of temporarysupports: GPCS: furtherseparation of
+GPC parts . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-51
+3 Input Description 3-1
+3.1 Input Language . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.2 CTRL – Control . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-2
+3.3 LAUN – Launching . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-8
+3.4 CS – Construction Stages . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-10
+3.5 GRP – Groups . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-13
+3.6 GRCS – Group-stage special settings . . . . . . . . . . . . . . . . . . . . . . 3-17
+3.7 WAIT – Creep Inactive Phases . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-18
+3.8 LC – Load Cases . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-19
+3.9 CAMB – Precamber Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-20
+3.10 CREP – Creep Parameters . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-22
+3.11 DEPS – Additional Creep and Shrinkage Input . . . . . . . . . . . . . . . . 3-24
+3.12 TBEX – T-beam-philosophy on excentric beam elements . . . . . . . . . . 3-25
+3.13 ACT – Additional Actions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-26
+3.14 DESI – Design . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-28
+3.15 GRPD – Group selection for the design . . . . . . . . . . . . . . . . . . . . . 3-33
+3.16 LAM – Lambda Values for the Fatigue Design . . . . . . . . . . . . . . . . . 3-34
+3.17 COMB – Combinations AASHTO . . . . . . . . . . . . . . . . . . . . . . . . . 3-35
+3.18 GAMT – Temporary Gamma values for the permanent GPC parts . . . . 3-38
+3.19 LCCS – Design of Construction Stages - additional loadcases . . . . . . 3-39
+3.20 DECS – Design Construction Stage . . . . . . . . . . . . . . . . . . . . . . . 3-40
+3.21 COPY – Make a copy of construction stage design results . . . . . . . . . 3-41
+3.22 SUMA – Sum of CSM stage actions . . . . . . . . . . . . . . . . . . . . . . . 3-43
+3.23 REIN – Reinforcementparameter AQB . . . . . . . . . . . . . . . . . . . . . . 3-45
+3.24 BOX – Selection for Graphic . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-46
+3.25 QCUT – QUAD cuts for WINGRAF plots. . . . . . . . . . . . . . . . . . . . . 3-47
+3.26 SCAL – Plot Scales . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-48
+3.27 SELE – Selection Stress View . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-49
+3.28 EXPO – Export . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-50
+3.29 EQLC – Equation Load Cases . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-51
+3.30 EQUU – Displacement Restriction . . . . . . . . . . . . . . . . . . . . . . . . 3-53
+3.31 EQPP – Reaction Restriction . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-54
+3.32 EQBE – Beam Force Restriction. . . . . . . . . . . . . . . . . . . . . . . . . . 3-55
+3.33 EQIT – Construction Stage Iteration . . . . . . . . . . . . . . . . . . . . . . . 3-56
+3.34 KINK – Add a new segment with a Kink . . . . . . . . . . . . . . . . . . . . . 3-57
+3.35 CABL – Cable Anchorage Angle Check . . . . . . . . . . . . . . . . . . . . . 3-58
+ii SOFiSTiK2023Contents|CSM
+3.35.1 Main plane . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-58
+3.35.2 Main and transverse plane, skew direction. . . . . . . . . . . . . 3-59
+3.36 MEX – Manual excentricity . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-61
+3.37 BOND – Bond force in real system . . . . . . . . . . . . . . . . . . . . . . . . 3-62
+3.38 TEMP – Temperature input on TBEX T-Beams. . . . . . . . . . . . . . . . . 3-63
+3.39 ECHO – Output Control . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-65
+4 Examples 4-1
+4.1 4-span Bridge With Stepwise Construction . . . . . . . . . . . . . . . . . . . 4-1
+4.2 Two Span Girder Creeping . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.3 Precast Girder Bridge With Cast In Situ Deck . . . . . . . . . . . . . . . . . 4-1
+4.4 Prestresses FE Slab - Test System . . . . . . . . . . . . . . . . . . . . . . . . 4-2
+4.5 Free Cantilever Erection - Small Test Bridge . . . . . . . . . . . . . . . . . . 4-2
+4.6 Free Cantilever Erection - Big Bridge . . . . . . . . . . . . . . . . . . . . . . . 4-2
+4.7 Multistorey - Incremental Erection . . . . . . . . . . . . . . . . . . . . . . . . . 4-2
+SOFiSTiK2023 iiiCSM|Contents
+iv SOFiSTiK2023General |CSM
+1 General
+With the Construction Stage Manager, shortly called CSM, construction stages and creep
+analysis problems can be defined and controlled in an easy way.
+The CSM program produces an input file for the common SOFiSTiK programs ASE and
+AQB that finally do the analysis. The program does not require further licences. For ASE at
+lease ASE1 is needed, for creep analysis in AQB, AQBS is needed.
+SOFiSTiK2023 1-1CSM|General
+1-2 SOFiSTiK2023TheoreticalBackground |CSM
+2 Theoretical Background
+2.1 General
+With the CSM (Construction Stage Manager) a construction sequence can be defined and
+analyzed.
+The construction stages are controlled with the following tables:
+- the table CS defines the used construction stages
+- the group table GRP defines, when a group is activated
+- the load case table LC defines additional loads (g_2)
+TendonsareautomaticallyactivatedstartingfromtheICS1numberdefinedinTENDON.From
+ICS2 on they are bonded.
+WithafewinputtovariableactionsthenanautomaticdesigncanbestartedwithCSMDESI.
+2.2 Activation of new elements
+MaintaskoftheCSMisthesimulationofaconstructionsequence. Amainpartistheactivation
+of a new element.
+Lets consider a multispan girder where we start with erection and loading of span 1. The
+cantilever nose gets a vertical deformation. In the following, span 2 shall be activated and this
+leads to the problem how to position the formwork. For this we have three possibilities, see
+CTRL CANT ??:
+Figure2.1: CTRLCANT-activationofanewgroup
+We choose CTRL CANT 1 and place the formwork horizontally at the cantilever nose. Four
+important actions or situations follow:
+- 1. the formwork is placed. This does not create a new load as the formwork stands on the
+ground, see following figure.
+- 2. the concrete is filled in. This also does not create a new load as the concrete load goes
+directly over the formwork in the ground.
+SOFiSTiK2023 2-1CSM|TheoreticalBackground
+- 3. concrete hardens. This also does not create a new load as the concrete only goes from
+state liquid to a stressfree hardened state.
+- 4. the formwork is removed. Now the dead load of the concrete loads out structure.
+The following figure shows situation 1+2+3 on top and situation 4 on bottom:
+Figure2.2: Activationofanewgroup,formworkstandsonground
+Allthesefoursituationsareoftencalculatedinoneconstructionstage. Itisimportanttoimagine
+thatthenewelementsarefirstactivatedasstressfreeelementsinthedisplacementsituationof
+thepreviousconstructionstage(primaryloadcase). Theactivationofthedeadloadinthesame
+constructionstagethenimmediatelycausesdeformationsandforcesintheactualconstruction
+stage, see example csm1_4span_centering.dat.
+Alternativelyyoucanthinkthatthenewelementshangstressfreeonacraneandaresowelded
+tothecantilever(situation1+2+3). Theactivationofdeadloadthenactsfirstwiththeunloading
+from the crane (situation 4).
+Figure2.3: Freecantilevererection: anewsegmentishangingonacrane
+To also show the formwork position in a separate stage it is possible to insert a second con-
+structionstage. Inthefirsttheelementisactivatedwithoutdeadload-thisgivestheformwork
+position. Inthesecond,thedeadloadisactivated-thatrepresentstheremovalofformworkor
+unloading from the crane, see example csm26_precamber_spanbyspan.dat.
+In case you do not want to precamber your segments BUT you want to add (weld) them tan-
+gentially (CTRL CANT 2) AND you want to have the beams placed on the supports in the
+architectural position:
+csm26_tangential_without_precamber.dat
+Thatneedsliftingorloweringofsupportsbecausewhenyouaddthesegmenttangentiallyyou
+will NOT reach the next support with displacement zero when you add the segment ’stress-
+freewithoutdeadload’(’stressfreewithoutdeadload’meansthatthesegmentstillhangsonthe
+2-2 SOFiSTiK2023TheoreticalBackground |CSM
+crane in this stage),
+2.3 Numbering
+A very concise calculation can be done, if the numbering of groups, construction stages and
+prestressing stages match together in ascending order with respect to time.
+Due to the fact that intermediate construction steps (e.g.: prestressing, grouting, moving of
+temporary loads, creep..) are carried out between two main construction stages (CS) it is
+useful to store these main stages in every 10th construction stage number. So there are
+enough numbers in between to stor re the intermediate steps properly without shifting the
+numbers of the main stages, even if the intermediate steps are inserted subsequently.
+Proposed Numeration:
+- 10th : Activation of a new group
+- 11th : Prestressing
+- 12th : Grouting / extrusion
+- 13th : Loads of construction stages (e.g.: cantilever carriage..)
+- 15th : Creep-step
+For example: Group 50 is activated in construction stage 50 (hardening of concrete in CS 50)
+thenthecorrespondingtendonisprestressedinCS51andgrouted/extrudedinCS52.Hence
+the tendon has to be defined in TENDON...CS with ICS1=51 and ICS2=52.
+2.4 Construction Stages to be Computed
+All construction stages that cause changes of stresses have to be considered. Therefore
+construction stage grouting / extrusion (CS: x2) is not necessarily to be computed, due to the
+fact that the grouting mortar causes no changes in stresses.
+Thechangeofasupport-conditiondoesnotintroducenewloadsbutleadstodeformationsand
+resulting stresses and has to be taken into account as a load case in an own stage.
+2.5 Load Cases - Primary Load Cases - Difference Load Cases
+A list over the loadcases used by CSM is printed at the end of this chapter.
+The TYPE (LC TYPE) of a loadcase has no longer an effect. Importand is the TYPE in CS.
+Theloadcasesofadditionalloadsshouldbeadvantageouslydefinedwiththesameloadcase-
+andconstructionstagenumber,e.g.: Loadcase43: loadsofcantilevercarriageforconstruction
+stage 43.
+Initially the calculation is performed with the complete loading resulting in complete internal
+forces for the end of the computed construction stage. This is necessary, because with a
+change of the support conditions the complete active support-force has to be shifted accord-
+ingly. HenceASEistakingallloadsactivatedforthisconstructionstageintoaccount. Theload
+case numbers of these complete load cases are stored within the 4000 numbers, e.g. CS 40
+with all loads in load case 4040.
+For the further design with AQB only the difference in internal forces between the load cases
+is required, AQB for instance has to consider different safety-factors for design at the ultimate
+SOFiSTiK2023 2-3CSM|TheoreticalBackground
+limit state. Thus, in addition to the internal forces of the complete load case, the difference in
+internalforcesreferingtothelastloadcaseisstoredaswellwithinthe5000numbers(e.g.: CS
+40 in load case 5040). Load case 5040 stores the difference in internal forces between load
+case 4040 and 4035 (assuming load case 4035 is the construction stage before 4040).
+LoadcaseswithcreeparestoredbyAQBwithinthe6000loadcasesandcontainthechangeof
+internal forces due to creep and shrinkage of the cross-section, the corresponding load cases
+with numbers 5000 of the creep analysis with ASE only store the internal forces due to the
+redistribution of forces caused by creep and shrinkage.
+PleasereferalsotoASE...CTRLDIFF2000andASE...LCCPLCYES/NEWandAQB...COMB
+LCST.
+The following graphic shows the relations between the different result loadcases on creep and
+shrinkage with AQB - please also refer to chapter design - dataflow.
+2-4 SOFiSTiK2023TheoreticalBackground |CSM
+PROG ASE
+Difference LC 5010
+HEAD Dead Load Construction Stage
+(from 0 to 4010)
+LC 4010
+. . .
+PROG ASE
+Difference LC 5011
+HEAD Prestress Construction Stage
+(from 4010 to 4011)
+LC 4011
+. . .
+PROG AQB
+HEAD Creep Inner Stresses
+COMB ... LCST 6015
+includes inner tendon stress loss
+Difference LC 5015
+PROG ASE
+(from 4011 to 4015)
+HEAD Creep Construction Stage
+= creep redistribution
+LC 4015 ...
+LCC 6015 $ creep curvature from AQB
+LC 4000... = summed up load cases =
+total load, total force, total displacement
+LC 6000... = AQB inner stresses
+LC 5000... = difference load cases =
+difference force and displacement
+Separation of creep in part inner stress loss (LC 6000...) and redistribution due to creep cur-
+vature (LC 5000...) see next page.
+SOFiSTiK2023 2-5CSM|TheoreticalBackground
+Lets assume a prestressed beam on creep acting loading G+P:
+Inafirststep,anAQBrunchecksthepuresectioncreeponconstantbendingmoment. Dueto
+creep, shrinkage and tendon steel relaxation the tendon stress will decrease by ΔσP, parallel
+the concrete stress will change to hold the constant outer bending moment.
+ThesestresschangesΔσduetopuresectioncreeparestoredintheAQBrunasinnerstresses
+in LC 6000... (on constand outer bending moment). The LC 6000... only gets a printed delta
+moment, because usually the engineer wants to see the part without the statically prestress.
+Nevertheless the stress increments in the above picture are in equilibrium on themself.
+Δσ
+ΔσP-6000 curvature load LC 6000...
+Δσ
+ThesecurvatureisappliedafterAQBinthefollowingASEandcreatescreepdeformationsand
+a redistribution moment in case of statically indetermined systems.
+Correct stresses can now only be achieved with an AQB run, collecting all parts, e.g. in a
+check-printoranAQBdesignwithCOMB... LC1GLC2PLC3CLCST7015whereGcontains
+the differential case 5010, P the differential case 5011 and C the parts 5015+6015. The result
+storage loadcase 7015 then contains all parts including the inner creep eigenstresses 6015,
+that can never be taken into account in a MAXIMA superposition! Overview:
+• Total CS displacements and forces starting LC 4000...
+• Difference displacements and forces LC 5000...
+• AQB inner stresses from creep and shrinkage LC 6000...
+• Stress results of the AQB-LCST-evaluation LC 7000...
+LC 7000... must be used to plot stresses and the beam normal force incl. C+S in WINGRAF!
+2-6 SOFiSTiK2023TheoreticalBackground |CSM
+Overview loadcases used by CSM:
+:
+CSM Construction stages:
+3970- 3997: Comparison loadcases - cast in one (CTRL cast)
+4000- 4999: Total CS displacements and forces
+5000- 5999: Difference displacements and forces
+6000- 6999: AQB inner stresses from creep and shrinkage
+7000- 7999: AQB-LCST result stresses (real stresses)
+15000- 15999: Primary part effect of prestress separated in construction stages
+16000- 16999: Secondary effect of prestress in construction stages
+using more than 1000 stages (or CTRL GPCS 1):
+40000-49999: Total CS displacements and forces
+50000-59999: Difference displacements and forces
+60000-69999: AQB inner stresses from creep and shrinkage
+70000-..., 150000-159999, 160000-169999: as above 7000...16000...
+On CTRL GPCS (GPC separated on stages ’removint temp. supports’:
+110000-119999: separated part G
+120000-129999: separated part P
+130000-139999: separated part C
+For CSM precamber analysis (CAMB)
+140000-149999: Total CS displacements without CAMB modification
+For CSM new segments with CS...CANT 3:
+180000-189999: help load cases for analysis of restraint
+For CSM Equation System usage
+1999: CSM_Combination loadcase (CTRL LCEQ)
+CSM DESI Design usage:
+1001-1099: AQB check print
+1101-1199: SLS rare (characteristic) superposition and design
+- - - - : 01:19 AQB-LCST, 21:39 with GPC, 41:59 without GPC
+- - - - : 61:79 Wind+trafic, 81:99 wind alone : or on nonl.temp: 61:79 trafic without T
+1201-1299: SLS nonfrequent superposition and design
+1301-1399: SLS frequent superposition and design
+1401-1499: SLS permanent superposition and design
+1901-1998: 1.0 superposition
+2101-2199: ULS design
+2501-2599: Accidential
+2601-2699: Earthquake
+2801-2899: Fatigue LM3 with pk-inf and pk-sup prestress
+2901-2999: Fatigue simplified LM1 with pk-inf and pk-sup prestress
+9001-9499: Superposition with pk-inf and pk-sup prestress
+SOFiSTiK2023 2-7CSM|TheoreticalBackground
+Overview reinforcement distribution numbers used by CSM:
+:
+Beam cross sections (AQB):
+1 : summed up total resinforcement of all design tasks
+91: reinforcement distribution number in the Check Print
+Quad elements (BEMESS):
+1 : Maximum of necessary reinforcement (final reinforcement superposition)
+11: ULS Ultimate Limit State Design
+12: Minimum reinforcement and robustness reinforcement
+13: Check of crack width
+14: Stress check steel <0.8 fyk
+15: Check concrete stress (should not give an increase)
+17: Fatigue check
+2-8 SOFiSTiK2023TheoreticalBackground |CSM
+2.6 Analysis of Creep and Shrinkage
+FromtheeffectivewidthoftheelementsseeAQUA(forquadelementsthe1.4timesquadthick-
+ness is taken due to a considered covering on top), the CSM calculates creep and shrinkage
+values in dependence of T0 and TS, the creep duration, the temperature and the air humidity.
+The CSM uses code based functiions that are also used in AQB.
+See also YOUTUBE Video https://www.youtube.com/watch?v=taaBfPlIRGA
+All workshop YOUTUBE videos are listed in the command GRP, search there for ’Overview
+workshop YOUTUBE videos’
+2.6.1 Loading start T0 and shrinkage start TS
+For shrinkage an age TS of 3 days is set by default, With the input GRP...TS this can be
+changed in CSM. We assume/calculate that physically shrinkage starts at this age TS. The
+analysis creep and shrinkage intervals start at T0 (loading age). So in the first creep and
+shrinkage interval T0 to T0+T the shrinkage part from TS to T0 is not applied! This is correct
+for the standard case prestress with subsequent bond where prestress C+S loss starts at T0.
+With the same reason also the total shrinkage value does not include this first shrinkage part
+from TS to T0!
+In steel composite sections it is necessary to take into account the first shrinkage part from
+TS up to the start of loading. To do this you must input T0=TS= 1 day, see example
+steel_composite_orto.dat .
+For in situ concrete slab on a prerefabricated beam T0 may not be input too small because
+thentheconcretewounldbetooweakforfirstdeadloadG_1orprestressing. Thusinexample
+csm3_composite_beam.dat T0=3 andTS=1 is set for group 10. Completely correct could also
+be to input T0=TS= 1 day, calculate the first activation of the beams without dead load (GRP
+FACD), then add a creep step with e.g. 7 days and then activate dead load G_1 and following
+prestress P.
+2.6.2 Real Creep
+The behavior of function CTRL CREP RCRE (real creep) can be best demonstrated on a
+simple one span girder with a temporary load -> real_creep_creepparameter.dat.
+A girder will be stripped after t0=7 days. To keepn it simple dead load is switched off (or you
+imaginetheloadtobehorizontally). Afterfurther93daysaloadingAoccurs. Afterfurther200
+days the load is taken away again:
+- t0 = 7 days : Stripping construction stage CS 10
+- t1=100 days : Start loading load A construction stage CS 20
+- t2=300 days : End of load construction stage CS 30
+- t∞ =30 years : final stage
+SOFiSTiK2023 2-9CSM|TheoreticalBackground
+P
+load A
+t0 t1 t2 t∞
+
+t0 t1 t2 t∞
+From t2 up to t∞ the girder is stressfree and one could imagine that no further deformation
+occurs. But this is not the case, the ist deformation goes back further. This bahavior is also
+called back-creeping or in the CSM notation "real creep" with CTRL CREP RCRE.
+The CSM bzw. ASE and AQB treat the load A in two parts, one loading starting at t1 und
+one negative loading starting at t2. This is analyzed in the two difference loadcases 5020 and
+5030:
+difference loadcase 5020
+{ 0.89 {
+1.04
+t0 t1 t2 t∞
+{
+1.88
+t0 t1
+difference case 5030
+- difference loadcas 5020 starts at time t1 with an own creep function (red). T0 of this creep
+function is 100 days.
+- difference loadcas 5030 starts at time t2 with an own creep function (red). T0 of this creep
+function is 300 days.
+2-10 SOFiSTiK2023TheoreticalBackground |CSM
+As the two creep parts have own time shifted delayed elastic parts, the backward creeping
+occurs.
+In example real_creep_creepparameter.dat we get the following output (first CSM run):
+Creep Values
+Grp Mat h-0 t0 CS CS CS total
+[mm] [d] 15 25 35 ϕ-eff
+t[d] ---> 93 200 10950 11243
+RH[%] ---> 80 80 80
+T[°C] ---> 20 20 20
+1 1 400.0 7 0.82 0.28 0.61 1.71
+RCRE 100 - 0.61 0.43 1.03
+300 - - 0.83 0.83
+In creep stage 25 from t1 up to t2 the system creeps under load with a delta-phi of 0.61 (last
+but one line RCRE für t0=100). In creep stage 35 from t2 up to t∞ the positive load part 5020
+creeps with a delta-phi of 0.43, the negative load part 5020 (t0=300) creeps with 0.83. This
+results in the backward creeping.
+For an exact creep analysis on time varying loading CTRL CREP RCRE should be used be-
+cause only then a later load part will get an own creep function.
+2.6.3 Simple creeping
+WithCTRLCREPSTANthisloadpartdependinganalysisofcreepvaluesisnotperformed. In
+every creep step all loadparts are treated with the same delta-phi, analyzed with the T0 value
+defined in GRP.
+Here a compare of the creep values of example csm1_4span_centering.dat. CTRL CREP
+STAN:
+GrpMat h-0 t0 CS CS CS CS CS CS CS total
+[mm] [d] 15 25 35 45 46 47 48 ϕ-eff
+t[d]---> 28 28 100 468 1814 702227196 36656
+RH[%]---> 80 80 80 80 80 80 80
+T[°C]---> 20 20 20 20 20 20 20
+1 1 400.0 7 0.63 0.14 0.25 0.39 0.30 0.14 0.05 1.91
+2 1 400.0 7 - 0.63 0.34 0.43 0.31 0.14 0.05 1.91
+3 1 400.0 7 - - 0.91 0.48 0.33 0.15 0.05 1.91
+Grp group number ϕ-eff sum construction stage creep parts
+h-0 notional size (2A/U) t effective duration creep interval
+t0 age of concrete at time of loading RH relative humidity
+CS construction stage creep partΔϕ-eff T temperature in creep interval
+Group 2 is not yet active in creep step CS 15, therefore the starting delta-phi of 0.63 appears
+in CS 25 for the first time. Creep for the older Group 1 is calculated with a delta-phi of 0.14 in
+this stage. But the total creep factor 1.91 is the same for all groups.
+Shrinkage coefficients are computed accordingly.
+Now to compare: the same example with CTRL CREP RCRE:
+SOFiSTiK2023 2-11CSM|TheoreticalBackground
+GrpMat h-0 t0 CS CS CS CS CS CS CS total
+[mm] [d] 15 25 35 45 46 47 48 ϕ-eff
+t[d]---> 28 28 100 468 1814 702227196 36656
+RH[%]---> 80 80 80 80 80 80 80
+T[°C]---> 20 20 20 20 20 20 20
+1 1 400.0 7 0.63 0.14 0.25 0.39 0.30 0.14 0.05 1.91
+RCRE 35 - 0.47 0.25 0.32 0.23 0.11 0.03 1.41
+63 - - 0.60 0.32 0.21 0.10 0.03 1.26
+163 - - - 0.73 0.20 0.08 0.03 1.05
+631 - - - - 0.71 0.08 0.02 0.81
+2445 - - - - - 0.60 0.02 0.62
+9467 - - - - - - 0.47 0.47
+2 1 400.0 7 - 0.63 0.34 0.43 0.31 0.14 0.05 1.91
+RCRE 7 - 0.63 0.34 0.43 0.31 0.14 0.05 1.91
+35 - - 0.67 0.35 0.24 0.11 0.03 1.41
+135 - - - 0.76 0.21 0.09 0.03 1.09
+603 - - - - 0.71 0.08 0.02 0.81
+2417 - - - - - 0.60 0.02 0.62
+9439 - - - - - - 0.47 0.47
+3 1 400.0 7 - - 0.91 0.48 0.33 0.15 0.05 1.91
+RCRE 7 - - 0.91 0.48 0.33 0.15 0.05 1.91
+7 - - 0.91 0.48 0.33 0.15 0.05 1.91
+107 - - - 0.80 0.22 0.09 0.03 1.14
+We see that the first line is the same as in the table before but load parts acting later get an
+own T0 and an own creep function with an own total phi value.
+Thus for a normal analysis the default CTRL CREP RCRE should be used.
+2.6.4 Manipulation of creep and shrinkage values
+In case of real creep via AQB the individual creep values are always calculated in AQB. So
+they cannot be manipulated via CSM. Then the input CREP...PHI and DEPS...DPHI can not
+be used. Furthermore AQB calcualtes the values depending on the actual effective member
+thickness of each beam. CSM makes this only with an average effective member thicknesss
+within a group.
+Please notice that you can define different degrees of air contact for every edge of a cross
+section in AQUA to adjust the analysis of the effective member thickness (compare to
+csm3_composite_beam.dat AQUA...VERT...EXP).
+Also the shinkage values are calculaed in AQB depending on the actual thickness. Only if you
+input final shrinkage values in CREP...EPS or delta values in DEPS...DEPS. Then CSM would
+passthemanipulatedshrinkagevaluestoAQB.AQBwouldtakethesevaluesbutthenignoring
+a possible individual effective member thickness e.g. in haunches.
+SoitisbettertochangematerialparameterinAQUAtoadjustcreepandshrinkage. Thenboth
+CSM and AQB can use them.
+For concrete you can input more parameter for creep and shrinkage in AQUA MEXT EIGE
+according EN 1992-1. See example real_creep_creepparameter.dat.
+Often only the final creep or shrinkage value shall be adjusted. Then you can just use the
+following major parameter:
+- MEXT ... VAL1 = value beta-bc1 = factor on final creep value
+- MEXT ... VAL3 = value beta-cd1 = factor on drying shrinkage
+- MEXT ... VAL5 = value beta-ca1 = factor on chemical shrinkage
+e.g. for 1.2 times creep and 1.4 times shrinkage:
+CONC 1 C 40 ; MEXT 1 TYPE EIGE VAL1 1.20 VAL3 1.40 VAL5 1.40
+2-12 SOFiSTiK2023TheoreticalBackground |CSM
+A compare of possibilities to modify creep curves and a recommendation is also shown at the
+end of example file explicit_creep_curve.dat.
+In simple cases you can also just adjust the temperature or the humidity.
+2.6.5 Systems Consisting of Beams with AQB
+Prestressed beams and composite cross sections require the analysis of creep and shrinkage
+via AQB due to the fact that only AQB differentiates the internal stresses of a cross section.
+BeamswithoutprestressorbondcanbecomputedwithASEdirectlywithoutAQB.Prestressed
+slabs can be computed as well using CSM+ASE without AQB.
+2.6.6 Creep and Shrinkage of quad- and bric- and truss elements
+QUAD,BRICandTrusselementscanbecomputedwithASEdirectlywithoutAQB.Prestressed
+slabs can be computed as well using the CSM.
+ForQUADelementstheeffectivememberthicknesscanbeenteredwithCREP...DEFQ.With-
+out any input for the effective thickness CSM computes an averaged value over all QUAD
+elements of one group and multiplies this thickness with 1.4 to get the effective member thick-
+ness.
+For BRIC elements the effective member thickness must be input in CREP...DEFQ for the
+BRIC groups.
+2.6.7 Creep of other elements
+Springs,elasticboundaries,quadbedding,FLEX-andHASE-halfspaceelementsdonothave
+a concrete material number and are treated separate.
+Please notice: in case spring elements represent concrete elements, e.g. an abutment, they
+shouldcreepaswell. Otherwisespuriousrestraintscanoccur. E.g. asinglespangirderisfixed
+with rotations springs right and left, the restraint moment will increase if only the girder creeps
+andthespringsnot. Butthisisnotthecaseifallismaseofconcreteandcreepssimultanious.
+Only in case the springs are really made of steel and do not creep this can be input with CSM
+GRP PHIF 0.
+Elastic boundaries, quad bedding, FLEX- and HASE- halfspace elements often represent soil.
+But soil also creates long term deflections what is similar to creep. CSM+ASE can simulate
+these long term deflections by using a concrete creep behavior also for these elements.
+- Springs have a group number and react on GRP-PHIF. They use the creep curves of a
+concrete beam or quad in the same group. If this does not exist, ASE uses the creep
+curves of a reference element - see below.
+- QuadbeddingshaveagroupnumberandreactonGRP-PHIF.Asthequad-materialisused
+for the quad concrete, the bedding uses a creep curve of a reference element - see below.
+- Elastic boundaries (BOUN) and FLEX elements use the group number for GRP-PHIF and
+PHIP-PHIonlyincaseofCTRLCREPSTAN.Intherealcreep(RCRE)howeverGRP-PHIF
+istakenfromgroup0,PHIP-PHIcannotbeused,thecreepfunctionofareferenceelement
+is used - see below.
+- HASE halfspace elements always use the reference element.
+SOFiSTiK2023 2-13CSM|TheoreticalBackground
+- Pile element with a bore profile bedding however use the concrete creep value also for the
+bedding!
+If a reference element is needed you best define a dummy concrete element in group
+0. That material will then be used for the creep curves of these elements, see example
+hase3_hase3_variable_surface_level.dat. In case in group 0 no element is found ASE takes
+the first concrete element (beam or quad).
+In the real creep (RCRE) in GRP 0 PHIF only the input 1 and 0 is allowed for creep YES and
+NO. Best input GRP-PHIF with the same value for all groups.
+2.6.8 Temperature Effects
+Without input, CSM works on 20 degree celsius. Via CS...TEMP for each creep step an in-
+dividual temperature can be definied. The effective age on first loading in GRP...T0 is always
+related to 20 degrees!
+In case of a heat treatment we recommend to not calculate the heat treatment in CSM directly
+but to start with the analysis at the time when the tendons are cut in the factory. So we
+recommend to not input a higher temperature but to stretch the time in the heat treatment
+manually and to insert a higher value for T0 (first loading), e.g.
+- for a first heat treatment on 2 days with 50 degree (dt-eff=2*3.547 = 7.094d)
+you must input T0=7.1 days.
+The above used factor 3.547 is analyzed using EN 1992-1-1 annex C equation (B.10).
+As the tendon usually also expands due to the heat treatment, the effective prestress is lower
+according EN 1992-1-1 10.5.2. So in TENDON a prestress reduced by the temperature dif-
+ference must be input! See example csm3_casting_bed_method.dat comments after PROG
+CSM.
+2.6.9 Further Comments to Creep and Shrinkage
+Whenevertwoquadgroupswithdifferentelementthicknessmeettogether,thedifferentphiand
+eps values will result in additional stresses! This schould be considered in the arrangement
+of the groups or via the manual input of an average effective member thickness. On problem
+temperature on quad superstructure see also example temp_load_tbeam.dat.
+Weak concrete E modulus of young concrete is already included in the creep values.
+2.7 Comparison with Cast-in-one System
+With CTRL CAST 1 the following load cases are computed for the means of a comparison:
+Load cases for cast-in-one system (with the last group setting!)
+- 3991 G_1 cast-in-one system
+- 3992 G_2 cast-in-one system
+- 3993 P cast-in-one system
+2-14 SOFiSTiK2023TheoreticalBackground |CSM
+- 3994 C one step without exact redistributions due to creep (AQB - ctrl eige 4)
+2.8 Check-Print and Control-plots of the Calculation
+For beam structures a printout of internal forces and stresses for a certain cut is also gen-
+erated automatically. This tabular AQB output should be checked in any case especially for
+prestressed structures. The results can be found in the report file (NAME_csm.plb) in chapter
+”Considered Section BEAM...”.
+After the tabular AQB output mentioned above, a plot of the overall stresses of all construction
+stages is generated. These results are stored in AQB with COMB...LCST in the load cases
+6000 and following, these results are only stored in the Database for this very beam section.
+You can also enforce a separate Check-Print and Controll-Plot, see ’Check print construction
+stages for another beam’ in csm31_design.dat.
+IfthesestressesshouldbecomputedandstoredforallbeamsectionsCTRLSTOR+1canbe
+input (default for prestressed bridges).
+At the end of the input file CSM can also generate input data for plots of the results. In case
+ofasystemconsistingofbeams,internalforcesMy,Nanddisplacementsareplottedforevery
+construction stage for instance. Please refer to input SCAL.
+Avisualcheckusingtheanimatorisessentialinanycase(settingofaconstantmagnitudefor
+all load cases and disabling the load case animation - freeze image v=0). Please mention that
+you see the total displacement and the total forces in the 4000-loadcases, as you would see it
+in reality no site!
+Therealinnerstressesincludingtheinnercreepeffectsareonlyfoundinthe7000... loadcases
+(see check print)!
+There is also a check print in the CSM DESI - see chapter design - check print.
+2.9 Precamber analysis
+See also YOUTUBE Video https://www.youtube.com/watch?v=YxljlRZ2gME
+All workshop YOUTUBE videos are listed in the command GRP, search there for ’Overview
+workshop YOUTUBE videos’
+2.9.1 Principle of linear precamber
+The following figure shall show the principle. Lets assume a single span girder. In a first
+straight forward analysis we start on a straight formwork. After g_1 and g_2 and creep until
+traffic opening we get a deformation downwards.
+If we mirror this shape and use it as predeformation for the formwork, we will end up in a
+straight shape on traffic opening:
+SOFiSTiK2023 2-15CSM|TheoreticalBackground
+Figure2.4: Multistorey-IncrementalErection
+Important awareness: the forces are the same, only the deformations look different.
+2.9.2 Workflow in CSM
+With changing groups in the construction stages the task is a little bit more compli-
+cate but the same in principle. The following description is based on the example
+csm26_precamber_spanbyspan.dat of a four span system:
+InaLINElinearprecamberanalysisyoubeststartthePRECruninaseparteCSMrunafterthe
+realconstructionstageanalysis. ThenyoubetterseethatthelinearPRECdoesnotrecalculate
+any forces but only corrects the nodal deformations!
+Only input is the definition of a stage where zero deflection shall be achieved, here stage 35
+(CAMB 35) : traffic opening.
+Target: precamber so that in stage traffic opening bridge is straight.
+See also YOUTUBE Video https://www.youtube.com/watch?v=YxljlRZ2gME
+All workshop YOUTUBE videos are listed in the command GRP, search there for ’Overview
+workshop YOUTUBE videos’
+2.9.3 First Construction Stage analysis
+Construction sequence: span by span erection - always concreting in a formwork standing on
+the ground. So the stiffness is activated in advance without dead load and stressfree (first
+liquid concrete).
+In the following step the dead load is activated = removal of formwork.
+General use:
+Inaprecamberanalysisitisusefultofirstactivateelementswithoutdeadloadtogettheheight
+levels for the formwork (or the stressfree fabrication form).
+For this the input GRP ICSD allows a later activation of dead load for a group.
+Please first activate a group in GRP ICS1 without dead load
+(dead load still hanging on the crane or lying in a formwork on the ground)
+Then activate dead load in the next stage (remove from crane or remove formwork)
+2-16 SOFiSTiK2023TheoreticalBackground |CSM
+In every case precamber is calculated without a chamber deformation!
+Construction sequence first span and little cantilever:
+Formwork supported on ground
+concrete filled in, hardened (no dead load)
+(always without formwork deformation)
+removal formwork
+activating dead load of concrete
+1. creep step
+Construction of 2. span:
+Formwork supported on ground
+concrete filled in, hardened (no dead load)
+removal formwork
+activating dead load of concrete
+Creep step
+Construction of 3. + 4. span, creep and shrinkage until trafic opening
+SOFiSTiK2023 2-17CSM|TheoreticalBackground
+At time trafic opening now the bridge is not straight and has kinks from one construction block
+to the next.
+2.9.4 Perform precamber
+Now all deformations are availabe and CSM can perform the necessary precamber.
+If we look top the first construction block it is clear that his deformation just has to be mirrored
+and applied as negative precamber to achieve a zero displacement on trafic opening. In the
+same way the CSM corrects all other deformations and stores the displacements new. The
+loadcases 4000... then contain the modified total deformations, for checks the results of the
+first analysis are stored without modification in the loadcases 14000.... The results in the
+4000... loadcases for CAMB 35 are as follows:
+Construction sequence first span and little cantilever:
+2-18 SOFiSTiK2023TheoreticalBackground |CSM
+Formwork supported on ground
+concrete filled in, hardened (no dead load)
+(always without formwork deformation)
+removal formwork
+activating dead load of concrete
+1. creep step
+Construction of 2. span:
+Formwork supported on ground
+concrete filled in, hardened (no dead load)
+removal formwork
+activating dead load of concrete
+Creep step
+Construction of 3. + 4. span, creep and shrinkage until trafic opening
+SOFiSTiK2023 2-19CSM|TheoreticalBackground
+Nor target is reached: straight brige on trafic opening.
+2.9.5 Main conclusion for linear precamber
+A linear precamber does not change the forces in a linear analysis! Only the deformations are
+modified!
+This means in parallel, that in a force optimization you must never care about the displace-
+ments. The displacements can always be adjusted in a simple (cheap) linear percamber!
+Except: TH3 analysis. Or in other words: Much more important is a force finding than a dis-
+placement target if you do construction stage optimization! .
+.
+.
+.
+.
+.
+.
+.
+.
+.
+.
+2-20 SOFiSTiK2023TheoreticalBackground |CSM
+.
+2.9.6 Nonlinear precamber analysis
+Especially on cable stayed structures a precamber has an effect on the analysis because a
+change in the cable length has en effect on the cable sagging.
+Incaseyoucalculateyourerectionwithconstructionstages,thewholeanalysismustbererun
+including the precamber to alalyze with correct new cable length. If a new segment is added,
+it must be added with the shop form that includes the necessary precamber calculated in the
+last iteration run.
+Best start with example csm29_precamber_nonl.dat. After the analsis please open animator
+with LC 4009. You will see the stressfree shop form of the first segment. Info: this loadcase
+was analyzed without deadload and so has no stresses. The precamber you see has been
+calculated at the end of the last EQIT iteration:
+Figure2.5: StressfreeshopformfirstsegmentLC4009
+Then best set magnitude of displacement to factor 20 and klick further to loadcase 4030. The
+cable sagging informs you that you see the result of a nonlinear ASE analysis. The beam
+is straight (traffic opening) - that just was the target of the nonlinear precamber analysis, re-
+quested with CAMB 30 mode EQIT:
+Figure2.6: LC4030: straightsuperstructuretrafficopeningincludingcablesagging
+Looking to loadcase 4019 you see the shop form of the second segment - this has been
+activated without dead load with it’s shop form:
+SOFiSTiK2023 2-21CSM|TheoreticalBackground
+Figure2.7: LC4019: firstsegmentloaded,2. segmentstressfree
+Butasthefirstsegmenthasstressesinthisstage,thisplotcannotbeusedforthevisualization
+oftheoverallshopform. Forthisweimplementedafunctiontochainupallsegmentswiththeir
+shop form stressfree.
+For this please open file csm29_precamber_plot.dat and look to the result of this CAMB mode
+ANI run:
+Figure2.8: Allsegmentschainedupstressfreewiththeirshopform
+You can also use this funktion CAMB mode ANI if you activate your segments in their first
+activation with dead load! The CAMB mode ANI will also then join together all segments with
+their shop form.
+Now we go to example csm30_a_precamber_on_site_adjustment.dat
+As before we get the target of a well balanced bending moment distribu-
+tion and the precamber with a mixed EQIT and CAMB analysis (last plot in
+csm30_a_precamber_on_site_adjustment.dat):
+Figure2.9: Cablestayedbridgewithtargetfunction-550kNmbendinginsuperstructure
+2-22 SOFiSTiK2023TheoreticalBackground |CSM
+and the necessary total precamber of the superstructure after a CAMB mode ANI run (plot in
+csm30_b_precamber_plot.dat):
+Figure2.10: Allsegmentschainedupstressfreewiththeirshopform
+ButnowthebuildingyardnoticesinconstructionstageCS128thattheleftpylongotanunsym-
+metric settlement and inclines to the right. We simulate this with a support rotation in stage
+CS 129. This correction we do in file csm30_c_precamber_site.dat by changing an already
+existingdummyloadLC99’unsymmetricsettlement’forstageCS129. Wenowagainworkon
+a copy of the database, see input file command +sys copy
+Figure2.11: Problemonsite: leftpylongotanunsymmetricsettlement
+In file csm30_c_precamber_site.dat we now calculate this situation with the unchanged pre-
+camber(CAMBmodeFIX)andunchangedscalableloadcasefactors(EQITITER0). Ofcourse
+we see that the cantilevers now do not match in midspan:
+Figure2.12: Problemonclosingthegapduetounsymmetricsettlement
+WenowareinstageCS128andcannotmakechangesforthestagesbefore-theyarealready
+built.
+We can only make changes for the stages behind and this analysis with additional corrections
+is done in file csm30_d_precamber_corr.dat. The primary target to match in midspan can
+be achieved easily with an additional ballast in the left sidespan in stage CS 309. But to
+SOFiSTiK2023 2-23CSM|TheoreticalBackground
+increase the upward curvature of the superstructure right of the first pylon we increase the
+cable prestress for the next segments there, see input file. Please notice that we assume that
+all segments are already prefabricated and cannot be modified!
+With these additional corrections we achieve a good gap closing also in case of this dramatic
+unsymmetric pylon settlement:
+Figure2.13: Bridgeattrafficopeningincludingunsymmetricsettlement
+We can see a slight wave in the superstructure but what shall we do : we cannot change the
+alreadybuiltelements. Alsothebendingmomentcurvehaschangedslightlybutisacceptable.
+In file csm30_e_precamber_kink.dat we now solve the problem by inserting the next segment
+with a kink. Again we use the old factores of the scalable laodcases and the old workshop
+form:
+Figure2.14: Solvingtheproblemwithakink(highlyenlarged)
+In file csm30_f_precamber_equu.dat we also insert a kink but now run a new optimization.
+Only the old workshop form of the segments is used again.
+2.10 Shape and Force Optimization
+CSM can also compute load case factors for a set of uniform load cases EQLC to fit desired
+deformationorstressstates. Hewillcalculatestheloadcasefactorsthatwillsatisfytherestric-
+tions defined by EQUU, EQPP and EQBE.
+See also YOUTUBE Videos:
+Subject Link
+Optimization Introduction https://youtu.be/vRyBkK6kvvo
+CSM force optimization https://youtu.be/W2GqbTaRSsE
+CSM suspension bridge https://youtu.be/kPzlHHmn-mM
+All workshop YOUTUBE videos are listed in the command GRP, search there for ’Overview
+workshop YOUTUBE videos’
+2-24 SOFiSTiK2023TheoreticalBackground |CSM
+2.10.1 Optimization on final system without construction stages
+Againstthestatementinthelastchapterthatopimizationofdeflectionisnotthefirstgoal,such
+an optimization is used in the following example to show the technique. But please notice:
+onlyinafinalsystemwithoutconstructionstagesazero-displacement-optimizationgivesgood
+results in the bending moment of the superstructure.
+The following description is based on the example csm21_eqation_cable_stayed.dat.
+Without optimization (without correct cable prestress) the following system will deflect in
+midspan and give unbalanced bending moments:
+system Deadload on final system
+→ unbalanced bending moment
+How to find the necessary cable perstress? On final systems without construction stages we
+can exceptionally require a zero deflection because here on zero deflection also the bending
+in the superstructure will be balanced.
+SOFiSTiK2023 2-25CSM|TheoreticalBackground
+On this bridge we have 8 degrees of freedom = 8 scalable cable prestress cases:
+1 2 3 ... 8
+These 8 single prestress loadcases are analyzed on the final system!
+As we have 8 scalable loadcases we can wish 8 force or displacement targets:
+8: vx=0
+1:
+2
+3 ...
+vz=0
+Whenall8singleprestressloadcasesareanalyzedonthefinalsystem,theCSMcanbuildan
+8*8 equation system that will give the unit factors based on the target conditions:
+8*8 Equation system
+→gives 8 factors P1-P8
+Then running the final system with these 8 factors P1-P8 you get a straight bridge and bal-
+aanced bending moments:
+2-26 SOFiSTiK2023TheoreticalBackground |CSM
+For this CSM automatically creates a corresponding input file:
++PROG ASE
+HEAD
+LC 1001 FACD 1.00
+LCC 1 FACT 1.000000 $ dead load
+LCC 31 FACT 1.686222
+LCC 32 FACT 1.684042
+LCC 33 FACT 2.102962 $ prestress faktors from equation system!
+LCC 34 FACT 2.477027
+LCC 35 FACT 2.961164
+LCC 36 FACT 3.295547
+LCC 37 FACT 4.363908
+LCC 38 FACT 8.702305
+END
+2.10.2 Optimization on systems with construction stages
+In Systems with construction stages please forget the optimization of displacements! The
+SOFiSTiK2023 2-27CSM|TheoreticalBackground
+displacements can always be adjusted in a simple (cheap) linear percamber. Concentrate on
+the optimization of forces and only use force targets!
+The following description is based on the example csm23_cable_stay_optimisation_2.dat.
+Inafirstconstructionstagerunwithestimatedcableprestressfactors,newelementsareadded
+tangentially (CTRL CANT 2):
+Please remember: displacement shape is NOT of interest for the force optimization, because
+linear precamber is very cheap and easy in a post run. So we look at the forces:
+Cable forces:
+Bending moments in superstructure: still unbalanced:
+2-28 SOFiSTiK2023TheoreticalBackground |CSM
+How to get balanced bending moment?
+We define our targets, here 8 force-targets (bending moments):
+My_pylon = 0.0 kNm
+My_pylon = 0.0 kNm
+My_pylon = 0.0 kNm
+My= My= My= My= My=
+-300 -300 -300 -300 -500
+8 Targets require 8 scalable loadcases!
+As we have only 6 scalable cable prestress loadcases, two more scalable loadcases are re-
+quired. We choose two support deflection:
+Prestress cable Prestress cable
+Prestress cable Prestress cable
+Prestress cable Prestress cable
+Support Support
+lowering lowering
+Please consider that the cable prestress loadcases are in time before the insertion of the last
+segment and they cannot effect a bending moment in the last segment! So we must find a
+scalable loadcase that has an effect on MY-B. Only the support deflection C has an effect on
+MY-B.
+My_A= My_B=
+-300 -500
+Support Support
+lowering B lowering C
+ItisveryprofitabletoassigneachvariabelloadcasEQLCtoacorrespondingEQBEtokeepan
+overview which scalable loadcase can effect a result best! it is very profitable to assign each
+EQLC to a corresponding EQBE:
+Here beams 741+746 can only be scaled with LC 5083+5087
+-> EQLC and corresponding EQBE in one line!
+EQLC 5083 ; EQBE NO 746 X 0 MY -500 $ vz-B with effect on MY-A
+SOFiSTiK2023 2-29CSM|TheoreticalBackground
+EQLC 5087 ; EQBE NO 741 X 0 MY -300 $ vz-C with effect on MY-B
+Withthese8scalableloadcasesv1–v8theCSMoptimizationprogramcancalculate8loadcase
+factors P1–P8. Dependencies Sik are now based on the computed construction sequence.
+With these factors the complete construction stage analysis now is repeated.
+For a linear analysis and if no elements are removed, the targets will be reached in one step.
+For nonlinear analysis an iterative loop over the procedure is possible.
+In our example we now end in a balanced bending moment:
+Target bending moment was 0.0 kNm in the pylon and
+-300 kNm in 4 points in beam right of the pylon and -500 at sidespan!
+Targets reached !
+In a linear post precamber with input
+CAMB CS 92 MODE LINE
+now also the deformations can be corrected easily.
+2-30 SOFiSTiK2023TheoreticalBackground |CSM
+Overview over the three steps:
+1. straight forward CSM run → bad forces + deformation:
+2. run with optimized factors → force OK, deformation somehow:
+3. Precamber (does not change forces) → forces + deformation OK:
+= balanced bending moment and zero deflection in stage traffic opening!
+Target reached !
+Theexample csm27_suspension_w_nonlopti.datshowsthenonlineartechniqueforasuspen-
+sion bridge:
+Example csm28_suspension_bridge_real.datshowsarealsuspensionbridge. Pleasefirstrun
+only the tasks up to Label ’End of Part 1’!
+Theexample csm25_equation_cable_removal.datdemonstratestheusageforacableremoval
+- here a real user bridge:
+SOFiSTiK2023 2-31CSM|TheoreticalBackground
+Arch construction
+2.10.3 Geometry Opitmization
+In a shape optimization in CSM we usually think of a target displacement 0.0 m on traffic
+opening = the stressed system on g_1 and g_2 shall have the architectural form.
+Beside this you may have a real geometry optimization with the target of a new optimized
+system. This is not task of a CSM optimization!
+But with standard impCADINP features you can solve such geometry optimization. In the
+example geometry_opti_arch.dat the target is a bending free arch under g_1 und g_2.
+The example geometry_opti_3d.dat shows the same for a 3d curved compression arch of a
+pedestrian bridge.
+2.11 Incremental Launching
+See also YOUTUBE Video https://www.youtube.com/watch?v=euuJqK8TqFk
+All workshop YOUTUBE videos are listed in the command GRP, search there for ’Overview
+workshop YOUTUBE videos’
+On incremental launching parts of the system (superstructure) are launched. The contact to
+the supporting structure (piers) is done using moving spring contact elements.
+Best define the moving springs on top of the piers and let them point upwards. As these
+springs have no fixed contact partner at all, it is best to define them not as coupling spring
+but as single spring without node KE (SOFIMSHA: SPRI NO KA DZ upwards CP 1E7). See
+2-32 SOFiSTiK2023TheoreticalBackground |CSM
+e.g. csm40_launching_introduction.dat SOFIMSHA-MESH2: there the spring on the pier
+head points upwards and even does not point to a superstructure beam node:
+In special cases the springs can also be defined as coupling spring with a sec-
+ond node KE, e.g. in case of a graphical input with an inclined direcion see
+csm44_incremental_launching_circle_2.dat. The second node KE is exchanged during
+launching and slips over the contact rail defined via ASE-MOVS.
+2.11.1 Incremental Launching Training - tips and tricks
+Please first store file csm40_launching_introduction.dat in a working directory. You can also
+store the whole folder program...sofistik/2014/ANALYSIS_30/csm.dat in a working directory to
+always have o copy of all examples ready for calculation.
+Then please start the file with the preset modules AQUA+MESH6+ASE56+CSM6 +last apply
+to get an overview over the final training target.
+Handling Instabilies: part MESH1: Not supported superstructure
+Please now go to chapter MESH1 of the input file: Not supported superstructure
+and start only the SOFIMSHA MESH1 and the following ASE ASE1a.
+You will get an error as the system is not yet supported. Please keep calm, open the Animator
+and check the instability loadcases 1001-1006.
+For a better check please now run the following ASE ASE1b.
+There a dynamic stiffness with STEP is added to better check the problem. Due to dead load
+now the system accelerates in one second in the direction of earth center. Please check in
+Animator. WINGRAF shows following vz:
+SOFiSTiK2023 2-33CSM|TheoreticalBackground
+First supports: part MESH2: Vertikal Moving Springs
+Please calculate SOFIMSHA MESH2 and ASE2a+ASE2b+ASE2c+WING2+ASE2d.
+The definition of the upwards pointing moving springs is shown here above before chapter
+”Incremental Launching Training”. We recommend to define the effekts vertical-longitudinal-
+transvers-rotation in separate springs.
+A first ASE run ASE2a direct after SOFIMSHA results in a free fall. Not before the definition
+of the moving spring effect in ASE2b, ASE2c will use the desired support contact. All springs
+are now looking for a contact to the node rail from #firstnode to #last_node. For checks which
+contact has been found please look to the report at the beginning of the ASE ASE2c output:
+MOVS-elem 9001 node 1001 contactfactor 1.00 ->on node 1 2 L= 2.500
+MOVS-elem 9002 node 1002 contactfactor 1.00 ->on node 11 10 L= 2.500
+MOVS-elem 9003 node 1003 contactfactor 1.00 ->on node 21 20 L= 2.500
+We readthat movingspring 9001really found 100%contact betweennode 1+2. The following
+WING beam-MY plot also shows the correct bending moment including an inner bending part
+in beam 1:
+ASE2c was again calcualted using an additional dynamic stiffness. Without this in ASE2d
+again an error occurs. A check in the Animator shows the missing horizontal and rotational
+support.
+Stable System with TRAN horizontal fixing: part MESH3:
+Please calculate SOFIMSHA MESH3 and ASE3a+ASE3b+ASE3c+ASE3d.
+Now the superstructrue is also connected in longitudinal+transverse+rotational direction with
+the pier head using ASE-MOVS-L0=TRAN.
+The advantage of L0=TRAN is that you can use the same spring node (pier head) for all
+effects. Please notice that e.g. spring 11001 was defined with direction DX 1. But due to
+L0=TRAN the spring does not look in this x-direction for a contact but searches transverse
+2-34 SOFiSTiK2023TheoreticalBackground |CSM
+(looking perpendicular to the rail) to find a contact between #firstnode and #last_node. The
+nearest node is choosen. We look to the report and see that spring 11001 selected only node
+1:
+MOVS-elem 11001 node 1001 contactfactor 1.00 ->on node 1 L= 1.000
+Remember: moving spring 9001 is a main spring (without L0=QUER) and also uses a contact
+inside of beam 1!
+So transverse springs with L0=TRAN work more simple as they only use one node for the
+contact. Buttheycanhandletheadditionalmomentduetotheexcentricityofthecontactforce.
+In ASE3b also dead load in x and y direction is calculated to test the support. You should
+also test the contact with an feigenfrequency analsis - see ASE3c. You can also start the
+Instabilitätscheckmanuelly(otherwiseonlystratetautomaticallyincaseofrealinstability)-see
+ASE3d.
+With real horizontal rail: part MESH4:
+Please calculate SOFIMSHA MESH4 and ASE4a+LOAD4+ASE4b+WING4+ASE4c.
+Now we transverse contact is created using a more accurate real moving spring without
+L0=TRAN. For this we set a node 7000... hozizontally beside the contact rail (beam refer-
+ence point = top center), couple it to the pier head and can now insert a real moving spring
+without L0=TRAN (L0 #dhmovs[m]) and direction SOFIMSHA SPRI DY -1 :
+In reality the launching rail is on bottom of the section but this is only relevant for torsion due
+to horizontal loads. Solutions are shown in chapter ’launching nose’. Optimal usage see see
+csm44_incremental_launching_circle_2.dat.
+The testloadcases 1+2+3 in ASE4b are again satisfying. In loadcase 901 a single horizon-
+tal load is tested. The horizontal contact moving springs group 12 now do not give a mo-
+ment excentirity themselves - the excentricity is just performed by the excentic coupling of the
+nodes 7000.. In WING4 the target is checked: target Sum-MZ at bottom of piers=400 kNm
+(100kN*4m):
+SOFiSTiK2023 2-35CSM|TheoreticalBackground
+In the last ASE ASE4c now a first lauching is tested. With ASE LAUN the elements of group 1
+are shifted in negative x direction:
+For checks of the used contact please look to the report at the beginning of each ASE part.
+In the last launching with dx=-7.0 m spring 9003 did not find a contact as pier 3 is not yet
+reached:
+MOVS-elem 9001 node 1001 contactfactor 1.00 ->on node 4 3 L= 2.500
+MOVS-elem 9002 node 1002 contactfactor 1.00 ->on node 13 14 L= 2.500
+MOVS-elem 9003 node 1003 contactfactor0.000 ->on node 21 L= 2.500
+With (too short) launching bed: part MESH5:
+Please calculate SOFIMSHA MESH5 and ASE5a+ASE5b ,
+after the error in ASE5b calculate also ASE5c.
+All elements of the first pier are just copied multiple times and placed in the launching bed.
+We not get 17 supports instead of 3 - see STO#nmovs 17. For the superstructure only group
+1 is activated. Group 2 is not yet activated to study first construction stages. The first three
+construction stages in ASE5b loadcases 101-103 show a correct behavior in the launching
+bed. Butloadcase104withdx=-32.00misinstable. ThefollowingcheckruninASE5cLC904
+withSTEP1dt1.0tellsusimmediatelythereason: thelaunchingbedistooshortandgroup1
+hangs over the first pier:
+2-36 SOFiSTiK2023TheoreticalBackground |CSM
+Please now calculate CSM5 and the following +apply (may be change the -apply manually in
++apply !). Without dynamic stiffness also this CSM will cause instability. So it is input for test
+purpose:
+CTRL ASE TEXT ’step 1 dt 1’ $ Dynamic stiffness for test in CSM
+and you get in principle the saem information about the support problem.
+Final training system: part MESH6:
+Please calculate SOFIMSHA MESH6 und ASE56+CSM6+apply
+(may be change the -apply manually in +apply !)
+Group1hasbeenmade1elementlongernow. Soonlaunchinggroup1reachespier2before
+it is leaving the launching bed support.
+Please now open the animator and klick through the stages:
+- start first CS loadcase 4100,
+- set magnitude to a fixed value (button)
+- klick into field ’magnitude’ and input e.g. 20)
+- set animation speed to zero (input 0 or use red hand)
+- Then switch through the 4000... loadcases.
+thereforeyoucanusethekeyboardbuttoncursor-downtoswitchtonextloadcase(throughthe
+loadcases) or use the loadcase loop feature with speed>0.
+2.11.2 Launching nose
+Most important for the launching nose is the idea, that the moving springs always build a con-
+tact the the nodal rail. If the slipping rail is horizontal in reality, also the SOFiSTiK a horizontal
+nodal contact line from #firstnode to #last_node must be used.
+SOFiSTiK2023 2-37CSM|TheoreticalBackground
+In the previous training example the superstructure sections were referenced on top of the
+secion. Thisisusuallysensefulandrecommendedinbridgedesignbecausewiththisyoucan
+easilycreateahaunchedsuperstructure. Usuallythelaunchingnoseisalsohaunchedbutwith
+a straight line below.
+If the bottom face of the launching nose goes a little bit upwards to help slipping onto the next
+pier, also the MOVS contact nodes must get up the same way. You then get big (desired) ver-
+tical displacement due to this gap and you can only work with magnitude 1.0 in the animator.
+therwise the magnitude would disturb the viewing and trouble the interpretation. Also a non-
+linear analysis is required in most cases because otherwise the next pier could pull down the
+launching nose (if in reality the gap is not yet closed).
+We go back to linear analysis - possible variants:
+In Example csm42_incremental_launching.dat the nodal contact line is on top of the super-
+structure and the launching nose sections are hanging far beyond the upper superstructure
+node line. These sections have their zero point 0-0 upwards outside the material:
+Real section view
+beams + excentric
+sections
+nodal line + MOVS
+In Example csm44_incremental_launching_circle_2.dat the nose sections are also hanging
+far beyond the upper superstructure node line. In addition two separate launching rails are
+defined underneath the superstructure. They are coupled with stiff beams (couplings do not
+react on a LAUN rotation). Die disadvantage of these bottom-trails is that also the added
+internal beam moment of a contact inside the beams is added only on the bottom trail and not
+in the superstructure. There it is missing for a design - so use short beams! But the definition
+of a rail beyond the superstructure looks very realistic:
+2-38 SOFiSTiK2023TheoreticalBackground |CSM
+Real section view
+beams + excentric
+sections
+nodal line + MOVS
+Example csm45_launching_precamber.dat is prepared for nonlineaer launching. The nose
+points up a little bit. The nodal contact line lies on top of the superstructure:
+Real section view
+beams + excentric
+sections
+nodal line + MOVS
+In Example csm46_launching_nose_nonlinear.dat the nose points up as well but the nodal
+contact line lies on bottom of the superstructure. All sections are defined with reference point
+0-0 on the bottom:
+Real section view
+beams + excentric
+sections
+nodal line + MOVS
+All variants are correct. The reality is best represented by the system with the two separate
+launching rails underneath the superstructure but caution is necessary defining the rail and
+SOFiSTiK2023 2-39CSM|TheoreticalBackground
+coupling sections - see input file.
+2.12 CSM Design
+Please also watch the YOUTUBE video ’CSM DESI Bridge Design’ on this topic:
+-> https://www.youtube.com/watch?v=zoCshbOx5qo
+- and for slab quad bridges: https://www.youtube.com/watch?v=7FdNbAgwPrI
+- and CSM Beam Interpretations: https://www.youtube.com/watch?v=L_W0PCD44UQ
+- or for AASHTO design: https://www.youtube.com/watch?v=lJxF50C7pN8
+- Design of construction stages : https://www.youtube.com/watch?v=QOoLlR-TCj8
+All workshop YOUTUBE videos are listed in the command GRP, search there for ’Overview
+workshop YOUTUBE videos’
+2.12.1 Superposition and design concept
+With little additional input, CSM can perform a quick design, because the most important con-
+structioninformation(GPC-parts)isallreadydefinedwiththeconstructionstages. ForEN-1992
+the input ACT and DESI are implemented for a prestress design.
+Main examples:
+Beam: csm31_design.dat YOUTUBE: https://www.youtube.com/watch?v=zoCshbOx5qo
+Quad: csm32_slab_design.dat YOUTUBE:https://www.youtube.com/watch?v=7FdNbAgwPrI
+Main design concept: the program knows everything about the GPC parts and so only the
+variable actions must be added:
+Figure2.15: YOUTUBEvideo->https://www.youtube.com/watch?v=zoCshbOx5qo
+TheGPChavestaticallydeterminedandsecondary(parasitic)parts. Thesumofallactionsis:
+Sum= (G0 + G) + (P0 + P) + C0 + C + Y_D
+with:
+2-40 SOFiSTiK2023TheoreticalBackground |CSM
+• G0 dead load on statically determined system
+• G dead load locked-in force effects from construction process
+G0 + G are not separated in a standard CSM analysis!
+With CTRL CAST you can calculate "cast in one" forces G0 .
+• P0 statically determined part of prestress
+• P secondary or parasitic part of prestress
+P0 + P are separated acc. Eurocode only in the fatigue check
+see example csm31_design.dat
+• C0 statically determined creep+shrinkage (inner lost of prestress)
+6000... loadcases - are used with gamma = 1.0
+• C secondary part of creep = redistribution
+5000... loadcases - on CTRL GAMC with own safety factor
+With C_1 and C_2 you can design traffic opening and t-infinite
+• Y_D presuperposed container of variable actions - here ULS Y_D
+YoucanbestchecktheavailablepartsafterthepresuperpositionwithafirstCSMDESICheck
+Print run. There the most important results are explained like in a tutorial!
+On GPC: the storage philosophy of the CSM construction stage results GPC (G=dead load,
+P=prestress, C=creep+shrinkage) is explained in chapter ”Load Cases - Primary Load Cases
+- Difference Load Cases” in a graphical plot. The CSM also prints the following overview of
+loadcases:
+overview of loadcases
+Total CS displacements and forces starting at loadcase number. 4000
+Difference displacements and forces starting at loadcase number. 5000
+AQB inner stresses from creep and shrinkage from loadcasenumber. 6000
+Stress results of the AQB-LCST-evaluation from loadcasenumber. 7000
+7000ff: to check prestress normal force after creep and shrinkage:
+-> WINGRAF beam normal force LC 7000ff
+2.12.2 Superposition with the variable actions
+In a first presuperposition, the variable actions are combined without GPC (G=dead load,
+P=prestress, C=creep+shrinkage) in a first separate MAXIMA run (see following graphic).
+Fortherare(characteristic)actioncombinationRAREtheproducedmax-minforcesarestored
+in a presuperposition KOMB ... TYPE Y_1 ans stored with load case numbers 1141-1152. In
+some codes with LC 1161-1172 an additional combination traffic + wind without temperature
+is created also TYPE Y_1, LC 1141-1152 then contains temperature without wind. For wind
+without traffic a further presuperposition Y_1 is created (e.g. loadcase number 1181-1192),
+see ACT ZW+SW.
+AfollowingMaximarunthencreatesthefinalcombinationRAREwiththeprecombinationsY_1
+and the permanent actions GPC in loadcase 1121-1132 (G=dead load, P=prestress, C=C+S.
+- from CSM construction stage analysis).
+In the same way precombinations and final MAXIMA combinations for nonfrequent with Y_2
+LC 1200ff, frequent with Y_3 LC 1300ff, permanent with Y_4 LC 1400ff and if necessary for
+Y_9 1900ff with 1.0 psi-values for reaction forces are created. For design inclusive the load
+safetyfactorsGAMUthecombinationDESI(presuperpositionY_D)withLC2100.ffiscreated,
+SOFiSTiK2023 2-41CSM|TheoreticalBackground
+for a simplified stress range check FATI with LC 2500.ff.
+These final combinations are used directly for QUAD elements e.g. for a design in BEMESS -
+LF DESI.
+Using prestressed or composite sections, the load parts GPC must be assigned to cross sec-
+tionconstructionstages(netto,ideell). ThusthepartsGPCmustbedefinedinAQBseparately,
+e.g. LC 5010 TYPE ’G_1 ’ CT CS0 REF PART. These LC definitions are summarized in block
+#include loadca_aqb. The corresponding variable actions are then added with the prepared
+precombination Y_1 to Y_D , e.g. COMB MAXR LC1 G LC2 P LC3 C LC4 Y_1 1.0 LCST
+For graphical checks the forces and stresses of the AQB combinations are stored with COMB
+LCST. For this the following sceme will be used:
+OVERVIEW CREATED LOADCASES AND DESIGN NUMBERS
+convention loadcase numbering:
+1100 = rare combination
+1200 = nonfrequent combination
+1300 = frequent combination
+1400 = permanent combination
+1900 = 1.0 superposition
+2100 = design
+2500 = accidential
+2600 = earthquake
+2800 = Fatigue LM3 2900 = Fatigue simplified stress range LM1
+For WINGRAF-views: MAXIMA superpostion results start with MAX or MIN in the loadcase
+title, all other titles come from AQB combinations! Only for the BEAM-AQB-combinations the
+LC number is further devided in:
+10-th number: 00 = 100 % prestress
+70 = 75 % prestress -> loadcase 9000...
+90 = 90 % prestress -> loadcase 9000...
+10 = 110 % prestress
+20+30 = 90 % prestress fatigue LM1+LM3 -> 9000...
+1-th number: 0+1 = maximum/minimum value uncracked design I
+5+6 = maximum/minimum value cracked design II
+With this convention we get the following AQB-LCST-loadcase numbers:
+(9000.. numbers with prestress other than 100 %,
+design of construction stages with numbers +400).
+combination prestress uncracked cracked II
+max LC min max LC min
+SLS rare Pk,inf 90% 9190 9191 9195 9196
+(characteristic) Pm 100% 1100 1101 1105 1106
+Pk,sup 110% 1110 1111 1115 1116
+2-42 SOFiSTiK2023TheoreticalBackground |CSM
+SLS nonfrequent Pk,inf 90% 9290 9291 9295 9296
+Pm 100% 1200 1201 1205 1206
+Pk,sup 110% 1210 1211 1215 1216
+SLS frequent Pk,inf 90% 9390 9391 9395 9396
+Pm 100% 1300 1301 1305 1306
+Pk,sup 110% 1310 1311 1315 1316
+Fatigue weld+couplings Pk,inf 75% 9370 9371 9375 9376
+stress range LM1 Pk,inf 90% 9320 9321 9325 9326
+" LM3 midspan Pk,inf 90% 9330 9331 9335 9336
+" LM3 innersupports Pk,inf 90% 9340 9341 9345 9346
+SLS permanent Pk,inf 90% 9490 9491 9495 9496
+Pm 100% 1400 1401 1405 1406
+Pk,sup 110% 1410 1411 1415 1416
+9000- LC for 10-th numbers>20 !
+ULS [desi] Pm 100% - - 2105 2106
+2.12.3 Dataflow with superposition container
+Thefollowinggraphicshalldemonstrate,howthepresuperpositioncontainerY_1... Y_D(con-
+tainer with variable actions) are used for both:
+- the final superposition including GPC (2. MAXIMA) (support reactions)
+SOFiSTiK2023 2-43CSM|TheoreticalBackground
+- and the final AQB design
+G P C S T L
+Dead load, Prestress, Creep Settlement, Temperature
+CSM−difference LC’s Live load, Variable action
+MAXIMA
+Presuperposition without G P C
+COMB TYPE LC
+YY__11 rraarree 1141
+YY__22 fnroenqfureenqtuent 1241
+YY__33 nfroenqfureeqnutent 1341
+Y_4 permanent 1441
+Y_9 1.0−reactions 1941
+Y_D design 2141
+Y_A accidental 2541
+Y_E earthquake 2641
+Y_F fatigue load model LM3 2841
+Y_G fatigue simplified LM1 2941
+MAXIMA
+Final Superposition with G P C
+COMB TYPE LC−>WING
+RARE 1121
+...
+PERM 1421
+DESI 2121 BEMESS
+ACCI 2521 (quads)
+EARQ 2621
+AQB (beams)
+Separate Superpos. on gross/net section
+COMB TYPE LCST−>WING
+MAXR rare 1101 1105 1191 1195
+...
+MAXP permanent 1401
+MAXD design 2101
+MAXA accidental 2501
+MAXE earthquake 2601
+2.12.4 Design
+Please also watch the YOUTUBE video ’CSM DESI Bridge Design’ on this topic:
+https://www.youtube.com/watch?v=zoCshbOx5qo (YOUTUBE video CSM DESI)
+After a presuperposition a design can be startet with CSM DESI. So the forces can correctly
+be transfered to the design modules.
+Main examples:
+Beam: csm31_design.dat
+2-44 SOFiSTiK2023TheoreticalBackground |CSM
+Quad: csm32_slab_design.dat
+2.12.5 Design check print
+PleasealwaysstartwithafirstCSMDESICHEKCheckPrintrunforasingleelementselected
+withSELEBEAM.Therethemostimportantresultsareexplained! Theoutputofthisfirstcheck
+print of the linear normal stresses should be checked in any case. Following you get a check
+of the ULS and crack design of one single beam:
+Figure2.16: CSMDESICheckPrintforasingleselectedbeamelement
+How to check the combination factors is written there in the created _chek.dat input file at
+chapter Check-print ULS design
+-> +PROG AQB $ Check Print ULS design at the COMB combinations.
+For this and other checks there also exists a YOUTUBE video ’CSM DESI Bridge Design’: ->
+https://www.youtube.com/watch?v=in8OTk24f1U
+In a quad design you can select a quad with SELE X,Y,Z. Then you get stress plots and
+numerical output for this quad in the BEMESS runs. For further checks on quad design see
+also example voided_slab.dat
+2.12.6 Sequence of design tasks
+To not get confused by the huge amount of results we recommend to let them run separate
+(e.g. only DESI ULTI as shown in csm31_design.dat ). Then you can better check the results
+separate and you have a better overview.
+UsingSSDyoubestinsertmultipleCSM-DESIGNtaskswithonlyonedesigntaskeach. Using
+Teddyyoucanalsoopene.g. thecreated_gzt.datfileandrunandchecktheresultsseparate.
+Please notice that with every CSM-DESI run also a WINGRAF .gra file is created. In this file
+the actual result plots are already prepared for interactive changes (box, groups):
+SOFiSTiK2023 2-45CSM|TheoreticalBackground
+- Please open windows explorer and double klick on file _uls.gra
+- Or open WINGRAF and from there open file _uls.gra
+- Or in SSD: insert a task ’Interactive graphics’ and from there open file
+Then please immediately store the .gra file under another name to keep your changes. With a
+CSM-DESI STAN run (here at the end) you can also get an overview over the possible design
+tasks.
+2.12.7 Nonlinear Temperature
+Ifyouwanttotakeintoaccountanonlineartemperaturedistributioninthesection,thetemper-
+aturemaynotbesuperposedalreadyinMAXIMAbutmustaddedinAQBasasingleloadcase.
+If you have 8 temperature loadcases, all design combinations must run 8 times.
+Example file csm37_composite_nonlin_temp.dat
+Procedure: in Maxima container are build wich all variable actions but without temperature:
+- container Y_L, Y_N, Y_O in loadcases ...61:79 assuming traffic is leading action
+- container Y_S, Y_U, Y_V in loadcases ...81:99 assuming temperature is leading action
+e.q. Y_L with LC 1161 max-MY rare
+WithCTRLMAXIV31youcanswitchofftheloadcasesassumingtemperatureisleadingaction
+-> faster.
+PleaseruntheexamplefileandviewplotsinpartCheckPrint->plotofnonlineartemperature.
+2.12.8 Why AQB AND MAXIMA superposition
+Why AQB: because forces can act on different cross section stages:
+1. Post-tensioned prestress P and structural dead load G_1 act on a partial cross sec-
+tion with the ungrouted duct and do not create an additional stress change in the
+tendon (still unbonded). (We assume that while stressing the tendon, the girder lifts
+from the formwork and simultaneously activates G_1)
+2. Additional dead load G_2 acts on the grouted cross section ( with tendon in bond)
+and creates a stress change in the tendon. Therefore we should not mix G_1 and
+G_2 before the design! After a pre-superposition it is not possible to separate those
+effects!
+3. Moreover in composite sections, the dead load G_1 usually acts on the steel part of
+the section and the dead load G_2 acts on the composite steel and concrete.
+4. Creep and shrinkage C create internal stress stages that cannot be taken into ac-
+count in MAXIMA. In a composite section, shrinkage creates tension in the concrete
+and compression in the steel while the external forces N and MY are zero. In pre-
+stressedsectionsthelossofprestressduetocreepandshrinkageisonlyaninternal
+stress state, the external forces N and MY are zero as well (without secondary ef-
+fects). See also figure dataflow in chapter loadcases.
+5. Allthevariableloadcases,thatactonthefinalsectioncanbepre-superimposedina
+MAXIMAcontainere.g. Y_D(CSM-DESIEurocodedesign-seecsm31_design.dat).
+Why MAXIMA: because AQB only works on beams:
+1. All other elements like springs, cables or quads and support reactions do not have
+2-46 SOFiSTiK2023TheoreticalBackground |CSM
+internalsectionstagesandcanbesuperimposedinMAXIMAcompletely. Quadscan
+directly be designed with the MAXIMA result forces (tendons in quad elements work
+in a different way than tendons in beam elements).
+2.12.9 Primary and secondary (hyperstatic) effect of prestress
+In general 2*2 prestress factors are possible. For two different usage A and B always two
+different actions are possible in SOFiSTiK:
+Usage A: different factors rsup e,g, in decompression check
+1. ACT P_0 : for pre-tensioning or unbonded tendons:
+rsup = 1.05 and rinf = 0.95
+2. ACT P_1 : for post-tensioning with bonded tendons:
+rsup = 1.10 and rinf = 0.90
+Usage B: Separation of primary and secondary (hyperstatic) effect of prestress
+1. ACT PB : primary effect of prestress
+2. ACT ZP : secondary (hyperstatic) effect of prestress (redistribution)
+Due to the complexity only these literal shall be used!
+The CSM can handle these 2 sets of actions and uses them in AQB combinations automati-
+cally:
+in usage A CSM uses Set P_0 and P_1
+CSM writes for AQB e.g. COMB ... LC1 P_0 0.95 LC2 P_1 0.90
+see csm3_P_0_P_1.dat -> first PROG CSM -> CTRL PKIN 0.95 V2 0.90
+(decompression check)
+in usage B CSM uses Set PB and ZP
+CSM writes for AQB e.g. COMB ... LC1 PB 0.90 LC2 ZP 1.00
+see csm31_design.dat -> last CSM -> DESI FAT PAR3 0.9 PAR4 1.00
+(fatigue check according EN1992-1-1 5.10.9)
+So it is not allowed to mix usage A and B. For manual input it is not allowed to mix P_0 and
+P_1 with PB and ZP.
+InAQBCOMB... LC1PalwaysappliesthetotalsumofprestressP_0+P_1withbothprimary
+and secondary effect.
+2.12.10 Fatigue checks beam elements - reinforcement distribution numbers
+IncasesettlementortemperatureactionsaredefinedintheCSMDESIMAXIrun,theinduced
+MAXIMA creates a container Y_8 (combination TEMP_SETZ) that combines the most unfa-
+vorable forces of settlement and temperature. In the AQB run then in a loop in a time one of
+theseY_8loadcases(LC1841...) isusedaspermanentpartandthestressrangeiscalculated
+with the fatigue acting FAT loadcases. With DESI FAT PAR1 0 no temperature or settlement
+loadcases are taken into account.
+If necessary and possible, the reinforcement is increased in the fatigue design. An additional
+SOFiSTiK2023 2-47CSM|TheoreticalBackground
+loop performs the check one time for pk-inf and one time for pk-sup.
+As for different span and support locations different axle load factors (1.40 und 1.75) must be
+applied, three AQB design runs are started: - In a first run with axle load factor 1.40 (span)
+for all elements the reinforcement fatigue check is done. The used or increased reinforcement
+is stored in design case 23. The maximum stresses can be plotted in Wingraf under the AQB
+LCST loadcase storage number. See "Overview result access beam elements in WINGRAF"
+in the CSM DESI report.
+-Withthepossibleincreasedreinforcementthentheconcretecheckwithaxleloadfactor1.0is
+done. The results of this run can be plotted in Wingraf under the AQB LCST loadcase storage
+number. This block runs after the span run with factor 1.40 to use the may be increased
+reinforcement!
+- Finally the design for support regions is done with axle load factor 1.75 for all elements. The
+used or increased reinforcement is stored in design case 25. The user then has to decide
+manually, if a beam must be assigned to span or support region and if for this beam either
+design case 23 or 25 is relevant.
+Generally the used or increased reinforcement is always stored in a new design case. This is
+alsodoneincasenoreinforcementisincreasede.g. inastresscheck. Thatallowstheuserto
+check the reinforcement that has really been used for this design.
+Overview over the LCR design case numbers for beam elements:
+number design:
+11 Ultimate limit design
+12 Crack design and minimum reinforcement
+13 Concrete stress nonfrequent < 0.6 fck
+14 Concrete stress permanent < 0.45 fck
+15 Reinforcement stress rare/nonfrequent
+16 Tendon stress permanent
+17 Tendon stress characteristic (rare)
+18 Decompression Eurocode
+19 Decompression permanent Pk,inf
+20 Fatigue couplings 0.75 prestress
+21 Reinforcement stress range <70 MPa with LM1
+23 Fatigue span axcle load factor 1.40
+24 Fatigue concrete axcle load factor 1.0
+25 Fatigue supports axcle load factor 1.75
+26 Stress range LM3 without increasing lambda factors
+31 Accidential
+32 Earthquake
+1 Maximum of all checks
+2.12.11 Fatigue checks quad elements - reinforcement distribution numbers
+IncasesettlementortemperatureactionsaredefinedintheCSMDESIMAXIrun,theinduced
+MAXIMAcreatesacontainerY_8(combinationTEMP_SETZ)thatcombinesthemostunfavor-
+able forces of settlement and temperature. The for every of these Y_8 loadcases (LC 1841...)
+2-48 SOFiSTiK2023TheoreticalBackground |CSM
+aMAXIMA-BEMESSblockisstarted. ImMAXIMAalwaysoneloadcaseofthe1841... seriesis
+applied as permanent part. Only the fatigue acting FAT loadcases are set as aötermative part
+in this superposition. The so created MAXIMA superposition loadcases are then designed for
+fatigue in BEMESS and the reinforcement is increased if necessary. Then the next MAXIMA-
+BEMESS block follows with another permanent Temp_Settlement part. A check with pk-sup is
+not done for Quad slab- or shell elements.
+As for different span and support locations different axle load factors (1.40 und 1.75) must be
+applied, the above mentioned technique runs three times: - In a first run with axle load factor
+1.40 (span) the reinforcement fatigue check is done. The used or increased reinforcement is
+stored in design case 17. The maximum stresses and stress ranges can be plotted in Wingraf
+under design case 17. See "Overview result access quad elements in WINGRAF" in the CSM
+DESI report.
+- With a possible increased reinforcement a run with axle load factor 1.75 for support regions
+isdone. TheresultsofthisruncanbeplottedinWingrafunderdesigncase18. Themaximum
+stresses and stress ranges can be plotted in Wingraf under design case 18. The user may
+decide manually, if an element must be assigned to span or support region and if for this quad
+either design case 17 or 18 is relevant. Nevertheless for the following design only the upper
+reinforcementisovertakenfromdesigncase18(CTRLLCRI18V22)asusuallyonlytheupper
+reinforcement is of interest for support regions. The lower reinforcement is taken from design
+case 17 as the lower reinforcement is usually only of interest in the span region.
+- Finally the fatigue design for concrete is done with axle load factor 1.00 for all elements. The
+results of this run can be plotted in Wingraf under design case 19.
+Generally the used or increased reinforcement is always stored in a new design case. This is
+alsodoneincasenoreinforcementisincreasede.g. inthedecompressioncheck. Thatallows
+the user to check the reinforcement that has really been used for this design.
+Overview over LCR the design case numbers for quad elements:
+number design:
+11 Ultimate limit design
+12 Minimum and robustness reinforcement
+13 Crack width design
+14 Concrete and steel stress rare/nonfrequent
+15 Concrete stress permanent < 0.45 fck
+16 Decompression check
+17 Fatigue 1.40 span
+18 Fatigue 1.75 supports
+19 Fatigue 1.0 concrete
+20 Fatigue 1.0 lambda 0
+31 Accidential
+32 Earthquake
+1 Maximum of all checks
+2.13 CSM Construction Stage Design
+All workshop YOUTUBE videos are listed in the command GRP, search there for ’Overview
+SOFiSTiK2023 2-49CSM|TheoreticalBackground
+workshop YOUTUBE videos’
+Please also watch the YOUTUBE video ’CSM DESI Stage Design’: ->
+https://www.youtube.com/watch?v=QOoLlR-TCj8
+We noticed that at the end you need the same technique for a design in a construction stage
+asyouuseitforthedesignofthefinalstage. Usuallyyoualsoneedadditionalpayload,lifeload
+and windload.
+Soweusedthecontainerdesignconceptalsoforthedesignofconstructionstage. Inexample
+file csm34_stage_design.dat you canfollow the workflowin the CSM part’Construction stage
+design’ as follows:
+- LCCS additional loadcases for this CS design
+- DECS input of the construction stage number
+- DESI required designs for this construction stage
+- COPY storage of results - then you can plot an envelope
+of multiple construction stage designs in WINGRAF
+Comments:
+With LCCS additional loadcases for this stage design are defined. In a first created ASE run
+they are analyzed with the necessary GRP setting for this stage ()see ASE: GRP ’CSM’ CS
+209). Then they are presuperposed in Containers. Best open the created _decs.dat file and g
+to the MAXIMA part:
+- Presuperposition actions without wind without GPC
+ThereyouseehowtheinputofLCCSisusedforthecontainerpresuperposition: theloadcases
+are devided in the actions (LCCS-ACT). The safety factors are taken from the aciton definition
+of the main database, here from the first SOFILOAD run. The settings for SUPP EXCL or
+SUPP COND are also takten from there but can be overwritten with LCCS TYPE temporarily.
+The further analysis and the usage of the GPC parts follows the same technique as in a final
+stage design with the only difference that not all GPC parts are used but only the parts op to
+stage CS (in MAXIMA and the created AQB runs).
+AsinallstagedesignsthesamestressloadcasenumbersLCSTandreinforcementdistribution
+numbers LCR are used it is necessary to save them in new different numbers as follows:
+With COPY the results of a construction stage design can be copied to other numbers. With
+COPY AUTO the results are automatically copied in 600000... target loadcases.
+To keep the main database small it is also a good idea to copy the stage design results into
+a separate database. But this special-case-possibility with CSM COPY ... cdb name2 is not
+used in the example files to keep the method simple.
+More clear to design multiple stages is the following method:
+You best control multiple construction stage designs in a separate inputfile
+csm34_stage_design_all.dat using simple COPY commands. Then of course you can remove
+the corresponding construction stage design parts in the main file csm34_stage_design.dat
+and better place the final design in the main file. Please notice that the .cdb copy command
+for this usage is positioned in the main file after the main CSM analysis run, see
+2-50 SOFiSTiK2023TheoreticalBackground |CSM
++sys copy $(name).cdb csm34_stage_design_all.cdb
+In case you made the final design in the main file you can use COPY at the end do copy and
+superpose the stage and final designs in a third separate design .cdb.
+2.13.1 Removal of temporary supports: GPCS: further separation of GPC parts
+To illustrate the effect, csm36_gpc_separated.dat shows a simple single span girder. The
+values were choosen in a way that G and P just give 0.0 in midspan. Calculated in the ’cast in
+one’ system we get Sum G+P=0:
+G cast in one: Mg=+10000 kNm
+delta P alone: Mp=-10000 kNm
+sum G+P: Mg+p= 0 kNm
+ULS: 1.35G + P: M-ULS= 3500 kNm
+But if we erect the system on temporary bearings (in green) without separation of stage ’re-
+moval of supports’ we also get an SLS Sum G+P=0, but the parts G and P get other values
+and ULS 1.35G+P gives a different result:
+G on temp. support dMg=+3750 kNm
+G+P CSM: dMp=-4020 kNm
+remove temp. support dMb= 270 kNm
+sum CSM stages: Mg+p+b= 0 kNm
+ULS: 1.35GB + P: M-ULS= 1412 kNm
+The problem is that building stage B ’remove temp. support’ consists of two parts, a G and
+a P part. With CTRL GPCS 1 these parts can be separated and we can get the correct ULS
+bending moment M-ULS= 3500 kNm also with construction stages:
+difference loadcase: dead loads prestress
+50010 Selfweight g_1 3752 -
+50011 Prestress - -4018 kNm
+110030 Removal of temporary supports part G 6255 - GPCS separated
+120030 Removal of temporary supports part P - -5984 GPCS separated
+--------- ---------
+sum 10007 -10003 kNm
+G+P = 4 kNm = OK
+and ULS 1.35 G +1.00 P = 1.35*10007 -10003= 1.35G +P = 3500 kNm = OK
+So the advantage of CTRL GPCS 1 is that stage LC 50030 is devided into two parts G and P
+SOFiSTiK2023 2-51CSM|TheoreticalBackground
+in LC 110030 and 120030 !
+Internal workflow (controlled in the _csm.dat file):
+- at first a CS-sequence runs with only G loads -> LC 110000
+- then a CS-sequence runs with only P loads -> LC 120000
+- finally a normal CS-sequence runs with all loads-> LC 50000
+- parallel the LC 130000 is created with LC 130000 = 50000-110000-120000
+2-52 SOFiSTiK2023InputDescription|CSM
+3 Input Description
+3.1 Input Language
+The input is made in the CADINP language (see general manual SOFiSTiK: ’FEA / STRUC-
+TURAL Installation and Basics’).
+Three categories of units are distinguished:
+mm Fixed unit. Input is always required in the specified unit.
+[mm] Explicit unit. Input defaults to the specified unit. Alternatively, an explicit as-
+signment of a related unit is possible (eg. 2.5[m] ).
+[mm] Implicit unit. Implicit units are categorised semantically and denoted by a cor-
+1011
+responding identity number (shown in green). Valid categories referring to the
+unit ”length” are, for example, geodetic elevation, section length and thickness.
+Thedefaultunitforeachcategoryisdefinedbythecurrentlyactive(designcode
+specific) unit set. This input default can be overridden as described above. The
+specified unit in square brackets corresponds to the default for unit set 5 (Eu-
+rocodes, NORM UNIT 5).
+SOFiSTiK2023 3-1CSM|InputDescription
+3.2 CTRL – Control
+Seealso: CS
+CTRL
+Item Description Unit Default
+OPT Control option
+DL AUTO = automatic dead load activation LT AUTO
+NO or 0 = without FAcg ”
+BEAM AQB = C+S via AQB LT -
+ASE = C+S in ASE
+TBEA = T-beam philosophy
+default: depending on system
+GPCS 1 = separation GPC loads for construction − 0
+stages: removing temporary supports
+example: see csm36_gpc_separated.dat
+0 = ’removing temporary support’ stages
+are not separated extra but used as G part
+only
+CREP STAN = standard creep without separate LT RCRE
+.. load part creep values
+RCRE = real creep, creep values are
+.. calculated individually for each load part
+EIGE Analysis of creep values: − -
+EN10, MC90, MC10 or SUM
+see AQB manual - CTRL EIGE
+default: depending on material
+With CTRL EIGE V2 SAFE V3 0:3 kann
+die Option 0:3 aus AQB STEU EIGE SAFE
+gesetzt werden.
+RELZ AUTO = automatic tendon relaxation LT AUTO
+NO or 0 = without relaxation
+CANT adding new elements: − 12
+0 = in system position
+1 = with original inclination
+2 = tangential erection
+(3 : only allowed for individual stages in
+CS...CANT see below)
+(8 intern for nonlinear precamber)
+11/12 each node separate
+descriptionbelow(changeonCS#cs_csm)
+CAST ”cast in one” load cases: − 0
+1 = make these load cases
+0 = no (to reduce amount of
+results = default)
+Tablecontinuedonnextpage.
+3-2 SOFiSTiK2023InputDescription|CSM
+Item Description Unit Default
+PROB Control of ASE-SYST-PROB LT LINE
+LINE - linear
+NONL - material nonlinear
+TH3 - geometric nonlinear
+TH3B, NONB - as in ASE (no TH2)
+See also CS PROB
+V2: Number of iterations
+V3 tolerance TOL
+V4: FMAX (see ASE)
+(e.g. ctrl prob TH3 v2 120 v3 -0.5 $ kN)
+NMAT Control of ASE - SYST NMAT NO/YES LT NO
+ASE General control input for ASE with TEXT. − -
+e.g. CTRL ASE TEXT ’CTRL ITER 3’
+Example csm21_eqation_cable_stayed.dat
+ASE2 TEXT input behind ASE-GRP − -
+AQB General control input for AQB with TEXT − -
+BEME Control input for BEMESS with TEXT − -
+FILE File name for created file − -
+HEAD Head line input for ASE+AQB with TEXT − -
+EMOD Stiffness development concrete elements LT AUTO
+AUTO - apply time dependant E-modulus
+NO or 0 - switched off
+SVRF See AQB record CTRL SVRF − 1.0
+Use reinforcement on creep+shrinkage
+B_G1 Use B construction stages as type G_1 LT4 YES
+GAMC Factor of the parasitic part of creep and − 1.35
+shrinkage in the ULS design. (BS 1.4)
+GAMF input with V2, see below
+PLC Start condition for the first CS load case − 0
+LCRI Reinforcement distribution number for CSM − -
+DESI BEMESS
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-3CSM|InputDescription
+Item Description Unit Default
+MAXI Superpostion 6.10ab: − -
+0: acc. EN 1990 tab. A2.4(B) 6.10
+1: acc. EN 1990 tab. A2.4(B) 6.10ab
+on other countries than Norway Sweden
+Finland Denmark: 6.10ab variant Norway
+2: as 1 with FAKF GAMF for MAXIMA ADD
+default 1 for Norway Sweden Finland Den-
+mark, otherwise 0
+CTRL MAXI V2 ALL: also create non-
+frequent COMBs
+CTRL MAXI V3 2: in case nonlinear
+temperature exist, handle them exact,
+see theoretical principles. V3 1 : with-
+out temperature as controlling action
+(faster). V3 3 = prepare superposition
+also for ULS. Default 0. Example file
+csm37_composite_nonlin_temp.dat
+RSET =0: do not superpose RSETs, default 1 − 1
+PKIN Input of Pk,nƒ for tendons (CSM-DESI) − -
+value V2 for P_1 see below
+PKSU Input of Pk, − -
+sp
+STOR Storage options: Bit input: − *
++1: AQB-LCST 7000 stresses
++2: group settings for DYNA
++4: Einzelne PROG MAXI+ASE
++8: use _csmlf.dat AQB loadcase list
++64: do not delete old loadcases
+V2=0 : do not store primary and secondary
+effect of prestress
+V3: do not store all 7000 stresses, see
+csm5_free_cantilever.dat
+LCEQ LC number for equation run − 1999
+ADDF =1 add optimization factor to the last one − 0
+TEST calculate only stage from-to − -
+(CTRL TEST 10 120)
+VAL = from
+V2 = to
+V3 = creep steps yes/no = 1/0
+With CTRL TEST ANI the constuction se-
+quence can be checked in advance. Then
+the loadcases are only created with the
+group info but are not really calculated
+Tablecontinuedonnextpage.
+3-4 SOFiSTiK2023InputDescription|CSM
+Item Description Unit Default
+VAL Value of the option − -
+V2 possible 2nd value of the option − -
+V3 possible 3rd value of the option − -
+V4 possible 4th value of the option − -
+TEXT input to CTRL ASE and CTRL AQB − - outube
+CTRL BEAM TBEA
+is used to contol slab systems with enbedded beams working with the SOFiSTiK T-
+beam philosophy. Then the cross sectional internal losses due to prestress are calcu-
+lated in AQB. The creep curvature is then not taken from AQB but computed in ASE
+because ASE modifies the beam stiffness for the SOFiSTiK T-beam philosophy.
+CTRL EMOD - Development of stiffenss of concrete elements
+CSM calculates now the temperature adjusted concrete age T1 according to CEB-
+FIP model code 1990 (2.1-87) and writes this age T1 to the ASE GRP input. The
+age GRP...T0 must be given temperature adjusted! ASE then takes into account the
+development of stiffness according to the design code and plots the curve graphically
+for checks.
+CTRL B_G1 - Saving of the construction stages as type G_1
+With this the construction stages can be allocated to the type G_1 for the superposi-
+tion.
+The input NO stores the construction stages B as type B and not as type G_1. The
+default CTRL B_G1 YES stores them as type G_1 to avoid problems in MAXIMA.
+CTRL GAMC - Factor for the consideration of the support moment due to creep
+If two single spans are placed, at the middle support the bending moment is 0.0 in
+the beginning. After closing the gap, only creep activates a bending moment there.
+In the ultimate limit state, this force must be considered as G with the unfavourable
+factorofGAMU=1.35(1.40forBritishStandard)becausethemomentrepresentsdead
+load (or comes from dead load). The moment creeps into the direction of the cast in
+one bending moment - and in the cast in one system this moment is a dead load
+moment! Thus the statically indeterminate parts of creep and shrinkage are activated
+withGAMCintheultimatelimitstateforbeamstructures,ifatleastoneBconstruction
+stageordifferentGRPICS1appear! WithCTRLGAMCanotherfactorcanbeset,e.g.
+1.0, if no dead load redistribution due to creep and shrinkage may occur.
+With V2 you can input also the GAMF (default 1.00) for the secondary creep, e.g.
+GAMF=0.95 with CTRL GAMC 1.25 0.95
+TheseGAMUandGAMFvaluesforcreepareNOTtakenfromtheactionbutarepreset
+fixed in CSM! If you want to change these values you must input CTRL GAMU ... in
+the first CSM stage run, because with this run the loadcases are created in ASE!
+CTRL PKIN - Input of Pk,nƒ for tendons
+e.g. CTRL PKIN 0.95 for prestress with immediate bond.
+Default 0.90 (later grouting). Pk,sup is set equivalent (1.05 for CTRL PKIN 0.95). For
+special use Pk,sup can also be input with CTRL PKSU.
+The value for PKIN is used for P generally, in any case for P_0.
+SOFiSTiK2023 3-5CSM|InputDescription
+With V2 a value for CS..TYPE= P_1 can be defined.
+Example see csm3_P_0_P_1.dat
+CTRL STOR - Bit input:
++1: storageofallresultsstresses[ AQB-LCST-run] (7000loadcases-seegenerated
+_csm file) 1= save, 0= do not save
++2: Storage of the ASE group settings e.g. for eigenfrequencies
+only with the grup numbers and CS (DYNA). See
+csm34_stage_design.dat for design in construction stages
++4: Write _desi.dat with single MAXIMA runs
++64: do not delete any old construction stage loadcases
+by default loadcases of old now unused stages are deleted
+CTRL PROB NONL
+Forthenon-linearanalysisitispossibletodefinethenumberoftheiterationswithV2.
+e.g. CTRL PROB NONL V2 120 for 120 iterations
+CTRL CANT
+adding new elements: see also Figure 2.2:
+0: in system position
+1: with original inclination but moved to extension
+2: tangential erection (free cantilever erection)
+3: Sometimes, if the cantilever part consists of multiple elements e.g. of two parallel
+beams, the prefabricated cantilever part does not fit to the already created part (be-
+cause this is distorted). In reality the new element must be squeezed to the old one.
+A CS...CANT 3 takes now the new part as one block and first analyses a preliminary
+state CS+10000 where the new part is predeformed to fit the deformation at the joint.
+Asitisdangeroustodefinethisforallstages,CANT3isnotallowedtobesetasdefault
+inCTRLCANT3. ItmustbedefinedexplicitonlyforindividualstagesinCS...CANT3,
+see examples:
+Examples: see csm7_cant_3.dat and csm8_cant_3.dat
+11 or 12: as 1 or 2 but adds a new part not as a block but each node separate.
+This allows much better to add an in situ slab on an already deformed grid of beam
+elements.
+21 or 22: as 11 or 12 but without taking into account couplings.
+3-6 SOFiSTiK2023InputDescription|CSM
+Change of ASE CTRL values in a CSM sequence:
+The variable #cs_csm is set in every ASE run and can be used to change e.g. the
+concrete tensile strength in stages:
+PROG CSM
+ctrl ase text ’CTRL CONC V4 2.50 ’
+ctrl ase text ’if xxx_cs_csm<25 ; CTRL CONC V4 0.80 ; endif’
+This uses CTRL CONC V4 2.50 in ASE in the first stages up to CS 25 and CTRL
+CONC V4 0.80 for the stages greater equal 26.
+As SSD, TEDDY and WPS immediately perform a variable substitution, the variable
+#cs_csm must be written as xxx_cs_csm<25 in the CSM input. The CSM then uses
+#cs_csm in the created _csm.dat file. See also example csm48_spiral_ani.dat
+See also YOUTUBE Video https://www.youtube.com/watch?v=taaBfPlIRGA
+SOFiSTiK2023 3-7CSM|InputDescription
+3.3 LAUN – Launching
+Seealso: CS
+LAUN
+Item Description Unit Default
+GRP Group number for the elements which should be dis- − -
+placed
+DX Displacement as unit vector. − -
+DY Input then done in CS-LAUN in m. − -
+DZ − -
+XM Circle centre for rotation around [m] -
+1001
+YM a global axis [m] -
+1001
+ZM [m] -
+1001
+NR1 Reference nodes for rotation around a .− -
+NR2 free axis − -
+PHI PHI=1 for rotations. The rotation input in [−] -
+3
+CS-LAUN then acts in radiant
+NO_L Number of the launching process − 1
+1 launching from one side
+2 launching from the second side
+See also YOUTUBE Video https://www.youtube.com/watch?v=euuJqK8TqFk
+With LAUN a launchingdirection DX DY DZ can be defined for alaunching group GRP. DX DY
+DZ must be input as unit vector with length 1.0. The current launching distance will be defined
+then in CS LAUN in [ m] for each construction stage. For a circular launching in XY plane the
+centre XM,YM must be defined and PHI=1 must be input. Other rotations see ASE-LAUN.
+AdetaileddescriptionandtrainingcanbefoundintheCSMmanual: Theoreticalbackground-
+Incremental Launching Training.
+Inordertoallowaparallellaunchingfromtherightandfromtheleft,twolaunchingcommands
+LAUN can be input with NO_L 1 and 2. In CS the launching distances can be separately
+defined then with LAUN and LAU2.
+Without GRP input (GRP -) the actual CS LAUN values are only written to a CADIMP variable
+#laun_csm an can be used e.g. in CTRL ASE TEXT ’LAUN GRP 5 xxx_laun_csm[m]’ , see
+example csm48_spiral_ani.dat
+Examples:
+3-8 SOFiSTiK2023InputDescription|CSM
+Examples to LAUN: Input file
+Introduction launching csm41_launching_principle.dat
+Big example csm42_incremental_launching.dat
+Circle supports lauched csm43_incremental_launching_circle.dat
+Circle superstructure lauched csm44_incremental_launching_circle_2.dat
+Launching precambered beam csm45_launching_precamber.dat
+Nonlinear contact csm46_launching_nose_nonlinear.dat
+Nonlinear test csm47_nonlinear_test.dat
+Introduction ASE launching movs_incremental_launching_principle.dat
+-> Example overviews -> Summary of example overviews
+SOFiSTiK2023 3-9CSM|InputDescription
+3.4 CS – Construction Stages
+Seealso: LC,LAUN
+CS
+Item Description Unit Default
+NO Construction stage number (1-9998) − 1
+TYPE Type LT B
+T Effective duration of period dys 0.0
+RH Relative humidity % 80
+ARID = 30 % dry environment
+INTE = 50 % inner rooms
+TEMP = 70 % moderate environment
+TROP = 90 % tropical or maritime
+TEMP Temperature of concrete [degree] 20
+1215
+NCRE Dividing in NCRE creep steps − 1
+PROB Control of ASE - SYST PROB only for this construc- LT -
+tion stage
+LINE Linear analysis
+LAUN Launching distance of this construction stage for [m] -
+1001
+LAUN NO_L 1
+LAU2 Launching distance of this construction stage for [m] -
+1001
+LAUN NO_L 2
+FACV Start deformation for the defined construction stage − -
+CANT Temporary setting for the defined construction stage, − -
+see CSM CTRL
+ICS1 Prestress stage for partial prestress − NO
+FACP Partial prestress of ICS1 - see − -
+csm31_partial_prestress.dat
+TITL Title of the construction stage LT24 -
+Thisfirsttablecontainsatleastallrequiredconstructionstageswithadescription. Creepsteps
+require additional input of effective duration of period as well as parameters relative humidity
+and temperature of concrete.
+Concerning the numeration of the construction stages see also: Theoretical background -
+Numeration.
+3-10 SOFiSTiK2023InputDescription|CSM
+TYPE:
+G_1 or G hardening of a new concreted member
+e.g. placing of a new element (spring, cable..)
+Dead load will be activated (→ CTRL DL).
+D_1 or D in case of AASHTO code (instead of G_1 or G)
+C creep step
+NCRE defines the number of individuall creep steps if the
+duration is too long (to avoid too high delta-phi in a single step)
+C_1 for check of creep until traffic handover
+(applied in all design checks)
+C_2 for check of creep from traffic handover
+(only applies if unfavorable)
+K, K_1 and K_2 should only be used for german DIN 4227
+CR, CR_1...CR_4 creep and shrinkage for AASHTO
+P, P_0...P_4 prestress
+To separate prestress with both immediate and post bond in the design you can
+use type P_0 and P_1 instead of P and define the corresponding factors with
+CTRL PKIN VAL ... V2 ...
+Example see csm3_P_0_P_1.dat
+With P_4 a cable prestress can be defined as TYPE P.
+PS, PS_0...PS_4 prestress for AASHTO
+SL short load without creep effect
+(this live load will be removed at once - the following load case
+will not set on this step but will continue from the previous one
+(PLC)
+G_2 activating a load with creep effect - additional dead load
+ZC Stage for additional creep-active live load. In contrary to G_2
+or B this part is only applied for creep and shrinkage. It is
+not added in the design! Each LC ... TYPE ZC loading must
+correspond to a CS TYPE ZC, because the differential load case
+CS+5000 may not be mixed with dead load, prestress or other
+creep load cases in the design. Example see csm31_design.dat
+B construction stage
+e.g. activating or removing of a temporary support
+activating a short term construction load
+B-load cases are taken into account for MAXIMA or AQB
+calculations as G_1-load cases, so that they act always with G,
+also for the design (DESI).
+R earth pressure, also allowed as R_1, R_2...
+Attention: if you use R or R_1 in CSM as construction stage, the earth pressure
+will be taken into account as variable action! That is OK if the earth pressure is
+small compared to the other variable actions. But if the earth pressure is very
+high it may happen that it will not be applied as favorable as the container of the
+variable actions may not be applied due to their GAMF 0.
+SOFiSTiK2023 3-11CSM|InputDescription
+So in case the earth pressure is not small and you want to see the favorable
+effect in the forces please use TYPE B or e.g. TYPE G_3 or G_4 in CSM with
+the corresponding safety factors in SOFILOAD!
+But earth pressure is always taken into account correct as unfavorable!
+The input PROB LINE sets this construction stage to linear analysis, also if CTRL PROB TH3
+was defined for non-linear analysis for other stages.
+With the input CS...FACV 0 the start deformation for a certain construction stage can be set to
+0. Soahorizontallaunchingplanecanbedefinedforstartoflaunching. Possibledeformations
+e.g. of an arch to be launched over can be ignored. In reality the launching supports are also
+new leveled.
+3-12 SOFiSTiK2023InputDescription|CSM
+3.5 GRP – Groups
+Seealso: CAMB
+GRP
+Item Description Unit Default
+NO Group number − ALL
+ALL or - : all groups
+ICS1 Construction stage number of first activation of the − !
+stiffness of this group, -1 or 99999=never
+ATIL Activ until construction stage ... − -
+(default: active until t-infinite)
+VAL see ASE-GRP-VAL YES/LIN LT YES
+ASTI Stiffness activ until (EQIT - cable revove) − -
+(default: active until t-infinite)
+HFIX Hinges fixed at construction stage ... − -
+(default: hinges are always active)
+BEDD QUAD bedding activated at ... − 0
+(default: bedding is always active)
+SITU In situ concrete load activation for AQUA CS partial − *
+sections (SITU ≥ ICS1)
+(default: active at once)
+T0 Effective concrete age at stripping d 7
+(related to 20 degree celsius)
+TS Starting of shrinkage - shrinkage from TS-T0 will d min(3,T0)
+not be taken into account! If necessary please set
+T0=TS=3.
+A value TS>3 usually has no sense.
+FAC1 Stiffness factor for first group activation − 1.0
+ICSD Construction stage number from which the dead load − ICS1
+of a group should be activated (ICSD≥ICS1)
+PHIF Factor for creep of springs, beddings, STEX and − 1.0
+HASE: see theoretical part ’other elements’. In real
+creep only 1 and 0 is allowed for creep YES and NO.
+1.0 springs also creep
+QUEA Input control see program ASE record GRP2 − -
+QEMX Input control see program ASE record GRP2 − -
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-13CSM|InputDescription
+Item Description Unit Default
+FACD Factordeadload(usageontwoCSMrunsseebelow) − -
+The group table describes the sequence and properties of the activation of the
+construction stages. A first GRP line without group number will set defaults for all groups.
+Examples:
+Examples to GRP: Input file
+Introduction csm1_4span_centering.dat
+Creep csm2_simplecreep.dat
+Prestressed bridge csm31_design.dat
+Precast prestressed girder csm3_composite_beam.dat
+Quad prestress csm4_quad_singlespan.dat
+QUAD prestressed bridge csm32_slab_design.dat
+Free cantilever erection csm5_free_cantilever.dat
+Building stepwise csm9_multistorey1.dat
+Steel composite csm12_composite_activation.dat
+Quad in situ on beam girder csm13_quad_weight_lar_activation.dat
+Summary of further example overviews:
+Example overview see
+Introduction -> GRP
+Incremental launching -> LAUN
+Optimization -> EQLC
+Overview workshop YOUTUBE videos (workshops Poland/Oslo 2016):
+Subject Link
+ASE dynamics https://youtu.be/w1W6xUmH4xk
+ASE cables formfinding https://youtu.be/PmAeevUeJcU
+ASE nonlinear shells https://youtu.be/QsGEUu1UGEU
+ASE membranes https://youtu.be/EvJuyYhPQKk
+ASE stability https://youtu.be/Ui9qVyoSYZs
+CSM cantilever erection https://youtu.be/taaBfPlIRGA
+CSM precamber optimization https://youtu.be/YxljlRZ2gME
+Optimization Introduction https://youtu.be/vRyBkK6kvvo
+3-14 SOFiSTiK2023InputDescription|CSM
+Subject Link
+CSM force optimization https://youtu.be/W2GqbTaRSsE
+CSM suspension bridge https://youtu.be/kPzlHHmn-mM
+CSM incremental launching https://youtu.be/euuJqK8TqFk
+CSM DESI Bridge Design https://youtu.be/zoCshbOx5qo
+CSM DESI Result Checks https://youtu.be/in8OTk24f1U
+CSM DESI Slab Bridge https://youtu.be/7FdNbAgwPrI
+CSM DESI AASHTO Design https://youtu.be/lJxF50C7pN8
+CSM DESI Interpretations https://youtu.be/L_W0PCD44UQ
+CSM DESI Stage Design https://youtu.be/QOoLlR-TCj8
+Quickly check beam stresses https://youtu.be/PKHGGFo6nPg
+Tendon Optimization https://youtu.be/BqYh1ZzAjVw
+quad tendon eigenvalues https://youtu.be/P3CO2oMjVds
+BEMESS layer design 2018 https://youtu.be/i3dVC6tCSH8
+BEMESS layer " deutsch https://youtu.be/okhQiEKGQWQ
+ASE dynamics teddy https://youtu.be/WooZ4h7V7M4
+SOFiSTiK T-beam philosophy https://youtu.be/GoT1f0aGdgs
+Cracked Piers and Pylons https://youtu.be/XjYxMLsxl0M
+Tbeam Slab Cracked https://youtu.be/5h637n5-SXk
+Teddy_Text_Editor https://youtu.be/doAP5gmv6Gw
+Advanced_Teddy https://youtu.be/-dmssd38WZI
+Teddy 3 Arrays and more https://youtu.be/naWzZJYTCpI
+Volume Meshing SOFIMSHA https://youtu.be/nTa5v_XnuQw
+T0-TS:
+For shrinkage now an age TS of 3 days is set by default, With the new input GRP...TS this
+can be changed in CSM. Physically shrinkage starts at this age TS. The analyis creep and
+shrinkage intervals start at T0 (loading age). So in the first creep and shrinkage interval T0
+to T0+T the shrinkage part from TS to T0 is not applied! This is correct for the standard case
+prestresswithsubsequentbondwhereprestressC+SlossstartsatT0. Withthesamereason
+also the total shrinkage value does not include this first shrinkage part from TS to T0!
+In steel composite sections it is necessary to take into account the first shrinkage part from
+TS up to the start of loading. To do this you must input T0=TS= 1 day, see example
+steel_composite_orto.dat .
+For in situ concrete slab on a prerefabricated beam T0 may not be input too small because
+thentheconcretewounldbetooweakforfirstdeadloadG_1orprestressing. Thusinexample
+csm3_composite_beam.dat T0=3 andTS=1 is set for group 10. Completely correct could also
+be to input T0=TS= 1 day, calculate the first activation of the beams without dead load (GRP
+FACD), then add a creep step with e.g. 7 days and then activate dead load G_1 and following
+SOFiSTiK2023 3-15CSM|InputDescription
+prestress P.
+SITU:
+For cross sections having an additional cast in-situ part, one can define the activation of the
+additional deadload of higher construction stages with SITU without taking into account their
+additional stiffness. With SITU>ICS1 the full section weight is activated in stage SITU. With
+GRP SITU -1 the weight of a section part can be activated one stage before the activation of
+the stiffness.
+example → csm12_composite_activation.dat
+AQUA with section parts in CS 1 and CS 21 and CS 51:
+GRPSITU-1activatestheweightofthesectionpartAQUA-CS-21alreadyinstage20andthe
+weight of the section part AQUA-CS-51 already in stage 50.
+GRP SITU -5 activates the weight already 5 stages before the stiffness activation.
+If dead load shall be activated later: with GRP SITU 10000+n the dead load of a part of a
+section can be activated n steps later than the stiffness.
+FACD:
+IfyoualreadymadeaCSMrunonSLSlevelyoucancontinueonthatwithasecondULSCSM
+run with:
+CTRL PLC 4100 $ use this previous SLS stage as primary stage (example)
+CTRL STOR +64 $ do not delete old stages
+CS 4900 $ new ULS stages
+GRP ... FACD 1.35 $ dead load now 1.35
+LC ... FACT 1.50 $ extern loads now 1.50
+This second CSM is not allowed to have creep steps. Load cases LC that have already been
+applied in the first CSM run may not contain temperature , prestress or strain loads! Beam
+tendons are not allowed.
+PHIF: Why default 1.0 for PHIF?
+Real steel springs are seldom used in civil engineering. In most cases springs are used to
+representconcretemembersorconnections. Alsoahalfspaceorsoilhaslongtermdeflecions
+(creeps). Theproblemis: ifyoumixcreepingandnon-creepingelements,thecreepingcauses
+often unexpected redistributions towards the noncreeping element.
+3-16 SOFiSTiK2023InputDescription|CSM
+3.6 GRCS – Group-stage special settings
+Seealso: CAMB
+GRCS
+Item Description Unit Default
+NO Group number − !
+CS Construction stage number − !
+FACS Factor of stiffness − 1
+0 = group is removed
+FACL Factor of load from primary loadcase − 1
+please refer to ASE-GRP
+0=elementdoesnottakestressorloadfromprimary
+loadcase (put in place stressfree again)
+PREX Prestress of a group kN 0
+on springs for support lifting
+Usage (without EQLC): removal of a group with later re-usage:
+GRP 21 ICS1 40
+GRCS 21 CS (60 69 1) FACS 0 $ removal
+From stage 70 on the group is again active.
+Usage (without EQLC): restress a cable to a new defined force:
+GRCS 31 CS 210 FACS 1E-9 FACL 0 ; LC 210 ICS1 210
+(cable in group 31, new cable prestress force in loadcase 210):
+(FACL 0 means: throw away old cable force and apply new from LC 210)
+Usage support lifting or support lowering:
+With springs you can use PREX to simulate a support lifting. E.g. you used a
+couplingspring ingroup 7with stiffness1.E6, youcan achievea supportliftingby 1
+cm with GRP 7 PREX -1.E4.
+Attention: donotuseGRCS-FACLincombinationwiththeequationsystemEQLC.Thenbetter
+alwaysusecableswith100%stiffnessandinsertascalableloadcasewithtargetcableforce=0
+for stage cable removal!
+see csm25_equation_cable_removal.dat
+SOFiSTiK2023 3-17CSM|InputDescription
+3.7 WAIT – Creep Inactive Phases
+WAIT
+Item Description Unit Default
+NO Group number − !
+FROM Construction stage number of − !
+TO the inactive phase − !
+WithWAITindividualgroupscanbedefinedasnot-creep-active. Thiscanbeusedtointroduce
+a time shift in the construction sequence.
+For example if in reality you build a pier in 85 days with 40 stages and 20 creep stages and
+100 days later a 2. pier in 40 stages and 20 creep stages you need 60+60=120 stages.
+IntheCSManalysisyoucando: buildbothpiersinparallel(60stages)andtheninsertacreep
+step of 100 days where only the first pier creeps and the second pier waits. So you get the
+correct erection of both piers. If you then continue and connect the lever arms, the first pier is
+85+100 days old, the second only 85 days old - as in reality - and you only need 60+1 stages
+-> less loadcases, smaller database, quicker analysis.
+3-18 SOFiSTiK2023InputDescription|CSM
+3.8 LC – Load Cases
+Seealso: CS
+LC
+Item Description Unit Default
+NO Load case number − 1
+TYPE obsolet, has no effect. Decisive is ICS1 and ATIL for LT -
+the duration of a load. Important is the TYPE in CS
+ICS1 Construction stage when load first acts − NO
+ATIL activ till construction stage ... −
+default: untill t-infinite
+On TYPE SL an input of ATIL=ICS1 is manditory.
+FACT Load factor − 1
+Theloadcasetabledefinesadditionalloads(e.g. G_2additionaldeadload)consideredbythe
+CSM and also defines when the loads are activated. For the sake of clarity it is advisable to
+use the same number as load case and construction stage number.
+TheTYPEofaloadcasehasnoeffectandmayonlybeusefulasatitle. ImportandistheTYPE
+in CS.
+In this load case table only additional loads have to be considered, loading due to prestress is
+computed automatically in accordance to the given number defined with TENDON...CS ICS1.
+Used prestress load cases will be printed in the CSM output and may be checked then.
+Loads can be also input multiple times, e.g. if the load factor increases:
+LC 901 ICS1 41 ATIL 60 FACT 0.40
+LC 901 ICS1 61 ATIL - FACT 1.00
+or if a short time loading shall act in several stages:
+CS 101 TYPE SL ; LC 902 ICS1 101 ATIL 101
+CS 121 TYPE SL ; LC 902 ICS1 121 ATIL 121
+CS 141 TYPE SL ; LC 902 ICS1 141 ATIL 141
+Concerningthenumerationoftheloadcasesseealso: TheoreticalBackground-Numbering.
+SOFiSTiK2023 3-19CSM|InputDescription
+3.9 CAMB – Precamber Analysis
+Seealso: GRP
+CAMB
+Item Description Unit Default
+CS Construction stage number − -
+MODE Analysis mode LT LINE
+LINE linear analysis
+EQIT optimizing of interal forces and moments
+with simultaneous precamber analysis
+FIX analysis with fixed precamber
+ANI Plot of precamber for the whole model
+for the printing of linear precamber:
+TABN Selection of nodes (default: all) − *
+TABB Selection of boundary elements (to select nodes) − -
+TABC Selection of construcction stages (default: all) − *
+TABV Selection of result values − 3
+1 = vx, 2 = vy, 3 = vz, 4 = phix, 5 = phiy,
+6 = phiz
+TABF Format − 1
+1 CS to the right, nodes downwards
+2 the other way
+MODE LINE: Example: csm26_precamber_spanbyspan.dat
+In a linear analysis the precamber has no effect on the internal forces and moments.
+Thus the deformations of the load cases 4000.. can directly be modified. For checks
+a copy of the original 4000.. load cases is made in load cases 14000...
+MODE EQIT: Example: csm29_precamber_nonl.dat
+Optimizing of the internal forces and moments with simultaneous precamber analysis
+This example also includes tips and background to precamber analysis.
+E.g. on pure TH3 you can also use CAMB EQIT without a following force optimization
+if you just rerun the created file _csm.dat multiple times (without an OPTI-CSM).
++apply "$(NAME)_csm.dat"
++apply "$(NAME)_csm.dat"
++apply "$(NAME)_csm.dat" (CAMB - EQIT only defined in the main CSM stage input)
+MODE FIX: Example: csm30_c_precamber_site.dat
+Description see Theoretical Background - Nonlinear precamber analysis
+MODE ANI: Example: csm29_precamber_plot.dat
+Description see Theoretical Background - Nonlinear precamber analysis
+See also YOUTUBE Video https://www.youtube.com/watch?v=YxljlRZ2gME
+3-20 SOFiSTiK2023InputDescription|CSM
+All workshop YOUTUBE videos are listed in the command GRP, search there for ’Overview
+workshop YOUTUBE videos’
+It is often useful to first activate elements without dead load to get the height levels for the
+formwork. For this an input for GRP ICSD allows a later activation of dead load for a group.
+The precamber technique is also well shown in Theoretical Background - precamber
+SOFiSTiK2023 3-21CSM|InputDescription
+3.10 CREP – Creep Parameters
+Seealso: DEPS
+CREP
+Item Description Unit Default
+MNO Material number − !
+GRP Group number − -
+PHI Creep factor, not allowed for real creep! − *
+EPS Shrinkage coefficient (note neg. sign!) − *
+−
+DEFQ Effective member thickness for QUAD+BRIC area el- [m] -1.40
+1001
+ements
+negative value as factor to quad thickness
+T0 Separatevaluee.g. foranin-situaddedconcreteina d -
+construction stage section
+TS ” A value TS>3 usually has no sense d -
+EXP Name of an exposition class for explicit creep curves, d -
+see example explicit_creep_curve.dat
+With CREP user creep and shrinkage values can be modified. PHI can only be used for the
+simple standard creep and not for the real creep!
+For real creep you best scale your creep values with a factor to the default creep curve, see
+example real_creep_creepparameter.dat.
+A compare of possibilities to modify creep curves and a recommendation is shown at the end
+of example file explicit_creep_curve.dat.
+EPS is also allowed in the real creep. The program then scales the internal calculated eps
+valuestotheenforcedinputvalueEPS.ButthenAQBwillnotuseavariableeffectivethichness
+per beam but will only use the CSM printed average value per group. So it is better to use a
+simple factor to shinkage, best possible in AQUA with MEXT TYP EIGE VAL3+5, see material
+3 in explicit_creep_curve.dat.
+QUAD-elements: without an input to CREP...DEFQ, the CSM computes an averaged value for
+theeffectivethicknessoverallQUADelementsofeachgroup. Duetotopcoveringofquadsin
+nearly all circumstances (bad air contact), the default effective thickness for quad elements is
+set to 1.40*h.
+For BRIC elements the effective member thickness must be input for the BRIC groups.
+3-22 SOFiSTiK2023InputDescription|CSM
+The effective thickness of beam cross sections can be changed in AQUA ... SV—DEFF.
+For creep of springs, elastic boundaries, Quad bedding, FLEX- and HASE- elements see re-
+marks in theoretical part ’other elements’.
+SOFiSTiK2023 3-23CSM|InputDescription
+3.11 DEPS – Additional Creep and Shrinkage Input
+Seealso: CREP
+DEPS
+Item Description Unit Default
+MNO Material number − -
+GRP Group number − -
+CS Construction stage number − -
+DPHI Delta-phi creep factor − -
+DEPS Delta-eps shrinkage coefficient (note neg. sign!) − -
+RH Special humidity of an element − -
+With DEPS additional creep and shrinkage values can be defined for single construction
+stages. E.g. for the first concrete hardening, an additional shrinkage value can be input to
+take into account special hardening behaviour. The program adds the defined values to the
+internally calculated values. Additional PHIP input is considered in advance! If no input is
+doneforCS,thevalueisaddedinthefirstconstructionstagewhenanelementisactiveforthe
+first time! Without MNO or GRP input all relevant elements are considered. Please check the
+addition in the CSM output.
+3-24 SOFiSTiK2023InputDescription|CSM
+3.12 TBEX – T-beam-philosophy on excentric beam elements
+TBEX
+Item Description Unit Default
+QGRP Group number of quad slab −/LT !
+Secondary groups not allowed
+EACR factor on the E*A stiffness of the quad slab for creep − -
+and shrinkage
+UsingtheASETBEXT-beam-philosophy,thebeamelementsofthelongitudinalsuperstructure
+and the quad elements of the deck slab usually get different creep and shrinkage coefficients
+due to a different effective thickness. This sometimes causes unexpected slight redistribution
+of forces between the beam elements and the quad deck slab.
+With CSM TBEX the E*A stiffness of the quad deck slab can be reduced for creep and shrink-
+age analysis. Then the moments and normal forces are better comparable with the results of
+a pure beam analysis. All other stages such as G or P run with the full isotropic E*A quad
+stiffness.
+To the TBEX T-beam-philosophy please also refer to ASE manual TBEX.
+Example see t_beam_bridge_excentric.dat
+There the CSM TBEX is commented out but we did run the example without slab prestress
+and the check print delivers nearly same stresses with/without CSM TBEX EACR 1E-5
+Of course you are not allowed to reduce E*A stiffness if you have a transverse slab prestress
+because otherwise the compression of the tendons cannot be carried.
+See YOUTUBE Video https://www.youtube.com/watch?v=GoT1f0aGdgs
+All workshop YOUTUBE videos are listed in the command GRP, search there for ’Overview
+workshop YOUTUBE videos’
+SOFiSTiK2023 3-25CSM|InputDescription
+3.13 ACT – Additional Actions
+ACT
+Item Description Unit Default
+TYPE Type of the action LT !
+FOR Design state, the action shall be used: LT CODE
+SLS Serviceability checks
+ULS Ultimate limit checks
+FAT exact fatigue check with load model 3
+ACCI Accidental checks
+EARQ Earthquake checks
+default: CODE
+CSM tries to set FOR automatically due to
+the code but only for actions listed below.
+Usually FOR has to be input explicitly
+SLSF Factor in serviceability limit state for dead load G_2 − 1.0
+and G_3
+ACT defines additional actions for the design.
+Example: csm31_design.dat
+Actually usable actions for automatic FOR=CODE:
+L_U traffic UD (DIN)
+L_T tandemsystem (DIN)
+ZL braking and centrifugal loads
+ZQ additional traffic load
+T temperature
+ZF expected settlement (FOR=SLS)
+SF possible settlement (FOR=ULS)
+ZW wind on traffic
+SW wind without traffic
+W Wind (in combination with ZW see below)
+FAT fatigue loadmodel 3 (FOR=FAT)
+IncaseofFOR=CODEActionT,ZWandSWarecombinedindependencetothecode,usually
+with three stes of combinations. One with traffic+temperature, one with traffic+wind(on traffic)
+and one with wind without traffic.
+Instead of ZW+SW you can also use ZW+W, then W is the wind without traffic.
+Without ZW input, W is added as a normal action!
+Iifatleastanactionisdefinedasearthquake(ACTFOREARQ),anearthquakeULSdesignwill
+be produced. Example: csm33_earthquake_bridge.dat and csm32_earthquake_quad.dat
+3-26 SOFiSTiK2023InputDescription|CSM
+With ACT SLSF, for additional dead load G_2 and G_3 a SLS-factor can be defined - used in
+MAXIMAandAQBforSLSchecks(AustralianStandard),butthenfixedwiththisfactorandnot
+alternatively with 1.0!
+Usage:
+ACT G_2 FOR SLS,ULS SLSF 1.20
+L_U FOR SLS,ULS
+L_T FOR SLS,ULS
+T FOR SLS,ULS
+Not written G load cases are taken with default factor 1.0.
+SOFiSTiK2023 3-27CSM|InputDescription
+3.14 DESI – Design
+Seealso: GRPD,LAM,DESC
+DESI
+Item Description Unit Default
+TYPE Type of design check: LT !
+MAX only MAXIMA combinations
+MAXI ” and AQB linear stress
+analysis (see below)
+MAX2 ” as MAX but without the statically deter-
+mined part of the beam prestress
+MAX3 ” as MAXI but without the statically deter-
+mined part of the beam prestress
+STAN all default design checks
+STAN includes:
+CHEK checkprint (stress points)
+MREI minimum reinforcement
+DECO decompression check
+SIG stress checks
+CRAC crack width design
+ULTI ultimate design
+FAT fatigue check with LM 3
+(if ACT for FAT is input)
+ACCI accidental ultimate design
+(if ACT for ACCI is input)
+EARQ earthquake ultimate design
+(if ACT for EARQ is input)
+ETYP Element type LT *
+BEAM Beams
+QUAD QUAD elements
+PAR1 Design parameter − -
+...
+PAR8 Parameter P8 - see below
+PUNC Punching check for ultimate design LT CHEK
+NO No punching design
+CHEK only check punching (without
+increasing reinforcement)
+YES Input for column nodes
+see manual BEMESS
+COMB Number of an AASHTO COMB combination
+Please also watch the YOUTUBE video ’CSM DESI Bridge Design’ on this topic.
+3-28 SOFiSTiK2023InputDescription|CSM
+Superposition- and design concept - see theoretical background.
+ItisbesttostartwiththepuresuperpositionwitharunwithACTandDESIMAX.Inthefollowing
+DESI runs without ACT then the individual checks can be performed.
+Main examples:
+Beam: csm31_design.dat
+Quad: csm32_slab_design.dat
+DESI MAX, MAXI:
+With DESI MAX only the MAXIMA parts run. For WINGRAF then all forces for the following
+superposition are stored:
+- LC 1120 .. rare (characteristic) superposition
+- LC 1220 .. nonf ”
+- LC 1320 .. freq ”
+- LC 1420 .. perm ”
+- LC 2120 .. desi ”
+To be used for support reactions, spring-, quad- and beam forces for beams without
+composite or prestress! Beams composite or prestress must be treated with AQB (DESI
+STAN...)!
+With DESI MAXI also an AQB linear stress analysis runs. So also for composite beams
+thelinearstressesarestoredforWINGRAFfortheabovementionedsuperpositions(loadcase
+numbers can be seen in the created _desi.dat → AQB-COMB-GMAX-LCST).
+For checks in cracked state the funktions DESI ULTI or DESI STAN should be used.
+Fatigue check
+With the traffic loads of load model 1 a simplified fatigue check will be performed for DESI
+STAN:
+1. Stress analysis for 75% prestress for welded connections and tendon couplings acc.
+DIN 1045 10.8.4. or EN 1992-1-1 6.8.6
+2. Simplifiedfatigue checkacc. DIN 104510.8.4 orEN1992-1-1 6.8.6: stressrange <
+70 mPa
+If in ACT an action FAT [fatigue] is declared, the exact check follows. Additional input for time
+of usage and amount of traffic are preset in file _desi.dat and have to be checked. Without
+an input of a high minimum reinforcement the fatigue check will not succeed in most cases,
+becauseaccordingtoDINFB-102(4.3.7.3)orEN1992-1-16.8.6oftenaveryhighbondfactor
+eta will be adopted.
+Settlementandtemperatur: astheCSMdoesnotknowwhichsettlementortemperatureload-
+caseisunfavorable(ateverypointinthestructureanothercasecanbeunfavorable),theCSM
+doesnotaddsettlementortemperaturetothepermanentactioninthefatiguecheck. Onlythe
+traffic loadcases are stress range active - as in the original Eurocode.
+Parameter
+Most parameter are unused in the moment. They are reserved for later extensions. Used
+SOFiSTiK2023 3-29CSM|InputDescription
+parameter:
+Superposition DESI MAX and DESI MAXI
+DESI MAX PAR1 1 = definition of a single span system (statically determined system)
+The deco check then runs permanent with psi2=0.5 according din_en_1992-2 NA Tabelle
+7.101DE - see csm32_slab_design.dat
+DESI MAX PAR2 1 = request MAXIMA test print
+DESI MAX PAR3 1+2+4+8+16+32+64+128+256+512 = requested MAXIMA superpositioning
+If you do not want to make all superpositionings, e.g. to save time for first rare + ULS desing:
+DESI MAX PAR3 1+128 = make only rare and ULS MAXIMA superposition.
+• PAR8=+1 rare (characteristic) action combination
+• PAR8=+2 nonfrequent ”
+• PAR8=+4 frequent ”
+• PAR8=+8 permanent ”
+• PAR8+=16 quad decompression 0.50
+• PAR8=+32 fatigue: separate temperature/settlement
+• PAR8=+64 1.0 times superposition for bearing reactions
+• PAR8=+128 ULS design
+• PAR8=+256 accidential and earthquake
+• PAR8=+512 fatigue and quad-robustness
+Crack width check
+With PAR1 the crack width can be set,
+e.g. DESI CRAC PAR1 0.25.
+With PAR2 the action can be selected:
+DESI CRAC PAR2 1100,1200,1300 or 1400 with:
+- 1100 : rare (characteristic) action combination
+- 1200 : nonfrequent ”
+- 1300 : frequent ”
+- 1400 : permanent ”
+With DESI MBEW PAR1 -1 the minimum reinforcement check can be switched off.
+Decompression check
+With PAR2 the action can be selected:
+DESI DECO PAR2 1100,1200,1300 or 1400 (values see CRAC)
+On statically determined systems = single span you can enforce the deco check perma-
+nent with psi2=0.5 according din_en_1992-2 NA Tabelle 7.101DE via DESI MAX PAR1 - see
+csm32_slab_design.dat
+MREI - robustness reinforcement
+With DESI MREI PAR1 0 the robustness reinforcement check can be switched off.
+With DESI MREI PAR1 -1 also the minimum reinforcement in the crack check is switched off.
+3-30 SOFiSTiK2023InputDescription|CSM
+Fatigue check FAT with LM3
+With PAR1 the number of used permanenten TEMP-Settlement parts can be limited,
+e.g. PAR1 4 : only use MAMI-MY and MAMI-VZ loadcases. With DESI FAT PAR1 0 no
+temperature or settlement loadcases are taken into account.
+the number of used permanenten TEMP-Settlement parts can be limited,
+e.g. PAR1 4 : only use MAMI-MY and MAMI-VZ loadcases. With DESI FAT PAR1 0 no
+temperature or settlement loadcases are taken into account.
+usage see csm31_design.dat
+PAR2: SIGS for quad stress range design (not used for beam elements)
+PAR3: SIGT for quad stirrup stress range design (not used for beam elements, for beam
+elements PAR3 has another meaning, see below!)
+SIGP is only checked on quads and does not increase reinforcement, so no input provided.
+Parameter PAR3 and PAR4:
+With DESI ... PAR3 und PAR4 the factor for primary (PAR3) and secondary (PAR4) effect of
+prestress can be set, e.g. DESI FAT PAR3 0.9 PAR4 1.0
+(see csm31_design.dat - last CSM)
+For quad elements PAR3 has another meaning, see above!)
+Parameter PAR8: BEAM:
+With DESI ... PAR8 the amount of BEAM AQB-combinations can be set for all checks or each
+check separately:
+• PAR8=1 simple combinations with COMB MAMI MY and only pk-inf in the ULS
+design also with MAMI VZ and MT
+• PAR8=2 as 1 but pk-inf and pk-sup
+• PAR8=3 as 2 but also combinations MAMI MY,N in SLS
+• PAR8=4 as 3 but also combinations MAMI MY,N,MZ in SLS
+• PAR8=9 as 1 but MAMI MY,N,MZ,VY,VZ,MT in the ULS and fatigue design
+• PAR8=10 as 2 but MAMI MY,N,MZ,VY,VZ,MT in the ULS and fatigue design
+• PAR8=11 as 3 but MAMI MY,N,MZ,VY,VZ,MT in the ULS and fatigue design
+• PAR8=12 as 4 but MAMI MY,N,MZ,VY,VZ,MT in the ULS and fatigue design
+• PAR8+100 (101-109) Check at traffic opening and t-infinite
+default: only the one generally controlling
+default: ETYP BEAM PAR8=9 ,
+for construction stage design: ETYP BEAM PAR8=1
+Parameter PAR8: QUAD:
+WithDESI... PAR8theamountofdesignedQUAD-forcescanbesetforthefatiguecheckFAT
+with LM3:
+• PAR8=1 simple combinations with COMB MAMI MY and only pk-inf in the ULS
+design also with MAMI VZ and MT
+• PAR8=2 nur mami mxx verwenden
+• PAR8=4 nur mami mxx+myy verwenden
+SOFiSTiK2023 3-31CSM|InputDescription
+• PAR8=6 mami mxx+myy+nxx
+• PAR8=8 mami mxx+myy+nxx+nyy
+• PAR8=10 mami mxx+myy+nxx+nyy+vx
+• PAR8=12 mami mxx+myy+nxx+nyy+vx+vy
+• PAR8=14 mami mxx+myy+nxx+nyy+vx+vy+mxy
+• PAR8=16 mami mxx+myy+nxx+nyy+vx+vy+mxy+nxy = alles
+default: ETYP QUAD PAR8=16 (in the fatigue check FAT)
+In other designs only specific loadcases are set. In the stress check with DESI SIG ETYP
+QUAD PAR8=16 all mxx+myy+mxy+nxx+nyy+nxy can be selected.
+3-32 SOFiSTiK2023InputDescription|CSM
+3.15 GRPD – Group selection for the design
+Seealso: DESI,BOX,AUSW
+GRPD
+Item Description Unit Default
+NO Group selection for the design − -
+E.G. GRPD 1,2,6,12
+To be used in DESI. Will be taken into account in the AQB and BEMESS design tasks. For
+WINGRAF please use BOX.
+Example see csm31_design.dat at the DECO check.
+SOFiSTiK2023 3-33CSM|InputDescription
+3.16 LAM – Lambda Values for the Fatigue Design
+LAM
+Item Description Unit Default
+LAMS Coefficient equivalent stress range reinforcements − 1.0
+midspan
+LMS2 Coefficient equivalent stress range reinforcements − LAMS
+inner supports
+LAMT Coefficient equivalent stress range tendons − 1.0
+midspan
+LMT2 Coefficient equivalent stress range tendons − LAMT
+inner supports
+LAML Coefficient equivalent stress range shear links − 1.0
+midspan
+LML2 Coefficient equivalent stress range shear links − LAML
+inner supports
+LAMC Coefficient equivalent stress range concrete − 1.0
+3-34 SOFiSTiK2023InputDescription|CSM
+3.17 COMB – Combinations AASHTO
+Seealso: DESI
+COMB
+Item Description Unit Default
+COMB Combination number (1-29) − -
+ACT1 Action 1 LT -
+GAM1 Safety factor − -
+ACT2 Action 2 LT -
+GAM2 Safety factor − -
+ACT3 Action 3 LT -
+GAM3 Safety factor − -
+ACT4 Action 4 LT -
+GAM4 Safety factor − -
+ACT5 Action 5 LT -
+GAM5 Safety factor − -
+ACT6 Action 6 LT -
+GAM6 Safety factor − -
+ACT7 Action 7 LT -
+GAM7 Safety factor − -
+ACT8 Action 8 LT -
+GAM8 Safety factor − -
+ACT9 Action 9 LT -
+GAM9 Safety factor − -
+AC10 Action 10 LT -
+GA10 Safety factor − -
+AC11 Action 11 LT -
+GA11 Safety factor − -
+AC12 Action 12 LT -
+GA12 Safety factor − -
+TITL Title of the combination LT24 -
+See YOUTUBE Video https://www.youtube.com/watch?v=lJxF50C7pN8
+This input defines the combinations according AASHTO table 3.4.1-1:
+SOFiSTiK2023 3-35CSM|InputDescription
+Figure3.1: AASHTOtable3.4.1-1LoadCombinationsandLoadFactors
+Examples:
+In metric units: csm31_design_aashto_metric.dat
+In imperial inch and feet: csm31_design_aashto_inch.dat
+Superposition and design concept:
+In the first presuperposition MAXIMA run the superposition of the variable action without GPC
+(G=dead load, P=prestress, C=creep+shrinkage) is defined.
+InafollowingsecondMAXIMArunthissuperpositionisdone,theresultsarestordincontainer
+Y_1 ... Y_9 (without GPC).
+In two following Maxima runs the same is done including GPC for e.g. quad design, spring
+results or nodal deformations.
+A following AQB beam design uses these container Y_1 ... Y_9 of the variable actions and
+adds the section depending force and inners stress states G,P and C
+On AASHTO the literals are often used as follows: GPC -> D,PS,CR (D=dead load,
+PS=prestress, CR=creep+shrinkage
+Actually the following DESI tasks are possible after the COMB superpositioning:
+DESI CHEK =CheckPrintofasinglebeam-seeYOUTUBEVideoCSMDESIResult
+Checks https://www.youtube.com/watch?v=in8OTk24f1U
+DESI ULTI = ULS design of all combinations with text ’STRENGTH’ or ’STRE’ and
+without text ’DEFO’
+DESI SIG = Analysis of nonlinear stresses in cracked section of all SLS combina-
+3-36 SOFiSTiK2023InputDescription|CSM
+tionen (without text ’STRE’ and without text ’DEFO’)
+The ’DEFO’ combinations are only meant for deformations and the results can
+be printed manually, see task ’Deformations’ behind task ’Superposition’ in example
+csm31_design_aashto_inch.dat
+The crack design in AASHTO is mainly a steel stress limitation according equation 5.6.7-1
+depending on the concrete cover, the bar diameter and the bar distance:
+Figure3.2: AASHTOequation5.6.7-1forcrackdesign
+We recommend to calculate the allowable steel stress by hand (e.g. 220 N/mm2, represents
+1.1 o/oo strain) and compare this stress with the results of the DESI SIG run. In special cases
+you can make an AQB SLS design with input of a maximum steel strain S2, e.g. with AQB -
+DESI STAT SERV S2 1.1
+SOFiSTiK2023 3-37CSM|InputDescription
+3.18 GAMT – Temporary Gamma values for the permanent GPC parts
+GAMT
+Item Description Unit Default
+TYPE Construction stage type as defined in CSM-CS. LT !
+TYPE B may be converted to G_1, also see types in
+created file _csmlf.dat
+GAMU Unfavourable partial safety factor [−] !
+-
+GAMF Favourable partial safety factor [−] !
+-
+IntheAmericanAASHTOdifferentsafetyfactorsGAMUmustbeappliedforthesuperstructure
+in the stage design e.g. in combination Strength A1. With GAMT the safety factors can be
+changed temporarily. They are then taken also in the AQB designs until a new CSM MAXI run
+comes without GAMT input.
+Usage see example: csm34_aashto_stage_design.dat
+3-38 SOFiSTiK2023InputDescription|CSM
+3.19 LCCS – Design of Construction Stages - additional loadcases
+Seealso: DESC
+LCCS
+Item Description Unit Default
+NO loadcase number − -
+ACT Action − -
+TYPE TYPEasinMAXIMALLCTYPE:onlyincaseitdiffers − -
+to the SOFILOAD action definition
+CALC 1: loadcase is to be calculated − 1
+0: loadcase is already calculated (e.g. from ELLA)
+To be used in addition to DESC. Example construction stage: see csm34_stage_design.dat
+Comments see Theoretical Background - CSM Construction Stage Design
+SOFiSTiK2023 3-39CSM|InputDescription
+3.20 DECS – Design Construction Stage
+Seealso: LCCS
+DECS
+Item Description Unit Default
+CS Number of Construction stage to be designed − -
+To be used in addition to LCCS. Example construction stage: see csm34_stage_design.dat
+Please also watch the YOUTUBE video ’CSM DESI Stage Design’: ->
+https://www.youtube.com/watch?v=QOoLlR-TCj8
+Storage of stage design results see COPY.
+Comments see Theoretical Background - CSM Construction Stage Design
+3-40 SOFiSTiK2023InputDescription|CSM
+3.21 COPY – Make a copy of construction stage design results
+Seealso: DECS
+COPY
+Item Description Unit Default
+LCR Reinforcement distribution number −/LT !
+AUTO Stress results and stage design reinforce-
+ment distribution LCR 1
+AU11 as AUTO but also LCR 11 (ULS design
+alone)
+AUTA asAUTObutallstagedesignreinforcement
+distributions 1+11:19.
+Senseful for Quads, as there stresses are
+stored in the reinforcement LCR!
+LCRC ReinforcementdistributionnumberLCRwillbecopied − -
+to number LCRC
+LC Loadcase number (can also be an AQB COMB stor- − -
+age result)
+LCC Loadcase number LC will be copied to number LCC − -
+BASE Loadcase base number for LCR AUTO − -
+default= 60000 in case of maximum 999 stages
+and 600000 in case of more than 1000 stages
+CDB Name of target database LT24 LT -
+To be used in addition to DECS. Example construction stage: see csm34_stage_design.dat
+Standard usage : COPY AUTO
+Comments see Theoretical Background - CSM Construction Stage Design
+Ahead of each stage design, the reinforcement distribution numbers 1-30 are deleted to avoid
+that results of the final design are mixed there. So it is useful copy the final design reinforce-
+ment distribution in advance with:
+PROG CSM
+HEAD
+COPY LCR 1 31 $ copies LCR 1 to LCR 31
+END
+After all stage designs and the final design you can then create the maxumum of all with:
+PROG AQB
+KOPF
+REIN LCR 31 RMOD ACCU $ final design
+REIN LCR 60101,60151,60201 RMOD ACCU $ stage design CS BA 101,151,201
+SOFiSTiK2023 3-41CSM|InputDescription
+REIN LCR 1 RMOD SING $ target reinforcement distribution 1
+BEW BEZ ’Maximum of reinforcement’
+ENDE
+and on Quads with:
+PROG BEMESS
+HEAD
+CTRL LCRI 31 $ final design
+CTRL LCRI 60101,60151,60201 $ stage design CS BA 101,151,201
+CTRL LCR 1 $ target reinforcement distribution 1
+END
+3-42 SOFiSTiK2023InputDescription|CSM
+3.22 SUMA – Sum of CSM stage actions
+SUMA
+Item Description Unit Default
+TYPE Elementtype LT ALL
+BEAM beams
+TRUS trusses
+CABL cables
+SPRI springs
+QUAD quads
+NODE support reactions
+ALL = default
+SUMA stores the summed up beam forces separated to the used CSM actions. Example see:
+csm31_design_aashto_suma.dat
+HEAD
+SUMA
+END
+This helps to check the CSM DESI forces and can also be used for an extern design of con-
+struction stages.
+Attention: inner tendon steel stress losses due to creep and shrinkage are not included!
+For 1000 construction stages and 8 actions, 8000 new loadcases are stored. So it may be
+clever to copy the .cdb and use SUMA only on the copied .cdb for a further design.
+Example csm31_design.dat with the following actions:
+CS 10 TYPE G_1
+CS 11 TYPE P - will be stored as PB and ZP
+CS 14 TYPE SL - will be sorted out as not permanent !
+CS 15 TYPE C_1
+CS 20 TYPE G_2
+CS 25 TYPE C_1
+CS 34 TYPE ZC - OK, we take this as well
+CS 35 TYPE C_2 NKRI 4
+will store with SUMA:
+LC 210000... G_1 Sums in LC 210010, 210011, 210015, 210020, 210025, 210034, 210035-38
+LC 220000... G_2 Sums in LC 220020, 220025, 220034, 220035-38
+LC 310000... PB Sums in LC 300011, 300015, 300020, 300025, 300034, 300035-38
+LC 320000... ZP Sums in LC 310011, 310015, 310020, 310025, 310034, 310035-38
+PB= static determined part p
+ZP= static indetermined part
+SOFiSTiK2023 3-43CSM|InputDescription
+LC 410000... C_1 Sums in LC 410015, 410020, 410025, 410034, 410035-38
+LC 420000... C_2 Sums in LC 420035-38
+LC 510000... ZC Sums in LC 510034, 510035-38
+- from LC 510000 on all actions are added that occur seldom, e.g. ZC, R_1
+- using CTRL GPCS, the 110000-130000 parts are added
+Comment: e.g. LC 220043 contains only the part of LC 50020 (only G_2 part), as this load is
+still active in CS 34.
+3-44 SOFiSTiK2023InputDescription|CSM
+3.23 REIN – Reinforcementparameter AQB
+REIN
+Item Description Unit Default
+LCR Number of reinforcement distribution − 1
+only for AQB (not BEMESS)
+SOFiSTiK2023 3-45CSM|InputDescription
+3.24 BOX – Selection for Graphic
+BOX
+Item Description Unit Default
+BOX according to the WING input:
+XMIN Minimum coordinates of a [m]
+1001
+YMIN part of the system [m]
+1001
+ZMIN [m]
+1001
+XMAX Maximum coordinates of a [m]
+1001
+YMAX part of the system [m]
+1001
+ZMAX [m]
+1001
+GRP Group numgers (group selection) − AUTO
+ToachievebetterplotsintheautomaticallygeneratedWINGrun,withBOXapartofthesystem
+can be selected, e.g. only the superstructure of a bridge csm5_free_cantilever.dat.
+With GPR goups can be preselected for the graphical plots in the program WING. In case the
+system has tendons or composite section, on GRP AUTO in the CSM Design Checks only
+these groups are set.
+An input to XMIN-ZMAX is used in the first construction stage CSM run and the CSM-DESI
+runs.
+A new input to BOX-GRP will also be taken into account in later CSM-DESI runs.
+3-46 SOFiSTiK2023InputDescription|CSM
+3.25 QCUT – QUAD cuts for WINGRAF plots
+QCUT
+Item Description Unit Default
+X1 start point of a cut (MOVE) [m] -
+1001
+Y1 [m] -
+1001
+X2 end point of a cut (DRAW) [m] -
+1001
+Y2 [m] -
+1001
+WINGRAF cuts for quads in the CSM-DESI plots, see examples csm32_slab_design.dat.
+With a pure input of Y1 a horizontal cut at y=Y1 is created.
+An empty input QCUT deletes previous defined QCUT cuts. Then standard cuts are created.
+WINGRAF cuts from SOFIPLUS (Tools-Utility Cut-line) are also used in the CSM-DESI plots.
+In the interactive WINGRAF they can be switched off in Menue-Edit-Cuts-Database cuts-’Use
+DB cuts’. After deleting them in WINGRAF Menue-Edit-Cuts-Database cuts-’Delete DB cuts’
+only the QCUT cuts are used.
+SOFiSTiK2023 3-47CSM|InputDescription
+3.26 SCAL – Plot Scales
+SCAL
+Item Description Unit Default
+DISP Magnification factor for displacements − 0
+0 do not plot
+BEAM Scale for beam bending moment kNm 0
+BEAN Scale for beam normal force kN 0
+LOAD Scale for loads kN 0
+QU_M Scale for QUAD bending moment kNm/m 0
+QU_N Scale for QUAD normal force kN/m 0
+QU_S Scale for QUAD stresses N/mm2 0
+AQ_S Scale for AQB beam section stresses N/mm2 -
+Reinforcement stresses use AQ_S*5
+In ULS scaling is done automatically
+0 no beam section stresses
+SIGD Scale WING concrete compressive stresses N/mm2 -
+QUAS Reinforcement at QUAD WING cuts cm2/m 0
+DESI WINGRAF plots in the CSM Design − 1
+SCAL replaces the old CSM input UNIT with same funktion!
+To achieve better plots in the automatically generated WING run, some scalings can be
+preset with SCAL.
+With SCAL DISP 0 the WING-run in the _csm file can be deactivated, with SCAL AQ_S 0 the
+beam section stresses can be deactivated.
+The CSM-DESI can be switched off with SCAL DESI 0.
+3-48 SOFiSTiK2023InputDescription|CSM
+3.27 SELE – Selection Stress View
+SELE
+Item Description Unit Default
+BEAM Beam element number − !
+X Beam ordinate m 0
+Y Y-coordinate for quad selection [m] -
+1001
+Z suad selection [m] -
+1001
+Beam selecion:
+With SELE beam x via AQB a stress analysis is generated for this beam section.With ROG
+RESULTS a stress plot follows. Please use AQUA stress points to print stresses on top and
+bottom of your beam.
+With SELE beam 0 no CHECK PRINT is done (not recommended).
+Quad selecion:
+In a quad design you can select a quad with SELE X,Y,Z. Then you get stress plots and
+numerical output for this quad in the BEMESS runs. For further checks on quad design see
+also example voided_slab.dat
+WINGRAF cuts for quads can be defined with QCUT.
+For BEAM x it is possible to input several beam numbers, e.g. with two records SELE, for a
+more detailed result printout.
+Perdefaultonlythestartofabeamisprintedordesignedinthecheckdesign(x=0). Forexact
+shear design it may be necessary to select multiple beam sections in a beam, because only
+then AQB can exact design haunches and flange connections. Then for the selected beam
+please input x=0 and x=3.50[m] (example for a 3.50m long beam).
+SOFiSTiK2023 3-49CSM|InputDescription
+3.28 EXPO – Export
+EXPO
+Item Description Unit Default
+Exports the relevant CSM input to file ..._cse.dat.
+3-50 SOFiSTiK2023InputDescription|CSM
+3.29 EQLC – Equation Load Cases
+Seealso: EQUU,EQPP,EQBE
+EQLC
+Item Description Unit Default
+NO Load case number or −/LT !
+CONT = continue optimization, see example
+csm20_opti_intro_finalstage.dat (nonlinear)
+TYPE Type of load case: LT FREE
+G permanent load case
+or target loadcase
+FREE uniform scalable load case
+F following loadcase
+FMIN minimum used factor absolute -
+e.q. if ballast cannot be negative
+FMAX maximum used factor absolute -
+better use EQIT FMAX for damping of factor change
+USE use another loadcase for the effect of LC-NO. E.g. in -
+case LC-NO has only an indirect effect on the target
+EQUU.
+CSM EQUATION SYSTEM:
+With this feature, for a set of uniform load cases a set of desired deformation or stress states
+can be computed. The CSM calculates the load case factors that will satisfy the restrictions -
+together with the permanent loads.
+Examples:
+Examples to optimization: Input file
+Linear precamber csm26_precamber_spanbyspan.dat
+Opti. final system linear csm21_eqation_cable_stayed.dat
+Opti. final system nonlinear csm20_opti_intro_finalstage.dat
+Opti. with stages nonlinear csm20_opti_intro_staged_analysis.dat
+Opti. with stage linear csm23_cable_stay_optimisation_2.dat
+Optimization incl. creep csm24_equation_iteration_creep.dat
+Cable removal csm25_equation_cable_removal.dat
+Suspension bridge real csm27_suspension_w_nonlopti.dat
+Introduction TH3 optimization csm29_precamber_nonl.dat
+-> Example overviews -> Summary of example overviews
+SOFiSTiK2023 3-51CSM|InputDescription
+See also YOUTUBE Video: https://youtu.be/vRyBkK6kvvo
+and https://youtu.be/W2GqbTaRSsE (CSM force optimization nonlinear cable stayed bridge)
+All workshop YOUTUBE videos are listed in the command GRP, search there for ’Overview
+workshop YOUTUBE videos’
+Incaseofagivenconstructionstageanalysisandif5000-CSloadcasesareusedasscalable
+loadcases, in EQLC TYPE G the target loadcase must be specified. This target loadcase is
+used as default in EQUU...EQBE for target consgtruction stage CS.
+In order to optimize the internal forces and moments it is also possible to define target condi-
+tions in previous construction stages, see csm25_equation_cable_removal.dat.
+With a following loadcase F after a scalable loadcase the two loadcases get the same factor
+and count as on condition.
+Remarks using optimizations in a construction staged analysis:
+Main goal of the equation technique is the optimization of a desired force state!
+e.g. good bending moment distribution in the superstructure (main beam)
+(or for an arch bridge: good bending moment distribution in the arch)
+(or for a cable stayed bridge: no bending moment in pylon)
+Thus usually no displacement targets should be used in the Equation technique.
+If the desired force state is reached, the precamber is very easy
+in linear systems → UEBE ... MODE LINE. This even does not
+require a new analysis (only correction run at the end):
+Just the starting deformations are modified and as
+in linear systems the deformations has no additional effect on the forces,
+the system must not be reanalyzed!→ see csm23_cable_stay_optimisation_2.dat.
+Only in case of nonlinear systems an iteration is necessary → csm29_precamber_nonl.dat
+The optimization technique is also well shown in Theoretical Background - Shape and force
+optimization.
+3-52 SOFiSTiK2023InputDescription|CSM
+3.30 EQUU – Displacement Restriction
+Seealso: EQLC,EQPP,EQBE,EQIT
+EQUU
+Item Description Unit Default
+NO Node number − !
+UX Value of desired displacement m -
+UY -
+UZ -
+PHIX RAD -
+PHIY -
+PHIZ -
+CS Construction stage number − -
+ADD Addition factor to the previous condition − -
+TOL Tolerance (same dimension as target value) − -
+DRX direction vector for displacement UX − -
+DRY or direction for local rotation PHIX − -
+DRZ e.g. 0mm under 45 degree: UX 0 DRX 1 DRY 1 − -
+The normal usage does not contain an ADD, e..g. EQUU 312 uz 0.115:
+Node 312 shall get a displacement of 115[mm].
+Using ADD, only the node number and ADD must be input in the ADD line - usage e.g.:
+EQUU 18 uz 0
+EQUU 19 ADD -1 $ main usage is ADD -1
+requires that the nodes 18+19 shall get the same displacement: uz(18)=uz(19)
+Equation uz(18)-1.0*uz(19)=0.0
+Inthefirstline[EQUU18uz0]uznowdefinestheresultoftheequation,notthefinaldisplace-
+ment. Examlpe see optimize - csm30_f_precamber_equu.dat.
+SOFiSTiK2023 3-53CSM|InputDescription
+3.31 EQPP – Reaction Restriction
+Seealso: EQLC,EQUU,EQBE,EQIT
+EQPP
+Item Description Unit Default
+NO Node number − !
+PX Value of desired reaction force kN,kNm -
+PY
+PZ
+MX
+MY
+MZ
+CS Construction stage number − -
+ADD Addition factor to the previous condition − -
+TOL Tolerance (same dimension as target value) − -
+ADD see EQUU
+3-54 SOFiSTiK2023InputDescription|CSM
+3.32 EQBE – Beam Force Restriction
+Seealso: EQLC,EQUU,EQPP,EQIT
+EQBE
+Item Description Unit Default
+NO Element number − !
+X Beam ordinate [m] 0
+1001
+N Value of desired element force kN,kNm -/LIT
+VY
+VZ
+MT
+MY
+MZ
+DSIG delta bottom-top (bottom minus top) N/mm2
+MNO material number for DSIG in a composite section
+ETYP Element type LT BEAM
+BEAM Beam elements
+CABL Cable elements
+TRUS Truss elements
+SPRI Spring elements
+CS Construction stage number − -
+ADD Addition factor to the previous condition − -
+TOL Tolerance (same dimension as target value) − -
+LC If you insert the literal FROM at the element force, − -
+in LC a loadcase can be input from which the target
+force is taken,
+e.g. EQBE ... ETYP CABL N FROM LC 1001
+Also for cables and truss- and spring elements a normal force restriction can be defined. A
+spring torsional moment must be input with ”MT” and ETYP SPRI.
+An EQBE DSIG 50 MNO 5 defines a target of delta-sigma = 50 N/mm2. That represents a
+specific moment in the partial section with material 5.
+ADD see EQUU
+SOFiSTiK2023 3-55CSM|InputDescription
+3.33 EQIT – Construction Stage Iteration
+Seealso: EQBE,EQUU,EQPP
+EQIT
+Item Description Unit Default
+ITER Number of iterations − -
+FMAX Iteration parameter − -
+as ASE - SYST ... FMAX
+on oszillation problems set FMAX to e.g. 0.8
+COPY copies intermediate iteration loadcases for checks − -
+For non-linear effects e.g. for creep and shrinkage, the construction stage analysis can be
+iteratedtoachieveatargetforceinthefinalstage. TheiterationcanbeswitchedonwithEQIT.
+Tolerancesfüriterationstopcanbedefinedintherestrictioninpute.g. EQBE,EQUUorEQPP.
+Example see csm24_equation_iteration_creep.dat.
+For example with EQIT 20 FMAX 1.5 it is possible to prevent a too great modification of the
+new load case factors. A negative value for FMAX e.g. -0.7 activates a old iteration method
+regula-falsi. A positive value (deafult) uses a Crisfield acceleration as used in ASE.
+With e.g. EQIT 5 COPY 80000 the highest target loadcase 4000+CS-max (CS-max maximum
+of all EQBE CS) is copied after every iteration (e.g. for CS-max=701):
+LC 80000 = loadcase 4701 before the first EQIT iteration = start state
+LC 80001 = loadcase 4701 after the 1. EQIT iteration
+LC 80002 = loadcase 4701 after the 2. EQIT iteration
+LC 80003 = loadcase 4701 after the 3. EQIT iteration
+LC 80004 = loadcase 4701 after the 4. EQIT iteration
+LC 80005 = loadcase 4701 after the 5. EQIT iteration
+EQIT improved in combination with CAMB...MODE EQIT:
+If force convergence is reached an additional run of the construction phase is done with the
+last factors to achieve a better precamber result, see example csm29_precamber_nonl.dat.
+Also csm30_c_precamber_site.dat shows this on the example of a cable stayed bridge, de-
+scription see Theoretical Background - Nonlinear precamber analysis
+Figure3.3: csm30...dat: Problemonclosingthegapduetounsymmetricsettlement
+3-56 SOFiSTiK2023InputDescription|CSM
+3.34 KINK – Add a new segment with a Kink
+KINK
+Item Description Unit Default
+CS Construction stage − !
+GRP group number − !
+DXX kink rotation around global x [mrd] 0
+1004
+DYY kink rotation [mrd] 0
+1004
+DZZ kink rotation [mrd] 0
+1004
+TofixadeformationproblemdetectedonsiteyoucanintroduceakinkinaCSstage. Example
+see csm30_e_precamber_kink.dat
+An empty input KINK or a new CSM construction stage input deletes old KINK input stored in
+the .cdb.
+Description of the whole workflow see Theoretical Background - precamber
+Figure3.4: Solvingtheproblemwithakink(highlyenlarged)
+SOFiSTiK2023 3-57CSM|InputDescription
+3.35 CABL – Cable Anchorage Angle Check
+CABL
+Item Description Unit Default
+LC1 loadcase number for the angle check − -
+LC2 to: LC1 up to LC2 are used − -
+TYPE type of loadcase LT FULL
+FULL LC inlude dead load and prestress
+DIFF only difference to the permanent loadcase
+ThisfunctionhasnotmuchtodowiththeCSMitself. Butitmayhelpdodesignrotationangles
+at cable anchorages.
+For cables see also YOUTUBE Video https://www.youtube.com/watch?v=PmAeevUeJcU
+All existing loadcases from LC1 to LC2 are used. Multiple input lines are allowed. LC1 of
+the first input line defines the permanent state (in following lines the permanent LC may occur
+again).
+Examplesee: csm21_cable_anchorage_angle.datand csm21_cable_anchorage_angle_3d.dat
+a3A
+A
+a2A
+a1
+h
+fz
+a2E
+z
++a
+s l-xy E a3E
+3.35.1 Main plane
+In a first table the angles for the main plane are printed (s-z plane).
+Three parts are taken into account. In color red the possible corresponding displacement is
+shown.
+a1 Rotation of the nodal line with angle α. For SYST GDIR NEGZ (global z points
+up), α of stays rotates up, for SYST GDIR POSZ α rotates downwards!
+In hangers, α rotates opposite to local t, see figure 3.5 and 3.6
+a2 Angleα ofcablesagging. Fortheflatstressedcabletheanglea2Aontopisthe
+same (without regard to the sign) to a2E = 4*fz/(l-xy)
+3-58 SOFiSTiK2023InputDescription|CSM
+a3 Rotation of the superstructure or pylon at the cable anchorage (nodal rotation)
+- direction s is the direction of the cable from node A to node E in the ground view
+- for hangers s points into the local x axis of the bottom node
+-apositiverotationα meansanincreaseofzindirections,inhangersincreaseoflocaluinss
+- only formulars for a flat stressed cable are used -> a2A = -a2E
+- if a nonlinear sagging from ASE-TH3 is provided it is taken
+- for linear loadcases fz is analyzed from the normal force using H0
+- for this only deadload in z is supposed
+- except for TYPE DIFF also linear loadcases must include dead load and prestress
+- horizontal cable sagging is also inluded if available (wind in ASE-TH3)
+The real end tangent inclination for a cable in a loadcase in the main plane is:
+(in the above figure global z falls from A to E - so -h must be inserted:)
+- at the startnode A : real end tangent inclination αA = ATAN(+-h/(l-xy) +a1 -a2E
+- at the end-node E : real end tangent inclination αE = ATAN(+-h/(l-xy) +a1 +a2E
+Asonlythedifferencetothecableanchoragetnthesuperstructureisofinterest,therotationa3
+mustbesubstracted. Alsoonlytherangeoftheanglescomparedtootherloadcaseisrelevant,
+so the often big number ATAN(+-h/(l-xy) is not printed in the output values daA and daE and
+we get:
+- at the startnode A : daA = +a1 -a2E -a3A = change of the cable anchorage for a loadcase
+-attheend-nodeE:daE=+a1+a2E-a3E.(comparedtothesystemangleATAN(+-h/(l-xy))
+Together with the value for the permanent loadcase you get all necessary values with the
+printed min. and max. values for the main plane.
+3.35.2 Main and transverse plane, skew direction
+In a separate table also transverse angles due to transverse effects are printed and combined
+with the main plane rotations. Again three parts are taken into account but now in the local
+coordinate system ss-t-u of the cable. It is defined as follows, cable no. 14001 in example
+csm21_cable_anchorage_angle_3d.dat with wind in transverse direction:
+- direction ss is the direction of the cable from node A to node E
+- direction u is perpendicular to ss in the direction of global Z
+- for hangers u points into the local x axis of the bottom node
+- direction t is the local transverse direction
+- also horizontal cable sagging is inluded if available (wind in ASE-TH3)
+SOFiSTiK2023 3-59CSM|InputDescription
+global Z u
+A t
+t
+local ss
+hanger
+ss u
+E
+E
+global X
+Figure3.5: cablecoordinatesystemforSYSTGDIRNEGZandhangerstartnodeA=uppernode
+Pleasenoticethatlocaltaxisofhangersdependsonthecabledirectionstart-end. ForSystem
+SYSTGDIRPOSZherethelocaltofthehangerpointsoppositetothelocaltofthestaycable.
+The angle α for a1,a2,a3 always rotates opposite to the local t axis.
+A
+t
+t
+hanger local ss
+ss u u
+E
+E
+global X
+global Z
+Figure3.6: cablecoordinatesystemforSYSTGDIRPOSZandhangerstartnodeA=uppernode
+In the fixed directions u and t the angle differences are now also printed relative to the perma-
+nent situation, see column daperm and dtperm.
+a1,a2,a3,da and daperm are the same rotations as in the outprint of the main plane (α rotates
+from ss to u = opposite to local t),
+t1,t2,t3,dt and dtperm are rotations in transverse direction t (from ss to t = positive around the
+u-axis).
+Due to a combined sagging in u and t direction a maximum skew angle change can occur,
+printed in column ’skew’. This is also an angle relative to the permanent situation.
+3-60 SOFiSTiK2023InputDescription|CSM
+3.36 MEX – Manual excentricity
+MEX
+Item Description Unit Default
+LC Load case − !
+DIFF created load case number (offset) − !
+EX_Z excentricity of the Beam normal force or the Quad [mm] 0
+1011
+normal force in lokal z
+EX_Y excentricity of the Beam normal force in local y [mm] 0
+1011
+EX_R beam excentricity in direction of the main bending [mm] 0
+1011
+acts additive to EX_Z and EX_Y
+EX_Q excentricity quad elements [mm] 0
+1011
+GRP group number, without input = all groups − -
+This function has not much to do with the CSM itself. But it may help do design compression
+members.
+MEX makes a copy of a loadcase and increases the bending moments in beams and quads if
+the normalforce is compression. In Quads this is done in the two main normal force directions
+using only ex_q
+example:
++PROG CSM
+HEAD
+MEX lc 15 diff 100000 ex_z 60[mm] ex_y 30[mm]
+end
+EX_R 60[mm] will give e.g. for N=-1000kN and MY=300kNm and MZ=-400kNm
+-> skew main moment = 500kNm:
+delta-M= 0.060*1000 = 60kNm in direction of the skew main moment:
+delta-MY= 60kNm*300/500 = 36kNm -> MY= 300+36 = 336kNm
+delta-MZ= 60kNm*400/500 = 48kNm -> MZ= -400-48 = -448kNm
+On MY=0 and MZ=0 , EX_R is applied for both directions.
+If you want to vary the excentricities per group you can input following lines without LC and
+DIFF, example:
+MEX lc 15 diff 100000 ex\_z 60[mm] ex\_y 30[mm] $ default all groups
+MEX lc - diff - ex\_z 80[mm] ex\_y 50[mm] GRP 4
+MEX lc - diff - ex\_z 20[mm] ex\_y 20[mm] GRP 6
+SOFiSTiK2023 3-61CSM|InputDescription
+3.37 BOND – Bond force in real system
+BOND
+Item Description Unit Default
+LC Load case −/LT !
+MAXI treats all CSM-MAXI normale force loadcases
+SIGN 0= without sign - bond force always positive − 1
+END 0=storevalue0.0atbeamchainends,e.g. restrained − 1
+in abutment wall
+1= store value at beam chain ends
+2= also store value at junction points
+This function has not much to do with the CSM itself. But it may help do design compression
+members.
+‚Real system’ means that for the concrete slab and for the steel beam separate elements are
+used. The beam section only represents the steel girder and is hanging eccentrically below
+the slab.
+A positive bending of the total system delivers a tension normal force in the beam. Near the
+supports the normal force in the beam decreases from one beam to the next. This jump in the
+beam force represents the bond force.
+With the command BOND this jump in the normal force between two beams is stored as bond
+force and it is no longer necessary to define complicated spring connectors to extract the
+bond force. After BOND, WINGRAF offers design-beams-stress of the material-Shear in dow-
+els/welds
+A little bit critical is the use of Maxima oder Ella load cases as usually different basic load
+cases are used on two neighboring beams. So you should not use the Maxima load cases
+Max-Min-VZ as the sign of the shear force jumps inside the span.
+We recommend to use the Maxima load case Max-Min-N. This load case contains the max-
+imum normal force in mid span and it is guaranteed that this normal force is transferred via
+the beam jumps as bond force up to the support. Only the distribution maybe shifted a little
+bit to the supports. We recommend an additional shift of the maximum bond force into the
+direction of midspan. It may also be senseful to calculate the maximum traffic combination for
+the maximum bending moment in midspan as a separate ASE loadcase and then also take
+into account the bond force of this separate loadcase.
+Usage: Example see: steel_composite_real.dat
++PROG CSM
+HEAD
+BOND LC 4015
+end
+3-62 SOFiSTiK2023InputDescription|CSM
+3.38 TEMP – Temperature input on TBEX T-Beams
+TEMP
+Item Description Unit Default
+LC Load case − !
+TN Constant temperature increase [degree] 0
+1215
+DT temperature gradient (lokal z, positive=bottom warm) [degree] 0
+1215
+HM average height of main girder [mm] !
+1011
+DT per meter is calculated with this heigth
+SM average excentrizity main girder below nodal plane [mm] !
+1011
+GRP Beam- and Quadelements from group GRP up to TO − -
+TO get this temperature loading − -
+GRPM Groupnumberofmaingirders(onlynecessaryincase − -
+of haunched main girders)
+TOM GRPM to TOM are treated as haunched main girders − -
+(the DT is applied over their individal heigth)
+TITL Title of the construction stage LT24 -
+This function has not much to do with the CSM itself. But it is very useful for a temperature
+input on TBEX T-Beams.
+Astaticallydeterminedsupportedbridgesuperstructureshallnotgetinternalrestraintstresses.
+Allelementsshallgetaconstantcurvature-andatthesametimeinthecrossdirection(double
+curvature)!
+You best fix the curvature for the most important element, usually the superstructure beams
+e.g. with a heigth of 1.80 m.
+If we want to apply e.g. a dT/h of +7°C we have to apply 7°/1.80m (DT=7 , HM=1.80[m]).
+In the height of the center of gravity of the main girder at SM=0.656 m no longitudinal strain
+shall occur, dt shall be 0.0 there.
+This leads to a surface temperature of -0.656m*7°/1.80m = -2.53°
+Togetthesamecurvatureinthe0.45mthickslabwemustapplyonly1.75°/0.45m(=7°/1.80m).
+E.g. a 0.25m thick slab may only get 1.00°/0.25m.
+To get the same longitudinal elongation on the top of the bridge we get:
+top of main beam -2.53°C bottom +4.47°C = beam
+top 0.45m slab -2.53°C bottom -0.78°C = quad loading
+top 0.25m slab -2.53°C bottom -1.53°C = quad loading
+SOFiSTiK2023 3-63CSM|InputDescription
+−2.53
+−1.53
+−0.78
++4.47
+Figure3.7: dt=+7degreeona1.80mheightt-beam
+Such a temperature on a haunched quad can be input in absolute temperatures with QUAD
+TYPE ’T’. But this is quit complicated and so we implemented this feature in CSM to define
+such a temperature field, e.g. for summer posdt TN+wm*dT (top=hot):
+TEMP LC 90 TN +27.0*1.00 DT -12.3*0.75 HM 1.80[m] SM 0.656[m] GRP 1 TO 6
+Usage see example: t_beam_bridge_excentric.dat
+Please search for ’temperature’
+As a test in loadcase 999 (Test without support)
+the middle support is removed there. In the Animator you will then see a smooth all-over cur-
+vature of the TBEX beam-quad superstructure. In Wingraf you will find only very little eigen-
+stresses:
+Figure3.8: Testloadcase999SummerposdtTN+wm*dT(top=hot)
+3-64 SOFiSTiK2023InputDescription|CSM
+3.39 ECHO – Output Control
+ECHO
+Item Description Unit Default
+OPT A literal from the following list: LT FULL
+CS construction stages
+GRP groups
+LC load cases
+CREP creep paramters with possible input of
+width of output line
+RCRE partial creep factors
+EXPO
+FULL all the above options
+VAL Output extent LT YES
+OFF no calculation / output
+NO no output
+YES regular output
+FULL extensive output
+EXTR extreme output
+WithECHORCREFULL/NOalistingofcreepvaluesoflateractingloadpartscanbeswitched
+on/off in case of CTRL CREP RCRE.
+Theoutputofthecreepparametersinawidetableshowsthedevelopmentoftheconstruction
+stages in a good overview. If you have many stages, you can increase the width of this table
+withECHOCREP245. Usingreporte.g. withgreaterpaperformat,pleasedonotinputECHO
+CREP greater than 150 because otherwise not all columns are visible!
+ToviewsuchawidetablepleaseuseTEDDYandviewtheresultfile.ergor.lst. InanSSD-Task
+you can store the .lst file with a +sys copy into a file file.lst:
+PROG TEXTILE
+HEAD
+...
+END
++sys copy $(name).lst file.lst
+SOFiSTiK2023 3-65CSM|InputDescription
+3-66 SOFiSTiK2023Examples|CSM
+4 Examples
+The input files which are explained here are to be found in the installation directory SOFiSTiK
+in the subdirectory csm.dat\english. You will find an overview there in file
+overview_csm_examples_english.pdf
+Alternatively you will find the examples via the TEDDY menu HELP > EXAMPLES sorted by
+program name and language.
+For additional help like tutorials, tutorial movies and practical examples please refer to the
+SOFiSTiK Infoportal (www.sofistik.com/Infoportal).
+-> Example overviews -> Summary of example overviews
+4.1 4-span Bridge With Stepwise Construction
+Figure4.1: 4-spanBridge
+A 4-span bridge is build in construction stages. A detailed description is found in theoretical
+principles - precamber - see also example csm26_precamber_spanbyspan.dat
+4.2 Two Span Girder Creeping
+Figure4.2: TwoSpanGirderCreeping
+Two single girders are put in place and then connected. Due to creep and shrinkage the
+bending moment will change from a single span distribution to a twospan distribution.
+The activation and fixing of the beam hinge runs automatically with the CSM...GRP...HING
+input - please refer to ASE...GRP...HING.
+4.3 Precast Girder Bridge With Cast In Situ Deck
+Essentiell important in this example is the definition of the composite section in AQUA, using
+the AQUA...SECT...CS technique. This controlls together with the CSM...GRP input the acti-
+vation of a varying cross section stiffness. The connection of the two singls span girders to a
+two span system is done with short connection beams. Different support springs are switched
+on and off in different construction stages. Please look at the produced sectional stress plots
+at the end of the csm3..._csm.dat run.
+SOFiSTiK2023 4-1CSM|Examples
+Figure4.3: PrecastGirderBridgeWithCastInSituDeck
+4.4 Prestresses FE Slab - Test System
+Figure4.4: PrestressesFESlab-TestSystem
+This example shows the usage on prestressed finite element slabs.
+4.5 Free Cantilever Erection - Small Test Bridge
+Figure4.5: FreeCantileverErection-SmallTestBridge
+Classicalfreecantilevererectionbridgeincludingtemporaryloadsofthemovingformtraveler.
+4.6 Free Cantilever Erection - Big Bridge
+Bigfreecantilevererectionbridgewithahugenumberofinternalandexternaltendons. Impor-
+tant ist the input ot their activation in TENDON...CS...ICS1. See also "Theoretical background
+- Numbering".
+4.7 Multistorey - Incremental Erection
+Also during the stepwise erection of a building, restraint forces appear. They can be analyzed
+in a realistic way with the CSM.
+4-2 SOFiSTiK2023Examples|CSM
+Figure4.6: FreeCantileverErection-BigBridge
+Figure4.7: Multistorey-IncrementalErection
+SOFiSTiK2023 4-3

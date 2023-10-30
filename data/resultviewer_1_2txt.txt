@@ -1,0 +1,2423 @@
+Result Viewer-RESULTS
+Graphical and Tabular Post-Processing
+SOFiSTiK | 2023ResultViewer-RESULTS
+GraphicalandTabularPost-Processing
+ResultViewer-RESULTSManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|ResultViewer-RESULTS
+Contents
+Contents i
+1 Task Description 1-1
+1.1 Conversion from AQUP and DBView . . . . . . . . . . . . . . . . . . . . . . . 1-1
+1.2 Example inputs for simple cross-sectional results . . . . . . . . . . . . . . . 1-2
+2 Result Viewer - Interactive Post-Processing 2-1
+2.1 General Information . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+3 Input and Output Description 3-1
+3.1 Start of program . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.2 Input Language . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.3 Input Records. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.4 CDB – Change of the Database . . . . . . . . . . . . . . . . . . . . . . . . . . 3-4
+3.5 SIZE – Scale and Paper Size . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-5
+3.6 PICT – New Picture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-11
+3.7 AND – Multiple Results in the Same Picture . . . . . . . . . . . . . . . . . . 3-12
+3.8 FF – Formfeed . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-13
+3.9 GRP – Selection of Element Groups and Secondary Groups . . . . . . . 3-14
+3.10 LC – Selection of a Load Case . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-15
+3.11 DBO – Result properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-18
+3.12 DIAG – Diagram properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-20
+3.13 DGRA – Diagram Graphs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-21
+3.14 DIAX – Diagram Axis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-22
+3.15 DLIN – Boundary lines in diagrams . . . . . . . . . . . . . . . . . . . . . . . . 3-23
+3.16 DIAP – Additional diagram properties . . . . . . . . . . . . . . . . . . . . . . 3-24
+3.17 DLAB – Labeling of data points in diagrams . . . . . . . . . . . . . . . . . . 3-25
+3.18 FLT – Filtering results. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-26
+3.19 FILT – Extreme Value Selection . . . . . . . . . . . . . . . . . . . . . . . . . . 3-28
+3.20 JOIN – Combining result tables . . . . . . . . . . . . . . . . . . . . . . . . . . 3-29
+3.21 XLSX – Excel Export . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-30
+3.22 PFA – Fillarea Properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-32
+3.23 PLN – Line Properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-33
+3.24 PMR – Marker Properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-35
+3.25 TXTP – Text properties . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-36
+3.26 VIEW – View Specification . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-37
+3.27 STRU – Representation of Structure Values . . . . . . . . . . . . . . . . . . 3-38
+3.28 CROS – Results in Cross Sections . . . . . . . . . . . . . . . . . . . . . . . . 3-51
+3.29 NODE – Results in Nodes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-59
+3.30 BEAM – Beam Element Results . . . . . . . . . . . . . . . . . . . . . . . . . . 3-64
+3.31 QUAD – Results of QUAD Elements . . . . . . . . . . . . . . . . . . . . . . . 3-71
+SOFiSTiK2023 iResultViewer-RESULTS|Contents
+3.32 BRIC – Results of Volume Elements . . . . . . . . . . . . . . . . . . . . . . . 3-77
+3.33 RSET – Result Sets . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-79
+4 Description of the Output Lists 4-1
+ii SOFiSTiK2023TaskDescription|ResultViewer-RESULTS
+1 Task Description
+The interactive Result Viewer and the corresponding CADINP module RESULTS are post-
+processing tools for the finite element modules of SOFiSTiK with a CDBASE database (e.g.
+ASE, TALPA, MAXIMA, BEMESS, AQB, DYNA, HASE or HYDRA). The programs allow the
+graphical, tabular and diagram-representation of Information and Results saved in the
+Database. The data is roughly structured/ grouped as follows:
+• System
+- Cross-Sections and cross-sectional values
+- Groups
+- Loadcaseinformation
+- Structural Elements
+- Nodes
+- Finite Elements (BEAM,QUAD,BRIC..)
+• Results
+- Stresses on cross-sections
+- Group results
+- Loadcase results (e.g. Sum of support forces)
+- Nodal results (Displacements, Rotations..)
+- Element results
+• Design
+- Element results(utilization, stresses, required reinforcement..)
+The Representaion depends on the type of result and can be selected as:
+• Graphical representation (Text, Vector..)
+• Table
+• Diagram
+The resulting Document consists of:
+• Page
+- Graphic
+2 Layer
+Hint
+With version 2014 Result Viewer resp. RESULTS do replace the modules AQUP and
+DBView for cross-sectional and tabular post-processing. For the graphical result repre-
+sentation WinGRAF resp. WING are used.
+1.1 Conversion from AQUP and DBView
+As no automatic conversion for AQUP CADINP inputs is made and the interactive DBView is
+SOFiSTiK2023 1-1ResultViewer-RESULTS|TaskDescription
+not available, the following basic rule for coversion should be followed:
+Hint
+Try to generate and find the wanted data or representation using the interactive Result
+Viewer, save the file as .results file. You might then open this file using Teddy and insert
+the input data in your project for further modification
+1.2 Example inputs for simple cross-sectional results
+The following input generates an overview plot of cross-section 1-4 one one page of the win-
+dows standard printer
++PROG RESULTS
+HEAD Cross-Sections 1-4
+SIZE SPLI 2x2
+LC SECT 1
+STRU TYPE CROS
+LC SECT 2
+STRU TYPE CROS
+LC SECT 3
+STRU TYPE CROS
+LC SECT 4
+STRU TYPE CROS
+END
+The following input plots AQB stresses of a loadcase on the cross-section:
++PROG RESULTS
+HEAD AQB Stresses LC 11 / Beam 10001 X 0
+SIZE
+LC NO 11
+LC ENO 10001 X 0
+CROS TYPE SIG ETYP BEAM RTYP NONL REPR DLIN FILL PARA SCHH 0.35
+END
+1-2 SOFiSTiK2023ResultViewer-InteractivePost-Processing |ResultViewer-RESULTS
+2 Result Viewer - Interactive Post-Processing
+2.1 General Information
+From version 2022 we have moved a large part of the content to the new SOFiSTiK FEA
+manual.
+The new SOFiSTiK FEA Manual can be opened by following:
+https://www.sofistik.de/documentation/2023/en/fea/result_viewer/index_result_viewer.html
+Or you may also open the manual by following:
+Help Ribbon (SSD, Teddy, ...) → Online Help → FEA Manual
+SOFiSTiK2023 2-1ResultViewer-RESULTS|ResultViewer-InteractivePost-Processing
+2-2 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3 Input and Output Description
+3.1 Start of program
+The modul results.exe has to be used for the batch start of Result Viewer via console. This
+modul is used automatically if it is running within the program WPS or SPS.
+3.2 Input Language
+The input is done in a free format with the CADINP input language (see the general manual
+SOFiSTiK: ’Basics’).
+3.3 Input Records
+Result Viewer processes only a single input block which is finished with END. The input is
+analysed in turn within this input block. In this case one must distinguish between attributes
+anddemandrecords. Mostoftheinputrecordsareattributerecords. Thevaluesofthisrecords
+areupdatedimmediatly. However,theireffectsbecomevisibleonlyinthenextlistordrawing. If
+theliteralDSGNisgivenforTYPEinthedemandrecords,onlytheattributesareset. Currently
+there are following demand records:
+STRU Representation of structural elements. System values, input items, numbering as
+well as designations will represented as table.
+CROS Representation of cross section and cross section values and results (stresses) on
+cross sections.
+NODE Representation of results in nodes (e.g. displacements, support reactions and
+boundary forces) as table.
+QUAD Representation of a scalar variable (e.g. moment), vector (e.g. shear force or flow)
+or tensor (e.g. principal stresses or reinforcements) for quadrilateral elements as
+list.
+BEAM Representation of a line representation for frame and girder systems (e.g. bending
+moments) as table.
+BRIC Representation of results at volume elements as table.
+Tables and plots are produced only for the record STRU, CROS, NODE, QUAD, BEAM and
+BRIC. The other input records are attribute records.
+Tables are partly combined, if no attribute record stands between the demand records. The
+sequence of the records is free. The attribute records effect always only the following draw-
+ings.
+Thedimensionoftheresultsisdeterminedintheprogram. Somedimensionscanbemodified,
+however, with the input DBO.
+The following records are defined:
+SOFiSTiK2023 3-1ResultViewer-RESULTS|InputandOutputDescription
+Record Items
+CDB NO TITL
+SIZE TYPE SC W H MARG FORM SPLI
+SCAL HLEG WLEG SLEG LEGW FREE UMBR
+SHAE DATE ASB ARCH DRUL DRUR DRUD
+DRUU
+PICT M W H MSCA TITL SPLT
+AND
+FF
+GRP NUMB OPTI ETYP
+VIEW TYPE X Y Z ACHS
+LC NO T DESI MAT REF NMAT CS
+XI XIV ENO X SECT TITL
+DBO NAME OPTI UNIT ND POS WIDT SORT
+REPE FORM BMIN BMAX TITL
+FLT ID NAME RULE ACT
+FILT NAME TYPE OPTI VAL1 VAL2 EXRF
+JOIN COL1 COL2
+XLSX NAME WS ROW COL CLNM TIME CDB
+ELEM FILT RESU
+PFA ID1 ID2 ID3 ID4 COLO R G
+B A
+PLN ID1 ID2 ID3 ID4 COLO R G
+B A TYPE WIDT
+PMR ID1 ID2 ID3 ID4 COLO R G
+B A TYPE SIZE
+TXTP SHOW OVLP
+DIAG X Y GDEF LCTP YUP LEGE LBAX
+SPPL AXFU
+DGRA DESC VAL1 VAL2
+DLIN ALIG VAL DESC
+DIAX AXIS MODE TICK LABL
+DLAB MODE
+STRU TYPE ETYP REPR FILL UNIT SCHH
+CROS TYPE ETYP STYP REPR FILL UNIT SCHH
+NODE TYPE TOTA REPR FILL UNIT UNI2 SCHH
+Tablecontinuedonnextpage.
+3-2 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+Record Items
+BEAM TYPE STYP REPR FILL UNIT SCHH
+QUAD TYPE STYP TOTA AVER REPR FILL UNIT
+SCHH
+BRIC TYPE STYP TOTA AVER REPR FILL UNIT
+SCHH
+The records HEAD, END and PAGE are described in the general manual SOFiSTiK: ’FEA /
+STRUCTURAL Installation and Basics’.
+The description of the various records follow.
+SOFiSTiK2023 3-3ResultViewer-RESULTS|InputandOutputDescription
+3.4 CDB – Change of the Database
+CDB
+Item Description Unit Default
+NO Reference number of the database − 1
+0 usethecurrentdatabaseduringthestartof
+the input
+TITL Path and name of the database LT *
+ThecurrentdatabaseisclosedandthenewinputdatabaseisopenedwiththeinputCDB.Only
+the reference number of the database has to be given in the case of previous definition of this
+database with TITL.
+Thecurrentsettings,.e.g. VIEW,GRPorBOX,arenotchanged. Thusitispossibletocompare
+databases with similar systems directly.
+The database selection for graphics, lists and diagrams cannot be changed via user interface.
+When a .results file containing such an input is opened, the selection field will be disabled.
+3-4 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3.5 SIZE – Scale and Paper Size
+Seealso: AND,PICT,FF
+SIZE
+Item Description Unit Default
+TYPE Paper size −/LT WIN
+Positive value landscape format
+Negative value portrait format
+SC Scale − -
+0 format filling
+- engineering scale, best possible for filling
+the page
+*1.E+10 use this scale
+W Paper width cm -
+H Paper height cm -
+MARG Draws a border LT FULL
+OFF no border will be drawn
+NO does draw an inner border + scale here
+W and H define the size of the area to be
+drawnat(forsinglesheetplottersandlaser
+printers)
+YES does consider a free border around the
+drawing W and H (2cm margin, otherwise
+.5cm)
+FULL an additional border to cut the drawing at
+the outer paper limits is drawn (for drum
+plotters)
+FORM Form of the border LT *
+STAN standard frame
+ZTVK ZTVK-88 frame
+URS Report Browser definition
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-5ResultViewer-RESULTS|InputandOutputDescription
+Item Description Unit Default
+SPLI Partition of the paper LT 1*1
+heightXwidth create pictures column by column
+height*width create pictures line by line
+SCAL Dimensional line LT -
+- = does draw coordinates
+YZ = Y and Z coordinates
+ZX = Z and X coordinates
+XY = X and Y coordinates
+HLEG Field reserved for the legend under the plot cm 1.0
+WLEG Field reserved for an own legend to the right of the cm 0.0
+plot
+SLEG Height of the partial legend cm 2.0
+LEGW Width of the legend, if it is placed in the picture cm *
+FREE Region to be released around the structure cm *
+UMBR Line feed in the picture legend LT YES
+NO No line feed
+YES Line feed, if the line is too long
+SUPP does shorten a too long line at the next
+blank
+SHOR does shorten also a too long line within a
+word
+Tablecontinuedonnextpage.
+3-6 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+Item Description Unit Default
+SHAE Representation of the HEAD lines LT YES
+NO No representation
+YES Line of the structure in the sheet legend or
+inthecaseofdifferentdatabasesinthepic-
+ture legend with the complete path
+or a literal combination
+DATE Print of the date within the sheet frame LT YES
+NO does not print the date
+YES does print the date
+ASB ASB number LT12 -
+ARCH Archive number LT12 -
+DRUL Left print border cm 0.5
+DRUR Right print border cm 0.5
+DRUD Lower print border cm 0.5
+DRUU Upper print border cm 0.5
+In general, there are two variations to define the paper size:
+• The user selects the paper format either implicitly using TYPE or explicitly using the width
+WandtheheightH.Theprogramcansetthescalebyitself,ifitwasnotgiven. Thelargest
+possible scale is selected with consideration of an engineering scale (1:1, 1:2 and 1:5 and
+soon). Anexplicit settingofthe scaleSC willbe used, iftechnically feasible. SettingSC to
+0 results in the largest possible drawing regardless of the scale.
+• The user specifies the scale and by setting W and/or H to zero the appropriate paper size
+is automatically chosen. If only one of the two values is set to zero, then the definition of
+the scale can be dropped, because it is defined with the other dimension as above.
+WhenusingTYPEyoucanalsospecifytheAmericanformatsorthespecialformatforHewlett-
+Packard Plotters instead of the DIN sizes. A preceeding minus sign selects the portrait orien-
+tation:
+URS,-URS Default Report Browser document format
+WIN,-WIN Format of the current WINDOWS printer, that means this printer
+was defined with in the last interactive session. Without an inter-
+active input the WINDOWS default printer is used here.
+A,-A ANSI Paper A (11 x 8.5 inch)
+B,-B ANSI Paper B (17 x 11 inch)
+C,-C ANSI Paper C (22 x 17 inch)
+SOFiSTiK2023 3-7ResultViewer-RESULTS|InputandOutputDescription
+D,-D ANSI Paper D (34 x 22 inch)
+HPA,-HPA Hewlett Packard paper A (259 x 199 mm)
+HPB,-HPB Hewlett Packard Paper B (416 x 259 mm)
+HPC,-HPC Hewlett Packard Paper C (529 x 378 mm)
+HPD,-HPD Hewlett Packard Paper D (809 x 528 mm)
+HP4,-HP4 Hewlett Packard Paper 4 (276 x 193 mm)
+HP3,-HP3 Hewlett Packard Paper 3 (404 x 276 mm)
+HP2,-HP2 Hewlett Packard Paper 2 (564 x 366 mm)
+HP1,-HP1 Hewlett Packard Paper 1 (787 x 564 mm)
+MP,-MP Matrix printer with 8 x 12 inch (200 x 287 mm)
+LP,-LP Laser printer with A4 paper (198.4 x 280 mm)
+MPW Wider Matrix printers with 14 x 12 inch paper
+Pictures are always generated without frame. This frame will added in Result Browser.
+Figure3.1: PartitioningofthedrawingpaperSTAN
+The size of the right margin can be defined by WLEG, usually it is available only as margin.
+Thebottomborderhasusuallyaheightof1.0cm. ItisusedforthedesignationwiththeHEAD
+lines. Only limited lines in the legend are planned in the representation of several results in
+one drawing. However, a larger number of lines can become possible, if an enlarged legend
+HLEG (HEAD line) or SLEG (picture legend) is defined.
+The user has a choice of placing the designation at the left-hand side (HLEG < 0) or at the
+3-8 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+right-handside(HLEG > 0)inthe caseofdrawingslargerthenTYPE 4. Theplacementat the
+right-hand side requires the use of a smaller text. Therefore the designation is placed usually
+at the top of a folded plan where it is easily readable.
+Using ZTVK a drawing title is produced in the DIN A4 portrait format with an upper and lower
+title band.
+Author SOFiSTiK AG
+Program
+Structure Further description of the structure ASB NO Date
+Building part Plate structure Archives NO
+Bar Block description Page
+Event
+Figure3.2: ZTVKtitlebands
+ThesizeofthetitlebandscanbedefinedbyHLEG.ThefirstHEADlinedefinedintheprogram
+SOFiMSHA/C is printed in the line of the structure. The first RESULTS HEAD line is used for
+the further description of the structure. The following RESULTS HEAD lines are used for the
+building part line, the bar line and the event line. In the legend the lines are limited. Therefore
+the user should consider the amount of the HEAD lines.
+Theplotispositionedbetweenthebandsinthecaseofformatswithheightsfrom27to30cm.
+The bands appear as drawing title at the right side of the plot in the case of larger formats.
+SOFiSTiK2023 3-9ResultViewer-RESULTS|InputandOutputDescription
+Figure3.3: PartitioningofthedrawingsheetZTVKTYPE4and3
+Figure3.4: PartitioningofthedrawingsheetZTVKTYPE2
+The coordinate axes, the scale with possible factors of reduction and the designation of the
+representedresultsincludingan1cmlongsamplelineareplacedexceptfortheheaderlines.
+3-10 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3.6 PICT – New Picture
+Seealso: SIZE,AND,FF
+PICT
+Item Description Unit Default
+SC Scale of the picture (valid for all layers in the picture) − -
+0 format filling
+DEFA engineering scale, best possible for filling
+the page
+*1.E+10 use this scale
+W Picture width cm -
+DEFA determined automatically (according to
+page settings)
+H Picture height cm -
+DEFA determined automatically (according to
+page settings)
+TITL Userdefined table header LT -
+SPLT Splitting tables into several columns LT NO
+NO No splitting
+YES Splitting
+A new table or new picture is started.
+The geometric picture definition W, H and the scale definition SC have no effect on tables.
+The current picture obtains from the previous picture all settings like size and scale.
+The scale which is calculated for the picture depends on the size of the structure box (system
+box) and the width of the borders around this box.
+SOFiSTiK2023 3-11ResultViewer-RESULTS|InputandOutputDescription
+3.7 AND – Multiple Results in the Same Picture
+Seealso: SIZE,PICT,FF
+AND
+Item Description Unit Default
+Tables
+Listsarecombinedasfaraspossible,ifnootherrecordsarewrittenbetweentheresultrecords
+STRU, CROS, NODE, BEAM, QUAD and BRIC. For example: The input
+NODE UZ REPR DLST; QUAD MX STYP ELEM; NODE SZ; QUAD N STYP ELEM
+resultsintwolists: ThefirstlistincludesthenoderesultsandthesecondlistincludestheQUAD
+results.
+An input of AND also combines the two results into one table.
+To create a page break the input FF or SIZE are given.
+Graphics
+If AND is not given, always a new drawing is created.
+An input for AND represents the next drawing order (layer) in the same picture. The scale
+remains unchanged.
+3-12 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3.8 FF – Formfeed
+Seealso: SIZE,AND,PICT
+FF
+Item Description Unit Default
+A formfeed is forced. Normally the Report Browser decides, when a picture does not fit on a
+page any more.
+SOFiSTiK2023 3-13ResultViewer-RESULTS|InputandOutputDescription
+3.9 GRP – Selection of Element Groups and Secondary Groups
+GRP
+Item Description Unit Default
+NUMB Group number (no definition = all) − -
+OPTI Option LT YES
+NO The group is not represented.
+YES The group is represented.
+ETYP Element type LT -
+BEAM Beam elements
+SPRI Spring elements
+BOUN Boundary elements
+TRUS Truss elements
+CABL Cable elements
+TUBE Tube elements
+QUAD Plane elements
+BRIC Volume elements
+Groups of elements or element types can be selected for the representation with GRP. As
+default all groups and elements types are processed.
+Thegroupnumberofanelementisequaltotheintegerpartofthetermelementnumber/GDIV.
+GDIV is available in the database (see manual of program SOFIMSHC, record SYST).
+With an input of ETYP only the addressed elements of this group are selected. Several infor-
+mation for the same group can be combined in this case.
+3-14 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3.10 LC – Selection of a Load Case
+Seealso: NODE,BEAM,QUAD
+LC
+Item Description Unit Default
+NO Selection of a load case for the representation in the −/LT DEFA
+following drawings
+≥ 0 use this load case
+< 0 use the load case with NO from the load
+case list
+DEFA Default = FIRS
+FIRS does use the first load case from the load
+case list
+LAST does use the last load case
+NEXT does use the next load case
+PREV Previous load case
+All use all loadcases
+NAME searchtheloadcasenumberviaTITL(with
+a warning if the title is not found exactly)
+FIND like NAME (without warning)
+T Time value for transient results sec/LT LAST
+The input (except for NAME / FIND)
+is equivalently to NO.
+DESI Selectionofthedesigncase(e.g. reinforcements,de- −/LT DEFA
+sign stresses)
+The input (except for NAME / FIND)
+is equivalently to NO.
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-15ResultViewer-RESULTS|InputandOutputDescription
+Item Description Unit Default
+MAT The selection of the material to be represented can −/LT DEFA
+occur here for composite materials.
+The input (except for NAME / FIND)
+is equivalently to NO.
+Here it is also possible to input the literal of a stress
+pointfromtheprogramAQUAfortheoutputatbeams.
+Use following input to select one value from the ma-
+terial list:
+’_MID’ average value
+’_MAX’ maximum value
+’_MIN’ minimum value
+’_AMX’ absolute maximum value
+’_AMN’ absolute minimum value
+’_LST’ last value
+REF Reference material, additional to MAT − -
+NMAT The selection of the material law to be represented −/LT STAN
+can occur here for nonlinear results from programs
+TALPA/ASE.
+is equivalently to MAT.
+CS Construction stage − 0
+XI The selection of the depth to be represented can oc- LT FAC
+curhereforQUADstresses(e.g. QUADlayerstress).
+FAC XIVasfactorofelementthicknessfromup-
+per side (-1) to lower side (+1)
+TH XIV in m from lower side up
+THD XIV in m from upper side down
+TM XIV in m from the middle down
+TMU XIV in m from the middle up
+ALL all layers
+XIV Layer depth −/m 0.0
+Tablecontinuedonnextpage.
+3-16 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+Item Description Unit Default
+ENO Beam number for stresses from program AQB −/LT FIRS
+The input (except for NAME / FIND)
+is equivalently to NO.
+X Beam abscissa for area stresses from program AQB −/LT FIRS
+The input (except for NAME / FIND)
+is equivalently to NO
+SECT Cross section number for representations on cross −/LT FIRS
+sections (record QUER)
+The input (except for NAME / FIND)
+is equivalently to NO.
+TITL Title of the load case in the legend (default as in the LT24 *
+database)
+The items T, MAT, REF, NMAT and CS are not used yet.
+Theinputofaloadcaseoradesignloadcasehasaneffectattherepresentationofallresults
+which are stored in reference to the load case.
+Reinforcements,designstressesfromtheprogramBEMESSandbeamstressesfromthepro-
+gram AQB are represented with the input of the design load case. All other load case-wisely
+stored results are addressed by NO.
+Results, e.g. stresses, are stored in beam sections. With the input of ENO and X the beam
+section of current load case is selected.
+It is possible to output more than one load case or design case or cross section in one list
+(REPRDLST).Forthispurposethenumbershavetobewritteninarow. Forexampletheload
+cases 1 up to 5 are used in the same list:
+LC NO 1,2,3,4,5
+Or with a generation instruction:
+LC NO (1 5 1)
+SOFiSTiK2023 3-17ResultViewer-RESULTS|InputandOutputDescription
+3.11 DBO – Result properties
+DBO
+Item Description Unit Default
+NAME Name of the result LT !
+OPTI Visibility of the value (the column) LT ON
+OFF Not visible
+ON Visible
+UNIT Dimension LT -
+ND Number of decimal places LT -
+1-9 Number of decimal places
+E1-E9 E-form with corresponding number of deci-
+mal places
+POS Columns position in Table/List − *
+WIDT Width of the column in number of digits − *
+SORT Sorting of the column LT NO
+NO Not sorted
+ASCE Sorted in ascending order
+DESC Sorted in descending order
+REPE Repetition of recurring values LT *
+NO No repetition
+YES Repetition
+FORM Kind of contitional formatting LT NO
+NO No formatting Combination of format and
+rule
+BMIN Minimum value for conditional formatting − *
+BMAX Maximum value for conditional formatting − *
+TITL Changed title of the column LT -
+All results may be printed in tables, like programs ASE or AQB do. The output options for the
+tables are set with this record.
+3-18 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+ThevaluesoftheitemsNAMEandUNIThavetocorrespondtovalidvaluesfromtheSOfiSTiK
+databasedescriptionCDBASE.CHM.Thechangingofthedecimalprecisionofthenodessup-
+port force PZ can be achieved therefore with the following input:
+DBO 'n_disp.pz' ND 4
+The items UNIT and ND are also used for graphical results.
+The default of rows order is: First the load case, design case or cross section number, second
+the values for localizing, e.g. beam number and abscissa, and at last the results values. With
+the item POSI and a row position input (e.g. 2) the rows order may be changed.
+For clarity reasons the numbers (e.g. load case) will be written once per page if they do not
+change. It is possible to change this default with the item REPE. Floating-point values are
+always written in each row.
+Independent from settings using the item REPE, the values of columns which are to the right
+of a floating point column are always written in each row.
+A conditional formatting, the colouring of table cells, is available with an input to item FORM.
+The items BMIN and BMAX are limits of the conditional formatting. This formatting is not
+available for the Result Browser. The literal for the item FORM kann be a combination of one
+letter for the format and/or one letter for the rule:
+Format:
+C Positive values: from the middle to the left
+Negative values: from the middle to the right
+L Positive values: from the right to the left
+Negative values: from the left to the right
+R Positive values: from the left to the right
+Negative values: from the right to the left
+W Whole column
+Rule:
+A All
+G Greater than BMAX
+S Less than BMIN
+B Between BMIN and BMAX
+O Outside of BMIN and BMAX
+E Equal BMIN
+The dimensions have to be given in m, kN, sec for the values BMIN and BMAX.
+The default settings of REPE and WIDT can be changed for all columns using "*" as column
+name. Changing the default width of all columns can be done with the following input:
+DBO '*' WIDT 15
+SOFiSTiK2023 3-19ResultViewer-RESULTS|InputandOutputDescription
+3.12 DIAG – Diagram properties
+DIAG
+Item Description Unit Default
+X Result X axis LT -
+Y Result Y axis LT -
+GDEF Graph definition column LT -
+LCTP Labels of LC axis LT NR
+NR Load case number
+NAME Load case description
+NRNM Number + name
+YUP Invert Y axis LT NO
+NO Do not invert
+YES Invert
+LEGE Legend LT DIAG
+NO No legend
+DIAG Below diagram
+SPPL Show suppurt placements on axis LT NO
+NO Do not show
+YES Show
+AXFU Visualize full length of axis LT NO
+NO Do not visualize
+YES Visualize
+Properties of diagrams can be controlled with this record.
+3-20 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3.13 DGRA – Diagram Graphs
+DGRA
+Item Description Unit Default
+DESC Description LT -
+VAL1 Value 1 ! -
+VAL2 Value 2 − -
+VAL3 Value 3 − -
+VAL4 Value 4 − -
+VAL5 Value 5 − -
+AXFL Apply set graph filling color to LT X
+X X-Axis
+Y Y-Axis
+Graphs can be added to a diagram using this record.
+The following input creates a diagram with the loadcase number on the X axis and the nodal
+displacement on the Y axis. Graphs will be created for the node numbers 1020 and 1021.
+DIAG X "n_disp.__kwl" Y "n_disp.uz" GDEF "n_disp.nr"
+DGRA VAL1 1020
+DGRA VAL1 1021
+NODE TYPE UZ REPR DIAG
+The following input creates a diagram with the loadcase number on the X axis and the normal
+force on the Y axis. Graphs will be created for the value pairs beam number = 1 + X = 0.000
+and beam number = 1 + X = 2.700.
+DIAG X "beam_for.__kwl" Y "beam_for.n" GDEF "beam_for.nr,beam_for.x"
+DGRA VAL1 1 VAL2 0
+DGRA VAL1 1 VAL2 2.700000
+BEAM TYPE N STYP BEAM REPR DIAG
+SOFiSTiK2023 3-21ResultViewer-RESULTS|InputandOutputDescription
+3.14 DIAX – Diagram Axis
+DIAX
+Item Description Unit Default
+AXIS Axis LT X
+X X axis
+Y Y axis
+MODE Ticks and labels LT AUTO
+AUTO automatic
+USER user defined
+TICK Units between Ticks when MODE = USER − !
+LABL Units between labeled ticks when MODE = USER − !
+Properties of diagram axescan be modified using this record.
+3-22 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3.15 DLIN – Boundary lines in diagrams
+DLIN
+Item Description Unit Default
+ALIG Alignment of the line LT HOR
+HOR horizontal
+VER vertical
+VAL Value − !
+DESC Description LT -
+Additional lines in diagrams can be added using this record.
+SOFiSTiK2023 3-23ResultViewer-RESULTS|InputandOutputDescription
+3.16 DIAP – Additional diagram properties
+DIAP
+Item Description Unit Default
+SCHH Text height − 0.2
+TXT Print used pairs of values as table LT NO
+YES Print values
+NO Do not print values
+3-24 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3.17 DLAB – Labeling of data points in diagrams
+DLAB
+Item Description Unit Default
+MODE Values to be labeled LT NONE
+NONE None
+GLEX Global extreme values
+EXTR Extreme values
+ALL All
+E2ND Each second value
+E3RD Each third value
+E4TH Each fourth value
+E5TH Each fifth value
+THRH Threshold value between extreme values to be la- − 0
+beled (when MODE = EXTR)
+SOFiSTiK2023 3-25ResultViewer-RESULTS|InputandOutputDescription
+3.18 FLT – Filtering results
+FLT
+Item Description Unit Default
+ID ID of filter set (>0) − !
+NAME Name of the result LT !
+RULE Filter expression LT !
+ACT Visibility of filter LT YES
+YES Show filter
+NO Hide filter
+Resultscanbefilteredusingthisrecord. AllfiltersofafiltersetwillbeANDjoined. Thismenas
+thatonlyresultswillbedisplayedwhichmeetallofthesetconditions. Severalfiltersetswillbe
+joined using OR.
+The assignment of filters to one filter set is done using the item ID.
+The values of the item NAME have to correspond to valid values from the SOFiSTiK database
+description CDBASE.CHM.
+The filter condition is specified using RULE. Allowed conditions are:
+Syntax Description
+! Negates the following expression.
+X Values equal X
+=X Values equal X
+>X Values greater than X
+>=X Values greater than or equal X
+<X Values less than X
+<=X Values less than or equal X
+[FROM;TO] Values betw. FROM and TO; limits included
+[FROM;TO[ Values betw. FROM and TO; FROM incl., TO excl.
+]FROM;TO] Values betw. FROM and TO; FROM excl., TO incl.
+]FROM;TO[ Values betw. FROM and TO; limits excluded
+(FROM;TO;INCR) Values betw. FROM and TO with increment INCR
+* Any characters in text. Example: max*: all texts starting with max
+? Exactly one character in text. Example: a?c: Matches abc but not abbc
+3-26 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+The item OPTI controlls if the filter will be active.
+Examples:
+All rows having node number greater than 1009 and displacement greater than 0.1. By
+using the same ID, the filters will be joined using AND:
+FLT ID 1 NAME "n_disp.nr" RULE ">1009"
+FLT ID 1 NAME "n_disp.ux" RULE ">0.1"
+All rows having node number 1010 or 1020. By using different IDs, the filters will be joined
+using OR:
+FLT ID 1 NAME "n_disp.nr" RULE "1010"
+FLT ID 2 NAME "n_disp.nr" RULE "1020"
+SOFiSTiK2023 3-27ResultViewer-RESULTS|InputandOutputDescription
+3.19 FILT – Extreme Value Selection
+FILT
+Item Description Unit Default
+NAME Name of the result LT !
+TYPE Kind of filtering LT !
+NO No filtering, show all values
+EX Extreme values
+EXRF Refernece column used for extreme values LT -
+EXTP Type of extreme value filter LT MIMA
+MIN Minimum
+MAX Maximum
+MIMA Minimum and maximum
+Extreme value selection can be done by this record. For more filter options see FLT.
+The values of the item NAME have to correspond to valid values from the SOfiSTiK database
+description CDBASE.CHM.
+Using TYPE, filters can be added or removed for the selected result.
+To get extreme values for each value of a refernece column, this column must be specified
+using the item EXRF. Several columns can be specified by a comma separated list. The fol-
+lowing input results in a table with min and max values of the nodal displacement for each
+loadcase:
+FILT NAME "n_disp.ux" TYPE EX EXRF "n_disp.__kwl"
+NODE TYPE UX REPR DLST
+When no reference column is specified, the extreme values of all available rows will be
+printed.
+3-28 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3.20 JOIN – Combining result tables
+JOIN
+Item Description Unit Default
+COL1 Name of the column LT !
+COL2 Name of the column LT !
+Using this record, two or more table results can be combined in one table. COL1 and COL2
+must be column names of the results which would be combined.
+Different table results can be joined, when each of them have a single parameter column with
+the same values between each other. Then this parameter can be joined for the different
+tables, resulting in the final table, which contains the common single parameter together with
+the other parameter columns of the several result tables.
+Ex: In a time step analysis example, Result Viewer shows a table result for time step loading
+and another table result for nodal displacement.
+Figure3.5: Tablestojoin
+By the use of the join function, two different tables can be merged in one. The common
+parameter in those two tables is the Loadcase "LC". By using the following command, a new
+table is created:
+JOIN COL1 "n_disp.kwl" COL2 "lc_ctrl._enr"
+STRU TYPE TIME ETYP LC REPR DLST
+NODE TYPE UZ REPR DLST
+Figure3.6: JoinedTable
+SOFiSTiK2023 3-29ResultViewer-RESULTS|InputandOutputDescription
+3.21 XLSX – Excel Export
+XLSX
+Item Description Unit Default
+NAME File name LT !
+WS Worksheet (for TYPE = XLSX) LT XLSX-
+Export
+ROW Row (for TYPE = XLSX) − 1
+COL Column (for TYPE = XLSX) − 1
+CLNM Export column titles LT YES
+NO Do not export
+YES Export
+TIME Export current date and time LT NO
+NO Do not export
+YES Export
+CDB Export selected database LT NO
+NO Do not export
+YES Export
+ELEM Export loadcase and element selection LT NO
+NO Do not export
+YES Export
+FILT Export filter information LT NO
+NO Do not export
+YES Export
+RESU Export result name LT NO
+NO Do not export
+YES Export
+TYPE Type of exported file LT XLSX
+XLSX XLSX Workbook
+CSV Text/CSV
+DELI Delimiter (for TYPE = CSV) LT COMM
+COMM Comma
+TAB Tab
+COLO Colon
+SEMI Semicolon
+Tablecontinuedonnextpage.
+3-30 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+Item Description Unit Default
+DEC Decimal separator (for TYPE = CSV) LT SYS
+SYS Using operating system default
+DOT Dot
+COMM Comma
+Using this record, lists can be exported into a .xlsx or .csv file. An already existing target file
+will be overwritten!
++PROG RESULTS
+HEAD
+$ Page 1
+SIZE TYPE "-URS" SPLI "2x1"
+$ Grafic/Table/Diagram 1
+PICT SC DEFA W DEFA H DEFA SPLT NO
+GRP
+XLSX NAME "File.xlsx" WS "Worksheet" ROW 1 COL 1 $$
+CLNM YES TIME NO CDB NO ELEM NO FILT NO RESU NO
+JOIN
+DBO
+FILT
+$ Node number
+TXTP SHOW SIGN OVLP AMAX EXTR YES
+STRU TYPE NNO ETYP NODE REPR DLST
+$ X coordinate
+AND
+TXTP SHOW SIGN OVLP AMAX EXTR YES
+STRU TYPE X ETYP NODE REPR DLST
+$ Y coordinate
+AND
+TXTP SHOW SIGN OVLP AMAX EXTR YES
+STRU TYPE Y ETYP NODE REPR DLST
+$ Z coordinate
+AND
+TXTP SHOW SIGN OVLP AMAX EXTR YES
+STRU TYPE Z ETYP NODE REPR DLST
+END
+SOFiSTiK2023 3-31ResultViewer-RESULTS|InputandOutputDescription
+3.22 PFA – Fillarea Properties
+PFA
+Item Description Unit Default
+ID1 Element LT !
+ID2 Element LT -
+ID3 Element LT -
+ID4 Element LT -
+COLO Color index LT -
+BLCK black
+RED red
+GREE green
+BLUE blue
+YELL yellow
+MAGE magenta
+CYAN cyan
+BROW brown
+GRAY gray
+WHIT white
+NONE none
+R R-Value of RGB color − 255
+G G-Value of RGB color − 255
+B B-Value of RGB color − 255
+A A-Value of RGB color − 255
+Fillarea properties can be defined using this record. Available combinations for elemet selec-
+tion are:
+ID1 ID2 ID3 ID4 Element
+DIAG GR POS - Positive values of diagram graph
+DIAG GR NEG - Negative values of diagram graph
+3-32 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3.23 PLN – Line Properties
+PLN
+Item Description Unit Default
+ID1 Element LT !
+ID2 Element LT -
+ID3 Element LT -
+ID4 Element LT -
+COLO Color index LT -
+BLCK black
+RED red
+GREE green
+BLUE blue
+YELL yellow
+MAGE magenta
+CYAN cyan
+BROW brown
+GRAY gray
+WHIT white
+NONE none
+R R-Value of RGB color − 255
+G G-Value of RGB color − 255
+B B-Value of RGB color − 255
+A A-Value of RGB color − 255
+TYPE Line type LT SOL
+SOL Solid line
+DASH Dashed line
+DOT Dotted line
+DADO Dash-dotted line
+DAS2 Dashed line (short)
+DOT2 Dotted line (short)
+DAD2 Dash-dotted line (short)
+DAS3 Dashed line (long)
+DOT3 Dotted line (long)
+DAD3 Dash-dotted line (long)
+WIDT Line width − -
+Line properties can be defined using this record. Available combinations for elemet selection
+are:
+SOFiSTiK2023 3-33ResultViewer-RESULTS|InputandOutputDescription
+ID1 ID2 ID3 ID4 Element
+DIAG GR - - Diagram graph
+DIAG AX - - Diagram axis
+3-34 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3.24 PMR – Marker Properties
+PMR
+Item Description Unit Default
+ID1 Element LT !
+ID2 Element LT -
+ID3 Element LT -
+ID4 Element LT -
+COLO Color index LT -
+BLCK black
+RED red
+GREE green
+BLUE blue
+YELL yellow
+MAGE magenta
+CYAN cyan
+BROW brown
+GRAY gray
+WHIT white
+NONE none
+R R-Value of RGB color − 255
+G G-Value of RGB color − 255
+B B-Value of RGB color − 255
+A A-Value of RGB color − 255
+TYPE Marker type LT -
+NONE None
+DOT Point
+PLUS Plus
+ASRK Asterisk
+CIRC Circle
+CRSS Cross
+SIZE Marker size − -
+Markerpropertiescanbedefinedusingthisrecord. Availablecombinationsforelemetselection
+are:
+ID1 ID2 ID3 ID4 Element
+DIAG GR - - Diagram graph
+SOFiSTiK2023 3-35ResultViewer-RESULTS|InputandOutputDescription
+3.25 TXTP – Text properties
+TXTP
+Item Description Unit Default
+SHOW Number of results LT SIGN
+ALL All results
+SIGN Only significant results
+OVLP Checking for text overlapping LT AMAX
+OFF no checking
+AMAX if overlapping: show absolute maximum
+EXTR Annotation of minimum and maximum value LT YES
+NO no annotation
+YES min/max annotation
+3-36 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3.26 VIEW – View Specification
+Seealso:
+VIEW
+Item Description Unit Default
+TYPE Type of the direction definition LIT DEFA
+X - 0
+Y - 0
+Z - 0
+AXIS Orientation for STAN and DIRE LIT *
+ALTE Rotation around 180 degrees
+POSX positive x axis downwards
+POSY positive y axis downwards
+POSZ positive z axis downwards
+NEGX negative x axis downwards
+NEGY negative y axis downwards
+NEGZ negative z axis downwards
+ROTA Additional rotation of the picture in the clockwise di- DEGREE 0
+rection
+Thethree?dimensionalviewspecificationoftherepresentationisdescribedbyVIEW.Theinput
+defines a parallel projection via the line of vision and orientation of the drawing at the sheet.
+The user has the following possibilities for the representation and orientation of the structure
+on the picture:
+TYPE = DIRE or STAN
+The values X, Y and Z are components of the direction in which the observer is looking. The
+observer stands in infinite distance in case of parallel projection. Thus X, Y and Z are coordi-
+nates of a point which lies from the observer directly behind (DIRE) or in front of (STAN) the
+origin of the coordinate system. The value of AXIS defines the axis which shows downwards
+for the observer.
+TYPE = ANGL
+The three inputs for X, Y and Z describe the angles x,y,z of the corresponding axes towards
+thehorizontaldirection. Thethreevaluescanbeselectedarbitrarily. However,attentionhasto
+be paid, that the graphical representation can be degenerate with an input of two orientations
+standing vertically to each other or parallelly. These degenerations describe either an axis
+vertical to the optical plane or a non unambiguously defined illustration.
+SOFiSTiK2023 3-37ResultViewer-RESULTS|InputandOutputDescription
+3.27 STRU – Representation of Structure Values
+Seealso: AND
+STRU
+Item Description Unit Default
+TYPE Kind of structural value LT -
+see tables below
+ETYP Selection of an element type for TYPE LT -
+REPR Type of the representation LT *
+DSTR Structure representation
+DTXT Text representation
+DVEC Vector representation
+DLIN Line representation
+DIAG Diagram representation
+DLST Text list
+FILL Fill type LT NO
+NO does not fill, simple colours
+VARC does not fill, variable colours
+AREA does fill area with variable colours
+VERT forlinerepresentation: perpendiculartothe
+basic line
+PARA for line representation: parallel to the basic
+line
+Tablecontinuedonnextpage.
+3-38 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+Item Description Unit Default
+UNIT Scaling of the length of a representation −/cm/LT DEFA
+DEFA Thelargestrepresentationlengthisapprox.
+2 cm long.
+LFAC Use factor FACS for results with a length
+dimension.
+LAST Same unit as for the last input of a type in
+the same dimension
+> 0 does indicate which value of the type gets
+therepresentationlengthof1cminthede-
+fined dimension
+< 0 Approximate representation length in cm
+which the maximum value of the type
+should obtain (is rounded in a engineering
+way)
+<-1000 Factor of default DEFA (-1002.5 = Factor
+2.5)
+SCHH Text size of a type cm/LT 0.16
+NO No designation
+YES Designation
+> 0 Designation in cm
+For the representation REPR, the fill type FILL and the element type ETYP a program default
+is set depending on the result type TYPE if these values are not set explicitly.
+For diagram representation REPR DIAG see DIAG.
+The values for STRU TYPE are available in the following list. The value selected with TYPE
+is valid for all element types as long as no one of the following literals is given for ETYP. If a
+selection is possible, this is marked in the column at the right-hand side with a ” ∗”.
+STO-Variables (ETYP VARI)
+Literal Meaning Dim.
+NAME Name of variable -
+VALU Value of variable with unit -
+TEXT Text of variable -
+SCOP Scope of variable -
+COMM Comment on variable -
+DIMI Unit of variable as index -
+Materials (ETYP MAT)
+SOFiSTiK2023 3-39ResultViewer-RESULTS|InputandOutputDescription
+Literal Meaning Dim.
+ENO Material number -
+NAME Description of material -
+E Young’s modulus N/mm2
+MUE Poisson’s ratio -
+G Shear modulus N/mm2
+K Compression modulus N/mm2
+GAM Nominal Weight kN/m3
+GAMB Weight buoyancy kN/m3
+RHO Mean density kg/m3
+ALFA Elongation coefficient -
+E90 Young’s modulus tangential N/mm2
+M90 Poisson’s ratio tangential -
+SCM Safetyfactor -
+FY Strength N/mm2
+FT Nominal strength N/mm2
+B Elastic bedding kN/m3
+BT Elastic bedding tangential kN/m3
+Cross sections (ETYP SECT)
+Literal Meaning Dim.
+CROS Cross section elements of current cross section -
+Structural Axis (ETYP AXIS)
+Literal Meaning Dim.
+AXIS Structural axis -
+GLN Structural lines along axis -
+XS Beam elements along axis -
+GAXP Placements -
+Structure Elements
+GPT structural points (X)
+GLN structural lines (L)
+GAR structural areas (A)
+GVO structural volumes (O)
+3-40 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+Literal Meaning X L A O Dim.
+GVO Structural volume - - - * -
+GAR Structural areas - - * - -
+GLN Structural lines - * - - -
+GPT Structural points * - - - -
+LENG Length - * - - m
+COOX Local x direction * * * - -
+COOY Local y direction * * * - -
+COOZ Local z direction * * * - -
+NAME Designation * * * * -
+System Values of Some Element Types
+BEAM beam elements (B)
+DSLN design elements (D)
+SPRI spring elements (S)
+TRUS truss-bar elements (T)
+CABL cable elements (C)
+TUBE tube elements (P)
+QUAD plane elements (Q)
+BRIC volume elements (V)
+BOUN boundary elements (R)
+SIR External beam section (E)
+Literal Meaning B D S T C P Q V R E Dim.
+ENO Element number * * * * * * * * * * -
+GRP Group number * - * * * - * - * - -
+SNO Cross section numbers * * - * * - - - - - -
+MNO Material number - - - - - - * * - - -
+LENG Length * * * * * - - - - - m
+COOX Local x direction * * * - - - * - - - -
+COOY Local y direction * * - - - - * - - - -
+COOZ Local z direction * * - - - - * - - - -
+GLN Reference to structural line * * - * * - - - - - -
+NAME Designation - * - - - - - - * - -
+NOD1 1st node number * * * * * - * * * - -
+NOD2 2nd node number * * * * * - * * * - -
+NOD3 3rd node number - - - - - - * * - - -
+SOFiSTiK2023 3-41ResultViewer-RESULTS|InputandOutputDescription
+Literal Meaning B D S T C P Q V R E Dim.
+NOD4 4th node number - - - - - - * * - - -
+NOD5 5th node number - - - - - - - * - - -
+NOD6 6th node number - - - - - - - * - - -
+NOD7 7th node number - - - - - - - * - - -
+NOD8 8th node number - - - - - - - * - - -
+Cross sections (ETYP CROS)
+Literal Meaning Dim.
+ENO Cross section number -
+MNO Material number -
+NAME Designation -
+Material values:
+GAM Dead load (related to cross section area) kN/m3
+E Elastic modulus kN/m2
+G Shear modulus kN/m2
+Total cross section:
+A Area m2
+AY Shear deformation area Ay m2
+AZ Shear deformation area Az m2
+IT Torsional moment of inertia It m4
+IY Moment of inertia Iy m4
+IZ Moment of inertia Iz m4
+IYZ Moment of inertia Iyz m4
+YS y ordinate of gravity centre m
+ZS z ordinate of gravity centre m
+YSMP y ordinate of shear centre m
+ZSMP z ordinate of shear centre m
+GAMM Mass per length kg/m
+AK Torsional equivalent area (Bredt) m2
+Effective cross section:
+AE Area m2
+IYE Moment of inertia Iy m4
+IZE Moment of inertia Iz m4
+IYZE Moment of inertia Iyz m4
+YSE y ordinate of gravity centre m
+ZSE z ordinate of gravity centre m
+3-42 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+Literal Meaning Dim.
+GMME Mass per length kg/m
+Section values for warping:
+AYYY Integral on section Ayyy m5
+AYYZ Integral on section Ayyz m5
+AYZZ Integral on section Ayzz m5
+AZZZ Integral on section Azzz m5
+AWY Integral on section Awy m5
+AWZ Integral on section Awz m5
+AWYY Integral on section Awy m6
+AWZZ Integral on section Awz m6
+CM Warping resistance m6
+CMS Warping shear resistance m6
+WMIN Minimum warping m2
+WMAX Maximum warping m2
+FYSW Shear Vy-Mt2 area m2
+FZSW Shear Vz-Mt2 area m2
+IPSC Polar inertia at shear centre m4
+Maximumofplasticultimateforces(designvalue,material
+safety factor included):
+NPL Fully plastic axial force kN
+VYPL Fully plastic shear force Vy kN
+VZPL Fully plastic shear force Vz kN
+MTPL Fully plastic torsional moment kNm
+MYPL Fully plastic bending moment My kNm
+MZPL Fully plastic bending moment Mz kNm
+MBPL Fully plastic warping moment kNm2
+M2PL Fully plastic secondary torsional moment kNm
+YSPL Plastic center y mm
+ZSPL Plastic center z mm
+Minimumofplasticultimateforces(designvalue,material
+safety factor included):
+NPM Fully plastic axial force kN
+VYPM Fully plastic shear force Vy kN
+VZPM Fully plastic shear force Vz kN
+MTPM Fully plastic torsional moment kNm
+MYPM Fully plastic bending moment My kNm
+MZPM Fully plastic bending moment Mz kNm
+MBPM Fully plastic warping moment kNm2
+SOFiSTiK2023 3-43ResultViewer-RESULTS|InputandOutputDescription
+Literal Meaning Dim.
+M2PM Fully plastic secondary torsional moment kNm
+YSPM Plastic center y mm
+ZSPM Plastic center z mm
+Maximum of plastic ultimate forces (characteristic value,
+material safety factor not included):
+NPC Fully plastic axial force kN
+VYPC Fully plastic shear force Vy kN
+VZPC Fully plastic shear force Vz kN
+MTPC Fully plastic torsional moment kNm
+MYPC Fully plastic bending moment My kNm
+MZPC Fully plastic bending moment Mz kNm
+MBPC Fully plastic warping moment kNm2
+M2PC Fully plastic secondary torsional moment kNm
+YSPC Plastic center y mm
+ZSPC Plastic center z mm
+Minimum of plastic ultimate forces (characteristic value,
+material safety factor not included):
+NPD Fully plastic axial force kN
+VYPD Fully plastic shear force Vy kN
+VZPD Fully plastic shear force Vz kN
+MTPD Fully plastic torsional moment kNm
+MYPD Fully plastic bending moment My kNm
+MZPD Fully plastic bending moment Mz kNm
+MBPD Fully plastic warping moment kNm2
+M2PD Fully plastic secondary torsional moment kNm
+YSPD Plastic center y mm
+ZSPD Plastic center z mm
+Beam tendons (ETYP BTEN), Design element tendons (ETYP DTEN)
+Literal Meaning Dim.
+ENO Tendon number -
+ICS1 Construction stage number for placing -
+ICS2 Construction stage number for grouting -
+ICS3 Construction stage number for removing -
+MAT Material number -
+A Total area (all single tendons) m2
+UT Effective periphery for crack width m
+3-44 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+Literal Meaning Dim.
+AT Relative area for crack width m2
+PRE Prestress force kN
+REDF Reduction factor within transmission length -
+AH Total area of duct m2
+ETSY Eccentricity of duct axis to tendon axis in local y m
+ETSZ Eccentricity of duct axis to tendon axis in local z m
+EXZY Position of tendon axis in local y (related to origin of cross m
+section)
+EXZZ Position of tendon axis in local z (related to origin of cross m
+section)
+EXSY Position of duct axis in local y (related to origin of cross sec- m
+tion)
+EXSZ Position of duct axis in local z (related to origin of cross sec- m
+tion)
+EZMI Position of duct axis to cross sections top (Z–max) m
+EZMA Position of duct axis to cross sections bottom (Z–min) m
+System Values of the Nodes (ETYP NODE)
+The following literals are possible for STRU NUMN:
+Literal Meaning Dim.
+NNO Node numbers -
+FIX Numbers of the supported nodes -
+X X coordinate of the node m
+Y Y coordinate of the node m
+Z Z coordinate of the node m
+System Values of the QUAD Elements (ETYP QUAD)
+Literal Meaning Dim.
+T Constant of the mean element thickness m
+System Values of the Boundaries (ETYP BOUN)
+Literal Meaning Dim.
+NAME Description -
+System Values of the Spring Elements (ETYP SPRI)
+SOFiSTiK2023 3-45ResultViewer-RESULTS|InputandOutputDescription
+Literal Meaning Dim.
+AREA Reference area m2
+MNO Reference material -
+WL Spring work law -
+COOX Direction -
+SCP Axial spring constant kN/m
+SCQ Lateral spring constant kN/m
+SCM Rotational spring constant kNm/rad
+System Values of the Kinematic Constraints (ETYP KINE)
+Literal Meaning Dim.
+ENO Element number -
+GRP Group numbers -
+KINL Kind of kinematic constraint -
+NOD1 Coupled node -
+NOD2 Reference node -
+COOX Direction -
+DIST Distance -
+FACT Factor for intermediate nodes -
+EQUA Equation of explicit defined kinematic constraints -
+KINI Original kind of kinematic constraint from database -
+System Values of the Design Elements (ETYP DSLN)
+Literal Meaning Dim.
+NAME Description -
+AXIS Reference to an axis -
+BEAM Reference to a beam -
+TRUS Reference to a trussing -
+System Values of the Sections of Design Elements (ETYP DSLN)
+Literal Meaning Dim.
+XSNO Cross section number -
+XPOS Position -
+XNOD Node number -
+XGLN References to structural lines -
+XBEA References to beams -
+3-46 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+Literal Meaning Dim.
+XTRU References to trussings -
+COOR Coordinate of the beam section m
+System Values of the Beam Sections (ETYP BEAM)
+Literal Meaning Dim.
+XSNO Cross section number -
+XPOS Position -
+XHNG Hinges -
+XNOD Node number -
+COOR Coordinate of the beam section m
+System Values of the Storey Levels (ETYP SLVL)
+Literal Meaning Dim.
+ENO Storey level number -
+NAME Designation of storey level -
+ZLEV Storey elevation (upwards positive) m
+HLEV Storey height m
+DIML Storey extensions m
+MASS Storey mass t
+RMAS Rotational mass moment of inertia about Z tm2
+COOM Coordinates of centre of mass m
+NCOM Structural point in centre of mass -
+STIF Storey rigidity kN/m
+COOR Coordinates of centre of rigidity m
+NCOR Structural point in centre of rigidity -
+System Values of the load cases (ETYP LC)
+SOFiSTiK2023 3-47ResultViewer-RESULTS|InputandOutputDescription
+Literal Meaning Dim.
+ENR Load case number -
+NAME Title -
+KNDL Kind of load case -
+MODU Generating program -
+CRI1 1st evaluation criterion -
+CRI2 2nd evaluation criterion -
+CRI3 3rd evaluation criterion -
+FRIC Safety factor friction (TALPA) -
+COHE Safety factor cohesion (TALPA) -
+SF3 3rd Safety factor (TALPA) -
+ACT Action as literal -
+ACTL Title of action -
+FACT Factor of P and M loads -
+DLX Factor of dead load in global X -
+DLY Factor of dead load in global Y -
+DLZ Factor of dead load in global Z -
+LFAC Factorsofthesuperpositiongam-u,gam-f,gam-a,psi-0,psi-1, -
+psi-2, psi1’
+-
+Existing loads
+LNOD Nodes -
+LQUA Area elements -
+LBEA Beam elements -
+LTRU Truss elements -
+LCAB Cable elements -
+LBOU Boundary elements -
+LBRI Volume elements -
+ATTL Type of the results (STRU ETYP LC), -
+ATTC Type of the results as literal (MAXIMA) -
+LTYP Type of the results as literal (SOFILOAD) -
+3-48 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+Literal Meaning Dim.
+SUMX Sum of support forces in global X kN
+SUMY Sum of support forces in global Y kN
+SUMZ Sum of support forces in global Z kN
+THEL Theory -
+CSA Construction stages begin -
+CSE Construction stages end -
+PLC Primary load case -
+FREQ Natural frequency Hz
+DAMP Modal damping -
+BUCK Buckling factor -
+TIML Time value of load text -
+TIME Time value of load as value sec
+Existing results
+RNOD Nodes -
+RQUA Area elements -
+RBEA Beam elements -
+RTRU Truss elements -
+RCAB Cable elements -
+RSPR Spring elements -
+RBOU Boundary elements -
+RKIN Kinematic constraints -
+RBRI Volume elements -
+RSIR External Beam Sections -
+RPIP Pipe elements -
+System Values of the groups (ETYP GRP)
+Literal Meaning Dim.
+ENR Group number -
+NAME Title -
+MIN Minimum element-number (base number) -
+MAX Maximum element-number -
+MAT Material number -
+MBW Material number reinforcement -
+SET0 Existing elements per element type -
+NUME Number of elements per element type -
+MINE Minimum element-number per element type -
+SOFiSTiK2023 3-49ResultViewer-RESULTS|InputandOutputDescription
+Literal Meaning Dim.
+MAXE Maximum element-number per element type
+per load case:
+SETL Existing elements per element type -
+ACTI Group is activated -
+OUTP Group with output -
+LINE Material-linear calculated -
+HW Level of groundwater m
+CS Construction stage -
+FCS Stiffness factor -
+ETOT Total energy MPa
+3-50 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3.28 CROS – Results in Cross Sections
+Seealso: AND,LC
+CROS
+Item Description Unit Default
+TYPE Type which is supposed to be represented LT *
+see tables below
+ETYP Selection of an element type LT *
+RTYP Selection of a result type LT *
+STYP Selection of an cross section element LT ALL
+ALL All cross section elements
+and further elements from list
+REPR Type of the representation LT *
+DTXT Text representation
+DVEC Vector representation
+DLIN Line representation
+DIAG Diagram representation
+DLST Text list
+see record STRU REPR
+FILL Fill type LT NO
+see record STRU FILL
+UNIT Scaling of the length of a representation −/cm/LT DEFA
+see record STRU UNIT
+SCHH Text height cm/LT 0.16
+see record STRU SCHH
+The values are represented on the cross section. The cross section or beam section has to
+be defined via the record LC. Values on single points, e.g. stress points, are drawn as vectors
+in local x-direction. Values along thin walled elements or along the contour of thick walled
+elements are darwn as a line representation.
+The value selected with TYPE is valid for all element types and/or result types and/or cross
+section elements as long as no one of the following literals is input for ETYP and/or RTYP
+and/or STYP. If a selection of an element type (ETYP) or result type (RTYP) or cross section
+element (STYP) is possible, this is marked in the column at the left-hand side with a ”*”.
+SOFiSTiK2023 3-51ResultViewer-RESULTS|InputandOutputDescription
+Valid element types ETYP are:
+CROS Cross section (C)
+BEAM Beam elements (B)
+DSLN Design elements (D)
+SIR External beam section (E)
+EXPL Explicit definition (X)
+The values for TYPE are available in the following list:
+Literal Meaning ETYP Dim
+C B D E X
+SECT Main section values * - - - - *
+A, Ay, Az, It, Iy, Iz, Iyz, ys, zs, ycs, zcs, EM, GM, gam
+This representation offer several main values at a glance. During the graphical representation
+(REPR DSTR) these values are drawn together with the cross section.
+Literal Meaning ETYP Dim.
+C B D E X
+W Unit warping * - - - - m2
+TAUY Unit shear stress from shear force Vy * - - - - MPa
+TAUZ Unit shear stress from shear force Vz * - - - - MPa
+TAUT Unit shear stress from torsional moment Mt * - - - - MPa
+TAU2 UnitshearstressfromsecondarytorsionalmomentMt2 * - - - - MPa
+REIN Reinforcements - * * * - cm2
+REIM Reinforcements per m - * * * - cm2/m
+RLAY Reinforcements of all layer - * * * - cm2
+A0 Minimum reinforcements * * * * - cm2
+A0M Minimum reinforcements per m * * * * - cm2/m
+A0L Minimum reinforcements of all layer * * * * - cm2
+A00 Minimum reinforcements layer 0 cm2
+... ... * * * * -
+A09 Minimum reinforcements layer 9 cm2
+Literal Meaning ETYP Dim.
+C B D E X
+AM Maximum reinforcements * - - - - cm2
+AML Maximum reinforcements of all layer * - - - - cm2
+3-52 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+Literal Meaning ETYP Dim.
+C B D E X
+AM0 Maximum reinforcements layer 0 * - - - - cm2
+... ...
+AM9 Maximum reinforcements layer 9 * - - - - cm2
+AR Reference area reinforcements * - - - - cm2
+ARL Reference area reinforcements of all layer * - - - - cm2
+AR0 Reference area reinforcements layer 0 * - - - - cm2
+... ...
+AR9 Reference area reinforcements layer 9 * - - - - cm2
+TheminimumreinforcementdefinedinAQUAisavailableviaA0.. ETYPCROS.Theminimum
+reinforcementcalculatedinAQBisavailableviaA0.. ETYPBEAM,SIR.REIN,A0, AMandAR
+display the reinforcement distributed on the cross section. All other reinforcement values are
+shown as list.
+Results
+Valid result types RTYP are:
+NONL (Nonlinear) results from program AQB (N)
+FIBE Material point results from program TALPA (F)
+LINE Linear elastic stresses (L)
+Literal Meaning ETYP RTYP Dim
+C B D E X N F L
+SIG Axial stress - * * * * * * * kN/m2
+TAU Shear stress - * * * * * - * kN/m2
+SIGV v.Mises stress - * * * * * - * kN/m2
+EPS Axial strain - * * * * * - * 0/00
+RFS Reinforcement steel stress - * * * * * * - kN/m2
+RFSS Reinforcement steel stress and axial materi- - * * * * * * - kN/m2
+als stress
+RFD Reinforcement steel strain - * * * * * * - 0/00
+TXY Shear stress xy - * - - - * * * kN/m2
+TXZ Shear stress xz - * - - - * - * kN/m2
+KAPP Equivalent plastic strain - * - - - * - * 0/00
+KAPD Fracturing strain - * - - - * - * 0/00
+CCW Current crack width - * - - - * - - mm
+CTMP Current Temperature - * - - - * - - ◦C
+SOFiSTiK2023 3-53ResultViewer-RESULTS|InputandOutputDescription
+Literal Meaning ETYP RTYP Dim
+C B D E X N F L
+MTMP Maximum temperature in loading history - * - - - ◦C
+EPST Axial temperature strain - * - - - - * - 0/00
+EPSX Axial total strain (without temperature strain) - * - - - - * - 0/00
+AMPT Associated material point area - * - - - - * - m2
+FCTP Current compressive strength (temperature - * - - - - * - kN/m2
+dependent)
+FTTP Current tensile strength (temperature depen- - * - - - - * - kN/m2
+dent)
+RFP Equivalent plastic strain of reinforcement - * - - - * * * 0/00
+RFC Current Temperature of reinforcement - * - - - * - * ◦C
+RFM Maximum temperature of reinforcement in - * - - - * - - ◦C
+loading history
+RFE Axial temperature strain of reinforcement - * - - - - * - 0/00
+RFX Axial total strain of reinforcement (without - * - - - - * - 0/00
+temperature strain)
+RFA Associated material point area of reinforce- - * - - - - * - m2
+ment
+RFES Pure reinforcement strain (without TS strain - * - - - - * - 0/00
+correction)
+RFFC Current compressive strength (temperature - * - - - - * - kN/m2
+dependent) of reinforcement
+RFFT Current tensile strength (temperature depen- - * - - - - * - kN/m2
+dent) of reinforcement
+RFKP Equivalent plastic strain of material and rein- - * * - - * * * 0/00
+forcement
+RFCT Current Temperature of material and rein- - * * - - * - * ◦C
+forcement
+RFMT Maximum temperature of material and rein- - * - - - * - - ◦C
+forcement in loading history
+RFET Axial temperature strain of material and rein- - * - - - - * - 0/00
+forcement
+RFEX Axial total strain of material and reinforce- - * - - - - * - 0/00
+ment (without temperature strain)
+RFAM Associated material point area of material - * - - - - * - m2
+and reinforcement
+RTFC Current compressive strength (temperature - * - - - - * - kN/m2
+dependent) of material and reinforcement
+RTFT Current tensile strength (temperature depen- - * - - - - * - kN/m2
+dent) of material and reinforcement
+RTYP NONL, Results from program AQB
+3-54 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+The program AQB calculates a strain plane per material and construction stage from the in-
+ternal forces and moments of a beam section. Result Viewer calculates the results from this
+strain plane. The results may be nonlinear.
+Normally the program AQB uses the internal forces and moments from the FE-programs (e.g.
+STAR2, ASE, TALPA, SIR). But it is also possible to use explicit defined internal forces and
+moments. If you want to use these forces you have to input ETYP EXPL, signed with ’Z’ in the
+table.
+With the TYPE RFSS the stresses of the material and reinforcement are drawn in the same
+layer. The UNIT of the stress of the reinforcement is doubled automatically, thus the scale of
+both stresses are in the same range.
+Material point reactions
+These values must have been calculated first with program TALPA for the current selected
+beam section (fiber-beam) (STYP BEAM). The results may be nonlinear.
+WiththeTYPERFKP,RFCTandRFMTthevaluesofthematerialandreinforcementaredrawn
+in the same layer.
+RTYP LINE, Results from internal forces and moments
+Theinternalforcesandmomentsofabeamorexternalbeamsectionareusedfortheseresults.
+The internal forces and moments must have been calculated first from the FE-programs (e.g.
+STAR2,ASE,TALPA,SIR).TheresultsoftheprogramAQBarenotnecessary. Theresultswill
+be always linear.
+Properties of cross section elements
+These values may be reduced via the cross section element type STYP. Valid cross section
+element types STYP are:
+ALL All cross section elements (A)
+PROF Profiles (H)
+SPT Stress point (S)
+FE Finite Element point (F)
+CONS Geometry point (O)
+PPT Polygon point (thick walled) (Y)
+TP Intersection of tangents (I)
+GEN Generated polygon point (G)
+POLY Polygon (thick walled) (P)
+CIRC Circle (C)
+PANE Panel (thin walled) (E)
+WELD Shear connection (weld, shear bond) (W)
+CPT Point of shear section (T)
+CUT Shear section (U)
+CA Separated section part (D)
+SOFiSTiK2023 3-55ResultViewer-RESULTS|InputandOutputDescription
+AK Torsional equivalent area (Bredt) (B)
+ACT Crack area (Z)
+NEFF Non effective part (N)
+RF Single reinforcement (R)
+LRF Line reinforcement (L)
+CRF Circular reinforcement (K)
+Literal Meaning STYP Dim
+A H S F O Y I G P C E W T U D B Z N R L K
+MAT Material * * * * - * * * * * * * * * * * * * * * * -
+MATR Material reinforcement - - - - - - - - - - - - * * - - - - - - - -
+CSA Constructionstagebegin * * * * - * * * * * * * * * * * * * * * * -
+CSE Construction stage end * * * * - * * * * * * * * * * * * * * * * -
+TYP Type of element * * * * * * * * * * * * * * * - * * * * * -
+NAME Name of element * * * * * * * * * * * * * * * * * - * * * -
+COOY Coordinate y (at start) - - * * * * * * - * * * * * - - - - * * - m
+COOZ Coordinate z (at start) - - * * * * * * - * * * * * - - - - * * - m
+COYE Coordinate y at end - - - - - - - - - - * * - * - - - - - * - m
+COZE Coordinate z at end - - - - - - - - - - * * - * - - - - - * - m
+LENG Element length - - - - - * * * - - * * - - - - - - - * - m
+WIDT Element width - - - - - - - - - - * * - - - - - - - - - m
+R Radius of curvature - - - - - - * - - - - - - - - - - - - - - m
+TOPT Reference point - - - - - - - * - - - - - - - - - - - - - -
+TEMP Temperature - - * * - * - * - - - - - - - - - - * - - ◦C
+ALFA Rotation angle - * - - - - - - - - - - - - - - - - - - - ◦
+LAYE Reinforcement layer * - - - - - - - - - - - - - - - - - * * * -
+LYNO Number of reinf. layer - - - - - - - - - - - - - - - - - - * * * -
+LYTP Type of reinf. layer - - - - - - - - - - - - - - - - - - * * * -
+LAYM Minimum reinforcement - - - - - - - - - - - - - - - - - - * * * cm2
+LAYZ Extra reinforcement - - - - - - - - - - - - - - - - - - * * * cm2
+LAYS Sequential reinforce- - - - - - - - - - - - - - - - - - - * * * cm2
+ment
+TORS Torsions effectiveness - - - - - - - - - - - - - - - - - - * * * -
+PRLI Element property - - - - * * * * - - - - - - - - - - - - - -
+FXAL Type of clamped edge at - - - - - - - - - - * - - - - - - - - - - -
+start
+FIXA Location of clamped - - - - - - - - - - * - - - - - - - - - - m
+edge from start
+3-56 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+Literal Meaning STYP Dim
+A H S F O Y I G P C E W T U D B Z N R L K
+FXLE Type of clamped edge at - - - - - - - - - - * - - - - - - - - - - -
+end
+FIXE Location of clamped - - - - - - - - - - * - - - - - - - - - - m
+edge from end
+NEFF Kindofnoneffectivepart - - - - - * - - - - * - - - - - - * * - - -
+A Area - - - - - - - - * - * * - - - * - * - - - m2
+EXP Property set - - - - - * - - - * - - - - - - - - - - - -
+AIR Air contact ratio - - - - - * - - - * - - - - - - - - - - - -
+TEFF Effective thickness - - * - - - - - - - - - - - - - - - - - - m
+FIXL Type of clamped edge - - * - - - - - - - - - - - - - - - - - - -
+FIX Location of clamped - - * - - - - - - - - - - - - - - - - - - m
+edge
+SIGC Maximum dynamic al- - - * - - - - - - - - - - - - - - - - - - MPa
+lowed stress range σ d
+TAUC Maximum dynamic al- - - * - - - - - - - - - - - - - - - - - - MPa
+lowed stress range τ d
+LITC Notch type - - * - - - - - - - - - - - - - - - - - - -
+The literal PRLI shows additional properties. These are for geometry points the ”Bearing”,
+”Surveying” and ”Tendon”. These properties are for polygon points the outline (”outer”) or
+the hole (”inner”).
+Beam tendons (STYP BTEN), Design element tendons (STYP DTEN)
+Literal Meaning Dim.
+ENO Tendon number -
+ICS1 Construction stage number for placing -
+ICS2 Construction stage number for grouting -
+ICS3 Construction stage number for removing -
+MAT Material number -
+A Total area (all single tendons) m2
+UT Effective periphery for crack width m
+AT Relative area for crack width m2
+PRE Prestress force kN
+REDF Reduction factor within transmission length -
+AH Total area of duct m2
+ETSY Eccentricity of duct axis to tendon axis in local y m
+ETSZ Eccentricity of duct axis to tendon axis in local z m
+COOY Position of tendon axis in local y (related to origin of cross m
+section)
+SOFiSTiK2023 3-57ResultViewer-RESULTS|InputandOutputDescription
+Literal Meaning Dim.
+COOZ Position of tendon axis in local z (related to origin of cross m
+section)
+DUCY Position of duct axis in local y (related to origin of cross sec- m
+tion)
+DUCZ Position of duct axis in local z (related to origin of cross sec- m
+tion)
+EZMI Position of duct axis to cross sections top (Z–max) m
+EZMA Position of duct axis to cross sections bottom (Z–min) m
+3-58 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3.29 NODE – Results in Nodes
+Seealso: AND,LC
+NODE
+Item Description Unit Default
+TYPE Type which is supposed to be represented LT *
+see tables below
+TOTA Sum of the line representation LT -
+- does draw the line representation normally
+CONS The line representation becomes average
+in a constant form
+TRAP The line representation becomes average
+in a trapezoid form (linearly changeable)
+PAIR A resulting force couple is generated in
+eachcaseforthepositiveandnegativeval-
+ues.
+GENE A total resultant is generated.
+REPR Type of the representation LT *
+DIAG Diagram representation
+DSTR Structure representation
+see record STRU REPR
+FILL Fill type LT NO
+see record STRU FILL
+UNIT Scaling of the length of a representation −/cm/LT DEFA
+see record STRU UNIT
+SCHH Text height cm/LT 0.16
+see record STRU SCHH
+The item TOTA is not yet supported.
+The values are represented in nodes or points (storey level). Forces/moments are drawn as
+vectors with a single/double tip. The representation occurs with a cross/rectangle, if the di-
+rection of the vector lies approximately perpendicularly to the optical plane. Edge forces are
+drawn as a status line with on the edge.
+Structure values of nodes and boundaries, e.g. node numbers, are plotted with record STRU.
+The following literals for the nodes are possible for TYPE:
+SOFiSTiK2023 3-59ResultViewer-RESULTS|InputandOutputDescription
+Literal Meaning Dim.
+U Displacement in global components mm
+UX Displacement in global X mm
+UY Displacement in global Y mm
+UZ Displacement in global Z mm
+R Rotations about global components mrad
+RX Rotational about global X mrad
+RY Rotational about global Y mrad
+RZ Rotational about global Z mrad
+S Support forces in global components kN
+SX Support force in global X kN
+SY Support force in global Y kN
+SZ Support force in global Z kN
+SL Support forces in local components (of structural points) kN
+SXL Support force in local x kN
+SYL Support force in local y kN
+SZL Support force in local z kN
+SM Support moments about global components kNm
+SMX Support moment about global X kNm
+SMY Support moment about global Y kNm
+SMZ Support moment about global Z kNm
+SML Support moments about local components (of structural kNm
+points)
+SMXL Support moment about local x kNm
+SMYL Support moment about local y kNm
+SMZL Support moment about local z kNm
+CF Kinematic constraint forces in global component kN
+CFX Component of kinematic constraint force X kN
+CFY Component of kinematic constraint force Y kN
+CFZ Component of kinematic constraint force Z kN
+CM Kinematic constraint moments in components kNm
+CMX Component of kinematic constraint moment X kNm
+CMY Component of kinematic constraint moment Y kNm
+CMZ Component of kinematic constraint moment Z kNm
+CMB Kinematic constraint warping moment kNm
+E Boundary forces in global components kN/m
+EX Boundary force component global X kN/m
+EY Boundary force component global Y kN/m
+3-60 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+Literal Meaning Dim.
+EZ Boundary force component global Z kN/m
+EM Boundary moment about longitudinal direction kNm/m
+Totals of boundary forces and moments from database
+TEX Total of boundary force global X kN/m
+TEY Total of boundary force global Y kN/m
+TEZ Total of boundary force global Z kN/m
+TEMN Total of boundary moment about longitudinal direction kNm/m
+TEMX Total of boundary moment about global X kNm/m
+TEMY Total of boundary moment about global Y kNm/m
+TEMZ Total of boundary moment about global Z kNm/m
+After a Vibration Calculation (time-step method) with the Program ASE or DYNA
+Literal Meaning Dim.
+V Velocities in components m/sec
+VX Velocity component X m/sec
+VY Velocity component Y m/sec
+VZ Velocity component Z m/sec
+VA Angular velocity in components 1/sec
+VAX Angular velocity component X 1/sec
+VAY Angular velocity component Y 1/sec
+VAZ Angular velocity component Z 1/sec
+A Acceleration in componentc m/sec2
+AX Acceleration component X m/sec2
+AY Acceleration component Y m/sec2
+AZ Acceleration component Z m/sec2
+AA Angular acceleration in components 1/sec2
+AAX Angular acceleration component X 1/sec2
+AAY Angular acceleration component Y 1/sec2
+AAZ Angular acceleration component Z 1/sec2
+After an eigen form calculation or an earthquake calculation with the Program DYNA
+Literal Meaning Dim.
+Forces and moments of storey levels
+S_PT Resulting base shear in the XY-plane kN
+S_PX Base shear in global X kN
+S_PY Base shear in global Y kN
+SOFiSTiK2023 3-61ResultViewer-RESULTS|InputandOutputDescription
+Literal Meaning Dim.
+S_PZ Total vertical force at and above the storey kN
+S_MX Moment about global X kNm
+S_MY Moment about global Y kNm
+S_MZ Moment about global Z kNm
+Displacements of storey levels
+S_UT Resulting average storey displacement in the XY-plane mm
+S_UX Displacement in global X mm
+S_UY Displacement in global Y mm
+S_UZ Displacement in global Z mm
+Inter-storey drift
+S_DT Resulting inter-storey drift in the XY-plane mm
+S_DX Inter-storey drift in global X mm
+S_DY Inter-storey drift in global Y mm
+SADX Maximum inter-storey drift in X mm
+SADY Maximum inter-storey drift in Y mm
+After a Non-linear Calculation with the Programs TALPA or ASE
+Literal Meaning Dim.
+IU Incremental displacement in components mm
+IUX Incremental displacement component X mm
+IUY Incremental displacement component Y mm
+IUZ Incremental displacement component Z mm
+IR Incremental rotation in components mrad
+IRX Incremental rotation component X mrad
+IRY Incremental rotation component Y mrad
+IRZ Incremental rotation component Z mrad
+RE Residual forces in components kN
+REX Residual force component X kN
+REY Residual force component Y kN
+REZ Residual force component Z kN
+REM Residual moments in components kNm
+REMX Residual moment component X kNm
+REMY Residual moment component Y kNm
+REMZ Residual moment component Z kNm
+Three-dimensional representations are usually necessary for systems of the type GIRD in
+3-62 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+order to recognize the corresponding vectors of the forces PZ.
+SOFiSTiK2023 3-63ResultViewer-RESULTS|InputandOutputDescription
+3.30 BEAM – Beam Element Results
+Seealso: AND,LC
+BEAM
+Item Description Unit Default
+TYPE Type which is supposed to be represented LT -
+see tables below
+STYP Element type LT BEAM
+DSLN Design elements
+BEAM Beam elements
+SIR External beam sections
+TRUS Truss-bar elements
+CABL Cable elements
+SPRI All spring elements
+QTEN Tendons of plane elements
+REPR Type of the representation LT *
+DIAG Diagram representation
+DSTR Structure representation
+see record STRU REPR
+FILL Fill type LT NO
+see record STRU FILL
+UNIT Scaling of the length of a representation −/cm/LT DEFA
+see record STRU UNIT
+SCHH Text height cm/LT 0.16
+see record STRU SCHH
+BEAM draws status lines of the beam or spring elements.
+Structurevaluesofbeams,trusses,cablesandsprings,e.g. elementnumbers,areplottedwith
+record STRU.
+The last column of the following table shows whether the corresponding value is available.
+The meaning of the signs is following here:
+B Beam elements
+S Spring elements
+C Truss and Cable elements
+T Tube elements
+3-64 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+I External beam sections, only stored by the program SIR or AQB
+D Design elements
+Q Tendons of plane elements
+- Value is not available
+* Value is generally available
+1 Value is only stored by the program STAR2 or AQB
+2 Value is only stored by the program ASE
+The following literals are possible for BEAM TYPE:
+Literal Meaning STYP Dim.
+B S C T I D Q
+N Axial force * * * - - * - kN
+VY Shear force (transverse bending) * * - - - * - kN
+VZ Shear force (principal bending) * * - - - * - kN
+MT Torsional moment * * - - - * - kNm
+MY Bending moment (principal bending) * - - - - * - kNm
+MZ Bending moment (transverse bending) * - - - - * - kNm
+MB Warping moment * - - - - * - kNm2
+MT2 Secondary torsional moment * - - - - * - kNm
+SPX Spring force in global X - * - - - - - kN
+SPY Spring force in global Y - * - - - - - kN
+SPZ Spring force in global Z - * - - - - - kN
+UX Deformation in axial direction 1 * * - - 1 - mm
+UY Deformation in transverse direction (transverse 1 * - - - 1 - mm
+bending) or cable sag for STYP CABL
+UZ Deformationintransversedirection(principalbend- 1 * - - - 1 - mm
+ing)
+RX Rotation in axial direction 1 * - - - 1 - mrad
+RY Rotation in transverse direction 1 - - - - 1 - mrad
+RZ Rotation in transverse direction 1 - - - - 1 - mrad
+VTX Cable sag in global X - - * - - - - mm
+VTY Cable sag in global Y - - * - - - - mm
+VTZ Cable sag in global Z - - * - - - - mm
+NA Average normal force - - * - - - - kN
+F0 Vertical suspension of cable in load direction - - * - - - - mm
+L0 Relaxed cable length incl. temperature and pre- - - * - - - - m
+strain effects
+EFFS Effective stiffness including cable sagging - factor - - * - - - - -
+to original E*A/L
+TSI Tendon stress * - - - - * 2 MPa
+SOFiSTiK2023 3-65ResultViewer-RESULTS|InputandOutputDescription
+Literal Meaning STYP Dim.
+B S C T I D Q
+DSIG Tendon stress sway * - - - - * - MPa
+TP Tendon force - - - - - - 2 kN
+AGE Tendon age since prestress - - - - - - 2 d
+RELZ Accumulated relaxation of tendons - - - - - - 2 %
+Design stress of material
+SIGD Compression stress * - * - * * - N/mm2
+SIGZ Tensile stress * - * - * * - N/mm2
+STAU Shear stress * - - - * * - N/mm2
+SIGV v.Mieses stress * - - - * * - N/mm2
+SPC Principal compression stress * - - - * * - N/mm2
+SPT Principal tensile stress * - - - * * - N/mm2
+SIGU Uniaxial top stress * - * - * * - N/mm2
+SIGL Uniaxial bottom stress * - * - * * - N/mm2
+SIGW Stress in welds * - - - * * - N/mm2
+DECO Decompression stress * - - - * * - N/mm2
+FACV Shear reduction factor (= linear elastic/nonlinear * - - - * * - -
+lever)
+SWMT Stress sway of normal stress * - - - * * - N/mm2
+SWSM Stress sway of shear stress * - - - * * - N/mm2
+BOND Bond force from difference of longitudinal forces * - - - * - kN/m
+across length
+BNDO Shear in dowels/welds * - - - * * - kN/m
+Design stress of stress point (SPT)
+SDPT Compression stress * * - - * * - N/mm2
+SZPT Tensile stress * * - - * * - N/mm2
+STPT Shear stress * * - - * * - N/mm2
+SVPT v.Mieses stress * * - - * * - N/mm2
+SPCP Principal compression stress * * - - * * - N/mm2
+SPTP Principal tensile stress * * - - * * - N/mm2
+SWPT Stress sway of normal stress * * - - * * - N/mm2
+SWSP Stress sway of shear stress * - - - * * - N/mm2
+Design stress of shear cut (CUT)
+SNCT Normal stress * - * - * * - N/mm2
+STCT Shear stress * - - - * * - N/mm2
+STSL Stress in shear links * - - - * * - N/mm2
+SPCC Principal compression stress * - - - * * - N/mm2
+SPTC Principal tensile stress * - - - * * - N/mm2
+3-66 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+Literal Meaning STYP Dim.
+B S C T I D Q
+SWCT Stress sway of normal stress * - * - * * - N/mm2
+SWSC Stress sway of shear stress * - - - * * - N/mm2
+Design stress of reinforcement material
+SDRF Minimum stress in reinforcement * - * - * * - N/mm2
+SZRF Maximum stress in reinforcement * - * - * * - N/mm2
+SWRF Longitudinal stress sway for reinforcements * - * - * * - N/mm2
+SWSL Stress sway for shear links reinforcements * - - - * * - N/mm2
+Design stress of tendon material
+SDTD Minimum stress in tendon * - - - * * - N/mm2
+SIGP Maximum stress in tendon * - - - * * - N/mm2
+DSGP Stress sway in tendon material * - - - * * - N/mm2
+Utilisation level
+TCF Decisive - Total * - * - * * - -
+SCCB Decisive - Resistance of Cross Section * - - - * * - -
+SCBN Decisive - Buckling Resistance * - * - * * - -
+CSGD sig-dyn Stress range * - * - * * - -
+Utilisationlevelofstructuralsteel/compositsection
+SCN NNormalforce(EN1993-1-1,6.2.3,Eq. 6.5or6.9) * - * - * * - -
+SCVY Vy Shear force (EN 1993-1-1, 6.2.6, Eq. 6.17) * - - - * * - -
+SCVZ Vz Shear force (EN 1993-1-1, 6.2.6, Eq. 6.17) * - - - * * - -
+SCMT Mtp Torsion (p)rimary (EN 1993-1-1, 6.2.3, Eq. * - - - * * - -
+6.23)
+SCMY My Bending (EN 1993-1-1, 6.2.5, Eq. 6.12) * - - - * * - -
+SCMZ Mz Bending (EN 1993-1-1, 6.2.5, Eq. 6.12) * - - - * * - -
+SCMB Mb Warping moment * - - - * * - -
+SCM2 Mts Torsion (s)econdary (EN 1993-1-1, 6.2.3, Eq. * - - - * * - -
+6.23)
+ULCT c/t Stress dependant utilisation level * - * - * * - -
+ULSC Classification index (e.g. 1.5 = c/t is in the mid be- * - * - * * - -
+tween SCL 1 and 2)
+Utilisation level of concrete
+VED Ved/Vrd,max * - - - * * - -
+TED Ted/Trd,max * - - - * * - -
+SIG2 sig-IIPrincipalcompressionstressfromshearforce * - - - * * - -
+and torsion
+CSGR sigs Stress in reinforcements / tendon * - - - * * - -
+CAS As-l Longitudinal reinforcements * - * - * * - -
+SOFiSTiK2023 3-67ResultViewer-RESULTS|InputandOutputDescription
+Literal Meaning STYP Dim.
+B S C T I D Q
+CASU As-v Shear reinforcements * - - - * * - -
+CCW crack Longitudinal reinforcement for crack width * - * - * * - -
+ULT0 tau0 (design threshold) * - * - * * - -
+Utilisation level of common materials (eg. timber,
+not concrete, structural steel, composit section)
+ULN N Normal force * - * - * * - -
+ULVY Vy Shear force * - - - * * - -
+ULVZ Vz Shear force * - - - * * - -
+ULMT Mtp Torsion (p)rimary * - - - * * - -
+ULMY My Bending * - - - * * - -
+ULMZ Mz Bending * - - - * * - -
+ULMB Mb Warping moment * - - - * * - -
+ULM2 Mts Torsion (s)econdary * - - - * * - -
+Utilisation level of common materials (except con-
+crete)
+SCL Cross section class * - * - * * - -
+CSGC Longitudinal compression * - - - * * - -
+CSGT Longitudinal tension * - * - * * - -
+CSHE tau Shear stress * - - - * * - -
+CSGV sigv Von Mises stress * - - - * * - -
+AS Total reinforcement * - * - * * - cm2
+AS0 Reinforcement layer 0 * - * - * * - cm2
+AS1 Reinforcement layer 1 (below) * - * - * * - cm2
+AS2 Reinforcement layer 2 (above) * - * - * * - cm2
+.... ....
+AS9 Reinforcement layer 9 * - * - * * - cm2
+A0 Total minimum reinforcement * - * - * * - cm2
+A00 Minimum reinforcement layer 0 * - * - * * - cm2
+A01 Minimum reinforcement layer 1 (below) * - * - * * - cm2
+A02 Minimum reinforcement layer 2 (above) * - * - * * - cm2
+.... ....
+A09 Minimum reinforcement layer 9 * - * - * * - cm2
+ASE Shear design error for all layer * - * - * * - -
+ASE0 Shear design error layer 0 * - * - * * - -
+.... ....
+ASE9 Shear design error layer 9 * - * - * * - -
+3-68 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+Literal Meaning STYP Dim.
+B S C T I D Q
+ASEA Shear design error layer 10 * - * - * * - -
+.... ....
+ASEE Shear design error layer 14 * - * - * * - -
+ASU Maximum stirrup reinforcement (including * - * - * * - cm2/m
+torsional stirrups)
+ASU0 Stirrup reinforcement layer 0 (including * - * - * * - cm2/m
+.... torsional stirrups)
+ASU9 Stirrup reinforcement layer 9 * - * - * * - cm2/m
+ASUA Stirrup reinforcement layer 10 * - * - * * - cm2/m
+.... ....
+ASUE Stirrup reinforcement layer 14 * - * - * * - cm2/m
+A0U Maximum stirrup of minimum reinforcement * - * - * * - cm2/m
+(including torsional stirrups)
+A0U0 Stirrup minimum reinforcement layer 0 * - * - * * - cm2/m
+.... (including torsional stirrups)
+A0U9 Stirrup minimum reinforcement layer 9 * - * - * * - cm2/m
+A0UA Stirrup minimum reinforcement layer 10 * - * - * * - cm2/m
+.... ....
+A0UE Stirrup minimum reinforcement layer 14 * - * - * * - cm2/m
+AST Torsion longitudinal reinforcement * - * - * * - cm2/m
+A0T Torsion longitudinal minimum reinforcement * - * - * * - cm2/m
+AST0 Torsional stirrup contribution layer 0 * - * - * * - cm2/m
+.... ....
+AST9 Torsional stirrup contribution layer 9 * - * - * * - cm2/m
+ASTA Torsional stirrup contribution layer 10 * - * - * * - cm2/m
+.... ....
+ASTE Torsional stirrup contribution layer 14 * - * - * * - cm2/m
+A0T0 Torsional stirrup contribution of minimum * - * - * * - cm2/m
+reinforcement layer 0
+.... ....
+A0T9 Torsional stirrup contribution of minimum * - * - * * - cm2/m
+reinforcement layer 9
+A0TA Torsional stirrup contribution of minimum * - * - * * - cm2/m
+reinforcement layer 10
+.... ....
+A0TE Torsional stirrup contribution of minimum * - * - * * - cm2/m
+SOFiSTiK2023 3-69ResultViewer-RESULTS|InputandOutputDescription
+Literal Meaning STYP Dim.
+B S C T I D Q
+reinforcement layer 14
+HVMW Shift rule value, considered in reinforcement * - * - * * - m
+HVMO Shift rule value, not considered in reinforcement * - * - * * - m
+PA Axial bedding forces 2 - - - - - - kN/m2
+PT Lateral bedding forces 2 - - - - - - kN/m2
+PTY Lateral bedding forces in local y 2 - - - - - - kN/m2
+PTZ Lateral bedding forces in local z 2 - - - - - - kN/m2
+3-70 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3.31 QUAD – Results of QUAD Elements
+Seealso: AND,LC
+QUAD
+Item Description Unit Default
+TYPE Type which is supposed to be represented LT -
+see tables below
+STYP Element type LT *
+ELEM Centre of QUAD elements
+NODE Nodes of QUAD elements
+FULL NODE + ELEM
+TOTA Sum of the line representation (cuts) LT -
+see record NODE TOTA
+AVER For the group boundaries (visible as contour lines LT NO
+which are described in record STRU) some results
+exist in the nodes of the boundary elements.
+NO doesnotaveragetheresults,thatisaresult
+jump
+YES does average the results
+REPR Type of the representation LT *
+DIAG Diagram representation
+DSTR Structure representation
+see record STRU REPR
+FILL Fill type LT NO
+see record STRU FILL
+UNIT Scaling of the length of a representation −/cm/LT DEFA
+see record STRU UNIT
+SCHH Text height cm/LT 0.16
+see record STRU SCHH
+The items TOTA and AVER are not used yet.
+Structure values of area elements, e.g. thickness, are plotted with record STRU.
+The following literals are possible for QUAD TYPE after a calculation with the programs ASE /
+SOFiSTiK2023 3-71ResultViewer-RESULTS|InputandOutputDescription
+DYNA / TALPA (SYST PESS):
+Internal forces and moments
+TYPE Meaning Dim.
+BM Bending moments in local directions kNm/m
+MX Bending moment in local x kNm/m
+MY Bending moment in local y kNm/m
+MXY Twisting moment in local xy kNm/m
+N Membrane forces in local directions kN/m
+NX Membrane force in local x kN/m
+NY Membrane force in local y kN/m
+NXY Membrane shear force in local xy kN/m
+BV Shear forces in local directions (sign) kN/m
+VX Shear force in local x (considered with sign) kN/m
+VY Shear force in local y (considered with sign) kN/m
+AVX Shear force |v-x| kN/m
+AVY Shear force |v-y| kN/m
+Shear forces of QUAD nodes are stored in the database twice. At first with signs, in order to
+be able to represent it also graphically. Furthermore as an absolute value ( |vx|,|vy|), in order
+tobeabletodeterminatethemaximumshearforceswithprogramMAXIMA(duetosingleand
+line loads) for the design. Both values (in each case in X and Y direction) are offered here.
+Stresses
+TYPE Meaning Dim.
+In the depth Xi (N/AM/W)
+HSXI Plane principal stresses kN/m2
+SIXI Plane stress I kN/m2
+SIIX Plane stress II kN/m2
+NSXI Stresses in local directions kN/m2
+SXXI Stress in local x kN/m2
+SYXI Stress in local y kN/m2
+TXYX Membrane shear stress xy kN/m2
+Upper (N/A-M/W)
+HSU Plane principal stresses kN/m2
+SIU Plane stress I kN/m2
+SIIU Plane stress II kN/m2
+NSU Stresses in local directions kN/m2
+SXU Stress in local x kN/m2
+3-72 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+TYPE Meaning Dim.
+SYU Stress in local y kN/m2
+TXYU Membrane shear stress xy kN/m2
+Lower (N/A+M/W)
+HSL Plane principal stresses kN/m2
+SIL Plane stress I kN/m2
+SIIL Plane stress II kN/m2
+NSL Stresses in local directions kN/m2
+SXL Stress in local x kN/m2
+SYL Stress in local y kN/m2
+TXYL Membrane shear stress xy kN/m2
+In the middle (N/A)
+HSM Plane principal stresses kN/m2
+SIM Plane principal stress I kN/m2
+SIIM Plane principal stress II kN/m2
+NSM Stresses in local directions kN/m2
+SXM Stress in local x kN/m2
+SYM Stress in local y kN/m2
+TXYM Membrane shear stress in xy plane kN/m2
+In Result Viewer the stresses may be calculated from the internal forces and moments:
+N M
+σ = ±
+A W
+The principal stress I is the maximum stress (maximum tensile stress). The principal stress II
+is the minimum stress (maximum pressure stress).
+ItispossibletocalculatethestressesinadefineddepthX overtheelementthicknesswiththe
+TYPEs HSXI, SIXI, SIIX, NSXI, SXXI, SYXI and TXYX. X is defined via record LC XI.
+Equivalent stresses
+TYPE Meaning Dim.
+Over the whole thickness (N/A ± M/W)
+SV Maximum equivalent stress kN/m2
+In the depth X (N/A ± M/W)
+SVXI Equivalent stress kN/m2
+IS1X Stress mean value (1st invariant) kN/m2
+IS2X Stress deviator (2nd invariant) kN/m2
+Upper (N/A-M/W)
+SVU Equivalent stress kN/m2
+SOFiSTiK2023 3-73ResultViewer-RESULTS|InputandOutputDescription
+TYPE Meaning Dim.
+IS1U Stress mean value (1st invariant) kN/m2
+IS2U Stress deviator (2nd invariant) kN/m2
+Lower (N/A+M/W)
+SVL Equivalent stress kN/m2
+IS1L Stress mean value (1st invariant) kN/m2
+IS2L Stress deviator (2nd invariant) kN/m2
+In the middle (N/A)
+SVM Equivalent stress kN/m2
+IS1M Stress mean value (1st invariant) kN/m2
+IS2M Stress deviator (2nd invariant) kN/m2
+Equivalent stresses are calculated in 2D (QUAD elements) via formula following:
+(cid:114)
+= σ2 + σ2 − σ ·σ + 3·τ2
+ y  y y
+Equivalent stresses are calculated in 3D (BRIC elements) via formula following:
+(cid:118)
+(cid:117)(σ −σ )2 + (σ −σ )2 + (σ −σ )2
+=(cid:116)  y y z z  + 3·(τ2 +τ2 +τ2 )
+2 y yz z
+The maximum equivalent stress is calculated in 10 steps over the element thickness. It will
+used the maximum value of these 10 steps.
+The 1st invariant is the average value:
+σ +σ
+ y
+=
+2
+The 2nd invariant is calculated via the formula following:
+= σ ·σ + τ2
+ y y
+It is possible to calculate the stress in a defined depth X over the element thickness with the
+TYPEs SVXI, IS1X and IS2X. X is defined via record LC XI.
+Bedding stresses
+TYPE Meaning Dim.
+P Bedding stresses kN/m2
+PTT Total of tangential bedding stresses (after ASE, DYNA) (with- kN/m2
+out direction)
+Stresses from database
+The following literals are possible for TYPE after a calculation with the program TALPA (SYST
+3-74 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+PAIN , AXIA):
+Literal Meaning Dim.
+NS Stresses in local directions kN/m2
+SX Stress in local x kN/m2
+SY Stress in local y kN/m2
+SZ Stress in local z kN/m2
+TXY kN/m2
+Design stresses from database
+The following literals are possible for TYPE after a stress calculation according to theory of
+elasticity (with the program BEMESS):
+Literal Meaning Dim.
+SMIU Upper minimum stresses N/mm2
+SMAU Upper maximum stresses N/mm2
+SMIL Lower minimum stresses N/mm2
+SMAL Lower maximum stresses N/mm2
+TAUM Minimum shear stresses N/mm2
+VSMA Maximum v.Mieses stress N/mm2
+VSMU Upper v.Mieses stress N/mm2
+VSML Lower v.Mieses stress N/mm2
+Layer stresses
+ThefollowingliteralsarepossibleforTYPEafteracalculationofQUADlayerelementswiththe
+program ASE:
+Literal Meaning Dim.
+HSLA Plane principal stresses kN/m2
+SILA Plane stress I kN/m2
+SIIA Plane stress II kN/m2
+NSLA Stresses in local directions kN/m2
+SXLA Stress in local x kN/m2
+SYLA Stress in local y kN/m2
+TXLA Membrane shear stress xy kN/m2
+VXLA Plate shear stress vx kN/m2
+VYLA Plate shear stress vy kN/m2
+IS1A Stress mean value (1st invariant) kN/m2
+IS2A Stress deviator (2nd invariant) kN/m2
+SOFiSTiK2023 3-75ResultViewer-RESULTS|InputandOutputDescription
+It is possible to calculate the stress in a defined depth X over the element thickness. X is
+defined via record LC XI.
+Stresses in layers are interesting mainly for laminated glass or laminated timber (see AQUA
+manual, item FLAY).
+Reinforcements
+The following literals are possible for TYPE after a calculation with the program BEMESS:
+TYPE Meaning Dim.
+ASU Upper reinforcement cm2/m
+ASUH Upper principal reinforcement cm2/m
+ASUQ Upper transverse reinforcement cm2/m
+ASUI Upper 3rd reinforcement layer cm2/m
+ASL Lower reinforcement cm2/m
+ASLH Lower principal reinforcement cm2/m
+ASLQ Lower transverse reinforcement cm2/m
+ASLI Lower 3rd reinforcement layer cm2/m2
+ASSB Stirrup reinforcement cm2/m2
+ASSE Stirrup reinforcement/element cm2
+TAU0 Design shear stress tau=V/(b·z) or tau=V/(b·d) N/mm2
+ZMIN Minimum lever arm m
+VEDR max.VED / VRDmax -
+VSD Maximum design shear force VSD kN
+COTT Maximum cot-theta -
+After a strain calculation (SLS):
+CPU Maximum top SLS design concrete pressure N/mm2
+CPL Maximum bottom SLS design concrete pressure N/mm2
+Representation as Tensor / Vector (REPR DVEC,DARE,DREP,DTXT):
+• A line in the corresponding length is drawn in its real size in the two projected directions
+for some values. Negative values get short limit lines for the differentiation. The value is
+measurable as long as the effect direction is not perpendicular to the drawing sheet.
+• Allother(single)valuesaredrawnintheireffectivedirection. Alsoisolines,cutsandfillarea
+are possible here.
+Representation at Isolines (REPR DISO)
+The isolines are calculated one element at a time from the nodal values and drawn.
+The isolines are defined within each element with a hyperbola. The lines are straight, if the
+part of the hyperbola is small.
+3-76 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3.32 BRIC – Results of Volume Elements
+Seealso: AND,LC
+BRIC
+Item Description Unit Default
+TYPE Type which is supposed to be represented LT -
+see tables below
+STYP Element type LT *
+ELEM Centre of BRIC elements
+NODE Nodes of BRIC elements
+FULL NODE + ELEM
+TOTA Sum of the line representation (cuts) LT -
+see record NODE TOTA
+AVER For the group boundaries (visible as contour lines LT NO
+which are described in record STRU) some results
+exist in the nodes of the boundary elements.
+NO doesnotaveragetheresults,thatisaresult
+jump
+YES does average the results
+REPR Type of the representation LT *
+DIAG Diagram representation
+DSTR Structure representation
+see record STRU REPR
+FILL Fill type LT NO
+see record STRU FILL
+UNIT Scaling of the length of a representation −/cm/LT DEFA
+see record STRU UNIT
+SCHH Text height cm/LT 0.16
+see record STRU SCHH
+The items TOTA and AVER are not used yet.
+Structure values of volume elements, e.g. material numbers, are plotted with record STRU.
+The following literals are possible for BRIC TYPE after a calculation with the programs TALPA
+SOFiSTiK2023 3-77ResultViewer-RESULTS|InputandOutputDescription
+/ ASE:
+Records Meaning Dim.
+Spatial (3D) stresses:
+NS Stresses in global directions kN/m2
+SX Stress in global X kN/m2
+SY Stress in global Y kN/m2
+SZ Stress in global Z kN/m2
+TXY Shear stress tau xy kN/m2
+TXZ Shear stress tau xz kN/m2
+TYZ Shear stress tau yz kN/m2
+3-78 SOFiSTiK2023InputandOutputDescription|ResultViewer-RESULTS
+3.33 RSET – Result Sets
+RSET
+Item Description Unit Default
+ID Identifier LT4 !
+REPR Type of the representation LT -
+DIAG Diagram representation
+DLST Text list
+SOFiSTiK2023 3-79ResultViewer-RESULTS|InputandOutputDescription
+3-80 SOFiSTiK2023DescriptionoftheOutputLists|ResultViewer-RESULTS
+4 Description of the Output Lists
+Structural values as well as results can be output as tables. Some values can be output as
+graphics. For the list output the item REPR DLST for the records STRU, CROS, NODEx,
+BEAM, QUAD, BRIC or RSET has to be selected. Using the interactive Result Viewer, the
+table has to be selected in the representation tree.
+A table includes the title / description of the listed values and the table of the values.
+The form of the table depends on the record DBO.
+Additional information (columns) are displayed to localize the selected values. This is the load
+case number (LC) for load case depending values, the design case number (DC) or the cross
+section number (Sect). More columns are created for the various element types:
+Cross sections (CROS)
+IntId Enumerated number of cross section element
+Type Type of cross section element
+Name Description of cross section element
+Nodes (NODE)
+NR Node number
+Cinematic constraint
+NR Node number
+Boundary
+NR Boundary number
+NK Node number
+Beam elements (BEAM STYP BEAM)
+NR Beam number
+X Beam abscissa
+Truss elements (BEAM STYP TRUS)
+NR Truss element number
+SOFiSTiK2023 4-1ResultViewer-RESULTS|DescriptionoftheOutputLists
+Cable elements (BEAM STYP CABL)
+NR Cable element number
+Spring elements (BEAM STYP SPRI)
+NR Spring element number
+Middle of area elements (QUAD STYP ELEM)
+NR Number of area element
+Nodes of area elements (QUAD STYP NODE)
+NR Node number
+NG Group number of area element
+Middle of volume elements (BRIC STYP ELEM)
+NR Number of volume element
+Nodes of volume elements (BRIC STYP NODE)
+NR Node number
+NG Group number of volume element
+Structural point (STRU ETYP GPT)
+GPT Description of structural point
+Structural line (STRU ETYP GLN)
+GLN Description of structural line
+Structural area (STRU ETYP GFA)
+GFA Description of structural area
+4-2 SOFiSTiK2023DescriptionoftheOutputLists|ResultViewer-RESULTS
+Structural volume (STRU ETYP GVO)
+GVO Description of structural volume
+SOFiSTiK2023 4-3

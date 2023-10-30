@@ -1,0 +1,1310 @@
+DECREATOR
+Generation of Design Elements
+SOFiSTiK | 2023DECREATOR
+GenerationofDesignElements
+DECREATORManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|DECREATOR
+Contents
+Contents i
+1 Design Elements 1-1
+1.1 Transfers from Beam Elements. . . . . . . . . . . . . . . . . . . . . . . . . . . 1-1
+1.1.1 Transfer of loads . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-2
+1.1.2 Transfer of forces . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-2
+1.1.3 Transfer of tendon geometry. . . . . . . . . . . . . . . . . . . . . . 1-3
+1.2 Transfers from Quad Elements . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-3
+1.2.1 Interpolation of forces . . . . . . . . . . . . . . . . . . . . . . . . . . 1-3
+1.2.2 Transformation of forces . . . . . . . . . . . . . . . . . . . . . . . . 1-5
+1.2.3 Integration of forces . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-6
+1.2.4 Prestressed Quads . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-8
+1.3 Transfers from Volume Elements. . . . . . . . . . . . . . . . . . . . . . . . . . 1-9
+1.3.1 Interpolation of stresses . . . . . . . . . . . . . . . . . . . . . . . . 1-9
+1.3.2 Integration of forces . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-10
+1.4 Cross Sections . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-12
+1.5 Intended Workflow. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-14
+1.6 Use Cases. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-14
+1.6.1 Beam element models . . . . . . . . . . . . . . . . . . . . . . . . . 1-14
+1.6.2 Quad element models. . . . . . . . . . . . . . . . . . . . . . . . . . 1-16
+1.6.3 Hybrid models. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-17
+1.6.4 Seismic design . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-17
+2 Input Description 2-1
+2.1 Input Language . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.2 Input Records. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.3 DSLN – Design Element along SLN . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.3.1 Examples. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-3
+2.4 DGEO – Geometry of design element . . . . . . . . . . . . . . . . . . . . . . 2-5
+2.4.1 Examples. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-6
+2.5 DSEL – Element selection. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-8
+2.5.1 Examples. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-9
+2.6 DSLC – Design sections along the design element . . . . . . . . . . . . . . 2-10
+2.7 LC – Selection of load cases . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-13
+2.8 GRP – Assignment of Groups . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-14
+2.9 DDEL – Element Deletion . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-16
+2.9.1 Examples. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-16
+2.10 ECHO – Control of output . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-17
+2.11 CTRL – Control of calculation . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-18
+Bibliography 2-21
+SOFiSTiK2023 iDECREATOR|Contents
+ii SOFiSTiK2023DesignElements|DECREATOR
+1 Design Elements
+TheprogramDECREATORgeneratesthesocalleddesignelementsalongstructuralmembers.
+Design elements are independent of a member’s finite element discretization and help define
+design sections at any chosen position along a structural line. For instance, shear force can
+be obtained at user-defined sections positioned at offsets from supporting faces of a beam,
+whether or not nodal results from finite elements are available at these positions.
+In other words, design elements enable designing at the level of structural lines, which rep-
+resent structural members, rather than at finite element levels. DECREATOR, therefore, en-
+hances subsequent design procedures (i.e. in AQB) by using definitions and analysis results
+from other SOFiSTiK program modules and transfering finite-element results to design sec-
+tions.
+In the following section, the methods behind the transfers, concerning beam and quadrilateral
+(quad)finiteelements,arebrieflydiscussedfirst. Next,emphasisisgivenondesignelements’
+behaviour regarding cross sections, which are important for design. Then a short overview
+about the role of DECREATOR in a typical design workflow, supplemented with application
+procedures for typical use cases are covered. At the end of this chapter, some limitations of
+the program modul are stated.
+1.1 Transfers from Beam Elements
+The application of design elements for structures modelled with beam finite elements involves
+transfer of applied loads, interpolation of the analysed internal actions and, whenever appli-
+cable, interpolation of the geometry of pre-stressing tendons from nodes to design sections.
+Trasfer from beam elements along a single structural line are shown in schematic diagram of
+Fig. 1.1. However, multiple structural lines that are arbitrariliy aligned in space can also be
+intersected by a design section plane and their forces transferred to a single design element.
+Brief explanation for each transfer procedure is given in the following.
+Design
+Cross-section
+Beam Elements
+Design Section
+Transfer
+Structural Line
+Design Element
+Figure1.1: Transferoffiniteelementresultsfromaloadedbeamtoitsdesignelement
+SOFiSTiK2023 1-1DECREATOR|DesignElements
+1.1.1 Transfer of loads
+Loads applied on structural members are directly transferred from finite element nodes to cor-
+respondingsectionsofthedesignelementwithoutinterpolatingatexplicitdesignsections. The
+sections for loads are automatically created so that they are positioned on the design element
+identical to the nodes. However, the coordinates of the sections are measured from the start
+ofthedesignelementincontrasttothoseofthenodeswhicharedefinedreferringtheoriginof
+thelocalcoordinatesoftheindividualfiniteelements. Thisprocedureoftransferringloadsfrom
+nodes to sections is carried out for each load case separately and is then accordingly stored
+in the database.
+1.1.2 Transfer of forces
+After analysis, all internal actions corresponding to each load case are available in the
+database to be interpolated at design sections, namely the normal and shear forces, bending,
+torsional and warping moments, and deformations and rotations. The interpolation method for
+eachvariableatasectioncaneitherbelinearorcubic,thebasicsofwhicharepresentednext.
+Interpolation
+Interpolationsareusedtotransfersectionalvaluessuchasforcesanddisplacementsatdesign
+sections of a structural member from known values from neighbouring finite element nodes.
+Two methods are implemented in DECREATOR to determine sectional values, i.e. linear and
+cubic interpolation. Cubic interpolation is used whenever the linear one is inadequate for the
+amount of variables intended to incorporate.
+Linear interpolation is applied where the interpolant, i.e.  s in eq. 1.1, can be chosen as
+a linear function of the remaining known values. This method is adequate for interpolating
+sectional variables whose derivatives are not of interest, and is used in computing sectional
+values such as normal force, shear force, torsional and warping moments. It is stated in its
+classical form as:
+ −
+2 1
+ s = 1+ ·( s− 1) (1.1)
+ −
+2 1
+Forhigherorderinterpolations,cubicsplinesorHermitepolynomialsareappliedinapiecewise
+manner. Thisappliestobendingmoments,rotationsanddisplacementsinthelongitudinaland
+transversal axes. The following instance of the cubic function U(t) in eq. 1.2 interpolates a
+displacement   at a point t|0 ≤ t ≤ 1 along a beam’s longtudinal axis based on the nodal
+displacements  0 and  1, while also accounting for nodal rotations r 0 and r 1.
+U(t)=(2t3−3t2+1)· 0+(t3−2t2+t)·r 0·+(−2t2+3t2)· 1+(t3−t2)·r 1· (1.2)
+where t=( s− 1)/ and = 2− 1.
+Each one of the two interpolation methods and the internal actions to which they are applied
+are listed in table 1.1.
+1-2 SOFiSTiK2023DesignElements|DECREATOR
+Value Linear Cubic
+Normal force N
+Shear force V y,V z
+Warping Moment M b
+Torsion M t
+Deformation local  
+Rotation local θ 
+Deformation local  y, z
+Rotation local θ y,θ z
+Tendon coordinates θ y,θ z
+Tendon slope θ y,θ z
+Duct coordinates θ y,θ z
+Table1.1: Interpolationmethods
+The follwoing force components of a beam element are not transferred to a design element:
+twisting moments, 3rd torsional moments and all forms of beddings.
+1.1.3 Transfer of tendon geometry
+Tendons that are defined using the customary way in SOFiSTiK (see manual tendon) have
+their geometrical information stored at associated finite element nodes. Their characteristic
+geometrical properties are their coordinates and slopes along their length. With design el-
+ements, these values can also be obtained at any given design section. Consequently, the
+geometry of tendon’s duct can also be determined.
+1.2 Transfers from Quad Elements
+When a structural member is modelled using quad elements, design elements can be used to
+treat it as a unit member analogous to a beam member and compute internal actions at any
+positionalongthelongitudinalaxis. Thecomputationinvolvesinterpolationofforcesfromquad
+elementnodestodesignsections,whichoccursattheintersectionbetweenthequadelements
+and a design section (see Fig. 1.2), and integration of internal forces at each design section.
+In addition, a user defined cross section can be assigned to the member for design.
+1.2.1 Interpolation of forces
+Whenadesignsectioniscreated,animaginaryplaneisdefinedbyitspositionandtheperpen-
+dicularlinealongthelongitudinalaxisofthedesignelement. Wheneverthisplanecutsthrough
+quad elements, the intersection line forms two end points at the two cut edges of each quad
+element (see Fig. 1.2). The sectional values at these end points need to be then interpolated
+fromeachoftheGausspointsornodes. BydefaultDECREATORusesnodalvaluesforthisbut
+valuesatGausspointscanalsobeused. Hence,foranypoint(r ,s )withinaquadelement,the
+contributions of all four nodal or Gauss point values are considered here for the interpolation
+whichisaccountedthroughabilinearshapefunctionN(r ,s ). Thisshapefunctionisrelatedto
+a node  and is given in the quad element’s natural coordinates (−1 ≤ r ≤ 1) & (−1 ≤ s ≤ 1)
+SOFiSTiK2023 1-3DECREATOR|DesignElements
+N
+Quads SL
+/
+nt
+e
+Design m
+e
+El
+Section / cut
+n
+g
+si Intersecting
+e
+D
+Plane
+Intersections
+at Quad edges
+Figure1.2: DesignelementforaT-beammodelledusingquadelements
+by:
+N (r,s)=c ·(r−1)·(s−1) (1.3)
+3
+4
+N (1,1)
+1
+s
+2
+1
+r
+Figure1.3: Shapefunctionofaquadelementfornode1
+Setting the first shape function to unity (N 1 = 1) at the first node (r = s = 1, see Fig. 1.3) in
+equation1.3resultsintheconstantc 1 =1/4. Similarly,evaluatingthefunctionatallfournodes
+of a typical quad element yields the following shape functions associated with each node:
+1
+N 1 = ·(r−1)·(s−1) (1.4)
+4
+1-4 SOFiSTiK2023DesignElements|DECREATOR
+1
+N 2 =− ·(r+1)·(s−1) (1.5)
+4
+1
+N 3 = ·(r+1)·(s+1) (1.6)
+4
+1
+N 4 =− ·(r−1)·(s+1) (1.7)
+4
+The influences of all nodal values on the value at any point of interest, i.e. U(r,s), can then
+be computed by superposing the shape functions of all four nodes, each multiplied with the
+intended nodal value  , that is:
+4
+(cid:88)
+U(r,s)= N (r,s)·  (1.8)
+=1
+The interpolation described above applies for all quad elements intersected by a section. In
+the end, there will be a set of pairs of points over the sectional plane over which integration
+canbefurthercarriedout. Thesameproceduredescribedsofarappliestoalldesignsections
+overadesignelement,therebytransferringfiniteelementanalysisresultsobtainedusingquad
+elements to the intended design element, which can ultimately be treated as a beam element.
+1.2.2 Transformation of forces
+Since interpolation of all force components (normal, shear & bending) are carried out in each
+quad’s local coordinate system, they must be transformed to the cutting design section’s co-
+ordinate system so that they represent the internal actions of the design element. In order
+to do so, the resultant force vector of each component is first calculated at each interpolated
+point (quad edge-to-section intersection) by projecting the force components onto a vector t n
+normal to the cutting section. This is illustrated in Fig. 1.4. Equation 1.9 states this projection
+within a quad plane with zero force component along a zero thickness. Then in the form of
+equation 1.10, the quad-local resultant ƒ is multiplied with the transformation matrix of the
+q
+designelement t d,whichmapsanygivenvectorfirsttotheglobalcoordinatesystemandthen
+intothelocalcoordinateofthedesignelement, i.e. resultingintheresultantforcevectorofthe
+designsection ƒ whichisperpendiculartothesectionplane. Consequently,tworesultants ƒ1
+d d
+ƒ2
+and in the design section coordinate are obtained per quad element at the two intersected
+d
+ends.
+    
+n n 0 t ƒ
+ y n q
+ n y n y 0  t ny = ƒ qy =ƒ q (1.9)
+    
+  0 0 ƒ
+ y qz
+SOFiSTiK2023 1-5DECREATOR|DesignElements
+Transformation
+y y'
+2 Design element f2
+n ,n n ,n q
+x xy y xy x x'
+1
+n ,n
+v x,v y n ,n y xy t n
+x xy
+f1
+Design section / cut v ,v q
+x y
+Figure1.4: Forcecomponentstobecombinedintoalocalresultantvector
+    
+t t t ƒ ƒ
+1 y1 z1 q 
+t d×ƒ q = t 2 t y2 t z2  ƒ qy = ƒ y =ƒ d (1.10)
+    
+t t t ƒ ƒ
+3 y3 z3 qz z
+1.2.3 Integration of forces
+After sectional values of each quad are interpolated from nodal values and their resultant
+transformed to design element coordinates, the internal forces for the section as a whole,
+particularly the bending moment, shear and normal forces are to be obtained by integration.
+Figure1.5illustratestheinternalforcesandtheresultingmomentatasectionacrossaT-beam
+member.
+Theintegrationofthemomentatasectionisderivedfromthebasicmoment-forcerelationship,
+which is:
+(cid:90) 
+M yy = ƒ (t)·z(t)dt (1.11)
+0
+where ƒ (t) is the membrane normal force component in the design element’s x-axis direction
+and z(t) is the coordinate of a point on the design section measured in the sectional (design
+element’s) z-axis. Both variables are functionsof a scalar distance t measured (from node  to
+node j) along the length  of the element of interest. This is further illustrated in figure 1.5.
+Warping moment is not integrated by default, since the current experimental implementation
+does not guarantee accurate results for all section geometries. It can however be activated
+Using the option CTRL WARP YES. The warping moment W , which results from the longitu-
+dinal warping stresses in the quad elements and referred to as Warping Torsion Mb in beam
+elements (see ASE manual section 2.3.3), is integrated as:
+(cid:90) 
+W  = ƒ (t)·z(t)·y(t)dt (1.12)
+0
+1-6 SOFiSTiK2023DesignElements|DECREATOR
+x
+y
+z
+A
+Myy
+f1
+dx zz
+11
+A z
+2
+f2 t
+dx l i
+i
+Figure1.5: Elementnormalforcesatadesignsectionindesignelement’sx-axis
+Using the linear relationships: ƒ (t) = ƒ 1+(ƒ 2−ƒ 1)·(t/) and z(t) = z 1+(z 2−z 1)·(t/); the
+evaluation of the integral in equation 1.11 results in the following moment about the design
+element’s y-axis:
+ 
+n (cid:32)ƒ1 ·Z +ƒ2 ·Z (cid:33) (cid:32)ƒ1 ·Z +ƒ2 ·Z (cid:33)
+MA yy =(cid:88)  , 1 3 , 2 + , 2 6 , 1 ·  (1.13)
+=1
+where  counts up to the number of intersected quad elements n. The bending moment in
+equation 1.13 results from membrane normal force components of the resultants in each in-
+tersected quad element. The moment arms of all forces are measured either from the axis
+passing through the center of gravity of the member’s cross-section (by default) labelled as
+A-AinFig. 1.5orfromthedesignelementitselfifitischosenasthereferenceusingtheDSLN
+FREF command.
+In addition to the moments from the normal force components, the membrane moments i.e.
+m , m yy and m y, at the intersection points are also integrated and added to result in the
+total moment at a design section. After the transformation of these moments to the design
+element’slocalcoordinateisdoneasdescribedpreviously,theintegrationfollowsthefollowing
+form:
+n  M1 +M2 
+MB yy =(cid:88)  yy, 2 yy, ·  (1.14)
+=1
+At a given section, the total moment M yy about the y-axis of the design element will then ulti-
+matelybethesumofmomentsresultingfrommembranenormalforcesandthequadmoments
+SOFiSTiK2023 1-7DECREATOR|DesignElements
+interpolated from Gauss points or nodes, i.e.:
+M yy =MA yy+MB yy (1.15)
+Similartothederivationofthemomentsfromtheresultantforcecomponents,theshear V y,V z
+and normal forces N at an intersected quad element are integrated from their corresponding
+resultants. That is:
+(cid:90)  (cid:32)ƒ2 −ƒ1 (cid:33)
+V y,z = ƒ y,z(t)dt here ƒ y,z(t)=ƒ y1 ,z+ y,z y,z ·t (1.16)
+
+0
+(cid:90)  (cid:32)ƒ2−ƒ1(cid:33)
+N= ƒ (t)dt here ƒ (t)=ƒ 1+   ·t (1.17)
+
+0
+Evaluatingtheaboveequationsandsummingupforcesforthewholedesignsectionthatinter-
+sects n quad elements results in:
+n  ƒ1 +ƒ2  n (cid:32)ƒ1 +ƒ2 (cid:33)
+(cid:88) y, y, (cid:88) z, z,
+V y =  ·  nd V z = ·  (1.18)
+2 2
+=1 =1
+n (cid:32)ƒ1 +ƒ2 (cid:33)
+(cid:88) , ,
+N= ·  (1.19)
+2
+=1
+After the computations described above, a design element defined along a member out of
+quad elements has its internal actions transferred to its design sections similar to a typical
+beam element (i.e. normal force, shear forces & bending moments). It can then be designed
+as a regular beam element.
+1.2.4 Prestressed Quads
+When a certain quad element representing concrete has a prestressing tendon, the effect of
+theresultingholeisaccountedforbythedesignelementatPrestressingandCreep+Shrinkage
+difference (between two consecutive construction stages) load cases. This is because, unlike
+beam elements, forces of these load cases stored by ASE represent the full cross section of a
+prestressedquad,whiletheyinfact,actonlyontheconcretepart. Theforcedifferenceorloss
+due to a hole is however calculated and stored for each tendon segment. Therefore, this force
+istransformedfromquad-localtodesignelementsectionalcoordinatesanddeductedfromthe
+sectional forces component wise.
+The deduction occurs by default automatically (i.e. for CTRL TEND AUTO), since the two
+1-8 SOFiSTiK2023DesignElements|DECREATOR
+difference load cases can be internally recognized if they are created by CSM.
+The other main consideration when transferring forces from prestressed quads is to add the
+force carried by the tendon at each design section. This applies always when the control
+setting CTRL TEND YES is used, and only for those CSM’s difference-load-cases other than
+Prestressing and Creep+Shrinkage when CTRL TEND AUTO is used. This is because, for
+design in AQB at these two load cases, only the concrete part is relevant. To calculate tendon
+forces at each quad cut, the tendon forces are first transformed to sectional coordinates and
+subject to a component wise sectional summation. The deduction mentioned above is also
+accounted for implicitly by the summation, since the hole-losses come included in the tendon
+forces.
+1.3 Transfers from Volume Elements
+Similar to the quad finite elements, the volume elements (i.e. Hexahedra and Tetraheda) can
+be selected, their stresses integrated and transferred to a design element. After a mandatory
+selectionmethodissetperadesignelement,interpolationsateachsectionarefirstcalculated
+for the stresses. Theoretical principles, formulations and numerical constants used in the im-
+plementation of this section were adopted from Zienkiewicz and Taylor [1] and Solin, Segeth,
+and Dolezel [2].
+1.3.1 Interpolation of stresses
+At a section cutting through a set of volume elements, all internal stresses are interpolated
+from the values at the nodes or Guass points (for CTRL GAUS YES) to the points of intersec-
+tions with the cutting plane. This is computed using the isoparametric shape functions for a
+NH
+hexahedron element , which can be compactly stated as:
+
+1
+NH = 8(1+ξξ )(1+ηη )(1+μμ ), (1.20)
+
+where ξ, η and μ are the natural coordinates of the th node. For instance, expanding this for
+the first node would result:
+1
+NH(ξ,η,μ)= (1−ξ)(1−η)(1−μ)
+1 8
+The stress tensor at either one of the intersection points on the cutting plane (ξ p,η p,μ p) is
+then computed from the 8 nodal or Gauss values as:
+8
+σ =σ(ξ p,η p,μ p)=(cid:88) NH (ξ p,η p,μ p)σ (1.21)
+p  
+=1
+SOFiSTiK2023 1-9DECREATOR|DesignElements
+1.3.2 Integration of forces
+Integration over any polygonal area can be calculated by forming traingular sub-divisions from
+the vertices, and summing the individual triangular integrals. This is applied to determine the
+resultantforceatacutthroughastressedvolumefiniteelement. Hencethecut,whichcanform
+polygonsrangingfromtriangletoahexagonforallpossiblesectionalinclinations,isdividedinto
+triangular areas. The stress distribution over these subdivisions is then integrated to give the
+resultant at each traingle. Each resultant, is then vectorially summed to find the force in the
+cuting plane (design section) coordinates. This procedure is applied on all volume elements
+intersected by a design section to finally result in internal forces of a design element at any
+given section.
+The stress distrbution of a single triangular subdivision is represented by the values at its ver-
+tices, i.e. each intersection point stresses σ . These stresses resulting from the previously
+p
+discussed intepolation step have to be first transformed from the volume element’s to design
+section’s coordinate system, and secondly represented as a resultant force at the intersection
+point. An operation that carries out both computations simultaneously is the vectorial multipli-
+cation of the stress tensor with the sectional normal n:
+f p =σ p×n (1.22)
+The vector n is the component of the volume-to-sectional transformation matrix, which is nor-
+mal to the design section. All force vetors f p, at the vertices of triangular sub-division or
+intersection points :1≤≤3 are then computed in such manner.
+At a general triangular area A, the resultant force f A is sought as an integral of the force
+distribution function:
+(cid:90) (cid:90)
+f A = F A(,y)ddy (1.23)
+A
+Since the numerical integration takes place on a standard triangle A st with the natural coordi-
+nates 0 ≤ ξ,η ≤ 1, the forces f p, have to be mapped from general to standard coordinates.
+This is carried out by multiplying the integral with the Jacobian of the transformation matrix in
+the natural ξ−η coordinates as:
+(cid:90) (cid:90) (cid:90) (cid:90)
+F A(,y)ddy= F A(P(ξ,η),Q(ξ,η))|J(ξ,η)|dξdη, (1.24)
+A A
+st
+where the coordinate mappings from general to standard are given using the triangular shape
+1-10 SOFiSTiK2023DesignElements|DECREATOR
+NT
+functions as:
+
+3 3
+=P(ξ,η)=(cid:88)  NT (ξ,η) y=Q(ξ,η)=(cid:88) y NT (ξ,η) (1.25)
+ 
+=1 =1
+After performing the corresponding partial derivatives of the above equations (1.25) and the
+subsequent determinant operation, the Jacobian J of the transformation from general to stan-
+dard coordinates can be expressed in terms of the magnitude of the triangular area  as:
+(cid:12) (cid:12)
+(cid:12)∂(,y)(cid:12) (cid:12)∂ ∂y (cid:12)
+J(ξ,η)=(cid:12) (cid:12) (cid:12) (cid:12)=(cid:12) (cid:12)∂ξ ∂ξ(cid:12) (cid:12)=2 (1.26)
+(cid:12)∂(ξ,η)(cid:12) (cid:12)∂ ∂y(cid:12)
+(cid:12)∂η ∂η(cid:12)
+Moreover, a force at any point F st(ξ,η) in the standard triangular area A st is approximated
+usingtheforcesattheverticesf p, andthecorrespondinglineartraingularshapefunctionsNT  :
+3
+F st(ξ,η)≈(cid:88) f p,NT (ξ,η) (1.27)
+
+=1
+This substitutes the general force distribution function F A(,y) in the integral 1.24.
+The nodal shape functions for the linear 3-node triangle are given by the polynomials:
+N 1(ξ,η)=1−ξ−η N 2(ξ,η)=ξ N 3(ξ,η)=η (1.28)
+The general expression of the Gaussian integral of a standard triangle A st with order n g is
+defined in [1] as:
+(cid:90) (cid:90) 1 m
+(cid:88)
+g(ξ,η)dξdη≈  g(ξ ,η ), (1.29)
+2
+A st =1
+where m = 2n g−1 is the number of quadrature points at the coordinates (ξ ,η ), and   are
+the corresponding weights. Using this for the force vectors at the quadrature points f  mapped
+by the Jabian to the general traingle A results:
+(cid:90) (cid:90) 1 m
+(cid:88)
+f A = F A(,y)ddy≈  F st(ξ ,η )|J(ξ,η)|. (1.30)
+2
+A =1
+The force at the quadrature points (ξ ,η ) is interpolated component-wise from the resutlants
+f p, at the three intersection points using the triangular shape functions. Applying this interpo-
+SOFiSTiK2023 1-11DECREATOR|DesignElements
+lation and equation 1.26 results in the integrated resultant force f A over the general triangle
+A:
+m m (cid:32) 3 (cid:33)
+f A ≈ (cid:88)  kF st(ξ k,η k)= (cid:88)  k (cid:88) f p,NT  (ξ k,η k) (1.31)
+k=1 k=1 =1
+Sincetheusedtraingluarshapefunctionsarepolynomialsof1st order,aGaussianquadrature
+rule of order n g = 1 is sufficient for an exact traingular integral of the forces. This leads to
+an implementation with m = 1: one quadrature point (ξ 1,η 1) = (1/3,1/3) with a correspond-
+ing weight of  1 = 1.0. With this numerical values, the resultant at a triangular subdivision
+becomes:
+(cid:32) 3 1 1 (cid:33)
+f A ≈ (cid:88) f NT  ( 3, 3) (1.32)
+=1
+Considering the procedure described so far for a single triangular subdivision of a sectional
+cut through a single volume elemenet, the total integral f S at a design section S intersecting a
+member modelled with volume elements becomes:
+ 
+N  N  N ,
+(cid:88) (cid:88) (cid:88)
+f S = f V, =  f A,,j (1.33)
+=1 =1 j=1
+where N  is the number of intersected volume elements at a section, f V, is the total resutant
+force of the th intersected element, N , is the number of triangular subdivisions at the th
+element and f A,,j is the resultant at the jth subdivision of the cut area through the th volume
+element.
+A typical force vector f has components in the local coordinates, i.e. f = (cid:8)ƒ ,ƒ y,ƒ z(cid:9) . These
+components of the sectional force vector are later multiplied with lever arms, if applicaple, and
+transformed to the design element’s desired force reference point as moments.
+1.4 Cross Sections
+Acrosssectionshouldbeassignedtoadesignelement,ifitistobeusedinadesignworkflow.
+There are two ways to do that. The first is to specify the cross section number using the
+NCS option at the DSLN command. The second way is when the Reference Axis, which is
+used to create the design element, is a structural line having cross-sections or a sequence of
+beamelements. Herethedesignelementcaninheritthecross-sectionoftheintersectedbeam
+element if nothing is given at NCS.
+It is also possible, together with NCS, to assign another cross-section of similar type using the
+NCS2option. Inthiscasethecross-sectionsizevariesatthestartandendpointofthedesign
+element, and those in between can be automatically interpolated.
+1-12 SOFiSTiK2023DesignElements|DECREATOR
+Force Transformation
+If a cross-section is assigned in one of the above ways, all forces at a design section will be
+by default transformed to its centroid; for torsion to the shear-center. This behaviour can be
+controlledbysettingtheForceReferenceFREFoptionattheDSLNcommand. Thethreerefer-
+encepossibilities fortheforces are: to tokeepthem atthe Reference Axis(REF), totransform
+them to Cross-sectional center SC or transform them to GC Geometric-center of intersected
+elements. An example of the force transformation is that of an axial force, where it will be
+multiplied by the distance between the Reference Axis and the Force Reference point (SC or
+GC) and cause a corresponding additional bending moment to keep the system equilibrium.
+Use cases of Force Refrence (FREF) option
+Forces are transformed
+Forces are not transformed
+from Reference Axis to...
+Cross-Section Geometric Center Reference Axis
+Centroid of cut areas
+(SC) (GC) (REF)
+x
+y
+x
+y
+1 2 3 4
+Use for Cross-section Use when Cross-section No use-case
+Design is not specified
+Point on Reference Axis (REF) Force Reference point of DSLN
+Cross-Section Centroid (SC) x Cross-Section origin
+y
+Geometric Center (GC) of cuts
+Figure 1.6: Possible cases of Force Reference FREF inputs with their geometric and mechanical
+effects
+Cases of this Force Reference option and its effects are illustrated in the figure 1.6. The
+sketches show a design section, with and without assigned Cross-section, which cuts through
+a rectangular beam modelled with hexahedral volume elements similar to that in the example
+decreator_06_volume_elements.dat. The above sketches correspond also those shown in
+WINGRAF . Here a design element is created referring to a straight line geometry as a
+ReferenceAxis. TheForceReferencepointofthedesignelementisthendecidedbythevalue
+of the FREF option.
+To the cases in the figure 1.6, the following apply:
+1. The internal forces are calculated at the cross-sectional centers. Forces are trans-
+ferred from Reference Axis the Cross-section centers. Use this option for a cross-
+sectiondesign. Note herethattheCross-sectionoriginisattachedto the pointofthe
+ReferenceAxis. Thisishowadesignelementhavingacross-sectionandwithFREF
+SOFiSTiK2023 1-13DECREATOR|DesignElements
+SC attaches to the model.
+2. Theforcesarereferencedatthegeometriccenteroftheareasoftheselectedandin-
+tersectedvolumeelements. Allforces,includingtorsionarethereforetransferredfrom
+Reference Axis to this geometric center. This option can be used to get approximate
+results for design, when no specific cross-section is available yet.
+3. TheForceReferencepointremainsattheReferenceAxisandforcesremainuntrans-
+formed.
+4. This case results in the same forces as case 3. Assigning a cross-section here will
+have no meaningful effect.
+1.5 Intended Workflow
+After the linear analysis of a loaded structural system is carried out typically by the program
+ASE, the program module DECREATOR brings the use of design elements in SOFiSTiK to
+supply the design in AQB with enhanced sectional information. This organisation follows from
+the need to employ known nodal values to determine sectional values anywhere on the mem-
+ber outside the nodes. The definition of design elements is carried out using structural lines,
+and the accompanying design sections are also specified together as explicit sections. The
+diagram in Fig. 1.7 illustrates the workflow of applying design elements in SOFiSTiK using
+DECREATOR.
+1.6 Use Cases
+Representative use cases are considered here in order to highlight the steps taken in using
+design elements. They are classified here depending on the modelling type and the user’s
+intention, i.e. whether to operate on a member’s analysis results or to design it. The practical
+cases presented here are those for models with beam and quad elements. They include pro-
+cedures to be taken using a sequence of basic SOFiSTiK program modules, i.e. combining
+graphical workflows (SSD) and CADINP commands using TEDDY.
+1.6.1 Beam element models
+The statical finite element analysis of a simply supported beam with a pre-stressing tendon
+(Fig. 1.9) is considered here. After the module ASE has carried out the statical analysis,
+the results are used by DECREATOR so that the internal actions and tendon geometry at the
+design sections can be interpolated from the nodal values. For example, in the illustration, the
+sectional values at section B are interpolated from nodes 2 and 3. Finally, computed results
+are available as text and graphical for reports and as database records for design in AQB.
+In order to subsequently operate on analysis results or to design the beam using design ele-
+ments, the following are the essential steps:
+• 1/3 Required definitions for analysis (using graphical workflow in SSD)
+– Define materials and cross sections first in SSD
+– Definethestructuralconfigurationincludingitsgeometry,boundaryconditions,load-
+ings, etc... in SOFiPLUS
+– Make sure structural lines for the design element(s) are defined in SOFiPLUS
+– When necessary, define pre-stressing tendons
+– Input linear analysis settings
+1-14 SOFiSTiK2023DesignElements|DECREATOR
+AQUA, SOFiMSHC, SOFiLOAD
+(System Definition)
+Cross sections
+Structural Lines &Areas
+Loads
+ASE
+(Analysis)
+DECREATOR
+(Interpolation / Integration)
+Design Elements
+Design Sections
+AQB
+(Design)
+Figure1.7: DesignElementsinatypicalworkflowofSOFiSTiK
+– Export all of the above definitions in to a .dat file
+In the text editor program TEDDY, continue the exported version of the above steps with the
+following DECREATOR definitions.
+• 2/3 Design element results (using CADINP in TEDDY)
+– Define the design element(s) by referring either to a structural line (in DSLN NO) or
+a sequence of continuous lines (in DGEO SLN) already established in SOFiMSHC
+– (For design) Input the ID number of the cross section to design with (DSLN NCS)
+– Define at least one design section (DSLC). Sections at all structural points will au-
+tomatically be created
+– Input one or more load cases, necessary for force calculations
+– (Optional)Addothersettingssuchasintermediatesections,referenceaxisofforces,
+selections for elements, etc...
+– Execute/run the above definitions
+– Obtain results as a print-out using Report Browser or graphically using
+WINGRAF
+SOFiSTiK2023 1-15DECREATOR|DesignElements
+• 3/3 Design results (using AQB in TEDDY)
+– Setabeamdesignwiththetypebeingadesignelement(DSLN)andreferringtoits
+ID
+– Add other settings such as load state for a reinforced concrete, etc...
+– Execute/run the above definitions
+– Obtain results in Report Browser or in WINGRAF
+For a demonstration of the above steps, see the example file decreator_01_beam_01.dat.
+Beam Design Design sections
+elements element
+0 1 2 3 4 5
+A Tendon B Nodes C
+Figure1.8: Schematicdiagramofadesignelementforapinsupportedpre-stressedbeam
+1.6.2 Quad element models
+Another possible case is when a member is modelled with quad elements. Here a simply
+supported beam with a T-section is considered.
+Following the analysis, DECREATOR integrates all stresses from quad elements intersected
+at a design section and stores them as internal forces of a typical beam member. If design of
+thememberisnotintended,nocrosssectionneedstobeassociatedwiththedesignelement.
+Hence,thedesignelementcaneitherbydefaulttakeitsownlineasreferencefortheintegrated
+moments,orautomaticallycalculatethecrosssectionalgeometriccentroidfromtheintersected
+quadelementsandrefertheforcestoit. Itmustalsobeexplicitlyspecifiedhowquadelements
+are selected using the element selection command.
+Moment Design elements
+reference
+(centroid)
+Quad elements
+Given Calculated
+Moment
+cross-section cross-section
+reference
+(centroid)
+Figure1.9: Schematicdiagramofadesignelementforat-beammodelledwithquads,andpossible
+crosssections
+When design of the member is desired, a design cross section must be defined and assigned
+to the design element. At the cross section definition in AQUA (eg. AQUA: SREC ... REF), it
+1-16 SOFiSTiK2023DesignElements|DECREATOR
+is also possible to refer the design element forces to points on the cross section different from
+the default, which is its center of geometry. The relationship of a design element and its cross
+section is explained more in its own section above. The inputs for design in AQB can finally
+follow by referring to the design element’s number.
+For quad element models, many steps are the same as in beam elements, except here a
+selection method for the quads must be specified. Include this important step as follows:
+• 1/2 Required analysis definitions (using graphical workflow)
+– (Follow the analysis definition procedure stated for beam element models)
+• 2/2 Design element results (using CADINP in TEDDY)
+– Define the design element(s) and design sections in the same way as for beam
+elements
+– Specify a selection method for quad elements
+– Input one or more load cases, necessary for force calculations
+– (Optional)Addothersettingssuchasintermediatesections,referenceaxisofforces
+selections for elements, etc...
+– Execute/runtheabovedefinitions toobtaindesignelementresultsintheReport
+Browser or graphically using WINGRAF
+A simple example is given in decreator_03_quads_01.dat.
+1.6.3 Hybrid models
+When a member is modelled in hybrid manner using two different element types, in this case
+beam and quad elements, the two must be coupled during structural definition in SOFiMSHC.
+For a detailed information regarding this, refer to the sections of Support and Coupling for
+structural lines and areas in the SOFIMSHC manual.
+To use design elements on such a model, follow the steps stated for quad element models;
+and,duringdefinitionofthedesignelement,referittotheIDofthestructurallineassociatedto
+the beam part of the hybrid member. An example is provided in decreator_04_hybrid_01.dat.
+1.6.4 Seismic design
+Using design elements, it is also possible to use the outputs of a modal analysis for a seismic
+design. Structural members subject to seismic loads, such as shear walls in buildings, can be
+modelled well with quad elements. The main role of a design element here is to integrate the
+induced stresses in the elements into forces for each eigenform; and also to treat the entire
+member as one continuous beam-like member. When design of such a member is intended,
+the integrated forces and moments at a chosen design section can be used along with any
+given cross section. To do so, follow these steps in this order:
+• 1/2 Required definitions for analysis (using graphical workflow in SSD)
+– Define materials and cross sections first in SSD
+– Definethestructuralconfigurationincludingitsgeometry,boundaryconditions,load-
+ings, etc... in SOFiPLUS
+– Make sure structural lines for the design element(s) are defined in SOFiPLUS
+SOFiSTiK2023 1-17DECREATOR|DesignElements
+– When necessary, define pre-stressing tendons
+– Input Linear Analysis settings for forces and moments
+– Define the response spectra and additional parameters using an Earthquake task
+– CreateanEigenvalueanalysistaskthatusesASE,thenassigntheamountofeigen-
+values, the initial load case ID for the smallest eigen form and other parameters
+– Export all of the above definitions in to a .dat file
+In TEDDY, append the following to the above file:
+• 2/2 Design element results (using CADINP in TEDDY)
+– Define the design element(s) using either DSLN NO or DGEO SLN
+– (For design) Input the ID number of the cross section to design with
+– Define design sections (DSLC, at least one).
+– Add a load case range referring to the initial and final load case IDs defined at the
+eigenvalue analysis setting in the analysis-definition step
+– (Optional)Addothersettingssuchasintermediatesections,referenceaxisofforces,
+element selections, etc...
+– Execute/runtheabovedefinitions toobtaindesignelementresultsasaprintout
+or graphically using WINGRAF
+A typical example is given in decreator_05_seismic_01.dat.
+1-18 SOFiSTiK2023InputDescription|DECREATOR
+2 Input Description
+2.1 Input Language
+The input is made in the CADINP language (see general manual SOFiSTiK: ’Basics’).
+Three categories of units are distinguished:
+mm Fixed unit. Input is always required in the specified unit.
+[mm] Explicit unit. Input defaults to the specified unit. Alternatively, an explicit as-
+signment of a related unit is possible (eg. 2.5[m] ).
+[mm] Implicit unit. Implicit units are categorised semantically and denoted by a cor-
+1011
+responding identity number (shown in green). Valid categories referring to the
+unit ”length” are, for example, geodetic elevation, section length and thickness.
+Thedefaultunitforeachcategoryisdefinedbythecurrentlyactive(designcode
+specific) unit set. This input default can be overridden as described above. The
+specified unit in square brackets corresponds to the default for unit set 5 (Eu-
+rocodes, NORM UNIT 5).
+2.2 Input Records
+The following record names are defined:
+Record Items
+DSLN NO NCS FREF HDIV GRP TYPE TITL
+NCS2
+DGEO OPT ID X1 Y1 Z1 X2 Y2
+Z2 DRX DRY DRZ SA SE
+DSEL OPT NO YMIN ZMIN YMAX ZMAX
+DSLC REF S TYPM TYPT
+LC NO ALL
+GRP NO
+DDEL NO ALL
+ECHO OPT VAL
+CTRL CTRL TEND CINT
+The records HEAD, END and PAGE are described in the general manual SOFiSTiK: ’Basics’.
+A description of each record follows:
+SOFiSTiK2023 2-1DECREATOR|InputDescription
+2.3 DSLN – Design Element along SLN
+DSLN
+Item Description Unit Default
+NO Number of the design element − !
+NCS Number of primary cross section − -
+NCS2 Number of secondary cross section − -
+HDIV Create intermediate sections [m] -
+1001
+>0.01m: Maximum distance of subdivision
+FREF Reference of integrated forces LT *
+SC Gravity centre of cross-section
+GC Geometric centre of sectional cuts
+REF Reference axis of design element
+GRP Secondary group LT *
+TYPE Type of design element LT *
+GENE General structural member
+CORE Intended for building core
+SHRW Intended for building shear wall
+TITL Designation of design element LT12 -
+Thiscreatesandstoresthedefinitionofadesignelement. Thenumberspecifiedinthemanda-
+tory input NO, which serves as identification number of the design element, also refers to the
+number of a structural line whenever there is one. If a design element defined with the same
+number already exists in the databse, all its results will be removed before the new one is
+stored. It is important to note that this command resutls only in the definition and does not
+executecalculationofforces,whichmustbedonebyamandatoryinputofloadcase(s)viaLC.
+This allows for separate calls of DECREATOR tasks for definition and calculation.
+NCS The option NCS assigns ID of a cross section, which is already available in the
+database. Thiswillbeusedforcalculationsofthedesignelement’sforces,aswellas
+for designing in AQB.
+NCS2 A secondary cross section can be given at NCS2, to design a member with cross
+section uniformly varying in size. The cross section at NCS2 will be assigned to the
+end point of the design element while that of NCS at the start. The design sections
+will then automatically create corresponding cross sections by linearly interpolating
+between these two, and the forces will be accordingly transformed. For this inter-
+polation to properly work, cross sections both at NCS and NCS2 must be set and
+be of the same type. For a standard rectangular cross section defined with height
+and width set at NCS would not work with a rectangular polygon cross section set at
+NCS2, since the two are of different types.
+HDIV ThecommandHDIVsetsthedistanceoftheintervalsatwhichintermediatesections
+2-2 SOFiSTiK2023InputDescription|DECREATOR
+are created. Intermediate sections are not design sections. Therefore, no design will
+becarriedoutlaterbyotherProgramsatthesesections,andtheyareratherintended
+to obtain smoother plots in the Graphic. The force calculations at these sections are
+however identical as the explicit design sections. When the HDIV amount is not
+a factor of the length between two explicit design sections, DECREATOR selects a
+numberclosesttobutnotexceedingthegivenvalue. Forexample,a14mlongdesign
+element, with explicit sections only at its start and end, and with HDIV 3m will have
+its intermediate sections evenly distributed every 2.8m. The lower limit for HDIV is
+0.01m.
+FREF The parameter FREF selects the reference axis for transferred forces, essentially for
+the bending moments. It assumes the option SC as default whenever a cross sec-
+tion is assigned either to the design element (through NCS), or to the corresponding
+structural line in SOFiMSHC. This option, together with CTRL CINT, also allows for
+automatic interpolation of cross sections. When no cross section number is given,
+and quad elements are intersected, the option GC is taken as default. In all other
+cases the axis of the design element (REF) will be used as the default.
+GRP The option GRP assigns the design element to an existing secondary group. Here
+only secondary groups apply and not primary groups. The group should already
+be created by the program SOFiMSHC. This assignment is primarily intended to aid
+visualization in Wingraf.
+TYPE This specifies the type of the design element based on the structural member in-
+tended for design. The default is set to GENE which stands for a general type of
+member. AstheoptionCOREandSHRWareintendedforbuildings,thex-axisofthe
+design element is expected here to be vertical or parallel to gravity direction with a
+tolerance of 0.5 degrees. In addition, a cross-section input at NCS is also expected
+for the option CORE. In case the above conditions are not fulfilled, a warning will be
+issued, but calculations will proceed keeping the option.
+The geometry, sections and selection properties of the design element are defined by the
+following subsequent property records:
+DGEO Defines the geometry of the design element.
+DSLC Defines design sections along the design element.
+DSEL Selects elements from which results are transferred.
+2.3.1 Examples
+The following example creates a design element along the structural line no. 1. Here, design
+sections defining a supporting face to a hinged support are placed at offsets of 0.15m at the
+start and the end. Additional design sections for shear design are placed at a distance of
+0.95mfromstartandend. Sincenoselectionisspecifiedexplicitly,beamresultsdefinedalong
+the structural line are interpolated to the defined sections.
++PROG DECREATOR
+HEAD
+DSLN NO 1
+DSLC REF STRT,END 0.15 TYPM HFAC
+DSLC REF STRT,END 0.15+0.8 TYPM SHEA
+END
+SOFiSTiK2023 2-3DECREATOR|InputDescription
+The following example creates a design element no. 1 which is defined along the sequence of
+structural lines no. 11,12 and 13. Explicit design sections are created at the start, the end and
+in the middle of the sequence. As parameter HDIV is defined, additional sections are created
+automatically in between the explicitly defined sections at a maximum distance of 0.5m. All
+beam forces along the structural line sequence are interpolated at the given sections.
++PROG DECREATOR
+HEAD
+DSLN NO 1 HDIV 0.5 GRP 'DE1'
+DGEO SLN 11,12,13
+DSLC REF STRT,END,MID S 0.0
+END
+2-4 SOFiSTiK2023InputDescription|DECREATOR
+2.4 DGEO – Geometry of design element
+Seealso: DSLN
+DGEO
+Item Description Unit Default
+OPT Type of geometry LT SLN
+SLN Reference to structural line
+BEAM Reference to beam elements
+TRUS Reference to truss elements
+LINE Definition of a straight line
+AXIS Definition along an axis
+ID Reference number − *
+X1 X coordinate of start point [m] *
+1001
+Y1 Y coordinate of start point [m] *
+1001
+Z1 Z coordinate of start point [m] *
+1001
+X2 X coordinate of end point [m] *
+1001
+Y2 Y coordinate of end point [m] *
+1001
+Z2 Z coordinate of end point [m] *
+1001
+DRX X coordinate of direction vector of the local Z axis − *
+DRY Y coordinate of direction vector of the local Z axis − *
+DRZ Z coordinate of direction vector of the local Z axis − *
+SA Start station along an axis −
+SE End station along an axis −
+Thisrecorddefinesthegeometryofadesignelement. Itisanattributerecordandreferstothe
+preceding design element defined at DSLN.
+SLN Derivethegeometryfromoneormoreexistingstructuralline(s). Thisoptionallowsa
+geometry out of a list of up to 1000 connected structural lines. For such a sequence
+of SLNs with varying coordinate systems, the design element will inherit the local
+coordinateofthefirstSLNinthelist. WhenasingleSLNisofinterest,referringitwith
+DSLN NO is an alternative shortcut to this functionality.
+BEAM Construct the geometry from a connected sequence of beam elements. The maxi-
+mum limit is 1000. For connected sequence of BEAMs with varying local coordinate
+systems, the geometry will inherit that of the BEAM with the lowest ID number.
+TRUS Similar to BEAM, but the connected sequence should be of truss elements.
+LINE Form a straight line geometry using two points given in global coordinates. The local
+z-direction of the formed geometry must also be specified. If this is given as a rough
+approximation and is not exactly perpendicular to the straight line, it will be cross
+checked with the local x-axis (the given line) and automatically corrected using the
+right-hand-rule.
+SOFiSTiK2023 2-5DECREATOR|InputDescription
+AXIS Geometry based on a primary or secondary axis. Here, it can be practical to ad-
+ditionally, trim the geometry by specifying the local end positions or stations since
+axes may often extend out of the model. The stations are not, and should not be
+confused, with placements in bridge models. Coordinate positions having units of
+distanceshouldbeinputwithX1andX2. However,iftheaxisisdefinedwithstations
+in SOFiMSHC, these should be specified with the unitless parameters SA and SE.
+Moreover, the local z-axis can be given in the same as DGEO LINE, otherwise that
+of the referenced axis will be inherited.
+If the sequence supplied by SLN or BEAM forms a deflection angle of less than 10° at a
+connection, a smooth curve will be used to join consecutive geometric elements. Wherever
+thisamountisexceeded,itwillbeconsideredasakinkorageometricsingularity,andasharp
+corner is used to continue the curve. At this corner, the design element will also automatically
+have double output (non-explicit) sections with two different normal vectors.
+FortheDGEOoptionsSLNandBEAM,thedesignelementalwaysinheritsthelocalcoordinate
+system of the referred elements. For the option LINE, the local x-axis will automatically be the
+line from (X1, Y1, Z1) to (X2, Y2, Z2), and the user is expected to define a local z-axis with
+(DRX, DRY, DRZ) in global coordinates. Otherwise, it will be automatically calculated from the
+cross-product of the local x- with global y-axis. In case the global y-axis is parallel to the local
+x-axis, the global z-axis will be used instead.
+In case of multiple sequences of Beams or SLNs, the components should not have gaps and
+must necessarily form a connected geometry. If the sequence is of connected components,
+but not listed in the order of connection, the design element will automatically rearrange the
+sequence and form a connected geometry.
+If no geometry is defined for the design element, the program tries to create a design element
+along the structural line which has the same number as the design element.
+2.4.1 Examples
+The following example creates a design element along the sequence of structural lines no.
+11,12and13. Thereferencedstructurallinesmustbeconnectedattheirendpoints. Otherwise,
+an error message is issued, and the design element is not created.
++PROG DECREATOR
+HEAD
+DSLN NO 1
+DGEO SLN 11,12,13
+END
+Inthenextexample,adesignelementisdefinedalongbeamelementsreferringtotheIDnum-
+berofeachbeamelement,asstatedhereinanincrementalform. Calculationsproceedwithout
+error regardless of the order in the beam sequence, if there is no discontinuity in between.
++PROG DECREATOR
+HEAD
+DSLN NO 1
+DGEO BEAM (1001 1010 1)
+2-6 SOFiSTiK2023InputDescription|DECREATOR
+END
+In the example below, DECREATOR creates a design element along a user-defined straight
+line, independent of priorly defined references. This procedure is practical for a hybrid selec-
+tion of a variety of finite elements, and hence should be defined together with the selection
+command DSEL as shown.
++PROG DECREATOR
+HEAD
+DSLN NO 1
+DGEO LINE X1 0.0 Y1 0.0 Z1 0.0 X2 8.0 Y2 0.0 Z2 0.0 DRX 0 DRY 0 DRZ 1
+DSEL GRP 3,4
+END
+SOFiSTiK2023 2-7DECREATOR|InputDescription
+2.5 DSEL – Element selection
+Seealso: DSLN
+DSEL
+Item Description Unit Default
+OPT Type of selection LT BEAM
+GRP Finite elements by group
+SEC Within a cross section’s bounding box
+BOX Within a bounding box
+BEAM Beam elements along structural line
+QSAR Quad elements on structural area
+NO Reference number for QSAR, SEC or GRP − -
+YMIN Minimum coordinates for BOX [m] -1000000
+1001
+ZMIN [m] -1000000
+1001
+YMAX Maximum coordinates for BOX [m] 1000000
+1001
+ZMAX [m] 1000000
+1001
+This input selects finite elements from which design element results are computed. It is an
+attribute input and refers to the preceding design element defined at DSLN and applied at all
+design sections. The options GRP, SEC and BOX are valid for finite elements of beam, quad
+(shell), hexahedral (bric) and tetrahedral types.
+GRP Select finite elements having one or more primary groups. If the number at NO is
+omitted, elements of all group are taken.
+SEC Collect elements within the outer rectangular bounding box of the cross section as-
+signed by the parameter NCS at DSLN.
+BOX Select elements within the bounding box defined by the minimum and maximum val-
+ues. These are given in the local y-z coordinate system of the design element.
+BEAM Select beam elements that are components of the referenced structural line. This
+optionappliesonlyifthedesignelement’sdefinitionreferstoastructuralline,defined
+either via DSLN NO or DGEO SLN.
+QSAR Select quad elements that are components of a given structural area. This applies
+only to quad elements.
+Acombinationoftheaboveoptionsallowsselectionofelementswhichmatchdifferentfiltering
+criteria. Here an "and" logic is used. For example, selection of elements lying within a given
+bounding box and belonging to a given group.
+If no selection record is given at all, this defaults to DSEL BEAM, resulting in an attempt to
+collectbeamelementsalongastructurallinethatispossiblyreferencedbythedesignelement.
+Otherwise nothing will be selected, and the design element definition would be incomplete.
+2-8 SOFiSTiK2023InputDescription|DECREATOR
+2.5.1 Examples
+Thefollowingsimpleexamplecreatesadesignelementno. 1whichcollectsallbeamelements
+along structural line no. 1:
++PROG DECREATOR
+HEAD
+DSLN NO 1
+END
+The following example creates a design element no. 1 to which a cross section no. 2 is
+assigned. The design element collects all beam elements along the structural line no. 1, as
+well as other quad or volume elements lying within the outer boundary of the cross section.
+This outer boundary is always rectangular which is formed by the minimum and maximum
+corner points of the cross-section.
++PROG DECREATOR
+HEAD
+DSLN NO 1 NCS 2
+DSEL SEC
+END
+The following example creates a design element no. 1 along the straight line formed by the
+end points {0,0,0} and {0,0,10}. It selects all finite elements lying within the rectangular
+bounding box formed by the local corner points P1 = {−6,−3} and P2 = {+6,+3}. The box
+is aligned according to the local coordinate system of the design element, the local z-axis of
+which is the global vector (1,0,0).
++PROG DECREATOR
+HEAD
+DSLN NO 1
+DGEO LINE X1 0 0 0 X2 0 0 10 DRX 1 0 0
+DSEL BOX YMIN -6 -3 YMAX +6 +3
+END
+SOFiSTiK2023 2-9DECREATOR|InputDescription
+2.6 DSLC – Design sections along the design element
+Seealso: DSLN
+DSLC
+Item Description Unit Default
+REF Reference LT STRT
+STRT Distance from start of line
+END Distance from end of line
+MID Distance from middle
+XI Relative position between start and end
+[0;1]
+S Distance / Position on DSLN axis [m] /− 0.0
+1001
+TYPM Type of section main bending LT SECT
+TYPT Type of section transverse bending LT SECT
+SECT Standard section
+CFAC Face of clamped support
+HFAC Face of hinged support
+SHEA Main and cross shear section
+IFAC Face of indirect support
+SUPP Manual identification of support
+This record allows to define explicit design sections along the design element. It is a property
+record and refers to the preceding design element defined at DSLN. When generating the
+design element, properties and results from the analysis will be interpolated at these explicit
+sections.
+Sections for support faces
+Thefollowingtypeofsectionscanbeusedtoidentifyfacesofsupportsalongadesignelement
+for a beam design using the TYPM or TYPT option:
+HFAC to identify faces of direct hinged supports, for example in case of non-monolithic
+construction such as masonry wall support.
+CFAC to identify faces of direct clamped supports, for example in case of a monolithic con-
+nection of reinforced concrete beam and a supporting column.
+IFAC to identify faces of indirect supports, for example when the beam member is con-
+nected to indirectly supporting edge or girder beam.
+Given the above sections, the design programs AQB and BEAM apply moment smoothing at
+support sections and shear reductions at at shear sections (TYPM SHEA), according to the
+chosed design standard whenever applicable.
+2-10 SOFiSTiK2023InputDescription|DECREATOR
+For example, the following input shows a simply supported beam with hinged direct support
+conditions (non-monolithic connection) at both ends. To define the location of support faces
+of the supports, two sections are defined at 15cm from both ends using TYPM HFAC. Shear
+sections are then created using TYPM SHEA at 45cm (depth of beam) distances from both
+end face sections. A section for bending design is created at midspan using TYPM SECT. A
+ULS design using AQB for these sections example would then reduce the shear forces at the
+support and at the shear sections.
++PROG DECREATOR
+HEAD
+DSLN NO 1
+DSLC REF STRT S 15[CM] TYPM HFAC
+DSLC REF END S 15[CM] TYPM HFAC
+DSLC REF STRT S (15+45)[CM] TYPM SHEA
+DSLC REF END S (15+45)[CM] TYPM SHEA
+DSLC REF MID S 0.0 TYPM SECT
+END
+Automatically created sections
+Design elements running through structural points (SPT) will have design sections created
+automatically at each point. This occurs when the geometry is created using DGEO SLN
+option. The resulting sections at the SPTs are also automatically identified as support (TYPM
+SUPP) sections. A support section can also be manually input via TYPM SUPP option. Use
+this manual input when no SPT can be automatically detected along the design element and
+identifiedassupportsection. ForexamplewhenthegeometryiscreatedusingDGEOLINEor
+AXIS option. A SUPP section is also necessary for AQB to identify span ends, when no SPT
+can be detected along the DSLN-axis.
+Doublesectionswillbecreatedautomaticallyatpositionsofselectedbeamsorquadelements
+where abrupt changes in cross-sections or internal forces of beam element occur. The same
+applies when the direction of the DSLN-axis with a kink or deflection angle of more than 5%
+occurs. To detect abrupt changes in any of the internal forces, a tolerance of 1.0% of the
+maximum in that load case is used.
+SOFiSTiK2023 2-11DECREATOR|InputDescription
+Hint
+Explicit design sections are also created automatically by DECREATOR at the start and
+endpointsofadesignelement,aswellasatallintermediatesupports. Wheneverexplicit
+design sections fall together with intermediate ones defined by HDIV in DSLN, they are
+merged so that computations are carried out only for one.
+2-12 SOFiSTiK2023InputDescription|DECREATOR
+2.7 LC – Selection of load cases
+LC
+Item Description Unit Default
+NO Number(s) of load case(s) − -
+ALL All valid load cases − -
+This record sets a range of load cases to be used when transferring results. It is a mandatory
+input for DECREATOR to calculate and store forces and other results related to load cases.
+If it is not specified, only the definition of the design element will be calculated and stored. It
+affects all succeeding definitions of design elements at DSLN. The valid load case types in
+DECREATOR are: Characteristic Loads (i.e. Linear and Non-linear), Natural Frequency and
+Buckling Modes. In all cases, DECREATOR reads only load cases of these valid types.
+Theselectionoftheloadcasescanberesetbyenteringtheliteral’NONE’atparameterFROM.
+The following example shows the usage of the record:
++PROG DECREATOR
+HEAD
+DSLN 1 TITL 'first design element'
+DSLN 2 TITL 'second design element'
+LC (1 10 1)
+!(...)
+END
+Here,twodesignelementswithnumbers1and2willbecreatedandprocessedwiththeresults
+of the load cases 1 to 10.
+Separation of force calculations using Load Case
+If one or more design elements are already defined in a previous DECREATOR run, this com-
+mand alone can be used in a subsequent task to execute force calculations for all existing
+definitions. For example:
++PROG DECREATOR
+HEAD Definition of design element
+DSLN 1 NCS 1 HDIV 0.5
+DSLC REF MID
+END
++PROG DECREATOR
+HEAD Calculation of forces for previously defined design element(s)
+LC 1,2
+END
+SOFiSTiK2023 2-13DECREATOR|InputDescription
+2.8 GRP – Assignment of Groups
+GRP
+Item Description Unit Default
+NO Name of Secondary Group − -
+This command assigns a secondary group to one or more design elements. This input should
+befollowedbyaDSIDcommandwhichlistsIDsofthedesignelementsbelongingtothisgroup,
+and is defined as follows:
+DSID NR List of design element IDs to be grouped
+Moregroupscanbeassignedtomultipledesignelementsasshownintheexamplebelow. The
+groups referenced at the option NO should already be defined in SOFiMSHC. Only secondary
+groups can be assigned to design elements. Groupings of design elements has no effects on
+the force transfer.
++PROG SOFIMSHC
+HEAD
+...
+GRP NO 'LN1' TITL ’Secondary group of lines 1’ GRP NO ’LN2’
+TITL ’Secondary group of lines 2’... END
++PROG DECREATOR
+HEAD
+DSLN 1 TITL 'first design element'
+DSLN 2 TITL 'second design element'
+DSLN 3 TITL 'third design element'
+DSLN 4 GRP 'LN1' TITL 'fourth design element'
+GRP 'LN1'
+DSID 1,2
+GRP 'LN2'
+DSID 2,3,4
+END
+In the example, design elements 1 and 3 are grouped in LN1 and LN2 respectively, whereas
+design elements 2 and 4 are grouped inside both.
+The group assignment at DSLN is a shorter alternative to this command, which however can
+only assign one group per design element. In case different groups are assigned to a design
+2-14 SOFiSTiK2023InputDescription|DECREATOR
+element using both options, as DSLN 4 in the above example, both inputs will be considered.
+The maximum number of design elements in one group should not exceed 1000.
+SOFiSTiK2023 2-15DECREATOR|InputDescription
+2.9 DDEL – Element Deletion
+Seealso: DSLN
+DDEL
+Item Description Unit Default
+NO ID(s) of design element(s) − -
+ALL All design elements − -
+This command removes all information belonging to the listed design element(s) from the
+database.
+2.9.1 Examples
+The following example deletes design elements no. 1, 2 and 3, with all of their associated
+results:
++PROG DECREATOR
+HEAD
+DDEL NO 1,2,3
+END
+2-16 SOFiSTiK2023InputDescription|DECREATOR
+2.10 ECHO – Control of output
+ECHO
+Item Description Unit Default
+OPT A literal from the following list: LT *
+DSLN Design Elements
+FORC Forces
+TND Tendons
+DISP Displacements
+LOAD Loads
+SPLT Sectional Plot
+FULL All the above options
+LPLT Longitudnal Plot
+VAL The extent of the output LT *
+NO No output
+YES Regular output
+FULL Extensive output
+EXTR Extreme output
+Thisrecorddefinestheamountofdatatobeprintedintheprogramoutput. IfthesameECHO
+command is defined multiple times, only the last one is considered and applied to all design
+elements. By default the option DSLN is set to YES, and all other options to NO.
+The SPLT option shows the sectional view of intersection details within the selection at each
+design section. The details include the intersected finite elements, the force reference point,
+original point of Design Element definition and the sectional centroid. If a bounding box is
+used, it will also be shown if it is not too large relative to the selected elements. The option
+LPLT plots the internal forces (Normal Force, Shear Forces Vy Vz and Bending Moments My
+Mz Mt) along the design elements axis.
+SOFiSTiK2023 2-17DECREATOR|InputDescription
+2.11 CTRL – Control of calculation
+CTRL
+Item Description Unit Default
+GAUS Qaud forces to interpolate from NO
+YES Use gauss point forces −
+NO Use nodal forces −
+TEND Consider tendon effects in Quad elements AUTO
+AUTO Consider tendon effects for pre-stressing −
+load cases
+YES Calculate considering tendon effects for all −
+load cases
+NO Calculate with out tendon effects −
+CINT Cross-section interpolation for Beam elements NO
+YES Interpolate cross sections −
+NO Do not interpolate cross sections −
+WARP Warping moments from Quad elements NO
+YES Calculate integration −
+NO Do not calculate −
+This CTRL option is to be defined before design elements and it applies to definitions of all
+succeeding design elements.
+GAUS The command GAUS allows to use forces from Gauss integration points. By default,
+or if this command is switched off, nodal forces are used.
+TEND The TEND command controls consideration of tendon prestressing effects in
+quad elements. The option AUTO is intended for an AQB design based
+on the difference load case results from CSM (see CSM standard example
+csm4_quad_einfeldtraeger.dat). This option assumes that all difference load
+cases are labeled accordingly by CSM. For those load cases of Prestressing and
+Creep+Shrinkage,theAUTOoptionconsidersonlythestressesontheconcretepart
+and tendon forces are omitted (same as TEND NO). Here deduction of concrete
+stress losses due to tendon hole are also considered. For all other difference load
+cases,theoptionAUTOworksthesameasTENDYESandintegratestendonforces
+with the quads at each section. The hole effect is also therewith implicitly accounted
+for.
+Forinstance,ataprestressingloadcase,thenormalforceofastaticallydeterminate
+beam will be zero at all design sections for the setting CTRL TEND YES, and will be
+equal to the prestressing force for CTRL TEND NO, i.e. the compression force in the
+concrete.
+CINT Sinceautomaticinterpolationofcrosssectionscanberesourceintensive,itisturned
+2-18 SOFiSTiK2023InputDescription|DECREATOR
+off by default. Activate it via the CINT command when it is desired. This option will
+only apply when design sections intersect beam elements that already have variable
+crosssections. Itisnotrelatedanddoesnotapplytothecaseofamanuallyassigned
+crosssectionvariationviatheDSLNNCSandNCS2options. Interpolationappliesto
+designsectionsofalltypes(alsotointermediatescreatedwithHDIV),andforceswill
+be accordingly transformed. Most importantly, for cross sections to be interpolated,
+DSLN FREF must be set to SC. Otherwise cross section interpolation would not
+be useful, since forces will not be related or transformed to any cross section. IDs
+of newly generated cross sections are generated by DECREATOR in an ascending
+manner using ID numbers greater than 2000. Existing IDs will not be overwritten,
+however the command DDEL removes all cross sections, that are interpolated by all
+previous design elements, from the database.
+The following example shows the usage of the above commands:
++PROG DECREATOR
+HEAD
+CTRL GAUS YES
+CTRL TEND YES
+CTRL CINT YES
+DSLN NO 1 FREF SC TITL 'first design element'
+!(...)
+END
+SOFiSTiK2023 2-19DECREATOR|InputDescription
+2-20 SOFiSTiK2023Bibliography |DECREATOR
+Bibliography
+[1] O.C. Zienkiewicz and R.L. Taylor. The finite Element Method, Fourth Edition McGraw-Hill,
+London. London: Fourth Edition McGraw-Hill, 1989.
+[2] Pavel Solin, Karel Segeth, and Ivo Dolezel. Higher Order Finite Element Methods. Chap-
+man & Hall/CRC, 2004.
+[3] K.J. Bathe and E.N. Dvorkin. A Four-Node Plate Bending Element Based on
+Mindlin/Reissner Plate Theory and a Mixed Interpolation. Int.Journal.f.Numerical Meth.
+Engineering Vol.21 367-383, 1985.
+[4] T.J.R. Hughes and E. Hinton. Finite Elements for Plate and Shell Structures. Pineridge
+Press International, Swansea, 1986.
+[5] R.L. Taylor, P.J. Beresford, and E.L. Wilson. A Non-Conforming Element for Stress Analy-
+sis.InternationalJournalforNumericalMethodsinEngineering,Vol.10:1211-1219,1976.
+SOFiSTiK2023 2-21

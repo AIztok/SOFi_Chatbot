@@ -1,0 +1,301 @@
+!#!Info  Example:       Pushover analysis of a steel frame
+!#!Info  Keyword:       Pushover, force driven
+!#!Info  Program:       ASE, SOFiLOAD
+
+
+!#!Chapter Structural System
+
+
++PROG AQUA urs:6
+HEAD Material, cross-sections and PMM-interaction
+ECHO MAT EXTR
+page unio 1
+!*!Label Material and cross-sections
+norm DIN 18800
+echo sect,mat yes
+stee 1 S 235 gam 0.0
+$ column
+sect 1 ; prof - hea 240 ; sv it 0.001
+$ beam
+sect 2 ; prof - ipe 240 ; sv it 0.001
+
+!*!Label PMM-Interaction for column
+!cross-sectional parameters
+sto#l 3.0               $m
+sto#E 200000*10.e3      $kN/m2
+sto#A 0.7684            $m2
+sto#Sx #E*#A/#l         $kN/m
+STO#S  200000           $kNm/m
+sto#ryc  5
+sto#rcc  100
+!capacities
+sto#PMAX    500          $kN
+sto#PMIN  -1000
+sto#MY_MAX   160         $kNm
+sto#MY_MIN  -160         $kNm
+sto#MZ_MAX   #MY_MAX/2.0 $kNm
+sto#MZ_MIN  -#MY_MAX/2.0 $kNm
+$PMM-Interaction Material
+SMAT NO 111 LTYP PMM MTYP PLAS P+ #PMAX P- #PMIN MY+ #MY_MAX MZ+ #MZ_MAX MZ- #MZ_MIN ALPH 2.0
+
+$Reaction N, parametrized input, all reactions are related to capacity PMAX/ PMIN
+SFLA       U                    F          TYPE=N
+        #PMIN/#SX*1000*5     -100[%]
+        #PMIN/#SX*1000       -100[%]
+        0.0                     0[%]
+        #PMAX/#SX*1000        100[%]
+        #PMAX/#SX*1000*5      100[%]
+
+$Reaction My
+$work law characteristics (bilinear curve):
+let#uel_pos #MY_MAX/#S*1000     $ elastic limit strains (rotations)
+let#uel_neg #MY_MIN/#S*1000
+$
+let#lvl -1.00
+SFLA    S #S    F 0.1     TYPE=MY  LEV=#lvl[-]
+let#lvl -0.20
+SFLA    U       F         TYPE=MY  LEV=#lvl[-]
+      -#rcc      -1.5[-]
+      -#ryc      -1.0[-]
+       0.0        0.0
+       #ryc      +1.0[-]
+       #rcc      +1.5[-]
+let#lvl  1.00
+SFLA    S #S    F 0.1     TYPE=MY  LEV=#lvl[-]
+
+$Reaction Mz
+$work law characteristics (bilinear curve):
+let#uel_pos #MZ_MAX/#S*1000     $ elastic limit strains (rotations)
+let#uel_neg #MZ_MIN/#S*1000
+$
+let#lvl -1.00
+SFLA    S #S   F 0.1     TYPE=MZ  LEV=#lvl[-]
+let#lvl -0.20
+SFLA    U      F         TYPE=MZ  LEV=#lvl[-]
+       -#rcc     -1.5[-]
+       -#ryc     -1.0[-]
+        0.0           0
+        #ryc     +1.0[-]
+        #rcc     +1.5[-]
+let#lvl  1.00
+SFLA    S #S   F 0.1     TYPE=MZ  LEV=#lvl[-]
+
+!*!Label PMM-Interaction for beam
+!cross-sectional parameters
+STO#l 4.0               $m
+STO#E 200000*10.e3      $kN/m2
+STO#A 0.3912            $m2
+STO#Sx #E*#A/#l         $kN/m
+STO#Sy 200000           $kNm/m
+STO#Sz 200000
+!capacities
+sto#PMAX     500         $kN
+sto#PMIN    -1000
+sto#MY_MAX   80          $kNm
+sto#MY_MIN  -80          $kNm
+sto#MZ_MAX   #MY_MAX/2.0 $kNm
+sto#MZ_MIN  -#MY_MAX/2.0 $kNm
+
+$PMM-Interaction Material
+SMAT NO 211 LTYP PMM MTYP PLAS P+ #PMAX P- #PMIN MY+ #MY_MAX MZ+ #MZ_MAX MZ- #MZ_MIN ALPH 2.0
+
+$Reaction N, parametrized input, all reactions are related to capacity PMAX/ PMIN
+SFLA       U              F          TYPE=N
+        #PMIN/#SX*1000*5     -100[%]
+        #PMIN/#SX*1000       -100[%]
+        0.0                    0[%]
+        #PMAX/#SX*1000        100[%]
+        #PMAX/#SX*1000*5      100[%]
+
+$Reaction My
+$work law characteristics (bilinear curve):
+let#S #Sy ;      $ elastic stiffness
+let#uel_pos #MY_MAX/#S*1000     $ elastic limit strains (rotations)
+let#uel_neg #MY_MIN/#S*1000
+$
+let#lvl -1.00
+SFLA    S #S    F 0.1     TYPE=MY  LEV=#lvl[-]
+let#lvl -0.20
+SFLA    U       F         TYPE=MY  LEV=#lvl[-]
+       -#rcc     -1.5[-]
+       -#ryc     -1.0[-]
+        0.0       0.0
+        #ryc     +1.0[-]
+        #rcc     +1.5[-]
+let#lvl  1.00
+SFLA    S #S    F 0.1     TYPE=MY  LEV=#lvl[-]
+
+$Reaction Mz
+$work law characteristics (bilinear curve):
+let#S #Sz ;      $ elastic stiffness
+let#uel_pos #MZ_MAX/#S*1000     $ elastic limit strains (rotations)
+let#uel_neg #MZ_MIN/#S*1000
+$
+let#lvl -1.00
+SFLA    S #S   F 0.1     TYPE=MZ  LEV=#lvl[-]
+let#lvl -0.20
+SFLA    U      F         TYPE=MZ  LEV=#lvl[-]
+       -#rcc     -1.5[-]
+       -#ryc     -1.0[-]
+        0.0           0
+        #ryc     +1.0[-]
+        #rcc     +1.5[-]
+let#lvl  1.00
+SFLA    S #S   F 0.1     TYPE=MZ  LEV=#lvl[-]
+
+END
+
+
++PROG SOFIMSHA urs:4 $ FE System
+head FE System
+syst spac gdiv 1000
+$ parameters
+sto#h 3.0; sto#nh 8;  $ storey height
+sto#hdiv 1;           $ division of the column
+sto#l 4; sto#nl  3;   $ column distance
+sto#mass 4.0;
+$ first row
+loop#j #nl+1
+  NODE NO 101+#j X #j*#l Y 0 Z 0 FIX F
+endloop
+$ row from 2 to #nh+1
+loop#1 #nh
+  let#i #1+1
+  loop#j #nl+1
+    NODE NO #i*100+101+#j X #j*#l Y 0 Z -(#i*#h) FIX PY
+  endloop
+endloop
+$ colums
+GRP 1
+  loop#j #nl+1
+    BEAM NA 101+#j NE #nh*100+101+#j NO fit NCS 1 DIV #hdiv*#nh KR YY AHIN 111 EHIN 111
+  endloop
+$ beams
+GRP 2
+  loop#1 #nh
+    let#i #1+1
+    loop#j #nl
+      BEAM NA #i*100+101+#j NE #i*100+101+#j+1 NO fit NCS 2 DIV 2 AHIN 211 EHIN 211
+    endloop
+  endloop
+$ point masses
+GRP 3
+  loop#1 #nh
+    let#i #1+1
+    loop#j #nl+1
+      if #j==0
+        let#M 0.5*#MASS
+      elseif #j==#nl
+        let#M 0.5*#MASS
+      else
+        let#M 1.0*#MASS
+      endif
+      MASS NO #i*100+101+#j MX #M
+    endloop
+  endloop
+$ control point (901)
+STO#CPOINT 100*#nh+101
+END
+
+!#!Chapter EgV
+
++PROG DYNA urs:3 $ Eigenvalue anlaysis
+head Eigenvalue anlaysis
+sto#neig  10                    $Number of sought eigenvalues
+sto#lc_eig 9001
+eige #neig lc #lc_eig type lanc
+end
+
+
+!#!Chapter Loads
+
++prog sofiload  urs:22 $ Load
+head Loads on structure
+$action
+act g_1  part g
+$load
+lc 11 type g
+beam grp 2 type pg 10.0
+end
+
+
++prog sofiload  urs:5 $ Pushover LC
+head  Pushover LC
+lc 1001 type none titl 'PUSH-LC-Load'
+acce type node no 0 ax 1 linf -#lc_eig
+end
+
+
+!#!Chapter Pushover Analysis, force driven
+
++prog ase urs:8 $ Capacity
+head Capacity
+sto#nn     25; let#fmax   30
+loop#i #nn
+  let#fact (#i*#fmax/#nn)
+  let#fact max(#fact,1e-8)
+  syst prob nonl
+  lc 1101+#i titl 'push #(1101+#i)'
+    lcc 1001 fact #fact
+    lcc 11 fact 1.0
+  end
+endloop
+end
+
++prog sofiload urs:9 $ Demand
+head Demand
+let#ag 4
+$ Demand: EC8 Spectrum
+lc 101 type none titl 'Demand-EC8'
+resp type EC-1 clas B ag #ag titl 'EC8-5%-elastic'
+acce type dir ax 1.0
+$ Demand: UBC Spectrum
+lc 102 type none titl 'Demand-UBC'
+resp type UBC clas D titl 'UBC-5%-elastic'
+acce ax #ag*10
+end
+
++prog sofiload urs:10 $ Push
+head Pushover analysis
+echo load no
+
+!*!Label Vb-u, A-D format
+
+$ Base Shear - Control Node Displacement Diagram
+
+lc 2001 type none titl 'VB-U'
+push type vb-u lcc0 1001 lcc1 1101 nlcc #nn cnod #CPOINT $$
+     spl1 150 spl2 250 spl3 450
+
+$ Spectral Acceleration - Spectral Displacement Diagram
+
+lc 2002 type none titl 'A-D'
+push type a-d lcc0 1001 lcc1 1101 nlcc #nn cnod #CPOINT $$
+     lcdm 101 spl1 150 spl2 250 spl3 450
+
+lc 2002 type none titl 'A-D'
+push type a-d lcc0 1001 lcc1 1101 nlcc #nn cnod #CPOINT $$
+     lcdm 102 spl1 150 spl2 250 spl3 450
+
+!*!Label EC8 Procedure
+
+lc 2011 type none titl 'EC8-EC8'
+push type ec8 lcc0 1001 lcc1 1101 nlcc 19 cnod #CPOINT $$
+     lcdm 101 spl1 150 spl2 250 spl3 450
+
+
+!*!Label ATC-40 Procedure
+
+lc 2021 type none titl 'ATC-UBC'
+push type atc opt sbtb lcc0 1001 lcc1 1101 nlcc #nn cnod #CPOINT $$
+     dstr - lcdm 102 spl1 150 spl2 250 spl3 450
+
+$ apply different viscous structural damping
+
+lc 2022 type none titl 'ATC-UBC'
+push type atc opt sbtb lcc0 1001 lcc1 1101 nlcc #nn cnod #CPOINT $$
+     dstr 8[%] lcdm 102 spl1 150 spl2 250 spl3 450
+
+end
+
+

@@ -1,0 +1,95 @@
++PROG AQUA URS:1
+HEAD volume loading with LAR
+NORM DIN EN199X-200X
+CONC 1 C 30
+STEE 2 BST 500sa
+SREC 1 250 250 MNO 1 MRF 2
+END
+
++PROG SOFIMSHA URS:2
+HEAD volume loading with LAR
+SYST SPAC  GDIV 10000
+$ nodes vertical
+NODE  (1 101 10) (-1.5 0.0) (-1.5 0.0) (0.0 -1.0)
+      (2 102 10) ( 1.5 0.0) (-1.5 0.0) (0.0 -1.0)
+      (3 103 10) ( 1.5 0.0) ( 1.5 0.0) (0.0 -1.0)
+      (4 104 10) (-1.5 0.0) ( 1.5 0.0) (0.0 -1.0)
+$ nodes horizontal below
+NODE  (111 112 1) (-0.5 1.0) (-1.5 0.0) (0.0 0.0)
+      (113 114 1) ( 1.5 0.0) (-0.5 1.0) (0.0 0.0)
+      (115 116 1) (-0.5 1.0) ( 1.5 0.0) (0.0 0.0)
+      (117 118 1) (-1.5 0.0) (-0.5 1.0) (0.0 0.0)
+$ nodes horizontal above
+TRAN NODE 111 118 INC 1 DZ -10.0 DNO 100  $ target numbers increased about 100
+$ beams vertical
+BEAM (1 91 10) (1 10) (11 10) NCS 1
+     (2 92 10) (2 10) (12 10) =
+     (3 93 10) (3 10) (13 10) =
+     (4 94 10) (4 10) (14 10) =
+$ beams horizontal below
+BEAM 111   1 111 NCS 1
+     112 111 112 =
+     113 112   2 =
+     114   2 113 =
+     115 113 114 =
+     116 114   3 =
+     117   3 116 =
+     118 116 115 =
+     119 115   4 =
+     120   4 118 =
+     121 118 117 =
+     122 117   1 =
+$ beams horizontal above
+TRAN BEAM 111 122 INC 1 DZ -10.0 DNO 100
+$ boundary conditions
+NODE 1,2,3,4 FIX f
+END
+
++PROG SOFILOAD URS:3
+HEAD volume loading with LAR
+$ lar areas
+LAR 1 M 3 N 10 X1 GPT 1 X2 GPT 2 X3 GPT 102 X4 GPT 101
+LAR 2 M 3 N 10 X1 GPT 2 X2 GPT 3 X3 GPT 103 X4 GPT 102
+LAR 3 M 3 N 10 X1 GPT 3 X2 GPT 4 X3 GPT 104 X4 GPT 103
+LAR 4 M 3 N 10 X1 GPT 4 X2 GPT 1 X3 GPT 101 X4 GPT 104
+LAR 5 M 3 N  3 X1 GPT 1 X2 GPT 2 X3 GPT   3 X4 GPT   4
+$
+LC 1
+VOLU REF LAR NO 1,2,3,4,5  TYPE PZ Z -9.0 P1 10
+ECHO LOAD EXTR
+END
+
++PROG SOFILOAD URS:6
+HEAD
+LC 2
+VOLU REF LAR NO 1,2,3,4,5 TYPE PZ Z -9.0 P1 10   $$
+      X2  -7 -7 -4  X3   0   0  -4 $$                   $ box for the half system
+      X4 +14 -7 -3  X5 -14  +7  -3
+$     X2  -7 -7 -4 X3  +7  +7 -4 $$                     $ box for the complete system
+$     X4 +14 -7 -3 X5 -14  +7 -3
+ECHO LOAD EXTR
+END
+
++PROG SOFILOAD URS:7
+HEAD
+LC 3
+VOLU REF LAR NO 1,2,3,4,5  TYPE PV P 20.0 X 1.5 Y 1.5 Z -9.0
+ECHO LOAD EXTR
+END
+
++PROG SOFILOAD URS:8
+HEAD
+LC 4
+VOLU REF LAR NO 1,2,3,4,5 A/U 3.0/2 TYPE PV P 20.0 X 1.5 Y 1.5  Z -9.0 $$
+                   P1 1.4 P2 0.55 P3 1.05 P4 0.45 P5 1.0
+ECHO LOAD EXTR
+END
+
+-PROG ASE URS:4
+HEAD volume loading with LAR
+ECHO FULL NO
+ECHO REAC YES
+LC ALLE
+END
+
+

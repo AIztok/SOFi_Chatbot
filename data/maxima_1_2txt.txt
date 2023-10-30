@@ -1,0 +1,3389 @@
+MAXIMA
+Superposition
+SOFiSTiK | 2023MAXIMA
+Superposition
+MAXIMAManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|MAXIMA
+Contents
+Contents i
+1 Task Description 1-1
+2 Theoretical Principles 2-1
+2.1 General Information . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.2 Combinations according to EN 1990 as well as the National Annexes
+and DIN-Fachbericht . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.2.1 Fundamental Combinations according to Equations 6.10 and
+6.10a+6.10b . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.2.2 Accidental Combinations . . . . . . . . . . . . . . . . . . . . . . . . 2-3
+2.2.3 Seismic Combination . . . . . . . . . . . . . . . . . . . . . . . . . . 2-3
+2.2.4 Combinations for Checks of the Serviceability . . . . . . . . . . 2-3
+2.3 Superposition with Explicit Defined Combination . . . . . . . . . . . . . . . 2-4
+2.4 Simplified Superpositions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-5
+2.4.1 Ultimate Limit State Check: Fundamental Combination . . . . 2-6
+2.4.2 Ultimate Limit State Check: Accidental Combination . . . . . . 2-6
+2.4.3 Serviceability Limit State Check: Characteristic (Rare) Com-
+bination . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-6
+2.5 Superposition without any Partial Safety Factors and Coefficients . . . . 2-7
+2.6 Superposition of Non-linearly Analysed Load Cases . . . . . . . . . . . . . 2-7
+2.7 Intermediate Superposition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-7
+2.7.1 Intermediate Superposition using Load Groups . . . . . . . . . 2-7
+2.7.2 Input Example: Hangar with Seismic Design . . . . . . . . . . . 2-7
+2.8 Modification of Partial Safety Factors and Combination Coefficients . . . 2-10
+3 Input Description 3-1
+3.1 Input Language . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.2 Input Records. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-2
+3.3 Design Codes and Recommended Combinations . . . . . . . . . . . . . . . 3-8
+3.3.1 EN - Eurocodes. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-8
+3.3.2 DIN - Deutsche Norm . . . . . . . . . . . . . . . . . . . . . . . . . . 3-8
+3.3.3 OEN - Österreichische Norm . . . . . . . . . . . . . . . . . . . . . 3-9
+3.3.4 SIA - Schweizer Norm . . . . . . . . . . . . . . . . . . . . . . . . . 3-10
+3.3.5 BS - British Standard and ZA - South African Standard . . . . 3-10
+3.3.6 US - American Standards and Unified Building Code . . . . . . 3-11
+3.3.7 SP - Russian Standard . . . . . . . . . . . . . . . . . . . . . . . . . 3-11
+3.3.8 IS - Indian Standard . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-11
+3.3.9 AS - Australian Standard and NZS - New Zealand Standard . 3-12
+3.3.10 UNE - Instrucciones Espaniola . . . . . . . . . . . . . . . . . . . . 3-12
+3.3.11 UNI - Decreto Ministeriale Italiane . . . . . . . . . . . . . . . . . . 3-12
+SOFiSTiK2023 iMAXIMA|Contents
+3.3.12 NF - AFNOR Association Francaise de Normalisation . . . . . 3-12
+3.3.13 SS - Swedish Standard EKS, TSFS . . . . . . . . . . . . . . . . . 3-13
+3.3.14 DS - Danish Standard . . . . . . . . . . . . . . . . . . . . . . . . . . 3-13
+3.3.15 NS - Norsk Standard . . . . . . . . . . . . . . . . . . . . . . . . . . 3-14
+3.3.16 SFS - Finnish Standard . . . . . . . . . . . . . . . . . . . . . . . . . 3-14
+3.3.17 NEN - Netherlands Standard . . . . . . . . . . . . . . . . . . . . . 3-15
+3.3.18 NBN - Belgian Standard . . . . . . . . . . . . . . . . . . . . . . . . 3-15
+3.3.19 GB - Chinese Standard . . . . . . . . . . . . . . . . . . . . . . . . . 3-15
+3.3.20 NBR - Brazilian Standard. . . . . . . . . . . . . . . . . . . . . . . . 3-16
+3.4 Usage of Defaults from INI File. . . . . . . . . . . . . . . . . . . . . . . . . . . 3-16
+3.5 CTRL – Method of Calculation . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-17
+3.6 COMB – Combination Rule . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-18
+3.6.1 Literal EXTR - Kind of Superposition . . . . . . . . . . . . . . . . 3-20
+3.6.2 Literal TYPE - Type of the result load cases . . . . . . . . . . . . 3-21
+3.7 ACT – Definition of an Action . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-22
+3.8 ADD – Actions for an Explicit Defined Combination . . . . . . . . . . . . . . 3-30
+3.8.1 Literals for the Factors . . . . . . . . . . . . . . . . . . . . . . . . . 3-30
+3.9 ADA – Selection of Actions for Action Groups . . . . . . . . . . . . . . . . . 3-33
+3.10 LC – Selection of Load Cases . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-35
+3.10.1 Default for NO - Load Case Number . . . . . . . . . . . . . . . . 3-36
+3.10.2 Differentiation and Default for TYPE . . . . . . . . . . . . . . . . . 3-37
+3.10.3 Remarks on FACT . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-39
+3.11 SUPP – Definition of the Superposition . . . . . . . . . . . . . . . . . . . . . 3-40
+3.11.1 Input Possibilities for Element Types and Scalar Variable . . . 3-42
+3.11.2 Definition of the Load Case Numbers . . . . . . . . . . . . . . . . 3-50
+3.11.3 Output Extent . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-52
+3.11.4 Determination of the Square Root SRSS and SRSE . . . . . . 3-53
+3.11.5 Input of Cross Section Points for Beams . . . . . . . . . . . . . . 3-54
+3.11.6 Definition of an Objective Function. . . . . . . . . . . . . . . . . . 3-55
+3.11.7 Use of Result Sets . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-57
+3.12 SUM – Definition of Sums for Results . . . . . . . . . . . . . . . . . . . . . . 3-59
+3.13 EXPO – Ansi Export of Data . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-60
+3.14 ECHO – Extent of the Output . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-61
+3.15 TRAC – Combination Tracing . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-64
+4 Interactive Version in SSD 4-1
+4.1 General Information . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.2 Combination Rules . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.2.1 Superposition with Actions . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.2.2 Superposition without Actions. . . . . . . . . . . . . . . . . . . . . 4-10
+4.2.3 Context Menu (Right-Mouse-Key) . . . . . . . . . . . . . . . . . . 4-10
+4.3 Superpositioning for Combination Rules . . . . . . . . . . . . . . . . . . . . . 4-12
+4.3.1 Definition of a New Superposition . . . . . . . . . . . . . . . . . . 4-13
+4.3.2 Selection of the Superposition Variable . . . . . . . . . . . . . . . 4-13
+4.3.3 Control of the Analysis . . . . . . . . . . . . . . . . . . . . . . . . . 4-16
+4.3.4 Output Extent . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-18
+4.3.5 Context Menu (Right-Mouse-Key) . . . . . . . . . . . . . . . . . . 4-19
+5 Output Description 5-1
+5.1 Check List of the Actions and Load Case Selection. . . . . . . . . . . . . . 5-1
+ii SOFiSTiK2023Contents|MAXIMA
+5.2 Check List of the Generated Load Cases . . . . . . . . . . . . . . . . . . . . 5-3
+5.3 Output of the Used Load Cases . . . . . . . . . . . . . . . . . . . . . . . . . . 5-4
+5.4 Output of the Superposition Factors . . . . . . . . . . . . . . . . . . . . . . . 5-4
+5.5 Output Tables of the Superposition Results of the Elements and Nodes 5-5
+5.6 Relevant Superposition Values . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-7
+5.7 Special Features for Superposition with an Objective Function . . . . . . 5-7
+5.8 Result Sets . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-7
+SOFiSTiK2023 iiiMAXIMA|Contents
+iv SOFiSTiK2023TaskDescription|MAXIMA
+1 Task Description
+The results which were calculated with the SOFiSTiK programs are stored in the database.
+ThetaskoftheprogramMAXIMAisthedeterminationofextremevaluesoftheinternalforces,
+stresses, displacements, support reactions and results of result sets.
+Different methods according to the partial safety concepts of the Eurocode and international
+design codes and according to the conventional method without partial safety factors can be
+used to determine the maximum values. Here MAXIMA finds the most unfavourable action
+effect and applies the combination factors automatically.
+To achieve this, the superposition is done in two steps. In the inner step MAXIMA finds the
+extreme value from different load cases of the action effect and in a second outer process the
+action effects are combined.
+The load cases to be superimposed may be defined unconditionally (e.g. dead load) or condi-
+tionally(e.g. liveload). Inaconditionalsuperpositioneachloadcaseisonlyappliedifithasan
+unfavourable contribution. The definition of loads which exclude each other (alternate loads)
+or of loads with changing sign is also possible.
+The load cases which are used for the superposition can be combined through arbitrary com-
+binationsofthecalculatedloadcases. Thisoccursviathedefinitionofsubsequentloadcases,
+whichleadstoanabsolutesuperpositionwiththepreviousloadcases. Eachloadcasemaybe
+multipliedwithascalingfactor,sothatnormalisedloadscanbeusedduringthestaticanalysis.
+The loads of non-linearly calculated load cases have to be include already the correspond-
+ing combination coefficients and safeties. A superposition with action effects (record ACT) is
+therefore not implemented. However, it is possible to make an alternative selection via the
+load cases only (record LC). Load cases which have been analysed non-linearly can only be
+superimposed as individual alternate load cases (TYPE AG1) with the factor 1.
+The results are printed and stored in the database for later design or visualisation purposes.
+The extent of the output can mainly be controlled by the user. It is recommended to print only
+the decisive or manually selected parts of the superposition.
+The user should check the superposition by investigating random samples! With the
+input of LOAD and FACT in record ECHO all the defined and determined factors and the used
+load cases are output for every individual superposition value. Only the relevant superposition
+values are printed with all involved factors, if ECHO CHCK is input.
+SOFiSTiK2023 1-1MAXIMA|TaskDescription
+1-2 SOFiSTiK2023TheoreticalPrinciples|MAXIMA
+2 Theoretical Principles
+2.1 General Information
+The superposition rule is determined via the definition of the design code in program AQUA
+(record NORM) or for the interactive input with SSD or SOFiPLUS at the beginning. MAXIMA
+then automatically uses the design code which is available in the database. The combination
+rules of the design codes as well as the National Annexes of the EN 1990 are different. For
+example, the EN 1990 with its National Annexes provides action combinations with safety and
+combination coefficients. In contrast, old standards such as DIN 1045 (1988) only combine
+load cases.
+The actions are already defined before the input of the loads in program SOFiLOAD or with
+theActionManagerinSSD.Thecorrespondingloadcaseshavetobeallocatedtotheactions.
+TheactioncanbeonlymodifiedtemporarilyinMAXIMA.Thesuperpositionisdonewithpartial
+safety factors and combination coefficients only for actions defined by arbitrary load cases.
+These load cases or combinations of them will be superimposed to define an action effect.
+A superposition contains all action effects which are defined by a combination rule with the
+record COMB.
+The most unfavourable variable action is designated as the leading variable action. MAXIMA
+selects the most unfavourable one and considers it according to the chosen combination rule.
+When using the explicit defined combination with action groups the determination of three
+leading variable actions is possible.
+The leading variable actions are marked with a * at sumQ1/sumQ2/sumQ3 (sum of the loads
+leading variable action) in the output with ECHO FACT FULL. This variable action which has
+the largest difference between sumL (sum of the loads leading variable action) and sumQI
+(sum of the loads acting variable) is used as leading variable action! The remaining variable
+actions are multiplied with the combination coefficient for the accompanying variable action in
+dependence on the combination rule.
+The default equations 2.1 till 2.7 correspond to the combinations which are given in the EN
+1990 (except for equation 6.10a and 6.10b) and in the DIN 1055-100 / DIN-Fachberichte. For
+the special equations 6.10a and 6.10b of the EN 1990 and their use variants in the National
+Annexes it is recommended to use the explicit defined combinations.
+For design codes, which are used other equations for the combinations e.g. BS 8110, BS
+5400,AustralianStandard,IndianStandard,USStandards,itisrecommededtousetheexplicit
+defined combination.
+IfsuperpositiondefaultsareavailableintheINIfilefortheselecteddesigncode,thesedefaults
+are used then in MAXIMA without input for COMB, ACT, ADD, LC and SUPP or in the SSD
+tasks Combination Rules and Superpositioning for Combination Rules. Precondition for
+this is the usage of the default actions of the record ACT (SOFiLOAD) or of the Loadcase
+Manager.
+You can find further explanations and examples for different design codes in our Online Help
+-> Tutorials
+SOFiSTiK2023 2-1MAXIMA|TheoreticalPrinciples
+https://www.sofistik.de/documentation/2023/en/tutorials/superpositions/superposition.html
+The number of processable load cases is limited to 999999. Upon request, the user can re-
+peatedlyoverwritepreviouslystoredloadcasesorcanrecombinetheloadcasesfromdifferent
+databases with DBINFO or DBMERG.
+The results can be stored under a new load case number. Possible available results of former
+calculations are deleted, unless, something else is requested with the input CTRL DELE.
+The superposition is made separately for each node and for each element or beam or design
+element section in the database.
+The superposition takes place for all nodes or elements even when not all of them have been
+selected. However, only the results for the selected nodes or elements are printed out. For
+special cases it is possible to make a selective superposition with the input SUPP OPT S.
+When the values to be superimposed are close to zero, then some problems arise for the
+imposed loads, in the calculation of the corresponding internal forces. This is handled by the
+programMAXIMAinthefollowingmanner: Iftheactualabsolutevalueislessthan10E-6ofthe
+maximumvalueofallloadcasesencountered,thentheimposedloadcasesdonotparticipate
+in the superposition.
+If however the derivation of the quantity being superimposed is known, e.g. the shear force
+in the case of a superimposed bending moment, then an imposed load case is used if the
+corresponding derivation is positive.
+2.2 Combinations according to EN 1990 as well as the National An-
+nexes and DIN-Fachbericht
+2.2.1 Fundamental Combinations according to Equations 6.10 and 6.10a+6.10b
+Thefollowingcombinationscanbeusedforthesuperpositionandareselectableviatherecord
+COMB:
+Fundamental combination for the ultimate limit state (EN 1990 equation 6.10):
+ 
+(cid:88) (cid:88) 
+E d =E γ G,j·G k,j⊕γ P·P k⊕γ Q,1·Q k,1⊕ γ Q,·ψ 0,·Q k, (2.1)
+j≥1 >1 
+AsalternativepossibilitytheEN1990providesthesuperpositionswiththeequations6.10aand
+6.10b which are available in different variants in some National Annexes using the reduction
+factor ξ and the reliability factor K F.
+EN 1990 equation 6.10a
+ 
+(cid:88) (cid:88) 
+E =E ·γ ·G ⊕γ ·P ⊕γ ·ψ · Q ⊕ γ ·ψ ·Q
+d G,j k,j P k Q,1 0,1 k,1 Q, 0, k,
+j≥1 >1 
+2-2 SOFiSTiK2023TheoreticalPrinciples|MAXIMA
+EN 1990 equation 6.10b
+ 
+(cid:88) (cid:88) 
+E =E ξ·γ ·G ⊕γ ·P ⊕γ ·Q ⊕ γ ·ψ ·Q
+d G,j k,j P k Q,1 k,1 Q, 0, k,
+j≥1 >1 
+The realization of the equations 6.10a and 6.10b is done in each case via an explicit defined
+combination. More information can be found in chapter 2.3 and in chapter 3 at COMB, ADD
+und ADA.
+2.2.2 Accidental Combinations
+Accidental design combination for the ultimate limit state:
+ 
+(cid:88) (cid:88) 
+E dA =E γ g,A·G k⊕γ PA·P k⊕γ A·A d⊕ψ 1,1·Q k,1⊕ ψ 2,·Q k, (2.2)
+j≥1 >1 
+The partial safety factor γ g,A for the permanent actions and γ A for the accidental actions is
+determined with the input GAMA in record ACT. The default for both partial safety factors is
+definedindependenceontheselecteddesigncodeintheINIfileandisautomaticallyavailable.
+The EN 1990 plans the use of ψ 2,1·Q k,1 (= all variable actions with ψ 2) as a second variant
+for the accidental design combination. This variant has to be done with the explicit defined
+combination COMB EXTR EXPL. An input variant is for example:
+COMB 1 EXTR EXPL TYPE ACCI BASE 3100
+ADD A FACU GAMA FACF 0.0
+ADD G FACU GAMA FACF GAMA
+ADD QI FACU PSI2 FACF 0.0
+2.2.3 Seismic Combination
+Seismic combination for the ultimate limit state:
+ 
+(cid:88) (cid:88) 
+E dAE =E G k,j⊕P k⊕γ ·A Ed⊕ ψ 2,·Q k, (2.3)
+j≥1 ≥1 
+Actions with type seismic action (E) and accidental actions (A) are processed also in equation
+2.1, if the used design code has not planned superpositions according to equation 2.2 and
+2.3.
+2.2.4 Combinations for Checks of the Serviceability
+Characteristic (rare) combination for the serviceability limit state:
+ 
+(cid:88) (cid:88) 
+E d,rre =E G k,j⊕P k⊕Q k,1⊕ ψ 0,·Q k, (2.4)
+j≥1 >1 
+SOFiSTiK2023 2-3MAXIMA|TheoreticalPrinciples
+Frequent combination for the serviceability limit state:
+ 
+(cid:88) (cid:88) 
+E d,ƒreq =E G k,j⊕P k⊕ψ 1,1·Q k,1⊕ ψ 2,·Q k, (2.5)
+j≥1 >1 
+Infrequent combination for the serviceability limit state (EN 1990 Annex A2 for bridges, DIN-
+Fachbericht101):
+ 
+(cid:88) (cid:88) 
+E d,nƒreq =E G k,j⊕P k⊕ψ 1,nƒq·Q k,1⊕ ψ 1,·Q k, (2.6)
+j≥1 >1 
+Quasi-permanent combination for the serviceability limit state:
+ 
+(cid:88) (cid:88) 
+E d,perm =E G k,j⊕P k⊕ ψ 2,·Q k, (2.7)
+j≥1 ≥1 
+For design codes which do not plan the combination coefficient ψ 1 (e.g. OEN 4700 accidental
+combination) the leading variable action is determined and multiplied by ψ 2. If a higher co-
+efficient ψ 2 than ψ 1 is input, this higher coefficient ψ 2 is used for the leading variable action.
+MAXIMA uses here the maximum (ψ 1,ψ 2). In analog mode the maximum (ψ 1,ψ 2,ψ 1,nƒq) is
+considered for the leading variable action for a superposition of the infrequent combination
+(equation 2.6).
+The user should be aware that only the sum of all load cases defines the partial safety factor
+which is valid for an action effect (see record ACT).
+2.3 Superposition with Explicit Defined Combination
+For superpositions which do not correspond to the equations 2.1 till 2.7 there is the possibility
+for the user to combine special superpositions with factors. For this an explicit defined com-
+bination has to be selected with EXTR EXPL in record COMB. Actions or action groups with
+corresponding factors are combined for the combination with the relevant record ADD. The
+actions must be defined before in SOFiLOAD and to be available in the database after the
+calculation.
+With the record ADA only certain actions which are available in the database can be used
+for an explicit defined combination with action groups (e.g. ADD {Q1}) bzw. {QI}) ... for
+variable actions). Without the selection with the record ADA, all actions are considered from
+the database.
+An example for the use of the explicit defined combination is the superposition for design
+according to the Swiss code SIA 262. According to SIA 260 a superposition at which only
+ψ 0 and no γ are to be considered for the accompanying variable actions is necessary for the
+check at ultimate limit state:
+ 
+(cid:88) (cid:88) 
+E =E γ ·G ⊕γ ·P ⊕γ ·Q ⊕ ψ ·Q
+d G,j k,j P k Q,1 k,1 0, k,
+j≥1 >1 
+2-4 SOFiSTiK2023TheoreticalPrinciples|MAXIMA
+An input for the explicit defined combination with permanent and variable actions, where only
+Q, W and S should be used as variable actions, reads for example:
+COMB 1 EXTR EXPL TYPE DESI
+ADD {G} FACU GAM
+ADD {Q1} FACU GAMU FACF 0.0
+ADA Q,W,S
+ADD {QI} FACU PSI0 FACF 0.0
+ADA Q,W,S
+Thedefinitionisdonehereviaactiongroups,whereitisdefinedat{Q1}thataleadingvariable
+action is available. The leading variable action is considered in the unfavourable case with the
+corresponding partial safety factor γ. The following actions {QI} get only the combination
+coefficient ψ 0 as unfavourable factor.
+Another possibility is to prescribe a special action as leading variable action (e.g. according to
+French BAEL). A possible input with single actions is for example according to BAEL (D2.2,1
+design resistance for buildings, first line of the table):
+COMB 1 EXPL TYPE DESI
+ADD G FACU GAM
+ADD QB FACU 1.5 FACF 0.0 $leading variable action$
+ADD W FACU PSIU FACF 0.0
+ADD S FACU PSIU FACF 0.0
+ADD T_1 FACU 0.8 FACF 0.0
+The leading variable action is here QB with the factor (γ) 1.5 in the unfavourable case. The
+accomanyingvariableactionsWandSareconsideredwiththefactorγ·ψ 0 intheunfavourable
+case and T_1 with 0.8.
+For a combination which uses ADD it is also possible to input together actions and action
+groups. For example it is useful, if a specific variable action is the leading variable action and
+all other defined variable actions are the accompanying variable actions. With the input:
+COMB 1 EXPL TYPE DESI
+ADD {G} FACU GAMU FACF GAMF
+ADD W FACU 1.5 FACF 0.0
+ADD {QI} FACU PSIU FACF 0.0
+allpermanentactions(actiongroup{G})arecombinedwiththeleadingvariableactionWand
+all other variable actions as accomanying variable actions (action group {QI}).
+You can find further explanations and examples for the explicit defined combinations in our
+Online Help -> Tutorials
+https://www.sofistik.de/documentation/2023/en/tutorials/superpositions/superposition.html
+2.4 Simplified Superpositions
+Simplified superpositions are described for German DIN 18800, Austrian OENORM 4300 and
+SOFiSTiK2023 2-5MAXIMA|TheoreticalPrinciples
+Russian SNIP.
+2.4.1 Ultimate Limit State Check: Fundamental Combination
+The German DIN 18800, the Austrian OENORM 4300, the Russian SNIP and other design
+codes include a simplified superposition with partial safety factors for the ultimate limit state
+check:
+either: consideration of only one variable action Q with the partial safety factor γ
+S  =γ g·G k⊕γ q,1·Q k,1 (2.8)
+or: consideration of all variable actions Q with the partial safety factors γ·ψ (e.g. for German
+DIN 18800 = 1.5 · 0.9 = 1.35)
+(cid:88)
+S  =γ g·G k⊕ γ q,·ψ q,·Q k, (2.9)
+Both superpositions have to be analysed according to the design code. Only the most un-
+favourablesuperpositionisdecisive. MAXIMAprocessesinternallybothequationsandoutput,
+however, only the more unfavourable superposition.
+Ifanactionwithtypeseismicaction(E)isavailable,thenthisactionisprocessedwithequation
+(8) and (9) because an explicit superposition with seismic combination is not planned here.
+2.4.2 Ultimate Limit State Check: Accidental Combination
+The simplified superposition for the accidental combination is only allowed for German DIN
+18800 and Austrian OENORM 4300.
+For accidental combinations according to German DIN 18800 and Austrian OENORM 4300
+thepermanentactionsGareused,however,with γ g =1.0andallvariableactionsQ,however,
+with γ = 0.9 (= 0.9 · 1.0) according to the equations 2.8 and 2.9. Additionally the accidental
+action FA is considered as follows:
+F A,d =γ F·F ,k (2.10)
+with γ F = 1.0
+2.4.3 Serviceability Limit State Check: Characteristic (Rare) Combination
+For the simplified check of serviceability (characteristic combination)according to DIN 18800
+and OENORM 4300 following superposition is possible in program MAXIMA record COMB:
+either: consideration of only one variable action Q
+S r =G k⊕Q k,1 (2.11)
+or: consideration of all variable actions Q with the combination coefficient ψ (e.g. for German
+DIN 18800 ψ = 0.9)
+(cid:88)
+S r =G k⊕ ψ q,·Q k, (2.12)
+2-6 SOFiSTiK2023TheoreticalPrinciples|MAXIMA
+Ifanactionwithtypeseismicaction(E)isavailable,thenthisactionisprocessedwithequation
+(11)and(12)becauseanexplicitsuperpositionwithseismiccombinationisnotplannedhere.
+2.5 Superposition without any Partial Safety Factors and Coefficients
+Foradefineddesigncode(e.g. GermanDIN1045old)whichdemandsasuperpositionwithout
+partial safety factors and combination coefficients the scalar variable of an initial load case is
+considered (factor 1.0) or not considered (factor 0.0) during the superposition.
+2.6 Superposition of Non-linearly Analysed Load Cases
+For a superposition of non-linearly analysed load cases an envelope is formed. Only load
+cases without factors are superimposed here and only one decisive load case is determined.
+The superposition of non-linearly analysed load cases is only permitted, if the load cases
+are defined via alternative groups (record LC type AG1) or if the calculation occurred with
+a linearised calculation according to OENORM. If using the literal NONL for EXTR in record
+COMB, the load cases are processed automatically with TYPE AG1. It is to be noted here,
+that no action (no record ACT) has to be entered in MAXIMA even if the defined design code
+prescribes actions for superpositions after linear calculations.
+2.7 Intermediate Superposition
+For special projects it can be necessary to execute an intermediate superposition. The deter-
+minedresultloadcasesofanintermediatesuperpositioncanbeusedthenasinitialloadcases
+for further combinations. For an intermediate superposition it is also possible here to assign
+the result load cases with COMB TYPE to an action which was defined before in SOFiLOAD.
+2.7.1 Intermediate Superposition using Load Groups
+When using load groups with ACT PART Q_1 till Q_99 it is possible to make intermediate
+superpositionsinternallywithinaMAXIMArun,e.g. forrelevanttrafficloads. Thesuperposition
+with load groups is shown and described in the example file maxima_loadgroups.dat.
+For comparison the intermediate superposition with explicit MAXIMA definitions is shown in
+the example file maxima_intermediate-superposition.dat.
+2.7.2 Input Example: Hangar with Seismic Design
+Ahangarwithtwocraneshastobedesignedforseismicloading. Inthiscasethestandardload
+cases dead load (1 and 2) and three imposed load cases (4,5,6) are first available. The two
+independentlymovingcranes,eachofthemwith36differentloadpositionswhicharestoredin
+the database with the load case numbers 101 to 172, are considered additionally.
+In a first step the extreme values of this loading are generated when the imposed loads and
+the crane loads are superimposed in three alternative groups. This requires, that one of the
+imposed load cases covers the full load.
+PROG MAXIMA
+HEAD EXTREMAS OF DEAD AND LIVE LOADS
+TXA Time History
+COMB 1 STAN
+LC 1,2 G 1.2 $Dead load$
+4,5,6 A1 0.6 $Imposed load$
+SOFiSTiK2023 2-7MAXIMA|TheoreticalPrinciples
+(101 136 1) A2 0.36 $crane I$
+(137 172 1) A3 0.36 $crane II$
+SUPP 1 MAMI ETYP BEAM TYPE N LC 81
+SUPP 1 MAMI ETYP BEAM TYPE MY LC 83
+SUPP 1 MAMI ETYP BEAM TYPE MZ LC 85
+SUPP 1 MAMI ETYP TRUS TYPE N LC 87
+END
+Now the seismic loads are added. These have been analyzed with the program DYNA. First
+a lot of results which are based on the response spectra method and separated with respect
+to the three coordinate axis (301,304 and 307) are generated. For the design of the structural
+elements these loads with alternating sign of the maximum have to be considered and in ad-
+dition in the combinations at the corner as well as in the combinations horizontal and vertical.
+The vertical loading is scheduled in this case either fully with a factor 1.3 or additionally to the
+horizontal loading only with a factor of 0.5.
+Furthermoreatimeresponseanalysisof6discreteaccelerationprofilewithartificialgenerated
+base accelerations exists there. These are 36 extreme value load cases which are combined
+into global extreme values in a second calculation of MAXIMA first of all.
+PROG MAXIMA
+HEAD ABSOLUTE EXTREMAS OF TIME HISTORY
+TXA Time History has been performed with three sets of base
+TXA accelerations each of them with
+TXA
+TXA a) 1.3 times the horizontal acceleration in x and
+TXA 0.5 times the vertical acceleration
+TXA
+TXA b) 1.3 times the horizontal acceleration in y and
+TXA 0.5 times the vertical acceleration
+TXA
+TXA The maximum and minimum evaluation of these cases has been
+TXA done for normal force and both moments. This are six load-
+TXA cases for each of the six histories.
+TXA (LC 311-322, 331-342 and 351-362)
+TXA
+TXA absolute extremas of these 36 load cases are evaluated now.
+COMB 2 STAN
+LC (311 322 1) A1 1.0
+LC (331 342 1) A1 1.0
+LC (351 362 1) A1 1.0
+LC (311 322 1) A1 -1.0
+LC (331 342 1) A1 -1.0
+LC (351 362 1) A1 -1.0
+SUPP 2 MAX ETYP BEAM TYPE N LC 391
+SUPP 2 MAX ETYP BEAM TYPE MY LC 393
+SUPP 2 MAX ETYP BEAM TYPE MZ LC 395
+SUPP 2 MAX ETYP TRUS TYPE N LC 397
+END
+Thefollowingdatawhichallowasuperpositionofallpreviousextremevaluesresultnowinthe
+2-8 SOFiSTiK2023TheoreticalPrinciples|MAXIMA
+thirdinputblockofMAXIMA.TheincreaseofenvironmentvariableCDBASEMEMtoavalueof
+about 2 million may reduce the CPU time from several days to less than an hour for a system
+like the given system with more than 40 000 unknowns.
+PROG MAXIMA
+HEAD EXTREMA FOR EARTHQUAKE USING RESPONSE SPECTRA + TIME HISTORY
+TXA Time History
+COMB 3 STAN
+LC (81 86 1) A1 1.0 $Combinations from before$
+301 A4 1.3 $earthquake X$
+301 A4 -1.3
+304 A4 1.3 $earthquake Y$
+304 A4 -1.3
+307 A4 1.3 $earthquake Z$
+307 A4 -1.3
+301 A4 1.3*0.7 ; 304 F 1.3*0.7
+301 A4 -1.3*0.7 ; 304 F 1.3*0.7
+301 A4 -1.3*0.7 ; 304 F -1.3*0.7
+301 A4 1.3*0.7 ; 304 F -1.3*0.7
+301 A4 1.3 ; 307 F 0.5
+301 A4 -1.3 ; 307 F 0.5
+304 A4 1.3 ; 307 F 0.5
+304 A4 -1.3 ; 307 F 0.5
+301 A4 1.3*0.7 ; 304 F 1.3*0.7 ; 307 F 0.5e
+301 A4 -1.3*0.7 ; 304 F 1.3*0.7 ; 307 F 0.5
+301 A4 -1.3*0.7 ; 304 F -1.3*0.7 ; 307 F 0.5
+301 A4 1.3*0.7 ; 304 F -1.3*0.7 ; 307 F 0.5
+301 A4 1.3 ; 307 F -0.5
+301 A4 -1.3 ; 307 F -0.5
+304 A4 1.3 ; 307 F -0.5
+304 A4 -1.3 ; 307 F -0.5
+301 A4 1.3*0.7 ; 304 F 1.3*0.7 ; 307 F -0.5
+301 A4 -1.3*0.7 ; 304 F 1.3*0.7 ; 307 F -0.5
+301 A4 -1.3*0.7 ; 304 F -1.3*0.7 ; 307 F -0.5
+301 A4 1.3*0.7 ; 304 F -1.3*0.7 ; 307 F -0.5
+391 A4 1.0 $TIME HISTORY ANALYSIS$
+391 A4 -1.0
+393 A4 1.0 $TIME HISTORY ANALYSIS$
+393 A4 -1.0
+395 A4 1.0 $TIME HISTORY ANALYSIS$
+395 A4 -1.0
+SUPP 3 MAMI ETYP BEAM TYPE N LC 91
+SUPP 3 MAMI ETYP BEAM TYPE MY LC 93
+SUPP 3 MAMI ETYP BEAM TYPE MZ LC 95
+SUPP 3 MAMI ETYP TRUS TYPE N LC 97
+END
+SOFiSTiK2023 2-9MAXIMA|TheoreticalPrinciples
+2.8 Modification of Partial Safety Factors and Combination Coeffi-
+cients
+The partial safety factors and combination coefficients which are preset in the INI files can
+be modified with different possibilities of the input in SOFiLOAD and/or MAXIMA. E.g. only
+single load cases can get other values (SOFiLOAD record LC) than the corresponding action.
+However, following specifications should be considered here for the superposition:
+1. If a partial safety factor and/or a combination coefficient is modified for a load case
+(SOFiLOAD record LC) and no modification of the action is done in MAXIMA, then the
+valuefortheloadcasewhichwasinputinSOFiLOADLCwinsduringthesuperposition.
+2. If a partial safety factor and/or a combination coefficient is modified for a load case
+(SOFiLOAD record LC) and a modification of the action is done in MAXIMA (record
+ACT), then the in MAXIMA modified value for the action wins during the superposition
+and not the value from the load case (SOFiLOAD).
+Example:
+SOFiLOAD: action snow - unfavourable partial safety factor GAMU with default 1.5, modified
+only for load case 6 to 1.4
+ACT S
+LC 5
+$load input for LC 5$
+LC 6 gamu 1.4
+$load input for LC 6$
+Case 1: no further modification of GAMU in the MAXIMA input MAXIMA printout Design fun-
+damental combination DESI default - without modification in MAXIMA for ACT S:
+Load case selection and Actions
+Act type γ-u γ-f γ-a ψ-0 ψ-1 ψ-2
+LC factor Type of load case Designation
+S Q 1.50 0.00 1.00 0.50 0.20 0.00 Snow
+5 1.00 Conditional LC Snow
+6 1.00 Conditional LC Snow
+γ-u = 1.40
+Case 2: The unfavourable partial safety factor is input now for the action in MAXIMA with 1.6
+ACT S gamu 1.6
+LC 0
+Load case selection and Actions
+Act type γ-u γ-f γ-a ψ-0 ψ-1 ψ-2
+LC factor Type of load case Designation
+S Q 1.60 0.00 1.00 0.50 0.20 0.00 Snow
+5 1.00 Conditional LC Snow
+6 1.00 Conditional LC Snow
+2-10 SOFiSTiK2023TheoreticalPrinciples|MAXIMA
+The above described procedure is different for an explicit defined combination with COMB
+EXTR EXPL and ADD: The action/action groups are defined in MAXIMA with record ADD for
+theexplicitdefinedcombination. Forsuchacombinationonlyanunfavourableandafavourbale
+factor has to be defined. That means, that the factors are available for all load cases of the
+action which is defined with record ADD or all load cases have the same factors FACU and
+FACF for the action at ADD.
+SOFiSTiK2023 2-11MAXIMA|TheoreticalPrinciples
+2-12 SOFiSTiK2023InputDescription|MAXIMA
+3 Input Description
+3.1 Input Language
+The input occurs in a free format with the CADINP input language (see the general manual
+SOFiSTiK: ’Basics’).
+Three categories of units are distinguished:
+mm Fixed unit. Input is always required in the specified unit.
+[mm] Explicit unit. Input defaults to the specified unit. Alternatively, an explicit as-
+signment of a related unit is possible (eg. 2.5[m] ).
+[mm] Implicit unit. Implicit units are categorised semantically and denoted by a cor-
+1011
+responding identity number (shown in green). Valid categories referring to the
+unit ”length” are, for example, geodetic elevation, section length and thickness.
+Thedefaultunitforeachcategoryisdefinedbythecurrentlyactive(designcode
+specific) unit set. This input default can be overridden as described above. The
+specified unit in square brackets corresponds to the default for unit set 5 (Eu-
+rocodes, NORM UNIT 5).
+SOFiSTiK2023 3-1MAXIMA|InputDescription
+3.2 Input Records
+The following records are defined:
+Record Items
+CTRL OPT VAL
+COMB NO EXTR BASE TYPE COMC TITL
+ACT TYPE GAMU GAMF PSI0 PSI1 PSI2 PS1S
+PART SUP TITL
+ADD TYPE FACU FACF
+ADA TYPE
+LC NO TYPE FACT
+SUPP COMB EXTR ETYP TYPE FROM TO INC
+X SELE LC TITL OPT
+SUM COMB LC TITL
+EXPO OPT TO PASS
+ECHO OPT VAL
+TRAC LC ETYP ELEM X SELE OPT CSAV
+The records HEAD, END and PAGE are described in the general manual SOFiSTiK: ’Basics’.
+The records COMB and SUPP should be input. If the actions (record ACT) and the load
+cases(recordLC)shouldbetakenoverwithoutmodificationsfromthedatabase(fromprogram
+SOFiLOAD), the records ACT and LC do not have to be input then. If, however, an action or
+a load case should get a modification in MAXIMA, the complete superposition definition (all
+records ACT and LC) has to be input here.
+It is to be noted that the actions (record ACT) and the relevant load cases can be only se-
+lected and possible modified in MAXIMA. They have to be defined before with the program
+SOFiLOAD.
+3-2 SOFiSTiK2023InputDescription|MAXIMA
+General procedure diagram for the definition of superpositions with actions (record ACT, not
+for explicit defined combinations with COMB EXPL and record ADD):
+Definitionuofuaucombination rule with the equations (2.1) – (2.12)
+recorduCOMB,ue.g.uEXTRuDESIu
+SelectionuofuanuactionuwithurecorduACTu
+SelectionuofuauloaducaseuwithurecorduLCu
+forutheuchosenuactionu
+SelectionuofuauloaducaseuwithurecorduLCu
+forutheuchosenuactionu
+.u .u .u
+SelectionuofuanuactionuwithurecorduACTu
+SelectionuofuauloaducaseuwithurecorduLCu
+forutheuchosenuactionu
+SelectionuofuauloaducaseuwithurecorduLCu
+forutheuchosenuactionu
+.u .u .u
+.u .u .u
+DefinitionuofutheusuperpositionuwithurecorduSUPPu
+Figure3.1: Procedurediagramforcombinationaccordingtoequations
+SOFiSTiK2023 3-3MAXIMA|InputDescription
+Procedure diagrams for the definition of superpositions for explicit defined combinations with
+COMB EXTR EXPL and record ADD):
+Definitionuofuanuexplicit defined combination rule withu
+COMBuEXTRuEXPLu
+Selectionuofuanuaction withurecorduADDu
+SelectionuofuauloaducaseuwithurecorduLCu
+forutheuchosenuexplicituactionu
+SelectionuofuauloaducaseuwithurecorduLCu
+forutheuchosenuexplicituactionu
+.u .u .u
+Selectionuofuanuaction withurecorduADDu
+SelectionuofuauloaducaseuwithurecorduLCu
+forutheuchosenuexplicituactionu
+SelectionuofuauloaducaseuwithurecorduLCu
+forutheuchosenuexplicituactionu
+.u .u .u
+.u .u .u
+DefinitionuofutheusuperpositionuwithurecorduSUPPu
+Figure3.2: Procedureofanexplicitdefinedcombinationwithactions
+3-4 SOFiSTiK2023InputDescription|MAXIMA
+Definitionuofuanuexplicit defined combination rule withu
+COMBuEXTRuEXPLu
+Selectionuofuanuaction group withurecorduADDu
+Selectionuofuanuactionufromutheudatabaseuwithu
+recorduADAu
+Selectionuofuanuactionufromutheudatabaseuwithu
+recorduADAu
+.u .u .u
+Selectionuofuanuaction group withurecorduADDu
+Selectionuofuanuactionufromutheudatabaseuwithu
+recorduADAu
+Selectionuofuanuactionufromutheudatabaseuwithu
+recorduADAu
+.u .u .u
+.u .u .u
+DefinitionuoftuheusuperpositionuwithurecorduSUPPu
+Figure3.3: Procedureofanexplicitdefinedcombinationwithactiongroups
+SOFiSTiK2023 3-5MAXIMA|InputDescription
+Algorithmforacombinationwithoutinputofactions(recordACT)andloadcases(recordLC):
+Combination rule
+COMB
+yes available no
+in CDB
+Use of the available Generation of a new
+combination combination using actions
+and load cases
+Figure3.4: Algorithm
+3-6 SOFiSTiK2023InputDescription|MAXIMA
+Procedure diagram for the definition of a standard combination (combination only with load
+cases, no actions) COMB EXTR STAN and record LC):
+Figure3.5: Procedureofastandardcombination
+SpecialfeatureoftherecordTRAC-CombinationTracing: OneormorerecordsTRAChaveto
+beinputinanownMAXIMArunfortheprintoutoftheloadcasetracingaboutthecombinations
+for specific element. The determination of the load case tracing have to be done after the
+corresponding superpositions. As an example, an input looks like this:
+PROG MAXIMA
+HEAD Load case tracing
+TRAC LC 2129 ETYP BEAM ELEM 3 x 1[-] OPT 'IF'
+TRAC LC 2229 ETYP BEAM ELEM 8 x 1[-] OPT 'IF'
+END
+SOFiSTiK2023 3-7MAXIMA|InputDescription
+3.3 Design Codes and Recommended Combinations
+For the individual design codes the recommended combinations for COMB EXTR are listed in
+the following tables.
+AllcombinationsEXTRDESI,ACCI,EARQ,RARE,FREQ,NONFandPERMaccordingtothe
+equations 2.1 - 2.7 can be also input with the explicit defined combination EXTR EXPL.
+You can find further explanations and examples for different design codes in our Online Help
+-> Tutorials
+https://www.sofistik.de/documentation/2023/en/tutorials/superpositions/superposition.html
+3.3.1 EN - Eurocodes
+EN 199X-200X, EN 199X-200X-BRIDGE
+Combination COMB EXTR
+Design fundamental combination (6.10) EN 1990 DESI
+Design fundamental combinations (6.10a/6.10b) EN 1990 EXPL
+Accidental combination equation (6.11b) EN 1990 with leading variable ACCI
+action ψ 1,1·Q k,1
+Accidental combination equation (6.11b) EN 1990 without leading vari- EXPL
+able action ψ 2,1·Q k,1
+Seismic combination equation (6.12b) EN 1990 EARQ
+Characteristic (rare) combination equation (6.14b) EN 1990 RARE
+Frequent combination equation (6.15b) EN 1990 FREQ
+Quasi-permanent combination equation (6.16b) EN 1990 PERM
+Infrequent combination equation (A2.1b) EN 1990 NONF
+3.3.2 DIN - Deutsche Norm
+DIN EN199X-200X, DIN EN199X-200X-BRIDGE, DIN 1045-2008, DIN FB102-2009, DIN
+FB103-2009, DIN FB104-2009, DIN 18800 Kategorie B, DIN 1052-2008, DIN 1045-1, DIN
+FB102-2003, DIN FB103-2003, DIN FB104-2003, DIN 1052-1988
+Combination COMB EXTR
+Design fundamental combination equation (6.10) EN 1990, DIN 1055- DESI
+100
+Accidental combination equation (6.11b) EN 1990 with leading variable ACCI
+action ψ 1,1·Q k,1, DIN 1055-100
+Accidental combination equation (6.11b) EN 1990 without leading vari- EXPL
+able action ψ 2,1·Q k,1
+Seismic combination equation (6.12b) EN 1990, DIN 1055-100 EARQ
+Characteristic (rare) combination equation (6.14b) EN 1990, DIN 1055- RARE
+100
+3-8 SOFiSTiK2023InputDescription|MAXIMA
+Combination COMB EXTR
+Frequent combination equation (6.15b) EN 1990, DIN 1055-100 FREQ
+Quasi-permanent combination equation (6.16b) EN 1990, DIN 1055-100 PERM
+Infrequent combination equation (A2.1b) EN 1990, DIN FB NONF
+DIN 18800 Kategorie A, DIN 18800-1990
+Combination COMB EXTR
+Design fundamental combination simplified DIN 18800 DESI-V
+Accidental combination simplified DIN 18800 ACCI-V
+Characteristic (rare) combination simplified DIN 18800 RARE-V
+DIN 1045
+Kombination COMB EXTR
+Combinations of load cases only DIN 1055 STAN
+3.3.3 OEN - Österreichische Norm
+OEN EN199X-200X, OEN EN199X-200X-BRIDGE, OEN 4700, OEN 4750
+Combination COMB EXTR
+Design fundamental combination equation (6.10) EN 1990, OEN 4700, DESI
+OEN 4750
+Accidental combination equation (6.11b) EN 1990 with leading variable ACCI
+action ψ 1,1·Q k,1, OEN 4700
+Accidental combination equation (6.11b) EN 1990 without leading vari- EXPL
+able action ψ 2,1·Q k,1
+Seismic combination equation (6.12b) EN 1990, OEN 4750 EARQ
+Characteristic (rare) combination equation (6.14b) EN 1990, OEN 4750 RARE
+Frequent combination equation (6.15b) EN 1990, OEN 4750 FREQ
+Quasi-permanent combination equation (6.16b) EN 1990, OEN 4700, PERM
+OEN 4750
+Infrequent combination equation (A2.1b) EN 1990 NONF
+Seimsic Combination OEN 4700 ACCI
+OEN 4300
+SOFiSTiK2023 3-9MAXIMA|InputDescription
+Combination COMB EXTR
+Design fundamental combionation simplified OEN 4300 DESI-V
+Accidental combination simplified OEN 4300 ACCI-V
+Characteristic (rare) combination simplifed OEN 4300 RARE-V
+3.3.4 SIA - Schweizer Norm
+SIA 26X
+Combination COMB EXTR
+Design fundamental combination SIA 260 EXPL
+Accidental combination SIA 260 ACCI
+Seismic combination SIA 260 EARQ
+Characteristic (rare) combination SIA 260 RARE
+Frequent combination equation SIA 260 FREQ
+Quasi-permanent combination equation SIA 260 PERM
+3.3.5 BS - British Standard and ZA - South African Standard
+BS EN199X-200X, BS EN199X-200X-BRIDGE
+Combination COMB EXTR
+Design fundamental combination equation (6.10) EN 1990 DESI
+Design fundamental combination equation (6.10a/6.10b) EN 1990 EXPL
+Accidental combination equation (6.11b) EN 1990 with leading variable ACCI
+action ψ 1,1·Q k,1
+Accidental combination equation (6.11b) EN 1990 without leading vari- EXPL
+able action ψ 2,1·Q k,1
+Seimsic combination equation (6.12b) EN 1990 EARQ
+Characteristic (rare) combination equation (6.14b) EN 1990 RARE
+Frequent combination equation (6.15b) EN 1990 FREQ
+Quasi-permanent combination equation (6.16b) EN 1990 PERM
+Infrequent combination equation (A2.1b) EN 1990 NONF
+BS 8110, BS 5400, BS 5950, ZA TMH7
+Combination COMB EXTR
+Design fundamental combinations EXPL
+Accidental combinations EXPL
+Combinations for serviceability limit state EXPL
+3-10 SOFiSTiK2023InputDescription|MAXIMA
+3.3.6 US - American Standards and Unified Building Code
+US ACI-318-14, US ACI-318-08, US AASHTO-2014, US AASHTO-2010,US AASHTO-2004,
+US AISC-2005
+Combination COMB EXTR
+Combinations for ultimate limit state EXPL
+Accidental combinations EXPL
+Seismic combination EXPL
+Combinations for serviceability limit state EXPL
+3.3.7 SP - Russian Standard
+SP 63-13330, SP 16-13330
+Combination COMB EXTR
+Design fundamental combination EXPL, STAN
+Equation (6.1) SP 20.13330.2016 only with pre- and final superpositions
+in several MAXIMA runs
+Accidental combinations (inclusive seismic combination) EXPL, STAN
+Equation (6.2) SP 20.13330.2016 only with pre- and final superpositions
+in several MAXIMA runs
+Combination for serviceability limit state EXPL, STAN
+Equation (6.1) SP 20.13330.2016 only with pre- and final superpositions
+in several MAXIMA runs
+3.3.8 IS - Indian Standard
+IS 465
+Combination COMB EXTR
+Design fundamental combinations EXPL
+Accidental combinations EXPL
+Seismic combination EXPL
+Combinations for serviceability limit state EXPL
+IS IR112
+Combination COMB EXTR
+Design fundamental combination IRC:6-2010 DESI
+Accidental combination IRC:6-2010 ACCI
+Seismic combination IRC:6-2010 EARQ
+Characteristic (rare) combination IRC:6-2010 RARE
+SOFiSTiK2023 3-11MAXIMA|InputDescription
+Combination COMB EXTR
+Frequent combination IRC:6-2010 FREQ
+Quasi-permanent combination IRC:6-2010 PERM
+3.3.9 AS - Australian Standard and NZS - New Zealand Standard
+AS BUILDING, AS 3600, AS 4100, AS 5100, NZS 3101
+Combination COMB EXTR
+Design fundamental combinations EXPL
+Accidental combinations EXPL
+Seismic combination EXPL
+Combinations for serviceability limit state EXPL
+3.3.10 UNE - Instrucciones Espaniola
+UNE EHE
+Combination COMB EXTR
+Design fundamental combination DESI
+Accidental combination ACCI
+Seismic combination EARQ
+Characteristic (rare) combination RARE
+Frequent combination FREQ
+Quasi-permanent combination PERM
+3.3.11 UNI - Decreto Ministeriale Italiane
+UNI DM-2018
+Combination COMB EXTR
+Design fundamental combination DESI
+Accidental combination EXPL
+Seismic combination EXPL
+Characteristic (rare)) combination RARE
+Frequent combination FREQ
+Quasi-permanent combination PERM
+3.3.12 NF - AFNOR Association Francaise de Normalisation
+NF EN199X-200X, NF EN199X-200X-BRIDGE
+3-12 SOFiSTiK2023InputDescription|MAXIMA
+Combination COMB EXTR
+Design fundamental combination equation (6.10) EN 1990 DESI
+Accidental combination equation (6.11b) EN 1990 with leading variable ACCI
+action ψ 1,1·Q k,1,
+Accidental combination equation (6.11b) EN 1990 without leading vari- EXPL
+able action ψ 2,1·Q k,1
+Seimsic combination equation (6.12b) EN 1990 EARQ
+Characteristic (rare) combination equation (6.14b) EN 1990 RARE
+Frequent combination equation (6.15b) EN 1990 FREQ
+Quasi-permanent combination equation (6.16b) EN 1990 PERM
+NF BAEL
+Combination COMB EXTR
+Design fundamental combination EXPL
+Accidental combination ACCI
+Seimsic combination EARQ
+Combinations for servieability limit state RARE
+3.3.13 SS - Swedish Standard EKS, TSFS
+SS EN199X-200X, SS EN199X-200X-BRIDGE
+Combination COMB EXTR
+Design fundamental combinations equation (6.10a/6.10b) EN 1990 EXPL
+Accidental combination equation (6.11b) EN 1990 with leading variable ACCI
+action ψ 1,1·Q k,1
+Accidental combination equation (6.11b) EN 1990 without leading vari- EXPL
+able action ψ 2,1·Q k,1
+Seismic combination equation (6.12b) EN 1990 EARQ
+Characteristic (rare) combination equation (6.14b) EN 1990 RARE
+Frequent combination equation (6.15b) EN 1990 FREQ
+Quasi-permanent combination equation (6.16b) EN 1990 PERM
+Infrequent combination equation (A2.1b) EN 1990 NONF
+3.3.14 DS - Danish Standard
+DS EN199X-200X, DS EN199X-200X-BRIDGE
+SOFiSTiK2023 3-13MAXIMA|InputDescription
+Combination COMB EXTR
+Design fundamental combinations equation (6.10a/6.10b) EN 1990 EXPL
+Accidental combination equation (6.11b) EN 1990 with leading variable ACCI
+action ψ 1,1·Q k,1
+Accidental combination equation (6.11b) EN 1990 without leading vari- EXPL
+able action ψ 2,1·Q k,1
+Seismic combination equation (6.12b) EN 1990 EARQ
+Characteristic (rare) combination equation (6.14b) EN 1990 RARE
+Frequent combination equation (6.15b) EN 1990 FREQ
+Quasi-permanent combination equation (6.16b) EN 1990 PERM
+Infrequent combination equation (A2.1b) EN 1990 NONF
+3.3.15 NS - Norsk Standard
+NS EN199X-200X, NS EN199X-200X-BRIDGE
+Combination COMB EXTR
+Design fundamental combinations equation (6.10a/6.10b) EN 1990 EXPL
+Accidental combination equation (6.11b) EN 1990 with leading variable ACCI
+action ψ 1,1·Q k,1
+Accidental combination equation (6.11b) EN 1990 without leading vari- EXPL
+able action ψ 2,1·Q k,1
+Seismic combination equation (6.12b) EN 1990 EARQ
+Characteristic (rare) combination equation (6.14b) EN 1990 RARE
+Frequent combination equation (6.15b) EN 1990 FREQ
+Quasi-permanent combination equation (6.16b) EN 1990 PERM
+Infrequent combination equation (A2.1b) EN 1990 NONF
+Rarely occurring combination according to NS-EN 1990/NA table EXPL
+NA.A2.6 using ψ 1(cid:48) ·Q k,1 for ψ 1,nƒqQ k,1
+3.3.16 SFS - Finnish Standard
+SFS EN199X-200X, SFS EN199X-200X-BRIDGE
+Combination COMB EXTR
+Design fundamental combinations equation (6.10a/6.10b) EN 1990 EXPL
+Accidental combination equation (6.11b) EN 1990 with leading variable ACCI
+action ψ 1,1·Q k,1
+Accidental combination equation (6.11b) EN 1990 without leading vari- EXPL
+able action ψ 2,1·Q k,1
+Seismic combination equation (6.12b) EN 1990 EARQ
+3-14 SOFiSTiK2023InputDescription|MAXIMA
+Combination COMB EXTR
+Characteristic (rare) combination equation (6.14b) EN 1990 RARE
+Frequent combination equation (6.15b) EN 1990 FREQ
+Quasi-permanent combination equation (6.16b) EN 1990 PERM
+Infrequent combination equation (A2.1b) EN 1990 NONF
+3.3.17 NEN - Netherlands Standard
+NEN EN199X-200X, NEN EN199X-200X-BRIDGE
+Combination COMB EXTR
+Design fundamental combinations equation (6.10a/6.10b) EN 1990 EXPL
+Accidental combination equation (6.11b) EN 1990 with wind as leading EXPL
+variable action ψ 1,1·Q k,1
+Seimsic combination equation (6.12b) EN 1990 EARQ
+Characteristic (rare) combination equation (6.14b) EN 1990 RARE
+Frequent combination equation (6.15b) EN 1990 FREQ
+Quasi-permanent combination equation (6.16b) EN 1990 PERM
+Infrequent combination equation (A2.1b) EN 1990 NONF
+3.3.18 NBN - Belgian Standard
+NBN EN199X-200X, NBN EN199X-200X-BRIDGE
+Combination COMB EXTR
+Design fundamental combination equation (6.10) EN 1990 DESI
+Design fundamental combinations equation (6.10a/6.10b) EN 1990 EXPL
+Accidental combination equation (6.11b) EN 1990 with leading variable ACCI
+action ψ 1,1·Q k,1
+Seismic combination equation (6.12b) EN 1990 EARQ
+Characteristic (rare) combination equation (6.14b) EN 1990 RARE
+Frequent combination equation (6.15b) EN 1990 FREQ
+Quasi-permanent combination equation (6.16b) EN 1990 PERM
+Infrequent combination equation (A2.1b) EN 1990 NONF
+3.3.19 GB - Chinese Standard
+GB 50010-2010, GB 50010
+SOFiSTiK2023 3-15MAXIMA|InputDescription
+Combination COMB EXTR
+Design fundamental combinations EXPL
+Accidental combinations EXPL
+Characteristic (rare) combination RARE
+Frequent combination FREQ
+Quasi-permanent combination PERM
+3.3.20 NBR - Brazilian Standard
+NBR 6118-2003
+Combination COMB EXTR
+Design fundamental combination EXPL
+Accidental combination EXPL
+Seimsic Combination EXPL
+Characteristic (rare) combination EXPL
+Frequent combination FREQ
+Quasi-permanent combination PERM
+3.4 Usage of Defaults from INI File
+With the input
+PROG MAXIMA
+HEAD
+ECHO ... $(not urgently necessary)$
+END
+the defaults of the INI file are activated for the selected design code. Precondition for this is
+the usage of the preset actions of the record ACT (SOFiLOAD).
+3-16 SOFiSTiK2023InputDescription|MAXIMA
+3.5 CTRL – Method of Calculation
+CTRL
+Item Description Unit Default
+OPT Name of the option LT
+SAVE Modus for saving results 1
+0 print only
+1 store the results in the database (default)
+DELE Deletion of the load cases 1
+0 does not delete newly defined load cases
+1doesdeletenewlydefinedloadcases(de-
+fault)
+INIT Deletion of combination rules and superpo- 0
+sition commands
+0 does not delete (default)
+1 does delete
+VAL Value of the option − *
+YES Option is used.
+NO Option is not used.
+An input for DELE only makes sense, if not all elements or nodes were selected and results
+havealreadybeenstored. WithCTRLDELENOonestipulatesthatonlythedatageneratedin
+the current program run is stored. However, it is necessary that results for all nodes, elements
+and beam sections must have already been stored in the database, because the program can
+not insert anything between two data records.
+If for example two results from a concentrated load have to be stored for a beam section, then
+they must already be present in the load case which is to be overwritten, otherwise an error
+message (No. -3 in MUDS) occurs.
+All combination rules and superposition commands which are available in the database are
+deleted with an input CTRL INIT. Thus it is possible to calculate some MAXIMA input blocks
+(e.g. with default from the INI file and manual inputs) twice and more without deletion of the
+complete database.
+SOFiSTiK2023 3-17MAXIMA|InputDescription
+3.6 COMB – Combination Rule
+Seealso: ACT,ADD,LC,SUPP
+COMB
+Item Description Unit Default
+NO Number of the combination (1 - 999) − 1
+presetcombinationsfromINIfilewithNO100andfol-
+lowing
+EXTR Kind of superposition LT *
+in dependence on the used design code:
+DESI Design fundamental combination
+ACCI Design accidental combination with lead-
+ing variable action ψ1,1*Qk,1
+EARQ Design seismic combination
+PERM Serviceability permanent combination
+RARE Serviceability characteristic (rare) combi-
+nation
+FREQ Serviceability frequent combination
+NONF Serviceability infrequent combination
+DESI-V Design fundamental combination simpli-
+fied
+ACCI-V Design accidental combination simplified
+RARE-V Serviceability characteristic (rare) combi-
+nation simplified
+STAN Standard combination (without partial
+safetyfactorandcombinationcoefficients),
+general design combination
+NONL Combination of non-linear calculated load
+cases
+EXPL Explicit defined combination
+See also explanation below
+BASE Base load case number − *
+The value has to be a multiple of 100, minimum 100,
+maximum 999900! See description in record SUPP
+TYPE Type of the result load cases LT *
+Tablecontinuedonnextpage.
+3-18 SOFiSTiK2023InputDescription|MAXIMA
+Item Description Unit Default
+DESI,ACCI,EARQ,PERM,RARE,FREQ,
+NONF,STAN
+H Primary loads
+HZ Primary and additional loads
+NONE Load cases are not assigned to any type
+forEN1995(EC5)andGermanDIN1052-2004(tim-
+ber structures)
+PT Permanent combination
+LT Long term combination
+MT Middle term combination
+ST Short term combination
+VT Very short term combination
+for accidental combination fire
+FIRE Combination fire
+or
+Type of an already existing action defined with record
+ACT in program SOFiLOAD
+See also explanation below
+COMC Copying of combinations, generates a new combina- − -
+tion rule, allows changes of EXTR and BASE
+TITL Designation of the combination Lt32 -
+A combination rule is selected with COMB. In general the action effects (record ACT or ADD
+andADA)withtheirrelevantloadcases(recordLC)relatetothisrule. Theactionsandtheload
+caseswhichareapartoftherespectivecombinationaretobeinputbehindthecorresponding
+COMB record! Otherwise the default of the actions and load cases is activated. The actions
+havetobealreadyavailableinthedatabase(definitioninprogramSOFiLOAD)andcanbeonly
+modified in MAXIMA with the record ACT. It is also possible to define combinations without
+actions.
+MAXIMA takes the design code to be used for the combination rule from the database. The
+user has to specify the design code right at the beginning of the task, either in the program
+AQUA (record NORM) or in the case of an interactive input with the SSD at System Informa-
+tion.
+IfusinganexplicitcombinationwithEXTREXPLthedefinitionofactionsoractiongroupsmust
+follow with the records ADD and ADA. An input of the record ACT after COMB EXTR EXPL is
+SOFiSTiK2023 3-19MAXIMA|InputDescription
+not allowed.
+3.6.1 Literal EXTR - Kind of Superposition
+Thecombinationrulewhichcorrespondstothedesigncodeinthedatabaseisdeterminedwith
+EXTR. Which of the input literals are allowed for a design code is defined in the INI file of the
+relevant design code. It is possible to modify the defaults in the INI file.
+DESI, ACCI and EARQ are to use for checks in ultimate limit state and PERM, RARE, FREQ
+and NONF for checks in serviceability limit state.
+For the simplified superpositions (e.g. German DIN 18800, OENORM 4300) DESI-V, ACCI-V
+or RARE-V have to be input. The Russian SNIP 2.01.07-85 allows the superpositions DESI-V,
+ACCI and RARE-V.
+STAN - unspecified design combination should be used for design codes without partial safety
+factors and combination coefficients (e.g. German DIN 1045 old).
+NONL is planned for a combination with non-linear calculated load cases (determination of an
+enveloped). Action (record ACT) are not allowed here. The input load cases are considered
+compulsorily with TYPE AG1 in record LC.
+In the following table the input possibilities for EXTR are printed with the relevant defaults for
+TYPE:
+EXTR Default for TYPE Meaning
+DESI DESI chapter 2.2.1, equation 2.1
+ACCI ACCI chapter 2.2.2, equation 2.2
+EARQ EARQ chapter 2.2.3, equation 2.3
+PERM PERM chapter 2.2.4, equation 2.7
+RARE RARE chapter 2.2.4, equation 2.4
+FREQ FREQ chapter 2.2.4, equation 2.5
+NONF NONF chapter 2.2.4, equation 2.6
+DESI-V DESI chapter 2.4.1, equation 2.8 and 2.9
+ACCI-V ACCI for DIN 18800 and OENORM 4300:
+chapter 2.4.2, equation 2.10 with γ = 1.0 for G and Q
+RARE-V RARE chapter 2.4.3, equation 2.11 and 2.12
+STAN STAN no consideration of actions
+NONL no default no consideration of actions
+(TYPE must be load cases compulsory TYPE AG1 (record LC)
+explicitly input
+here)
+EXPL no default freedefinedcombinationswithactionsoractiongroups
+(userdefined)
+3-20 SOFiSTiK2023InputDescription|MAXIMA
+EXTR Default for TYPE Meaning
+(TYPE must be
+explicitly input
+here)
+3.6.2 Literal TYPE - Type of the result load cases
+The type of the result load cases are defined with TYPE. The defaults for TYPE are defined in
+the INI file and can be modified there.
+With that it is also possible to use the result load cases for further superposition. The literals
+which exist in record ACT can be used here for TYPE for an intermediate superposition. In
+this case it is to be noted that the action has be defined already with a record ACT in program
+SOFiLOAD. The definition of a new action is not possible in record COMB.
+For design codes without partial safety factors and combination coefficients (e.g. German DIN
+1045 old) and for German DIN 1052 also STAN - general design combination, H - primary
+loads or HZ - primary and additional loads can be input.
+With the EN 1995 (EC5) and the derived design codes correction factors kmod have been
+introduced for the permissible stresses and kdeƒ for the deformations. The distinct value is
+dependingnotonlyonthematerialbutalsoontheserviceclassandthedurationoftheloading.
+The information about the duration of the loading has to be available at the superposition load
+cases. This is done via an input of PT, LT, MT, ST or VT for TYPE.
+If using a free defined combination rule with EXTR EXPL or the combination of non-linear
+calculatedloadcaseswithEXTRNONL,thetypeoftheresultantloadcasesmustbeexplicitly
+defined.
+SOFiSTiK2023 3-21MAXIMA|InputDescription
+3.7 ACT – Definition of an Action
+Seealso: ACT,LC
+ACT
+Item Description Unit Default
+TYPE Designation of action LT4 !
+GAMU Unfavourable partial safety factor − *
+GAMF Favourable partial safety factor − *
+PSI0 Combination coefficient rare − *
+PSI1 Combination coefficient frequent − *
+PSI2 Combination coefficient quasi-permanent − *
+PS1S Combination coefficient infrequent − *
+GAMA Partial safety factor accidental − *
+PART Partition to which the action belongs: LT *
+G permanent
+P prestress
+Q variable action
+Q_1 variable action load group 1
+...
+Q_99 variable action load group 99
+A accidental action
+E seismic action
+SUP Default superposition of the load cases within the ac- LT *
+tion:
+PERM permanent with unique factor
+PERC permanent with individual factors
+COND conditional
+EXCL mutually exclusive within category
+EXEX mutually exclusive within action
+UNSI COND with unfavourable sign
+USEX EXCL with unfavourable sign
+ALEX permanent but exclusive within action
+TITL Designation of action LT24 *
+As type of the action one may use any literal with up to 4 characters, however some combina-
+tions are reservedfor special purpose. Theyare defined in the corresponding INI-files and will
+followthedesignationoftheselecteddesigncodeascloseaspossible. Anoverviewisgivenin
+the table below. Furthermore, it is possible to subdivide each action with up to two characters
+in categories, designated with a character from A to Z, each having distinguished combination
+coefficients or partial safety factors. The category will be appended with an underscore to the
+name of the action.
+3-22 SOFiSTiK2023InputDescription|MAXIMA
+• Eachcategoryhasitsowncombinationvaluesanditsownloadcasesandadefaultsuper-
+position rule within the action category.
+• Each action comprehends all its categories, i.e. one may select either a sub category on
+its own or all categories by the generic name of the category. (Q selects all Q_?)
+INI-File/ EC-Defaults
+action G
+loadcase
+loadcase
+action Q
+action Q_A
+loadcase
+loadcase
+action Q_B
+loadcase
+loadcase
+Figure3.6: Structureoftheactions,theircategoriesandtheirloadcases
+ForexamplethereareforroadbridgesinEN1990fortheuniformlifeloadUDLandthemovable
+doubleaxledifferentcombinationcoefficients. Forsimplecasesonewilldefinealoadcasefor
+everyspanoftypeL_U(UDL),tobesuperimposedconditionally,whilethediscreteloadcases
+of different load positions of the double axle will be defined as type L_T and exclude each
+other. All load cases however will be applied together as leading variable action.
+ItisonlypossibleinMAXIMAtouseactionswhichwerealreadydefinedinprogramSOFiLOAD
+and to modify single values of these actions (partial safety factors and combination coeffi-
+cients). In the case of modification of the definitions for PART and SUP the following program
+behaviour is to be noted: If only one of the values is specified in MAXIMA, the other value is
+set to its default values.
+Furthermore load cases which are a part of an action can be removed or other available load
+cases can be selected for an action in MAXIMA. Anew definition of actions is not possible in
+MAXIMA.
+Modifications of the actions are only temporarily processed in MAXIMA. That means
+SOFiSTiK2023 3-23MAXIMA|InputDescription
+these inputs are only considered in this MAXIMA calculation.
+Normal Add. Spec. Remark
+− for LC only: not assigned to an action
+NONE
+Gg ZGg SGq dead load (G + G_1 + G_2)
+G_1g Z1g S1q primary dead load
+G_2g Z2g S2q secondary dead load
+Pg ZPg SPq Prestress (for old DIN use V !)
+Cg ZCg SCq Creep and shrinkage
+Qq ZQ SQ variable load
+L ZL SL life load (L in analog mode L_T (TS), ZL in analog mode L_U
+(UDL))
+W ZW SW Wind (use ZW for Bridges)
+Sq ZS SS Snow (use ZS for Bridges)
+Rg ZR SR Earth pressure, Water Pressure
+Fq ZF SF Settlements (ZF = expected, SF = possible)
+T ZT ST Temperature
+A ZA SA Accidental
+B ZB SB Construction, Maintenance
+(ZB = resistance of bearings, SB = Exchange of bearings)
+E ZE SE Seismic (ZE = Service, SE = Design)
+g = Load case is permanent (always added)
+q = Load case is conditional (added if unfavourable)
+ = Load cases are conditional excluding each other
+The actions indicated in the table are used only as preset action, provided that they are avail-
+able in the INI-file of the selected design code.
+The entries within one row with preceding Z for additional loading and S for special loading
+may be treated in AQB as belonging to the same action.
+For the seiesmic action there is in EN 1998 an importance factor γ  depending on the impor-
+tance class to be selected by the user explicitly:
+3-24 SOFiSTiK2023InputDescription|MAXIMA
+Class factor Description
+I 1.4 Buildings whose integrity during earthquakes is of vital importance for civil
+protection, e.g. hospitals, fire stations, power plants, etc.
+II 1.2 Buildings whose seismic resistance is of importance in view of the conse-
+quences associated with a collapse, e.g. schools, assembly halls, cultural
+institutions etc.
+III 1.0 Ordinary buildings, not belonging to the other categories
+IV 0.8 Buildings of minor importance for public safety, e.g. agricultural buildings,
+etc.
+In principal every action may be subdivided by categories. For some action types (Q, L or
+S) the values from EN 1990 (resp. DIN 1055-100, Table A2 or other deviations) are already
+available as follows:
+Action ψ 0 ψ 1 ψ 2
+Q: Payload for buildings [0.70] [0.50] [0.30]
+- Q_A Housing [0.70] [0.50] [0.30]
+- Q_B Offices [0.70] [0.50] [0.30]
+- Q_C Assembly rooms [0.70] [0.70] [0.60]
+- Q_D Sales rooms [0.70] [0.70] [0.60]
+- Q_E Storage rooms [1.00] [0.90] [0.80]
+Live load for buildings
+- Q_F truck load <30kN [0.70] [0.70] [0.60]
+- Q_G 30kN< truck load <160kN [0.70] [0.50] [0.30]
+- Q_H Roofs [0.00] [0.00] [0.00]
+L: Live loads according EN 1990
+- L_T, Tandem Axle of LM 1 (γ=1.35) [0.75] [0.75] [0.00]
+GR_T
+- L_U, UDL loading of LM 1 (γ=1.35) [0.40] [0.40] [0.00]
+GR_U
+- L_C Load model UIC 71 (γ=1.45) [0.80] [0.80] [0.00]
+- L_D Load model SW/0 (γ=1.45 [0.80] [0.80] [0.00]
+- L_E Load model SW/2 (γ=1.20) [0.00] [1.00] [0.00]
+Live load for buildings
+- L_F truck load <30kN [0.70] [0.70] [0.60]
+- L_G 30kN< truck load <160kN [0.70] [0.50] [0.30]
+- L_H Roofs [0.00] [0.00] [0.00]
+S: Snow for buildings
+- S_L = buildings up to 1000m elevation [0.50] [0.20] [0.00]
+- S_H = buildings above 1000m elevation [0.70] [0.50] [0.20]
+- For SIA 260 with PSI0 as elevation h 1-60/h 1-250/h 1-1000/h
+SOFiSTiK2023 3-25MAXIMA|InputDescription
+Action ψ 0 ψ 1 ψ 2
+W: Wind for buildings [0.60] [0.20] [0.00]
+T: Temperature (no fire) for buildings [0.60] [0.50] [0.00]
+F: Settlements [1.00] [1.00] [1.00]
+Other actions [0.80] [0.70] [0.50]
+A definition of ACT will reinitialize the action with the defaults defined in the INI-file depending
+on the category of the design code. Values GAMU to PS1S replace the predefined values.
+The user should check the defaults in all cases. Deviations of the PSI-values for wind and
+temperature especially for bridges or other non buildings are to be expected as all values are
+"boxed values" depending on individual or country dependant settings. For example you will
+findinOENORMB4750categorieswithtrucksbetween30and60kNwithvaluesaugmented
+by 0.1 for ψ 1and ψ 2.
+ForallENcodesaswelltheSIAcodestherearetwodefaultsfortheliveloadforbuildingswith
+the categories F,G and H. The user can choose, whether the live load for buildings should be
+in an own action L (with categories L_F, L_G and L_H) or whether these categories should be
+a part of the action Q in addition to the payloads for buildings (categories Q_A till Q_H).
+If the category of the design code or the design code is changed in AQUA, all actions should
+be redefined. ACT INIT deletes all defined actions and superposition rules if specified in
+SOFiLOAD.
+WiththespecificationofACTallsubsequentloadcasesinSOFILOADwillthenhavethisaction
+type as default.
+The item PART defines, to which action of the selected superposition equation the input ac-
+tion belongs. The actions in the superposition equations are distinguished according to their
+temporal variances:
+• permanent actions: PART G e.g dead load
+PART P prestress
+• variable actions PART Q
+PART Q_1 load group 1
+PART Q_2 load group 2
+...
+PART Q_99 load group 99
+• accidental actions PART A
+• seismic action PART E
+ThustheitemPARTallowsthecorrectclassificationofuser-definedactions,butalsoofspecial
+cases as for example PART G SUP ALEX (always but exclusive, it means, that only one load
+case is always used). Exclusively the item SUP controls, how the load cases which are a part
+of the actions are used for the superposition (always, conditional, mutually exclusive).
+Meant for example PART P, that the input action is used in the equation part Pk for superposi-
+3-26 SOFiSTiK2023InputDescription|MAXIMA
+tionsforultimateandserviceabilitylimitstate(EC,DIN,DIN-FB,seemanualMAXIMA,chapter
+2).
+The item PART depends on TYPE for preset actions. For example PART G is the default for
+theactionsG,G_1andG_2,PARTPfortheactionsPandC,PARTQfortheactionsQandL,
+PART A for the action A and PART E for the action E.
+The item PART has to be input for user-defined actions. Otherwise the user-defined actions
+get PART Q (default).
+Hint
+All categories of an action must have the same definition of PART. E.g. categories Q_A
+and Q_B of the variable action Q get PART Q. Only the load groups of a variable action
+PART Q_1 till Q_99 can be different.
+TheitemSUPdefinesthedefaulttreatmentofmultipleloadcaseswithinanaction. Thedefault
+will be taken from the INI-File, but for free defined types of actions it is EXCL in general, if the
+type of the action has a leading Q it will become COND and for a leading G it will be PERM.
+In MAXIMA one may overwrite this for any particular load case of an action or recombine
+load cases (e.g. 0.7*LC_101(Ex)+0.5*LC_102(Ey)). Due to historic reasons there are special
+literals at record LC in MAXIMA in addition to the literals of SUP:
+SOFiLOAD MAXIMA
+Remark
+ACT SUP LC TYPE
+PERM G always (permanent), partial safety factor action-wise
+PERC PERC always(permanent)withvariablefactors,partialsafetyfactorload-
+case-wise
+COND Q conditional (only unfavourable)
+EXCL A* mutually exculsive
+EXEX Ano mutuallyexclusivebutconditionalinclusivecategories(onlywithin
+anaction),MAXIMArecordLConlyonealternativegroupnumber
+Ano
+UNSI W changing sign (e.g. seismic actions)
+USEX X* changing sign, mutually exclusive
+ALEX AG1 always but exclusive (only within an action)
+F additional load case to be combined
+Using SUP PERM the same partial safety factor is used for all load cases of a permanent
+action (e.g. ACT G). In this case the sum of the values of the single load cases is decisive,
+whether the unfavourable (GAMU) or the favourable (GAMF) partial safety factor is applied. In
+the contrast to that the partial safety factors are considered load-case-wisely, if SUP PERC is
+defined. Here one load case of the permanent action can get GAMU and another GAMF.
+SUP EXEX excludes only categories against each other within an action (no exclusion
+of different actions). If for example the categories X_1 and X_2 of the action X are defined
+with SUP EXEX, then only the most unfavourable load case is used either from X_1 or from
+X_2andalsoonly,ifithasanunfavourablecontribution. Inthecontrasttothatanunfavourable
+SOFiSTiK2023 3-27MAXIMA|InputDescription
+load case from X_1 and an unfavourable load case from X_2 are used for the input of SUP
+EXCL.
+SUP ALEX defines a permanent alternative group (MAXIMA record LC TYPE AG1). Only
+the load cases of an action or all load cases of the categories of an action are used for the
+formationofapermanentalternativegroup. Hereonlyaloadcaseisconsideredforthesuper-
+position, also if it has a favourable contribution. Load cases of different actions do not exclude
+themselves mutually. If SUP ALEX is input for some actions, a load case is considered per
+action.
+In program MAXIMA it is additionally possible to assign load cases of an action or category to
+severalpermanentalternativegroups. TheinputisdoneinprogramMAXIMAwithLC... TYPE
+AG1 till AG99.
+The total mechanism of the defaults for the action types is governed by the following rules:
+• ByselectingadesigncodewithinAQUAalldefinitionsgivenintheassociatedINI-Fileinthe
+[action] -section will become available. If no such file is available, defaults in the program
+are available for all EC and newer DIN (since year 2000). For all other cases there are
+exactly two predefined actions G and Q without any coefficients or factors.
+• When addressing an action, a copy of this definition is created in the database which has
+then the possibility of deviating factors if explicitly defined with this record or via the SOFi-
+PLUS menus.
+• When creating a load case, the factors are copied from the action definition to the load
+case. However, those factors may be modified for any individual load case.
+• For special design purposes the factors may be changed temporarily when using the load
+cases in AQB.
+Variable action - load groups:
+TheloadgroupsPARTQ_1tillQ_99canbeusedforabetterformationofcombinationwithout
+intermediate superpositions in MAXIMA e.g. for the load models of the bridge design (EN
+1990/A1). If different load groups are defined for categories with corresponding inputs for the
+item SUP, then the intermediate superpositions and the following superpositions are done in
+one MAXIMA run.
+Example:
+PROG SOFILOAD
+HEAD
+ACT XY_A gamu 1.4 0.0 0.6 0.4 0.2 0.6 PART Q_1 SUP excl
+ACT XY_B gamu 1.3 0.0 0.5 0.3 0.1 0.5 PART Q_1 SUP excl
+ACT XY_C gamu 1.45 0.0 0.6 0.3 0.0 0.6 PART Q_2 SUP exex
+ACT XY_D gamu 1.35 0.0 0.5 0.2 0.0 0.5 PART Q_3 SUP exex
+...
+PROG MAXIMA
+HEAD
+COMB 1 desi TYPE desi BASE 2100
+ACT XY_A
+3-28 SOFiSTiK2023InputDescription|MAXIMA
+LC -1
+ACT XY_B
+LC -1
+ACT XY_C
+LC -1
+ACT XY_D
+LC -1
+or
+COMB 2 expl TYPE desi BASE 2200
+ADD {QI} gamm
+First of all three load groups Q_1, Q_2 and Q_3 are defined with PART in the program
+SOFiLOAD.ThecategoriesXY_AundXY_Bareaartoftheloadgroup1. Theirloadcasesare
+mutually exclusive only within the respective category about the input SUP EXCL. The cate-
+goriesXY_CandXY_Dareapartoftheloadgroups2and3. Allloadcasesofbothcategories
+are mutually exclusive about the input SUP EXEX.
+With one of the MAXIMA combinations then the superposition is done as follows: First of all
+MAXIMA searches which load cases of the load group 1 are decisive (possible one ore two or
+noloadcase=firstintermediatesuperposition).Thenthedecisiveloadcaseoftheloadgroups
+2 and 3 is determined (possible one or no load case = second intermediate superposition). In
+the last step the final superposition is done. Either the decisive load cases of the load group 1
+or the decisive load case of the goups 2 and 3 are here the final result.
+It should be noted here that load groups are mutually exclusive. If, for example, the superpo-
+sition of the load cases for two load load groups are specified with SUP COND - conditionally,
+only the load cases of the decisive load group are taken into account.
+Example:
+PROG SOFILOAD
+HEAD
+ACT XY_1 gamu 1.4 0.0 0.6 0.4 0.2 0.6 PART Q_1 SUP cond
+ACT XY_2 gamu 1.3 0.0 0.5 0.3 0.1 0.5 PART Q_2 SUP cond
+The load cases of category XY_1 belong to load group 1 and those of category XY_2 belong
+to load group 2. Thus, either the load cases of XY_1 or of XY_2 are taken into account in the
+superposition depending on which brings the more unfavorable result.
+SOFiSTiK2023 3-29MAXIMA|InputDescription
+3.8 ADD – Actions for an Explicit Defined Combination
+Seealso: COMB
+ADD
+Item Description Unit Default
+TYPE Designation or an action or definition of an action LT4 !
+group
+{G} all permanent actions
+{P} all actions due to prestress and creep
+{Q1} first leading variable action
+{Q2} second leading variable action
+{Q3} third leading variable action
+{QI} variable actions
+without leading variable actions:
+{QI} = all
+with leading variable actions:
+{QI} = remaining variable actions
+{A} all accidental actions
+{E} all seismic actions
+FACU Unfavourable factor or literal or −/LT !
+a formula with ’=factor*literal’
+FACF Favourable factor or literal or −/LT !
+a formula with ’=factor*literal’
+The record ADD can be only used with COMB EXTR EXPL. The actions or action groups are
+input here for the explicit defined combination.
+The actions have to be input with SOFiLOAD record ACT and to be available in the database
+afterthecalculation. Theassignmentofactionstoanactiongroupiscontrolledbythedefinition
+of PART in record ACT.
+A following record LC is only possible for an explicit input action. If using action groups the
+program determines itself the corresponding load cases. Thus an input of a record LC is not
+allowed after the input of an action group!
+The assignment of a load case (record LC) to another action or category is not allowed with
+record ADD. The calculation is interrupted with an error report.
+3.8.1 Literals for the Factors
+ThefactorsforthesuperpositionareinputwithanumericaldataforFACUandFACF.Hereitis
+3-30 SOFiSTiK2023InputDescription|MAXIMA
+also possible to use following literals:
+• only for FACU (without input for FACF) - collective literals
+GAM or GAMM Partial safety factor unfavourable or favourable (GAMU or GAMF)
+PSIG Partial safety factors unfavourable / favourable · ψ 0 (PSIU or PSIF)
+PS1G Partial safety factors unfavourable / favourable · ψ 1 (PS1U or PS1F)
+PS2G Partial safety factors unfavourable / favourable · ψ 2 (PS2U or PS2F)
+P1SG Partial safety factors unfavourable / favourable · ψ 1,nƒq (P1SU or PS1F)
+ThefollowingliteralscanbeinputonlyatFACUandwithoutfurtherdefinitionforFACF.The
+factors which result from these literals are considered only in the unfavourable case. In the
+favourablecasetherespectivefavourablepartialsafetyfactorγ-fisusedforthepermanent
+actions and 0.0 for the variable actions.
+KFG Reliability factor EN 1990, table B.3 and NA KFi · partial safety factors
+unfavourable / favourable = KFi · γ 
+KFG0 Reliability factor EN 1990, table B.3 and NA KFi · ψ 0 · partial safety factors
+unfavourable / favourable = KFi · ψ 0 · γ /γ ƒ
+KFG1 Reliability factor EN 1990, table B.3 and NA KFi · ψ 1 · partial safety factors
+unfavourable / favourable = KFi · ψ 1 · γ /γ ƒ
+KFG2 Reliability factor EN 1990, table B.3 and NA KFi · ψ 2 · partial safety factors
+unfavourable / favourable = KFi · ψ 2 · γ /γ ƒ
+KFGS Reliability factor EN 1990, table B.3 and NA KFi · ψ 1,nƒq · partial safety
+factors unfavourable / favourable = KFi · ψ 1,nƒq · γ /γ ƒ
+XSIG Reduction factor ξ · partial safety factors unfavourable / favourable = ξ ·
+γ /γ
+ƒ
+XKFG Reductionfactorξ·ReliabilityfactorEN1990,tableB.3andNAKFi·partial
+safety factors unfavourable / favourable = ξ · KFi · γ /γ ƒ
+• for FACU and FACF
+GAMU Partial safety factor unfavourable
+GAMF Partial safety factor favourable
+GAMA Partial safety factor accidental
+PSI0 Combination coefficient ψ 0
+PSI1 Combination coefficient ψ 1
+PSI2 Combination coefficient ψ 2
+PS1S Combination coefficient ψ 1,nƒq
+PSIU Partial safety factor unfavourable · ψ 0
+PSIF Partial safety factor favourable · ψ 0
+PS1U Partial safety factor unfavourable · ψ 1
+PS1F Partial safety factor favourable · ψ 1
+PS2U Partial safety factor unfavourable · ψ 2
+PS2F Partial safety factor favourable · ψ 2
+P1SU Partial safety factor unfavourable · ψ 1,nƒq
+P1SF Partial safety factor favourable · ψ 1,nƒq
+PSIA Partial safety factor accidental · ψ 0
+SOFiSTiK2023 3-31MAXIMA|InputDescription
+PS1A Partial safety factor accidental · ψ 1
+PS2A Partial safety factor accidental · ψ 2
+PSSA Partial safety factor accidental · ψ 1,nƒq
+only for FACU (only in connection with an input for FACF - literal or numerical value)
+KFI Reliability factor EN 1990, table B.3 and NA KFi
+XSI Reduction factor ξ acc. to equ. (6.10b) EN 1990 and NA
+XKFI Reduction factor ξ · reliability factor EN 1990,table B.3 and NA KFi
+XSIU Reduction factor ξ · partial safety factors unfavourable γ 
+XSIF Reduction factor ξ · partial safety factors favourable γ ƒ
+XKGU Reductionfactor ξ · reliabilityfactorEN1990,tableB.3andNAKFi · partial
+safety factors unfavourable = ξ · KFi · γ  and a further input for FACF
+XSIA Reduction factor ξ · partial safety factors accidental γ 
+XKGA Reductions factor ξ · reliability factor EN 1990, table B.3 and NA KFi ·
+partial safety factors accidental = ξ · KFi · γ 
+If a numerical value or an literal with exception of the collecting literals is input for FACU, then
+an input for FACF must follow, also if the value is 0.00.
+Hereitisalsopossibletodefineaspecificvariableactionasleadingvariableaction. Theother
+variable actions can be input then with action groups.
+Example: Wind is the leading variable action with the factor FACU GAMU. A further leading
+variable action which has the factor FACU PSIU should be determined from the remaining
+variable actions. All other variable actions are considered with the factor FACU PS2U. The
+input reads:
+ADD W FACU GAMU FACF 0.0
+ADD {Q1} FACU PSIU FACF 0.0
+ADD {QI} FACU PS2U FACF 0.0
+Therearedesigncodesinwhich,forexample,thecombinationcoefficientsofanactionchange
+for certain action combinations. This modification of the coefficients cannot always be preset
+whendefiningtheaction. E.g. thisisthecasewiththeRussianSP63-13330. Forthesespecial
+cases, the factors can also be input via formulas with ’=factor*literal’ such as
+ADD {Q1} FACU '=0.5*GAMU' FACF 0.0
+ADD {QI} FACU '=0.3*GAMU' FACF 0.0
+3-32 SOFiSTiK2023InputDescription|MAXIMA
+3.9 ADA – Selection of Actions for Action Groups
+Seealso: ADD
+ADA
+Item Description Unit Default
+TYPE Designationtheactionfromtheselectedactiongroup LT4 !
+The record ADA can be only used with COMB EXTR EXPL and the selection of an action
+group(e.g. {QI}forallvariableactions)atADD.Onlytheactionswhichareselectedhereare
+used during superposition for the action group. All actions which are available in the database
+for the selected action group are considered without an input of ADA.
+The actions have to be input with SOFiLOAD record ACT and to be available in the database
+afterthecalculation. Theassignmentofactionstoanactiongroupiscontrolledbythedefinition
+of PART in record ACT.
+OnlytheactionsG,Q,S,Wareusedinthefollowinginputexample,alsoifmorepermanentand
+variable actions are available in the database:
+COMB 1 EXTR EXPL TYPE DESI BASE 2100
+ADD {G} FACU GAMU FACF GAMF
+ADA G
+ADD {Q1} FACU GAMU FACF 0.0
+ADA Q,S,W
+ADD {QI} FACU PSIU FACF 0.0
+ADA Q,S,W
+Ife.g. thecategoriesQ_A,Q_CandQ_EexistfortheactionQ,followinginputisalsopossible:
+COMB 1 EXTR EXPL TYPE DESI BASE 2100
+ADD {G} FACU GAMU FACF GAMF
+ADA G
+ADD {Q1} FACU GAMU FACF 0.0
+ADA Q_A,Q_C,Q_E,S,W
+ADD {QI} FACU PSIU FACF 0.0
+ADA Q_A,Q_C,Q_E,S,W
+Different ADA records for the leading variable action {Q1} and for the accomanying variable
+actions {QI} can be done:
+COMB 2 EXTR EXPL TYPE DESI BASE 2200
+ADD {G} FACU GAMU FACF GAMF
+ADA G
+ADD {Q1} FACU GAMU FACF 0.0
+ADA Q,W $only Q or W are possible for the leading variable action$
+SOFiSTiK2023 3-33MAXIMA|InputDescription
+ADD {QI} FACU PSIU FACF 0.0
+ADA Q,S,W $S is considered additionally for accomynying variable
+actions $
+COMB 3 EXTR EXPL TYPE DESI BASE 2300
+ADD {G} FACU GAMU FACF GAMF
+$all permanent actions from the CDB are used$
+ADD {Q1} FACU GAMU FACF 0.0
+ADA Q,W $only Q or W are possible for the leading variable action$
+ADD {QI} FACU PSIU FACF 0.0
+$all variable actions from the CDB are used$
+3-34 SOFiSTiK2023InputDescription|MAXIMA
+3.10 LC – Selection of Load Cases
+Seealso: ACT
+LC
+Item Description Unit Default
+NO Load case number or − *
+0 Allloadcasesofthedefinedactionareused
+-1 All load cases of the defined category are
+used
+TYPE Type of the load LT *
+G Always (permanent) partial safety factor
+action-wise or
+PERM from record ACT item SUP
+PERC Always (permanent), however, with variable
+factors, partial safety factor load-case-wise
+from record ACT item SUP
+Q Conditional (only unfavourable) (P has the
+same meaning) or
+COND from record ACT item SUP
+W Alternating load case is used positive or
+negative, if it acts unfavourably (e.g. seis-
+mic load cases).
+or
+UNSI from record ACT item SUP
+F Follow-up load case is added to the pre-
+vious main load case, however only, if the
+main load case is considered during super-
+position
+AG1 Permanent alternative load case group 1
+(always) but exclusive within one action
+...
+AG99 Permanent alternative load case group 99
+(always)
+or
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-35MAXIMA|InputDescription
+Item Description Unit Default
+ALEX from record ACT item SUP (= AG1)
+A1 Alternative load case group A1, exclusive
+within one action
+... ...
+A99 Alternative load case group A99
+or
+EXCL from record ACT item SUP
+X1 Alternative load case group X1 with chang-
+ing sign
+... ...
+X99 AlternativeloadcasegroupX99withchang-
+ing sign
+or
+USEX from record ACT item SUP
+Default: see below
+For non-linear load cases only AG1 is permitted.
+FACT Factor with which the corresponding internal force of −/LT 1.0
+the initial load case is multiplied
+With LC any desired combinations can be analysed or already combined load cases may be
+defined for the superposition. Each load case can be used repeatedly for different load case
+types. Therefore, under certain circumstances, it is possible to work with unit load cases in a
+static analysis.
+3.10.1 Default for NO - Load Case Number
+The default is NO 0 - All loadcases with same type as the action for all actions which do not
+have a category. When additionally categories are available, then the default is NO -1 All
+loadcases of the same category.
+Examples:
+Following action is available with the relevant load cases:
+Q variable load with load case 2 and 3
+ThusthedefaultishereLCNO0=Allloadcaseswiththesametypeastheaction. Thatmeans
+that the load cases 2 and 3 are allocated to the action Q without explicit input for LC.
+If only categories, e.g. Q_B and Q_C, are defined for the action Q:
+Q_B payload for buildings offices with load case 4 and 5
+Q_C payload for buildings assembly rooms with load case 6 and 7
+3-36 SOFiSTiK2023InputDescription|MAXIMA
+then the default for both categories is LC NO -1 = All loadcases of the same category.
+In the third case the action and additionally categories with relevant load cases are input:
+Q variable load with load cases 2 and 3
+Q_1 free defined category with load cases 4 and 5
+Q_2 free defined category with load cases 6 and 7
+The default for the action Q and for the categories Q_1 and Q_2 is in each case LC NO -1 =
+All loadcases of the same category, if an input for ACT is not done or if only ACT Q is input
+in MAXIMA. This means that the load cases 2,3 are arranged to Q, the load cases 4,5 to Q_1
+and the load cases 6,7 to Q_2.
+Following inputs are also possible for the third case:
+ACT Q
+LC -1 $all LC of the same category -> here only LC 2 and 3$
+ACT Q_1
+LC -1 $all LC of the same category -> LC 4 and 5$
+ACT Q_2
+LC -1 $all LC of the same category -> LC 6 and 7$
+or
+ACT Q $without an input for LC !$
+If, however, following MAXIMA input is available
+ACT Q
+ACT Q_1
+ACT Q_2
+the categories are considered twice with their load cases (Q_1 with LC 4,5 and Q_2 with LC
+6,7).
+Caution:
+With the input
+ACT Q
+LC 0 $all load cases with the same type as the action$
+the load cases of the categories Q_1 (LC 4,5) and Q_2 (LC 6,7) are arranged to the action
+Q. This results in the consequence, that the definitions of Q_1 and Q_2 for SUP of the record
+ACT are not considered anymore. Here the definition SUP of the action Q is valid. The partial
+safety factors and combination coefficients are arranged, however, to the load case and they
+do not changed.
+3.10.2 Differentiation and Default for TYPE
+Differentiation of TYPE PERM and PERC
+SOFiSTiK2023 3-37MAXIMA|InputDescription
+TYPE PERM The decision whether all load cases of a permanent action with
+PART G or P are taken into account as favourable or unfavourable
+is effected by determination of sums. It means that either the
+favourable or unfavourable factor is used for all load cases.
+TYPE PERC The decision whether the load cases of a permanent action with
+PART G or P are taken into account as favourable or unfavourable
+is effected loadcase-wise. It means that the load cases can get
+different factors within a permanent action.
+A mixing of load case with TYPE PERC and other types (PERM, ALEX) is not recommended.
+In this case, the load cases should be assigned to different permanent actions.
+Differentiation of TYPE AG1-AG99 and A1-A99
+TYPE AG1-AG99 The most unfavourable load case of a permanentalternative load
+case group within one action is determined and added. But one
+loadcaseisusedalwaysforeachalternativegroupperoneaction.
+TYPE A1-A99 Themostunfavourableloadcaseofthealternativeloadcasegroup
+is determined and it is only added, if it acts unfavourably.
+Consideration of load cases with TYPE AG1-AG99 or ALEX, if they are a part of a permanent
+action e.g. G:
+Forloadcases,whichhavetheTYPEAG1-AG99orALEXandwhichareapartofapermanent
+actionanditscategories,thesumofallvaluesofthepermanentactionisdecisivewhetherthe
+load cases are favourable or unfavourable. This is the same procedure as for TYPE PERM.
+Follow-up load case F
+If a follow-up load case is defined, it is considered only, if the relevant main load case has a
+part for the superposition.
+Example:
+ACT W $variable action wind$
+LC 11 TYP A1 $main load case$
+LC 12 TYP F $follow-up load case$
+If the load case 11 of the variable action W acts favourably and thus it does not have a part for
+the superposition, then also the load case 12 is not considered.
+Default for TYPE:
+The default depends on the default superposition of the load cases (SUP), which is input with
+record ACT. All superpositions SUP PERM get the TYPE G, all superpositions SUP COND
+get the TYPE Q, all superpositions SUP EXCL get the TYPE A1 ..., all superpositions SUP
+UNSIgetthetypeW,allsuperpositionsSUPUSEXgettheTYPEX1.... andallsuperpositions
+SUP ALEX get the TYPE AG1. SUP PERC of the record ACT corresponds to TYPE PERC.
+Modifications of the types are only temporarily processed in MAXIMA. That means
+3-38 SOFiSTiK2023InputDescription|MAXIMA
+these inputs are only considered in this MAXIMA calculation. The default from record
+ACT SUP is overlaid then! In case of doubt it is recommended to use the default from
+record ACT and not input a literal for TYPE at LC.
+The default for the input with the standard combination (COMB EXTR STAN) is for TYPE as
+follows:
+load case 1: G
+all other load cases: Q
+Amongtheloadcasesofanalternativeloadcasegroup,onlytheonewiththemostdetrimental
+effect is used for a superposition. The load case with the most detrimental effect among the
+groups A1 to A99, X1 to X99 is handled as a live load, i.e. if none of the load cases has a
+detrimentaleffect,thesegroupsarenottakenintoconsiderationatall. However,oneloadcase
+is always considered for the permanent alternative load case groups AG1 to AG99. The as-
+signmentofthealternativegroupstooneormoreACTrecordsisdecisiveforthesuperposition
+result.
+The superposition of non-linearly analysed load cases is only permitted, if they are superim-
+posed using TYPE AG1 without the ACT record. If using the literal NONL for EXTR in record
+COMB, the load cases are processed automatically with TYPE AG1. Then the program cal-
+culates the effective load case as a selection from a series of non-linear analyses (extreme
+values boundary lines).
+If no record LC and no record ACT are defined, all load cases in the database, which were
+analysed linearly, are used for the superposition. In this case either the definitions which are
+alreadyavailableinthedatabaseor, ifnodefinitionsareavailable, thedefaultsinMAXIMAare
+used.
+3.10.3 Remarks on FACT
+Using FACT, an additional factor can be defined for the initial load cases, with which the cor-
+responding internal force (value to be superimposed) is multiplied. The multiplication with the
+factor is done before the actual superposition. This is important, if a negative factor (e.g. -1.0)
+isused. Inthiscasetheloadcaseswhichinitiallysupplyanunfavourablecontributionareused
+then as favourable for the superposition and vice versa.
+SOFiSTiK2023 3-39MAXIMA|InputDescription
+3.11 SUPP – Definition of the Superposition
+Seealso: ECHO,CTRL,COMB,ACT,ADD,LC
+SUPP
+Item Description Unit Default
+COMB Number of the combination rule − 1
+EXTR Type of the extreme value condition LT MAMI
+MAX Determination of maximum values
+MIN Determination of minimum values
+MAMI this means MAX and MIN
+SRSS Determination of the square root
+SRSE Determinationofassociatedthesquareroot
+while maintaining the sign
+ETYP Element type LT AUTO
+AUTO all element types which are available in the
+system
+NODE Nodes
+SPAC for nodal accelerations and nodal velocities
+BOUN Boundary elements
+BOUS Sums of boundary elements
+BEAM Beams
+DSLN Design elements
+BSCT Externalbeamsections(fromprogramSIR)
+TRUS Trusses
+CABL Cables
+SPRI Springs
+CFM Kinematic constraints
+QUAD Plane elements
+QNOD Nodes of plane elements
+QBED Bedding of plane elements
+BRIC Volume elements
+BNOD Nodes of volume elements
+RSET Result set
+SLVL Storey Results
+TYPE Scalar variable or definition of an objective function LT AUTO
+Tablecontinuedonnextpage.
+3-40 SOFiSTiK2023InputDescription|MAXIMA
+Item Description Unit Default
+AUTO all scalar variables which are available for
+the selected element types
+Scalar variable: see tables below
+Objective function: see explanations
+FROM Start number −/LT *
+or GRP for group selection
+or SLN for BEAM,TRUS,CABL,BOUN
+or SAR for QUAD
+TO End number −/Lt4 *
+or group number or name of a secondary group
+or SLN number
+or SAR number
+INC Increment for element selection − *
+X X value of the beam axis or of the design element for [m] -
+1001
+a specific beam section or SIR cut
+Input of a value corresponds to a beam section in m
+or input for the relative distance of the beam section
+with [−] as a factor [−]
+in [o/o] [o/o]
+in [o/oo] [o/oo]
+e.g. 0[−] is the beam start and 1[−] the beam end
+SELE Group number for QNOD and BNOD −/Lt4 -
+or cross section point for BEAM and DSLN
+LC First saved load case number − *
+TITL Designation of the superposition load case / load Lt32 -
+cases
+OPT Selective superpostion LT -
+InputofliteralSforselectivesuperpositiononlyofthe
+elements which are defined at FROM TO INC
+Thedesiredsuperpositionvaluesandtheircorrespondingloadcasenumbersareselectedwith
+SUPP.
+ForthedesignationTITL32charactersareavailable. Theinputdesignationcanhave,however,
+only 18 characters, because the program uses automatically 9 characters for an information
+SOFiSTiK2023 3-41MAXIMA|InputDescription
+about the superposition and 5 characters for an information about the element type at the be-
+ginningofthedesignation(seeOutputDescription: CheckListoftheGeneratedLoadCases).
+The designation is saved in the database during the first calculation. This designation is not
+overwritten in the database in the case of a modification!
+3.11.1 Input Possibilities for Element Types and Scalar Variable
+All element types which are available in the system and their corresponding scalar variables
+areselectedforthesuperpositionwithETYPAUTO.Pleasenote,thatslightlylongercalculation
+times are possible in the case of big systems with different element types.
+SUPP 1 EXTR MAMI ETYP AUTO
+There is also the possibility to select only certain element types and for these all scalar vari-
+ableswhichareavailableforthesuperposition. Inthiscase,aselectionforelementsorgroups
+can be made for the printout with FROM TO INC. An input for all scalar variable of e.g. beams
+is then:
+SUPP 1 EXTR MAMI ETYP AUTO STAB TYPE AUTO
+Input possibilities for TYPE in dependence of the element type ETYP and for LC preset
+two-digit load case numbers:
+Theinputpossibilitiesforthestaticsystemaremarkedinthethirdcolumn. A3Dmeansthree-
+dimensional system, 2D means plane frame/disk and 2DSL means plate/girder.
+• for nodes - ETYP NODE
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+PX Support reaction in X direction * * 51/52
+PY Support reaction in Y direction * * 53/54
+PZ Support reaction in Z direction * * 55/56
+P all support reactions (PX,PY,PZ,MX,MY,MZ) * * *
+MX Support moment about X direction * * 57/58
+MY Support moment about Y direction * * 59/60
+MZ Support moment about Z direction * * 61/62
+MB Support warping moment * 91/92
+UX Nodal displacement in X direction * * 71/72
+UY Nodal displacement in Y direction * * 73/74
+UZ Nodal displacement in Z direction * * 75/76
+URX Nodal rotation about X direction * * 77/78
+URY Nodal rotation about Y direction * * 79/80
+3-42 SOFiSTiK2023InputDescription|MAXIMA
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+URZ Nodal rotation about Z direction * * 81/82
+URB Nodal rotation due to warping moment * 83/84
+Superposition factors of the nodal displacements and rotations
+The program MAXIMA calculates the for the superposition decisive factors of the nodal
+displacements and rotations from the relevant superpositions of the support reactions or
+support moments.
+If only a superposition of nodal displacements or rotations is done, it is to be noted that
+no factors are output in the list of nodal displacements (ECHO FACT). The output of the
+factors is printed here always in the list of the support reactions in nodes, also if they are
+not superimposed and thus they are printed with zero.
+• for nodes - ETYP SPAC
+ETYP SPAC is only possible in combination with the input COMB EXTR NONL or STAN.
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+VX Nodal velocity in X direction * * 51/52
+VY Nodal velocity in Y direction * * 53/54
+VZ Nodal velocity in Z direction * * 55/56
+AX Nodal acceleration in X direction * * 57/58
+AY Nodal acceleration in Y direction * * 59/60
+AZ Nodal acceleration in Z direction * * 61/62
+• for boundary elements - ETYP BOUN
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+PX Support reaction in X direction of the boundary ele- * * 63/64
+ments
+PY Support reaction in Y direction of the boundary ele- * * 65/66
+ments
+PZ Support reaction in Z direction of the boundary ele- * * 67/68
+ments
+SOFiSTiK2023 3-43MAXIMA|InputDescription
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+P All support reaction of the boundary elements * * *
+M Moment about the edge * * 69/70
+• for sums of the boundary elements - ETYP BOUS
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+PX Sum support reaction in X direction of the boundary * * 83/84
+elements
+PY Sum support reaction in Y direction of the boundary * * 85/86
+elements
+PZ Sum support reaction in Z direction of the boundary * * 87/88
+elements
+P Sum of all support reactions of the boundary ele- * * *
+ments
+M Sum moment about the edge * * 89/90
+• forbeams-ETYPBEAM,fordesignelements-ETYPDSLNandforexternalbeamsections
+- ETYP BSCT
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+N Beam normal force * * * 21/22
+VY Beam shear force Vy * 23/24
+VZ Beam shear force Vz * * * 25/26
+MT Torsional moment Mt * * 27/28
+MY Bending moment My * * * 29/30
+MZ Bending moment Mz * 31/32
+MB Warping moment * 33/34
+MT2 Secondary torsional moment * 35/36
+3-44 SOFiSTiK2023InputDescription|MAXIMA
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+UX Displacement u-x * * 71/72
+UY Displacement u-y * 73/74
+UZ Displacement u-z * * * 75/76
+URX Rotation phi-x * * 77/78
+URY Rotation phi-y * * * 79/80
+URZ Rotation phi-z * 81/82
+URB Rotation due to warping moment * 93/94
+in combination with SELE for BEAM and DSLN:
+SIG Normal stress in cross section point * * * 11/12
+TAU Shear stress in cross section point * * * 15/16
+defaultresultingloadcasenumbersautomaticallyin-
+crease for each cross section point
+Pile bedding only for BEAM:
+PA Pile bedding in main direction * * 37/38
+PTY Pile transverse bedding in y direction * * 95/96
+PTZ Pile transverse bedding in z direction * * 97/98
+• for truss-bars - ETYP TRUS
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+N Normal force of the truss-bar * * 41/42
+SOFiSTiK2023 3-45MAXIMA|InputDescription
+• for cables - ETYP CABL
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+N Normal force of the cable * * 43/44
+• for springs - ETYP SPRI
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+P Spring force in main direction * * * 45/46
+PTX Spring transverse force in X direction * * 93/94
+PTY Spring transverse force in Y direction * * 95/96
+PTZ Spring transverse force in Z direction * * 97/98
+M Spring moment * * * 47/48
+U Spring displacement in main direction * * * 49/50
+UTX Spring transverse displacement in X direction * * 73/74
+UTY Spring transverse displacement in Y direction * * 75/76
+UTZ Spring transverse displacement in Z direction * * 77/78
+UR Spring rotation about main direction * * * 51/52
+• for kinematic constraints - ETYP CFM
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+PX Coupling force in X direction * * 51/52
+PY Coupling force in Y direction * * 53/54
+PZ Coupling force in Z direction * * 55/56
+P All coupling forces * * *
+MX Coupling moment about the X direction * * 57/58
+MY Coupling moment about the Y direction * * 59/60
+3-46 SOFiSTiK2023InputDescription|MAXIMA
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+MZ Coupling moment about the Z direction * * 61/62
+MB Coupling warping moment * 91/92
+SOFiSTiK2023 3-47MAXIMA|InputDescription
+• for plane elements - ETYP QUAD and ETYP QNOD
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+MXX Bending moment m-xx * * 01/02
+MYY Bending moment m-yy * * 03/04
+MXY Torsional moment m-xy * * 05/06
+M All bending moments * *
+VX Shear force v-x * * 07/08
+VY Shear force v-y * * 09/10
+SX Stresses in disks * 11/12
+SY * 13/14
+SXY * 15/16
+SZ * 17/18
+S = SX + SY + SXY *
+NXX Membrane internal forces for shells 1) * * 11/12
+NYY * * 13/14
+NXY Membrane shear force 1) * * 15/16
+N All membrane internal forces * *
+SXT Shell stresses at the upper side * * 71/72
+SYT * * 73/74
+SXYT * * 75/76
+SXB Shell stresses the lower side * * 77/78
+SYB * * 79/80
+SXYB * * 81/82
+S = SXT + SYT + SXYT + SXB + SYB + SXYB * *
+only for ETYP QUAD
+SIGT Stress increment (prestress)
+1) only plane stress state
+Hint for stress superposition for plane elements:
+When using stresses as superposition type, it is to be noted that MAXIMA determines
+the maximum or minimum of the stresses, however it calculates and saves the internal
+forces and moments. Stresses are superimposed and printed only after a calculation for
+the plane strain state in the program TALPA.
+3-48 SOFiSTiK2023InputDescription|MAXIMA
+• for beddings of plane elements (QUAD) - ETYP QBED
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+only for QUAD elements
+P Bedding stress in main direction * * * 17/18
+PTX Components of the tangential bedding * * 93/94
+PTY * * 95/96
+PTZ * * 97/98
+• for volume elements - ETYP BRIC and ETYP BNOD
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+SX Stress in global X direction * 11/12
+SY Stress in global Y direction * 13/14
+SXY Shear stress in global XY plane * 15/16
+SZ Stress in global Z direction * 17/18
+SYZ Shear stress in global YZ plane * 07/08
+SXZ Shear stress in global XZ plane * 09/10
+S All stresses in volume elements *
+• for storey results of the seismic design - ETYP SLVL
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+PX Base shear in X direction * 51/52
+PY Base shear in Y direction * 53/54
+PZ Total vertical force at and above the storey in Z di- * 55/56
+rection
+MX Overturning moment about X axis * 59/60
+MY Overturning moment about Y axis * 61/62
+MZ Overturning moment about Z axis * 63/64
+SOFiSTiK2023 3-49MAXIMA|InputDescription
+TYPE Designation 3 2 2 Load case
+D D D number
+S max/min
+L
+UX Average storey displacement in X direction * 71/72
+UY Average storey displacement in Y direction * 73/74
+UZ Average storey displacement in Z direction * 75/76
+RZ Average storey rotation in XY-plane * 79/80
+DX Inter-storey drift in X direction * 81/82
+DY Inter-storey drift in Y direction * 83/84
+DR Inter-storey rotation in XY plane * 87/88
+3.11.2 Definition of the Load Case Numbers
+In combination with the basic load case number BASE in record COMB and the storage load
+case number LC three possibilities are available, with which one can define the load case
+numbers that are to be used:
+1. Input of BASE in record COMB (BASE ≥ 100) and no input for LC
+The following up to a six-digit load case number is generated with the defaulted values
+of LC (tables above):
+LC new = BASE + default LC
+2. BASE not input in record COMB or input with zero and input of LC with the con-
+ditionLC ≥ 100
+With that a user defined load case number is produced:
+LC new = value input for LC
+or continuous numbering for following saved load case numbers. Load case numbers
+up to 999999 are possible.
+3. BASE not input in record COMB or negative and no input for LC
+Four-digitloadcasenumbersareassignedforsuperpositionswithactions(recordACT)
+as follows:
+The default for BASE in record COMB describes the first and second digit of the four-
+digit load case number as follows:
+for the serviceability limit state
+11xx characteristic (rare) combination
+12xx infrequent combination
+13xx frequent combination
+14xx quasi-permanent combination
+for the ultimate limit state
+3-50 SOFiSTiK2023InputDescription|MAXIMA
+21xx design fundamental combination
+22xx design accidental combination
+23xx design seismic combination
+A four-digit load case number is generated from the defaults of BASE and LC (table
+above):
+LC new = four-digit load case number of the results
+Example for case 3 with actions (record ACT):
+The maximum bending moments m-xx of a plate (QUAD elements) should be determined in
+the ultimate limit state for the ultimate design combination. BASE in record COMB and LC are
+not input. With that the number 2101 is generated for the superposition load case max m-xx:
+from the default for BASE
+21xx design fundamental combination
+and from the default for LC
+xx01 max m-xx for ETYP QUAD/QUAK (table above)
+= generated load case number 2101 for max m-xx
+Automatically generated load case numbers for superposition without actions
+Forsuperpositionswithoutactions(withoutrecordACT,e.g. GermanDIN1045old),thegener-
+ated load cases are numbered as follows:
+LC new = four-digit load case number of the defaults
+for the first two digits:
+21xx design fundamental combination
+for the 3rd and 4th digit:
+default values of LC (tables above)
+If several state variables which are separated with commas should be defined for TYPE and
+if the generated load cases should get load case numbers which are different from the default
+and which are not continuous (case 2: no input of BASE in record COMB and own definition
+of LC), then the load case numbers are to be input for every state variable with LC separated
+with a comma.
+Example: The maximum and minimum values of N,VZ,MY should be determined for a frame
+and girder system. The following load case numbers should be defined:
+MAX-N LC 121 MIN-N LC 122
+MAX-VZ LC 131 MIN-VZ LC 132
+MAX-MY LC 141 MIN-MY LC 142
+SOFiSTiK2023 3-51MAXIMA|InputDescription
+Thus the input reads:
+EXTR MAMI ETYP BEAM TYPE N,VZ,MY LC 121,131,141
+However, if the result load case numbers should be continuous, then it is sufficient to indicate
+the first number for LC. Following input
+EXTR MAMI ETYP BEAM TYPE N,VZ,MY LC 121
+defines the six result load case numbers from number 121 to 126.
+Several records SUPP can be generated the same load case numbers, as long as they use
+the same combination rule.
+Using the preset combinations from an INI file the result load case numbers have a default
+according to the chosen INI file. They can be modified in the SSD tasks: ’Combination Rules’
+and ’Superpositioning for Combination Rules’.
+3.11.3 Output Extent
+With FROM, TO and INC it is possible to control the output of structural elements, groups or
+individual elements. This is useful for instance, if superposition results should be checked
+with random samples for all the used load cases and factors (ECHO LOAD,FACT). In a first
+internal calculation MAXIMA determines the superposition results of all elements. In a second
+calculationonlytheselectedelementsareconsidered. Onlytheselectedelementsareprinted
+then.
+Selection of structural elements:
+Results of elements can be also printed in dependence on the selected structural element. In
+this case the literals SLN or SAR have to be choosen at FROM. The number of the structural
+elementcanthenbedefinedatTO.AninputatINChasherenoeffect. Aselectionofstructural
+areas is not possible for nodal results.
+Group selection:
+Results of elements can be also printed groupwise. In this case the literal GRP has to be
+choosen at FROM. The group number or the name of a secondary group can then be defined
+at TO. An input at INC has here no effect.
+A group selection is not possible for nodal results. If the internal forces and moments in the
+nodes of plane and volume elements (ETYP QNOD, BNOD) should be printed groupwise, the
+group number has to be defined at SELE.
+Element selection:
+If an element selection is desired, then the element or node numbers can be input at FROM
+andTOwhereatINCdefinestheincrement. Inthecaseofaninputofonlyanelementornode
+number at FROM only the superpositon result of this number is printed.
+Without an input at FROM, TO and INC and with a corresponding ECHO option (e.g. ECHO
+FACT,ECHOQUAD,ECHOBEAM)theresultsforallelementsornodesareprintedwhichare
+3-52 SOFiSTiK2023InputDescription|MAXIMA
+available.
+3.11.4 Determination of the Square Root SRSS and SRSE
+The determination of the square root from the sum of the squares SRSS or SRSE is only pos-
+sible for a standard superposition (COMB EXTR STAN, no actions). Follow-up and alternative
+loadcasesarenotallowed. FactorsforloadcaseswhicharedefinedinrecordLCatFACTare
+notconsidered. Itisrecommendedtouseasuperpositionwiththeobjectfunction(see3.11.6).
+SUPP EXTR SRSS creates two load cases (SRMA for maximum and SRMI for minimum).
+Only permanent or unfavourable load cases are considered here. In the case of variable load
+caseofthetypeQorCONDthesignisdecisive, whethertheloadisusedornot. Forexample
+the maximum SRMA does not use initial values of a variable load case with a negative sign.
+Corresponding values are generated proportionally.
+s
+j
+ƒ  = (3.1)
+(cid:113)(cid:80) s 2
+ j
+Example:
+COMB 2 STAN
+LC 1,2,3,4 TYPE Q
+SUPP 2 EXTR SRSS ETYP NODE TYPE PX FROM 1 LC 103
+Node LC Designation P-X P-Y P-Z M-X M-Y M-Z
+Number No. [kN] [kN] [kN] [kNm] [kNm] [kNm]
+1 1 -10.0 0.0 0.0 0.00 -200.00 0.00
+1 2 -8.0 -15.0 0.0 300.00 -160.00 0.00
+1 3 14.0 50.0 0.0 -1000.0 280.00 0.00
+1 4 20.0 0.0 0.0 0.00 400.00 0.00
+---------------------------------------------------------------------
+LC 1 2 3 4
+fact - - 0.57 0.82
+---------------------------------------------------------------------
+1 103 SRMA-PX 24.4 28.7 0.0 -573.46 488.26 0.00
+20.0
+0.82= (3.2)
+(cid:112) 14.02+20.02
+Comparedtotheexampletheloadcases3and4areconsideredwiththefactor1.0,iftheinput
+is done with an objective function for the square root:
+SUPP 2 EXTR MAMI ETYP NODE TYPE 'SQR(PX**2)' FROM 1 LF 103
+SUPP EXTR SRSE also generates two load cases for each superposition value (SRMA ENV
+for maximum and SRMI ENV for minimum). However, only the result values of the leading
+superposition values are determined. These are printed as associated values for the other,
+SOFiSTiK2023 3-53MAXIMA|InputDescription
+although the signs are taken into account.
+In the table below, the internal forces are superimposed with SRSE. The determined values
+arehighlightedonthemaindiagonal. Theseresultsarealsoprintedfortheassociatedvalues,
+however, taking into account the respective sign. For comparison, the analog superposition
+with SRSS is given in the second table.
+Figure3.7: PrintoutSRSE
+Figure3.8: PrintoutSRSS
+3.11.5 Input of Cross Section Points for Beams
+For beams it is also possible to use for SELE a cross section point defined in program AQUA
+with record SPT or the designations Y+, Y-, Z+, Z- as well as Y+Z+, Y-Z+, Y-Z-, Y+Z- for the
+cornersandtheedgecentresoftheencasingrectangle(forrectangularcrosssectionandsteel
+3-54 SOFiSTiK2023InputDescription|MAXIMA
+profiles from program AQUA record PROF):
+Y+Z+ - corner point in the Ist quadrant
+Y-Z+ - corner point in the IInd quadrant
+Y-Z- - corner point in the IIIrd quadrant
+Y+Z- - corner point in the IVth quadrant
+Y+ - intersection point positive y axis with the outer edge
+Y- - intersection point negative y axis with the outer edge
+Z+ - intersection point positive z axis with the outer edge
+Z- - intersection point negative z axis with the outer edge
+In the case of the corners and the edge centres of the encasing rectangle an input in the
+program AQUA record SPT can be omitted.
+Y+Z- Z- Y-Z-
+Ï Ï ÏÏ Ï Ï
+Ï Ï ÏÏ Ï Ï
+Ï Ï ÏÏ Ï Ï
+Ï Ï ÏÏ Ï Ï
+Y+
+Y Y- Ï Ï ÏÏ Ï Ï
+ÏÏ ÏÏ ÏÏÏÏ ÏÏ ÏÏ
+Ï Ï ÏÏ Ï Ï
+Ï Ï ÏÏ Ï Ï
+Ï Ï ÏÏ Ï Ï
+Y+Z+ Z+ Y-Z+ Ï Ï ÏÏ Ï Ï
+Z
+Figure3.9: Crosssectionpoints
+The definition of the cross section point is necessary for a superposition with the scalar vari-
+ables normal stress in cross section point (TYPE SIG) and shear stress in cross section point
+(TYPETAU).MAXIMAsuperimposeshereonlyinternalforcesandmoments. Thatmeans,that
+these internal forces and moments which fulfil the superposition criterion MAX-SIG, MIN-SIG,
+MAX-TAU or MIN-TAU for the corresponding cross section point are determined.
+If TYPE SIG or TAU is defined for some cross section points within one MAXIMA block, the
+resultant load case numbers are increased about 1.
+The cross section points can also be defined separated by commas in a record SUPP accord-
+ing to the rules CADINP, e.g.
+SUPP 1 EXTR MAMI ETYP BEAM TYPE SIG SELE Z+,Y+Z+,Y-Z+,Z-,Y+Z-,Y-Z- LC 3101
+3.11.6 Definition of an Objective Function
+Inspecialcasesitcanbenecessarytogenerateacombinationofdifferentsuperpositionvalues
+in one result load case. This can be for example a foundation check, where the combination
+oftheminimumverticalloadandthemaximumhorizontalloadisveryimportant. Theresultant
+SOFiSTiK2023 3-55MAXIMA|InputDescription
+shear force of plates can be also from interest and can be generated with the shear forces v-x
+andv-y. Theuserhasthepossibilitytoformareasonablecombinationofsuperpositionvalues
+by using a objective function.
+A objective function is generated with superposition values (described above at TYPE) and
+perhaps with factors or defined variables (LET or STO variables). An objective function for
+example for the resultant shear force of a plate reads as follows:
+SUPP COMB 1 EXTR mami ETYP quad TYPE 'SQR(VX**2+VY**2)' LC 101
+Using the objective function, then some rules are to be considered:
+• The superposition values areto be combined reasonably. Only the superposition values of
+one element type ETYP are to be defined.
+• TherulesforCADINParevalid. Anobjectivefunctionshouldbeinputwithquotationmarks
+’...’. Blanks are avoid.
+• The result load case number of a superposition with an objective function has to be input
+manually.
+Thedeterminationofansuperpositionresultwithanobjectivefunctionrunsexactlywithalinear
+function. For a quadratic function it is to be noted that following relationship is valid
+(+y)2 >2+y2
+If a factor which is defined either explicitly or with a variable is input, it is to be noted that the
+factor is used only for the weighting during processing of the objective function. This factor
+does not come in into the numerical value of the superposition result! As an use for that the
+determination of the boundary stresses is mentioned.
+The user is even responsible for the superposition with an objective function. The user
+should check the superposition here! With the input of LOAD and FACT in record ECHO
+all the defined and determined factors and the used load cases are output for every individual
+superpositionvalue. Onlytherelevantsuperpositionvaluesareprintedwithallinvolvedfactors,
+if ECHO CHCK is input.
+Possibilities of an input of an objective function are subsequently described here:
+SUPP 1 EXTR mami ETYP node TYPE 'PX+PY' LC 5101
+describes as objective function an addition of the support reactions PX and PY.
+The Definition of the variable STO#fact 2.5 and
+SUPP 1 EXTR mami ETYP node TYPE '#(fact,2.1)*PX+PY' LC 5101
+describe as objective function an addition of the support reactions PX and Py where PX is
+used with a 2.5-times weighting. The input #(fact,2.1) has the effect that the CADINP variable
+is used with maximal two digits before and one digit behind the ., therefore with 2.5. If only
+#factisinput,thenthevalueofthevariableisroundedoffon3,becauseCADINPusedsoonly
+integer values. It is also possible to input the factor 2.5 directly into the objective function:
+3-56 SOFiSTiK2023InputDescription|MAXIMA
+SUPP 1 EXTR mami ETYP node TYPE '2.5*PX+PY' LC 5101
+3.11.7 Use of Result Sets
+Result sets are used for grouping and for common evaluation of results. They are defined in
+program SOFiMSHA with RSET. In MAXIMA it is possible to determine the relevant values for
+a result value. These are for example support reactions in several points and spring forces in
+different directions.
+ForevaluationtheliteralRSEThastobeinputatETYP,therespectiveIDofthesingleelements
+at TYPE and the respective ID of the set (header in SOFiMSHA) at FROM. The ID of the set
+(header in SOFiMSHA) and the respective single elements can be a number or a literal. It
+is to be considered that an ID, which is defined as a number, can be input with or without
+apostrophes both in the program SOFiMSHA and in MAXIMA. The input has to be identical in
+both programs.
+The results sets have to be input separately. Several result sets can be also defined as a
+CADINP loop. An input for TO is not allowed.
+The result load case number of a superposition with a results set has to be input manually. It
+should be noted here, that different result load case numbers have to be defined for different
+RSET.
+Example: Definition of a RSET for spring forces
+IntheexamplewhichisshownbelowtheIDofthesetisthenumber2anditisinputinMAXIMA
+at SUPP ... FROM. The IDs of the single sets are here ’PVER’ and ’PAXI’.
+PROG SOFIMSHA
+HEAD
+...
+RSET ID '2' TITL 'Bearing type 2'
+RSET ID 'PAXI' NO 1002 SET SPRI\_RES P TITL 'longitudinal'
+RSET ID 'PVER' NO 1003 SET SPRI\_RES P TITL 'transverse'
+...
+END
+PROG MAXIMA
+HEAD
+ECHO RSET FULL
+COMB ...
+...
+SUPP COMB EXTR ETYP TYPE FROM LC TITL='Bearing type 2'
+1 MAMI RSET 'PVER' '2' 2000
+1 MAMI RSET 'PAXI' '2' 2010
+END
+Special Feature for Bearing Forces in Bridge Design
+SOFiSTiK2023 3-57MAXIMA|InputDescription
+Thebearingsofasuperstructurearecreatedwithsprings. Thenresultssets(RSET)aregener-
+atedforthesespringsinordertodeterminetherelevantbearingvalueswiththecorresponding
+values of the other bearing axes after calaculation.
+If more results sets (RSET) exist with the same result values, only the ID of one RSET has
+to be input at FROM. Then the result values of all RSET are always superimposed and the
+corresponding other values of the result sets are saved in the same corresponing load cases.
+Example for the definition of the result sets (RSET) in SOFiMSHA:
+#define RSET
+RSET ID 'PX' SET SPRI ITEM P NO #start+0 TITL 'PX'
+RSET ID 'PY' SET SPRI ITEM P NO #start+1 TITL 'PY'
+RSET ID 'PZ' SET SPRI ITEM P NO #start+2 TITL 'PZ'
+#enddef
+let#start 200101
+RSET ID 'L10L' TITL 'Springs bearing axis 10 left'
+#include RSET
+let#start 200107
+RSET ID 'L10R' TITL 'Springs bearing axis 10 right'
+#include RSET
+let#start 200201
+RSET ID 'L20L' TITL 'Springs bearing axis 20 left'
+#include RSET
+let#start 200207
+RSET ID 'L20R' TITL 'Springs bearing axis 20 right'
+#include RSET
+Four result sets L10L, L10R, L20L and L20R are available with their respective result values
+PX,PY and PZ for the spring force.
+With the following MAXIMA definition these result values of all four result sets are superim-
+posed although only L10L is input at FROM.
+SUPP ETYP TYPE LC FROM EXTR=MAMI COMB=11
+'RSET' 'PX' 81001 'L10L'
+'RSET' 'PY' 81003 'L10R'
+'RSET' 'PZ' 81005 'L10R'
+3-58 SOFiSTiK2023InputDescription|MAXIMA
+3.12 SUM – Definition of Sums for Results
+Seealso: ECHO,CTRL,COMB,LC
+SUM
+Item Description Unit Default
+COMB Number of the combination rule − 1
+LC Load case number for the results − !
+TITL Designation of the superposition load case Lt32 -
+Using record SUM, sums of results from individual load cases with manually defined factors
+can be determined. Therefore, the use of record SUM is only allowed for standard com-
+binations COMB EXTR STAN and related initial load cases which have to be defined as
+permanent. All defined initial load cases are always taken into account for the determination
+of the sum, even if they have a favourable effect.
+Example:
+COMB 1 EXTR STAN TYPE DESI
+LC 1 TYPE PERM FACT 1.35
+LC 2 TYPE PERM FACT 1.5
+LC 4 TYPE PERM FACT 1.5
+LC 8 TYPE PERM FACT 1.05
+The superposition values are determined automatically for the respective system.
+The combination rule is automatically deleted after calculation of the superposition results.
+Only the superposition results are stored in the database. Therefore, it is not possible to
+execute superpositions with record SUPP simultaneously with record SUM for such a special
+combination.
+ForthedesignationTITL32charactersareavailable. Theinputdesignationcanhave,however,
+only 28 characters, because the program uses automatically 4 characters for an information
+about the superposition at the beginning of the designation.
+Definition of the load lase number:
+Only one resulting load case can be defined at item LC for a standard combination with de-
+termination of sums. All superposition results are stored in this load case. It is not allowed
+to define a base load case number BASE in record COMB for the standard combination (only
+BASE 0 is possible).
+Output extent:
+In addition to the default TABU YES in record ECHO, the extended output can be additionally
+selected with ECHO FULL FULL or ECHO LOAD,FACT. A selection of individual elements
+or the printout of the relevant values is not possible. For this purpose, the output of lists is
+recommended in the Result Viewer.
+SOFiSTiK2023 3-59MAXIMA|InputDescription
+3.13 EXPO – Ansi Export of Data
+EXPO
+Item Description Unit Default
+OPT Data to export − 63
+All specifications preset in the INI file or available in
+the database are processed always.
+TO Name of a file to write to Lt96 *
+PASS Password of database Lt16 -
+With the record EXPO you may export the superposition definitions for nodes and elements in
+thedatabaseorintheINIfiletoaninputfileforMAXIMA.Thismaybeusefulinspecialcases.
+If the filename is not specified the data will be appended to the most recently defined file or a
+file with the name project_MAX.DAT is generated.
+Hint:
+It is to be noted, that only the superpositions (records SUPP) of the last MAXIMA block are
+considered during the export. That means for the export from the SSD, that only the super-
+positons of the task Superpositioning for Combination Rules which was calculated at last
+are used for the export file. It is recommended to use the SSD command ’Export to DAT’.
+3-60 SOFiSTiK2023InputDescription|MAXIMA
+3.14 ECHO – Extent of the Output
+Seealso: SUPP
+ECHO
+Item Description Unit Default
+OPT A literal from the following list: LT
+NO No printed output
+TABS General tables of the combinations and YES
+generated load cases
+CHCK Outputofthedecisivepointofsuperposition -
+FULL Full output -
+LOAD Used load cases (default for ECHO FULL -
+FULL)
+FACT Load case contribution factor -
+NODE Nodal displacements/forces -
+BOUN Single values of boundary elements -
+BOUS Support sums of boundary elements -
+BEAM Beam elements -
+DSLN Design elements -
+TRUS Truss elements -
+CABL Cable elements -
+SPRI Spring elements -
+CFM Forces of kinematic constraints -
+QUAD Plane elements -
+QNOD Plane elements, values in nodes -
+BRIC Solid elements -
+BNOD Solid elements, values in nodes -
+QBED Bedding values -
+BSEC Beam element sections -
+RSET Result sets -
+SLVL Storey results of the seismic design -
+VAL Value of output option LT *
+NO No printed output
+YES Regular output
+P Output of forces or stresses
+V Output of displacements
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-61MAXIMA|InputDescription
+Item Description Unit Default
+For QUAD: Output of foundation stresses
+FULL Extensive output, equivalent to P + V
+CSAV only in connection with CHCK, see below
+First two tables with the selected load cases including the load case factors as well as the de-
+fined GAMMA and PSI values and the generated load cases (ECHO TABS YES = default) are
+printed. OnlythesecombinationswhichareusedforthesuperpositionsareoutputwithECHO
+TABS YES. The printout of all combinations which are available in the database is done with
+ECHO TABS FULL.
+If only the combination rules are defined in a MAXIMA input without definitions for the super-
+positions (without any record SUPP), it is possible to get the output of the combination rules
+and the table ’Load case selection and actions’ with the explicit input of ECHO TABS FULL.
+Thenthesuperpositionresultsareprinted,ifacorrespondinginputforECHOisdoneexplicitly.
+AnexplicitinputforECHOmustbepositionedbeforetherecordSUPP!Thustheoutputextent
+can be modified individually for each superposition. In the case of multiple ECHO records in a
+row, the record name ECHO has to be repeated for each record in order to avoid confusion of
+ECHO literals with identical record names.
+The values of the used initial load cases are printed with the explicit input ECHO LOAD YES
+or with ECHO FULL FULL before those of the superposition load cases.
+Theoutputofthepartialsafetyfactorsandcombinationcoefficientsiscontrolledviaanexplicit
+inputofECHOFACT.WithECHOFACTFULLallinvolvedGAMMAandPSIvaluesoftheinitial
+loadcasesandthefactorsresultingfromtheseareoutputindetail. Onlythefactorsunequalto
+zeroareoutputwithECHOFACTYES.ThedefaultforFACTisFULL.Usingbothitems(LOAD
+and FACT) the user should check the superposition results by investigating random samples!
+TheinputECHOCHCKprintsonlytherespectivedecisivepointafterthesuperposition(analo-
+goustoECHOLOADandECHOFACT).IfanelementornodeselectionwithSUPPFROMTO
+INC is used simultaneously with an input ECHO CHCK, then the relevant values only of this
+selection are printed as superposition result. It can be clearer sometimes to use ECHO LOAD
+YES for selected elements instead of ECHO CHCK, because only the factors unequal to zero
+are printed with ECHO LOAD YES.
+Using the Result Sets an input ECHO CHCK has no influence and ECHO RSET YES is set.
+ECHOCHCKCSAVsavesthefactorsoftheloadcasesforeachrelevantvalueascombination
+rule with the number of the resulting load case into the database. In this case the numbers
+of the resulting load cases have to be from 1 to 999, because the maximum number of the
+combination is 999 in the record COMB.
+With the input of ECHO BSEC FULL even the results for beam sections are printed, which
+should not be printed due to the input in the program SOFiMSHA.
+3-62 SOFiSTiK2023InputDescription|MAXIMA
+Hint
+Inthecaseofbigsystemswithalotofelementswerecommendtochecktheresultswith
+the extensive output only for a special element. This can be done with ECHO CHCK or
+with a definition of this element in record SUPP item FROM and ECHO LOAD,FACT. If
+theextensiveoutpute.g. withECHOFULLFULLischosenforallelements,thismaylead
+to a longer computational time and to a very large PLB file.
+SOFiSTiK2023 3-63MAXIMA|InputDescription
+3.15 TRAC – Combination Tracing
+Seealso: SUPP
+TRAC
+Item Description Unit Default
+LC Resulting load case number of a previous MAXIMA − !
+run
+ETYP Element type LT !
+NODE Nodes
+SPAC for nodal accelerations and nodal velocities
+BOUN Boundary elements
+BOUS Sums of boundary elements
+BEAM Beams
+DSLN Design elements
+BSCT Externalbeamsections(fromprogramSIR)
+TRUS Trusses
+CABL Cables
+SPRI Springs
+CFM Kinematic constraints
+QUAD Plane elements
+QNOD Nodes of plane elements
+QBED Bedding of plane elements
+BRIC Volume elements
+BNOD Nodes of volume elements
+RSET Result set
+SLVL Storey Results
+ELEM Elementornodenumbera.s.o.,identifieroftheresult − !
+set
+X X value of the beam axis or of the design element for [m/−] -
+1001
+a specific beam section or SIR cut
+SELE Cross section point for BEAM and DSLN −/Lt4 -
+Group number for QNOD and BNOD
+Node number for BOUN
+OPT Tracing options LT ΙF
+I Trace intermediate superpositions
+Tablecontinuedonnextpage.
+3-64 SOFiSTiK2023InputDescription|MAXIMA
+Item Description Unit Default
+F Filter out input Load Cases that do not con-
+tribute to the superposition
+CSAV Saving of a new combination number (1 - 999) − -
+The determined load cases with their factors are
+saved in a new load case combination.
+With the use of command TRAC, it is possible to trace a Combination and retrieve detailed
+information on how a resulting Load Case has been generated, as an outcome of a MAXiMA
+superposition. Morespecifically,thisfeaturewilldiscoverandprintoutalltheinputLoadCases,
+associated with a Combination, with their corresponding factors, that have been determined
+by MAXiMA. This is especially useful in order to investigate, after a superposition has been
+performed, how a critical Load Case on a specific element has been generated.
+The required input parameters are the number of the resulting Load Case of interest, as well
+as the element type and number. For BEAM elements, X position must be specified too, and,
+in case a Load Case refers to cross section stresses (SIG / TAU), a stress point must be
+entered in parameter SELE, analogously to the corresponding parameters of SUPP record.
+Parameter SELE may be also used to specify a group number for nodes on QUAD or BRIC
+elements (QNOD / BNOD). For boundary elements (BOUN) a node number has to be input
+for the relevant boundary with SELE. Finally, with parameter OPT it is possible to control the
+depthofthetracing,ie. ifintermediatesuperpositionsshouldberesolvedtooortracingshould
+stop on the first level of detected input Load Cases.
+Using the above parameters, the corresponding SUPP and COMB information, which were
+originallyusedduringthesuperpositionthatgeneratedthespecifiedLoadCase,willbeinitially
+read from the database. With this information available, it is subsequently possible to retrieve
+the associated input Load Cases, with their corresponding factors that have been used in
+the superposition. In case the detected result type is stored in the database, as is in most
+circumstances, TRAC will attempt to validate that the superposition result computed during
+tracing matches to what has been actually stored in CDB, during the superposition. However,
+incaseofresulttypescomputedon-the-fly,suchasstressesonstresspointsofBEAM’scross
+sections, or Von Mises stresses for QUAD elements, this is not possible.
+Hint
+Tracing must be performed in an individual MAXiMA run, as it cannot co-exist with the
+standard superposition functionality.
+Currently it is not possible to trace superpositions associated with Tendon Stresses for
+Quad Elements.
+The determined load cases and their factors are save in a new load case combination with
+the input of a combination number for CSAV. Afterward the loads for a new load case can be
+generatedwiththesavedcombinationfactorsintheprogramSOFiLOAD.Forthisthecombina-
+tion number and the combination type COMB have to be input in record COPY of the program
+SOFiLOAD. This new load case can still be used e.g. in a calculation with the program ASE.
+SOFiSTiK2023 3-65MAXIMA|InputDescription
+Hint
+The transformation of load cases which are saved with CSAV into loads with SOFiLOAD
+is only possible for initial load cases which contain ’real’ loads. Initial load cases whose
+internal forces or other results are used in the superposition and which are not based on
+’real’ loads are not considered whilst saving of the new combination. They get a warning
+in the program SOFiLOAD.
+Following superposition results can not transformed into loads:
+• Difference load cases from CSM construction stage (consideration in ASE with group
+control)
+• Internal froces from modal analyses (workflow earthquake)
+• Results from calculation of eigenvalues
+• Results from calculation with time-step-method
+The results of CSAV should be checked if a group control was used.. It is recommended
+tousedCSAVonlyinthecaseoftheconsiderationofallgroupsinthepreviouscalculation
+and superposition.
+Example:
+With the following input the determined load case combinations are saved as combination 55
+and 56 for the node 12 for the superposition results max PZ and min PZ:
+PROG MAXIMA
+HEAD ...
+TRAC LC 2155 ETYP NODE ELEM 12 OPT 'IF' CSAV 55
+TRAC LC 2156 ETYP NODE ELEM 12 OPT 'IF' CSAV 56
+END
+With the program SOFiLOAD the two new load cases 201 and 202 which contain these load
+case combinations are generated:
+PROG SOFILOAD
+HEAD ...
+LC 201 TYPE NONE
+COPY 55 COMB
+LC 202 TYPE NONE
+COPY 56 COMB
+END
+The new load cases are calculated using the program ASE:
+PROG ASE
+HEAD ...
+LC 201,202
+END
+3-66 SOFiSTiK2023InteractiveVersioninSSD|MAXIMA
+4 Interactive Version in SSD
+4.1 General Information
+For the user of SSD it is possible to define the superposition inputs interactive.
+In the SSD there is the task Combination Rules on the one hand and to the second the task
+Superpositioning for Combination Rules.
+The task Combination Rules define the superposition kind.
+WiththetaskSuperpositioningforCombinationRulestheuserdefineswhichmaximumand/or
+minimumvaluesofaspecificscalarvariableforanelementtypewhichistobeinputshouldbe
+determined. The quantity of output can be specified additionally.
+The task Superpositioning for Combination Rules can be inserted repeatedly in the SSD. So it
+is possible for example to realize an intermediate superposition.
+The input possibilities depend on the design code and the static system which were selected
+at the beginning of the input process.
+Forthecombinationsandsuperpositionareasonabledefaultisgeneratedfromtheinformation
+of the database according to the used design code (INI file).
+The Name of combinations and superpositions is generated automatically. However, it is pos-
+sible to modify this definition according to the user requests. Here is to be considered, that
+the preset Name begins with a blank. This blank must be deleted for manual modifications,
+because otherwise the program sets the default again.
+4.2 Combination Rules
+The definition of the combinations with the respective actions and the relevant load cases is
+done in the task Combination Rules or in the registry card Combination Rules. The input of
+the actions is not necessary for superpositions without actions (e.g. according to German DIN
+1045 old).
+4.2.1 Superposition with Actions
+Combinations with actions and relevant load cases are to be defined for the input of superpo-
+sitions with actions.
+Definition of the Combinations (corresponds to MAXIMA record COMB)
+With the command
+Insert new element ⇒ Combination Rule
+a new combination rule is selected. The following preselection of the combination rules
+is available:
+Insert standard combination rule
+for all design codes availalbe, includes at Superposition Kind the Standard superposition
+SOFiSTiK2023 4-1MAXIMA|InteractiveVersioninSSD
+COMB STAN and Choose non-linear extrema COMB NONL
+Insert explicit combination rule
+foralldesigncodesavailalbe,includesatSuperpositionKindthedieExplicitelydefinedcom-
+bination COMB EXPL
+Insert EN combination rule
+for all EN design codes and EN-related design codes, which have combinations according to
+the equations 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 2.10, 2.11, 2.12
+ForthispurposetheNumberandtheNamemaybemodifiedoppositethedefault. Thepreset
+combinations of the INI files are generated with number 100 and following.
+The combination rule (formula) for the superposition is defined at Superposition Kind. The
+combination rules are selectable here in dependence on used design code according to the
+record COMB:
+Standard superposition corresponds to COMB STAN
+for the ultimate limit state:
+ULS fundamental combination corresponds to COMB DESI
+ULS accidental combination corresponds to COMB ACCI
+leading variable action ψ1,1*Qk,1
+ULS seismic combination corresponds to COMB EARQ
+for the serviceability limit state:
+SLS quasi-permanent combination corresponds to COMB PERM
+SLS characteristic combination corresponds to COMB RARE
+SLS frequent combination corresponds to COMB FREQ
+SLS infrequent combination corresponds to COMB NONF
+for simplified superpositions according to German DIN 18800 and other ones
+ULS fundamental simplified corresponds to COMB DESI-V
+ULS accidental simplified corresponds to COMB ACCI-V
+(only for German DIN 18800 and Austrian OENORM B 4300)
+SLS charact. (rare) simplified corresponds to COMB RARE-V
+for non-linear calculated load cases
+Choose non-linear Extrema corresponds to COMB NONL
+for a userdefined combination
+Explicitely defined combination corresponds to COMB EXPL
+A subsequent modification of an Explicitely defined combination into another Superposition
+4-2 SOFiSTiK2023InteractiveVersioninSSD|MAXIMA
+kind (e.g. design fundamental combination) is only possible, if no action groups are used for
+thedefinitionofactions. Usingactionsamodifcationispossible,however,theindicatedfactors
+for the actions have to be checked by the user.
+It follows the definition of the type of the result load cases at Type of resulting loadcases
+(corresponds to TYPE record COMB). For design codes with superposition with safety factors
+and combination coefficients the result load cases can be assigned here to the kinds of
+superposition according to ultimate limit state and serviceability limit state (except for the
+simplified superpositions):
+ULS fundamental combination
+ULS accidental combination
+ULS seismic combination
+SLS quasi-permanent combination
+SLS characteristic combination
+SLS frequent combination
+SLS infrequent combination
+for EN 1995 and German DIN 1052-2008 (timber structures)
+Permanent combination
+Long term combination
+Middle term combination
+Short term combination
+Very short term combination
+for accidental combination fire
+ULS fire combination
+FurthermoreallactionsdefinedintheLoadcaseManagerorinSOFiLOADareavailableforall
+design codes. With no Type the result load cases do not get a type.
+Using a simplified superposition (e.g. according to German DIN 18800 or Austrian OENORM
+4300) following types of the result load cases are preset:
+Superposition kind Type of resulting loadcases
+ULS fundamental simplified ULS fundamental combination
+ULS accidental simplified ULS accidental combination
+SLS charact. (rare) simplifed SLS characteristic combination
+It follows the input of the load case numbers for the load cases to be generated at Numbers of
+resulting loadcases. Three possibilities for the definition of the result load case numbers are
+planned here:
+SOFiSTiK2023 4-3MAXIMA|InteractiveVersioninSSD
+1. fully automatic (default)
+2. semi-automatic
+3. manually
+1st fully automatic (default)
+The defaults for the result load case numbers are selected - corresponds to case 3 described
+in record SUPP: BASE in record COMB and LC in record SUPP not input. If a design code
+for which different defaults of the base load case numbers are available in the INI file is used,
+then the load case numbers are considered according to the definition in the INI file. An input
+of the First Loadcase No. at Superposition commands is not possible.
+Result load case number:
+lc new = four-digit load case number of the defaults
+2nd semi-automatic
+Afour-digittillsix-digitloadcasebasenumberwhichfirsttwotillfourdigitsaredefinedatOffset
+for loadcase number is selected here. A number divisible through hundred of a minimum of
+100andamaximumof999900canbeinputatOffsetforloadcasenumber. Thelasttwodigits
+of the result load case number are determined via the default at Superposition Commands ⇒
+First Loadcase No. The procedure corresponds to case 1 described in record SUPP: BASE in
+record COMB input and LC in record SUPP not input. Thus an input of the First Loadcase No.
+at Superposition commands is not possible.
+Result load case number:
+lc new = Offset + default First Loadcase No.
+3rd manually
+The first freely optional load case number is input at Superposition Commands ⇒ First Load-
+case No. If some result load cases are generated, than the load case numbers are numbered
+continuously. The numbers 100 to 999999 can be defined as result load case numbers.
+However, the calculation is interrupted with an error report, if numbers of the initial load cases
+wereusedfortheresultloadcases. Theprocedurecorrespondstocase2describedinrecord
+SUPP: BASE = not input in record COMB or input with zero and LC in record SUPP input.
+Result load case number:
+lc new = number input at First Loadcase No.
+or continuous numbering for following saved load cases
+The inputs for the combination rule are taken over with the button . If the number of
+the combination rule in the overview in the left window area is marked with a * (e.g. 1* :
+UltimateDesignCombination),thenthiscombinationwasgeneratedmanuallyordoescontain
+modifications of the user.
+Definition of the Actions (corresponds to SOFiLOAD / MAXIMA record ACT, for userdefined
+combination record ADD)
+With the command
+4-4 SOFiSTiK2023InteractiveVersioninSSD|MAXIMA
+Figure4.1: CombinationRules
+Insert new element ⇒ Action
+the actions are taken over from the database. Actions have to be defined before in
+the Loadcase Manager in SOFiPLUS or in SOFiLOAD! Only the Kind of action and the
+safety and combination coefficients of an already defined action may be changed in the
+Superposition Manager.
+The saved actions can be selected at Type. The Name of the action is taken over from the
+LoadcaseManagerorfromSOFiLOAD.Forauserdefinedcombinationfollowingactiongroups
+are additionally available:
+{G} all permanent actions
+{P} all actions due to prestress and creep
+{Q1} first leading variable action
+{Q2} second leading variable action
+{Q3} third leading variable action
+{QI} variable actions
+without leading variable actions {QI} = all
+with leading variable actions {QI} = remaining variable actions
+{A} all accidental actions
+SOFiSTiK2023 4-5MAXIMA|InteractiveVersioninSSD
+{E} all seismic actions
+The definitions from the Loadcase Manager or from SOFiLOAD are taken over for Kind of
+action. The Kind of action corresponds to the item PART in record ACT and it defines,
+to which action of the selected superposition equation the input action belongs. Following
+possibilities are available for Kind of action:
+permanent action (G)
+prestress (P)
+variable action (Q)
+accidental action (A)
+seismic action (E)
+Following partial safety factors and combination coefficients are shown at Modify safety
+factor or combination coefficient for the selected action:
+Partial safety factor γ-u
+Partial safety factor γ-f
+Partial safety factor γ-a
+Combination coefficient ψ 0
+Combination coefficient ψ 1
+Combination coefficient ψ 2
+Combination coefficient ψ 1nƒ
+The new definition of the corresponding coefficient is possible with a tick. A modification is
+only effective for this combination rule in which the modification was done and it is not
+taken over in the database!
+For an userdefined combination (Explicitely defined Combination) the unfavourable and
+favourable factor is preset at Modify factors for Superposition and can be modified. With the
+button alsofollowingliteralscanbeselectedviathewindow’SpecialCodesforFactors’
+for action groups and actions of the userdefined combination (see also record ADD):
+4-6 SOFiSTiK2023InteractiveVersioninSSD|MAXIMA
+Figure4.2: SpecialCodesforFactors
+The inputs for the action are taken over with the button .
+If Standard Superposition at Superposition kind was selected for the combination rule, the
+command Insert new element ⇒ Action omits then.
+Figure4.3: CombinationRules-Action
+SOFiSTiK2023 4-7MAXIMA|InteractiveVersioninSSD
+Definition of the Load Cases (corresponds to MAXIMA record LC)
+With the command
+Insert new element ⇒ Loadcase
+the load cases which appertain to an action are defined. The button Loadcase is not
+selectable in the case of a definition of an userdefined combination (Explicitely defined
+Combination). The load cases are allocated automatically to the action group or to the action
+from the datebase information.
+The load cases which are available in the database and which appertain to a before defined
+action are shown at Loadcase. All load cases which are available for this action are selected
+withNumber 0andAllloadcaseswithsametypeastheaction. Onlytheloadcaseswhich
+are a part only of the relevant category are selected with Number -1 and All loadcases of
+the same category. A detailed explanation is available in record LC of the MAXIMA input.
+However, one or more load cases can be selected by marking for this action.
+The selected load case number is announced at Number. Also load case numbers which are
+available in the database and which were assigned to another action as the selected one can
+be input here.
+The Name of the load case is taken over from the definitions in the database. It can not be
+modified here.
+At Loadcase type it is defined, how the load case is considered for the combination (corre-
+sponds to MAXIMA record LC TYPE). The default depends on the definitions at the actions,
+which was input in the Loadcase Manager - Actions or in SOFiLOAD (corresponds to record
+ACT item SUP). If Choose nonlinear Extrema was selected at Combination rule - Super-
+position kind, the load cases must get the Load case type - add the most unfavourable
+always (AG1-AG99)!
+Modifications of the load case types are only temporarily processed in MAXIMA. That
+means these inputs are only considered in this MAXIMA calculation. The default from
+theLoadcaseManager-ActionsorfromSOFiLOAD(correspondstorecordACTSUP)is
+overlaid then! In case of doubt it is recommended to use the default from the Loadcase
+Manager or from SOFiLOAD and not input explicitly a load case type.
+Following load case types are possible:
+add always (G,perm)
+add if unfavourable (Q)
+add with unfavourable sign (W)
+add the most unfavourable always (AG1-AG99)
+add the most unfavourable (A1-A99)
+add the most unfavourable with unfavourable sign (X1-X99)
+add always with individual factors (G,perc)
+additional contributing loadcase (F) (not for the first load case of an action)
+Here it means:
+4-8 SOFiSTiK2023InteractiveVersioninSSD|MAXIMA
+• add the most unfavourable always (AG1-AG99) - Only the most unfavourable load
+case of a permanent alternative load case group is determined and added.
+• add the most unfavourable (A1-A99) - The most unfavourable load case of the
+alternative load case group is determined and it is only added, if it acts unfavourably.
+• addthemostunfavourablewithunfavourablesign(X1-X99)-Themostunfavourable
+load case of the alternative load case group is determined with changing sign and it is
+only added, if it acts unfavourably.
+• additional contributing loadcase (F) - The contributing load case is added to the load
+case which was defined before (main load case) and both load cases are superimposed
+together, however only, if the main load case has a part for the superposition ⇒ record
+LC.
+If add the most unfavourable always (AG1-AG99), add the most unfavourable (A1-A99)
+or add the most unfavourable with unfavourable sign (X1-X99) was selected at Loadcase
+type, then the number of the alternative load case group can be defined at Number of the
+alternative load case group.
+AfactorforthemultiplicationwiththesuperpositionvaluescanbeinputadditionallyatFactor.
+The inputs for the load case or load cases are taken over with the button .
+Figure4.4: CombinationRules-Loadcase
+SOFiSTiK2023 4-9MAXIMA|InteractiveVersioninSSD
+4.2.2 Superposition without Actions
+If a design code (e.g. German DIN1045 old) for which actions are not necessary for the
+superposition rules was selected at processing start, the command
+Insert new element ⇒ Action
+can not be used.
+Only the combination rule and the relevant load cases have to be input here.
+With the command
+Insert new element ⇒ Combination
+following combination rules can be selected at Superposition kind:
+Standard Superposition corresponds to COMB STAN
+for non-linear calculated load cases
+Choose nonlinear Extrema corresponds to COMB NONL
+The definition of the type of the result load cases is done then at Type of resulting loadcases
+(correspondstoTYPErecordCOMB).Ifadesigncodewithoutsuperpositionwithpartialsafety
+factorsandcombinationcoefficients(e.g. GermanDIN1045old)isused,theresultloadcases
+can get following types:
+Design Combination
+Comb. of principal loading
+Comb. of princ.+suppl. loading
+TheloadcasesdonotgetatypewithnoType. TheDesignCombinationisthedefaultforType
+of resulting loadcases.
+The load case selection is done with the command
+Insert new element ⇒ Loadcase
+which is already describe in chapter: Superposition with Actions above.
+4.2.3 Context Menu (Right-Mouse-Key)
+By activating of the right-mouse-key in the area of the generated combination rules following
+4-10 SOFiSTiK2023InteractiveVersioninSSD|MAXIMA
+window is opened:
+Figure4.5: ContextMenu
+The combination rules, actions and load cases can be inserted here in analog mode to the
+commands at Insert new element. A combination rule can be copied, e.g. for changing
+only the Superposition kind. In order to get a better overview it is possible to collapse or to
+expand the combination rules. Single load cases, actions or a complete combination rule can
+be deleted with Delete.
+OnlythepresetcombinationruleswhichweremodifiedarereinitializedwithReinitialzied. Com-
+bination rules which were individually generated are not changed.
+The combination rules are deleted and reinitialized according to the relevant defaults with
+Delete all and reinitialize. It is to be noted that combination rules which are individually
+generated or changed disappear!
+SOFiSTiK2023 4-11MAXIMA|InteractiveVersioninSSD
+4.3 Superpositioning for Combination Rules
+The definition of the single superpositions is done in the task Superpositioning for Combi-
+nation Rules or in the registry card Superposition Commands ( corresponds to record SUPP
+in MAXIMA). In the SSD the calculation of the superpositions is also started here.
+Figure4.6: SuperpositioningforCombinationRules
+Reasonablesuperpositionsforthedefaultcombinationsoftheavailablesystemarepresethere
+for the first processing. If the number of the superposition in the overview in the left window
+areaismarkedwitha*(e.g. 1*MAX/MINPZ+MX+MY),thenthissuperpositionwasgenerated
+manually or does contain modifications of the user.
+4-12 SOFiSTiK2023InteractiveVersioninSSD|MAXIMA
+4.3.1 Definition of a New Superposition
+With the command
+New Superposition Command
+a new superpositions is generated in the left window.
+Several possibilities to define the input for this new superposition or to modify the inputs of an
+already existing superposition are now available in the right part of the window. For this the
+superposition which should be modified has to be marked in the overview of the left part. A
+superposition command is active for the calculation, if a tick is set before the corresponding
+superposition. The possibilities are in detail:
+The information at
+Number
+describes the number of the superposition and can not be modified.
+With an input for
+Name
+the designation of the superposition can be modified (corresponds to record SUPP TITL in
+MAXIMA).ThedefaultisadesignationwhichresultsfromthedefinitionsforCombinationrule
+as well as Control of Superposition, Result type and Result, where only the part of Result
+is shown here (See also chapter Output Description.
+Example for a preset designation of a superposition of the support reactions PZ with the com-
+bination rule 1 in the ultimate limit state and the superposition extent maximum and minimum:
+Support reactions PZ
+The complete load case designation reads in the printout as follows:
+MAX-PZ NODE Support reaction PZ
+MIN-PZ NODE Support reaction PZ
+4.3.2 Selection of the Superposition Variable
+The superposition variable is defined via the input of the Element type, the Result type and
+the Result.
+SOFiSTiK2023 4-13MAXIMA|InteractiveVersioninSSD
+1st Element type
+2nd Result type
+3r d Result
+Figure4.7: Diagramfortheselectionofthesuperpositionvariable
+With a selection for
+Element type
+anelementtypeischosen(correspondstorecordSUPPETYPinMAXIMA).Followingelement
+types are available:
+Nodes
+Constraints
+Beams
+External sections
+Truss elements
+Cable elements
+Spring elements
+Boundary elements
+Sum of boundary elements
+Area elements
+Nodes at area elements
+Volume elements
+Nodes at volume element
+Only the types which are available in the current system are offered for Element type.
+At
+4-14 SOFiSTiK2023InteractiveVersioninSSD|MAXIMA
+Result type
+allresulttypesoftheelementtypeselectedbeforeareofferedthen. Followingresulttypesare
+available for the single element types:
+for Nodes:
+Displacements
+Support reactions
+Velocities and accelerations
+for Constraints:
+Constraint forces
+for Beams and External sections:
+Forces and moments
+Deformations
+Beddings
+Stresses on selected locations
+for Truss elements
+Truss results
+for Cable elements:
+Cable results
+for Spring elements:
+Spring forces
+Spring displacements
+for Boundary elements:
+Boundary results
+for Sum of boundary elements:
+Sum of boundary results
+for Area elements:
+Forces and moments
+Stresses top/bottom
+Bedding stresses
+Tendon stress
+SOFiSTiK2023 4-15MAXIMA|InteractiveVersioninSSD
+for Nodes at area elements:
+Forces and moments
+Stresses top/bottom
+for Volume elements:
+Element stresses
+for Nodes at volume elements:
+Element stresses
+At last at
+Result
+the superposition variables or several superposition variables can be selected (corresponds
+record SUPP TYPE in MAXIMA).
+4.3.3 Control of the Analysis
+Some control options for the superposition can be set at Control. These are described in the
+following one.
+Figure4.8: Control
+A number for First Loadcase No. can be defined here in dependence on an input at Combi-
+nationRules-Combination-Numberofresultingloadcases-manually. Theprocedureis
+explainedinchapterCombinationRulesinthedescriptionforNumberofresultingloadcases
+- manually.
+By setting of a tick at Maximum or Minimum it is selected, whether the maximum values, the
+minimum values or both should be determined (corresponds record SUPP EXTR MAX/MIN/-
+4-16 SOFiSTiK2023InteractiveVersioninSSD|MAXIMA
+MAMI).
+IfforElementtype-Nodesatareaelements orNodesatvolumeelements weredefined,a
+group for which the superposition should be done can be selected then at Group number by
+deleting of the tick at All groups. The default is ALL for all groups.
+If groups should be defined for other element types, it has to be done via Output - Startnum-
+ber, Endnumber, Increment. If the result load case does not exit yet, the superposition is
+done here for the elements of all groups, but only the selected elements are output then.
+Selection of a Cross Section Point for Beams
+For the Element type - Beams and the relevant Result type - Stresses on selected loca-
+tions a previous defined cross section point can be input at
+Cross section point
+FurthermorethecornersandtheedgecentresoftheencasingrectangleareavailableatCross
+section point (description for the item SELE in record SUPP):
+Y+Z+ - corner point in the Ist quadrant
+Y-Z+ - corner point in the IInd quadrant
+Y-Z- - corner point in the IIIrd quadrant
+Y+Z- - corner point in the IVth quadrant
+Y+ - intersection point positive y axis with the outer edge
+Y- - intersection point negative y axis with the outer edge
+Z+ - intersection point positive z axis with the outer edge
+Z- - intersection point negative z axis with the outer edge
+Y+Z- Z- Y-Z-
+Ï Ï ÏÏ Ï Ï
+Ï Ï ÏÏ Ï Ï
+Ï Ï ÏÏ Ï Ï
+Ï Ï ÏÏ Ï Ï
+Y+
+Y Y- Ï Ï ÏÏ Ï Ï
+ÏÏ ÏÏ ÏÏÏÏ ÏÏ ÏÏ
+Ï Ï ÏÏ Ï Ï
+Ï Ï ÏÏ Ï Ï
+Ï Ï ÏÏ Ï Ï
+Y+Z+ Z+ Y-Z+ Ï Ï ÏÏ Ï Ï
+Z
+Figure4.9: Crosssectionpoints
+With a tick for
+Quadratic combination of factors
+the root from the sum of the squares of the superpositioned value is determined (corresponds
+SOFiSTiK2023 4-17MAXIMA|InteractiveVersioninSSD
+to SUPP EXTR SRSS).
+4.3.4 Output Extent
+The element or group selection or a possible selection for a structural line or area and the
+output extent of load cases and superposition factors as well as the initial values and their
+superposition results are determined at Output.
+Figure4.10: Output
+The full printout, however, only for the relevant superposition values occurs with a tick at Most
+relevant values. It corresponds to the MAXIMA input ECHO CHCK.
+The printout of the combination overview and of the list of the generated load cases occurs
+with a tick at Table of loadcases (default). It corresponds to the MAXIMA input ECHO TABS
+YES.
+Theprintoutofallinitialloadcaseswiththeirvalueswhicharenecessaryforthesuperposition
+occurs with a tick at Values of used loadcases. It corresponds to the MAXIMA input ECHO
+LOAD.
+At Created loadcases it is possible to select between No output, Forces, Displacements
+and Forces + Displacements. The default depends on the selected superposition. Following
+possibilities are available at Output of factors:
+no output (default)
+factors of actions and loadcases
+extended factors of actions and factors of loadcases
+additionally factors of loadcases even if zero
+It corresponds to the possibilities of the MAXIMA input ECHO LOAD, FACT. If the output of
+theMostrelevantvalues (correspondstoECHOCHCK)wasselected,thentheseareprinted
+4-18 SOFiSTiK2023InteractiveVersioninSSD|MAXIMA
+always with all factors. It is recommended to check the superposition by investigating
+randomsampleswithanextendedoutputatCreatedloadcasesandadditionallyfactors
+of loadcases even if zero at Output of factors!
+Element Selection
+The selection of single elements or nodes is done by marking of Node/Elementnumber and
+an input at Startnumber, Endnumber and Increment.
+The default is all elements:
+Startnumber 1
+Endnumber 999999999
+Increment 1
+Group Selection
+By marking of Group a list is available with the primary and secondary groups which exist in
+the system. Here it is possible to select a group for the output of the superposition results.
+A group selection is not possible for nodal results. If the internal forces and moments in the
+nodesatareaandvolumeelementsshouldbeprintedgroupwise,thegroupnumberhastobe
+defined in the tab Control.
+Selection of a Structual Line or Stuctural Area
+By marking of Structural Line or Structural Area a list is available with the structural lines or
+structuralareaswhichexistinthesystemindependenceontheselectedsuperpositionvalues.
+For beams or SIR cuts there is the possibility to define a beam section or a SIR cut which is
+availableinthedatabaseatBeam. WithtextbfX-Value theXvalueisdefinedasalengthvalue
+along the baem axis. With textbfFactor the X position of the beam cut is defined as a factor. A
+0 describes the beginning of the beam and a 1 describes the end.
+The superposition is done always for all elements, however, only the selected elements
+are output.
+With a tick for
+Calculate immediately
+the marked superpositions are calculated.
+4.3.5 Context Menu (Right-Mouse-Key)
+By activating of the right-mouse-key in the area of the generated superpositions following win-
+dow is opened:
+Figure4.11: Context
+SOFiSTiK2023 4-19MAXIMA|InteractiveVersioninSSD
+Superpositionscanbeinsertedordeletedhere. The superpositions are deleted and reinitialized according to the relevant defaults
+with Delete all and reinitialize. It is to be noted that superpositions which are individually
+generated or changed disappear!
+4-20 SOFiSTiK2023OutputDescription|MAXIMA
+5 Output Description
+The result output of the superposition is dependent on the definition of the record ECHO.
+5.1 Check List of the Actions and Load Case Selection
+At first the used design code, the number of the combination rule, the reference to the used
+superpositionequationandthetypeofthegeneratedresultloadcasesareprinted. Thenalist
+of the actions and load case selection is generated:
+Load case selection and actions
+1st line:
+Act Type (designation) of the action
+Part Partition of the action
+(item PART record ACT)
+γ-u Partial safety factor for unfavourable effect
+γ-f Partial safety factor for favourable effect
+γ-a Partial safety factor accidental
+ψ 0 Combination coefficient variable action (rare)
+ψ 1 Combination coefficient frequent values
+ψ 2 Combination coefficient quasi-permanent values
+ψ 1nƒ Combination coefficient infrequent values
+2nd line:
+LC Load case number
+Fact Factor with which the internal forces
+were multiplied
+Type Type of load case (superposition of the load
+cases within the action)
+PERM - permanent load grouped inactions
+PERC - permanent load grouped in load cases
+COND - conditional load
+AGNo - exclusive load permanent
+ANo - exclusive load
+UNSI - unsigned conditional load
+XNo - exclusive load with changing sign
+F - additional contributing load case
+Designation Designation of the action, designation of the load
+case
+SOFiSTiK2023 5-1MAXIMA|OutputDescription
+If a load case has another partial safety factor or combination coefficient than the one which
+was assigned for the action, then this factor or coefficient is printed in a second line of the
+corresponding load case.
+Ifthesuperpositionisdonewithanexplicitcombination(COMBEXTREXPLandrecordADD),
+theexplicitdefinedformulaisprintedattheusedsuperpositionequation. ThetableLoadcase
+Selection and Actions reads here as follow:
+Load case selection and actions
+1st line:
+Act Type (designation) of the action
+Part Partition to which the action belongs
+for input with action groups
+item PART record ACT SOFiLOAD
+for input with explicit action
+EX - explicit defined
+fac-u Factor unfavourable or factor unfavourable
+for accomanying variable action
+fac-f Factor favourable or factor favourable for
+accomanying variable action
+facu1 Factor unfavourable for 1st leading variable action
+facf1 Factor favourable for 1st leading variable action
+facu2 Factor unfavourable for 2nd leading variable action
+facf2 Factor favourable for 2nd leading variable action
+facu3 Factor unfavourable for 3rd leading variable action
+facf3 Factor favourable for 3rd leading variable action
+2nd line:
+LC Load case number
+Fact Factor with which the internal forces
+were multiplied
+Type Type of load case (superposition of the load
+cases within the action)
+PERM - permanent load grouped inactions
+PERC - permanent load grouped in load cases
+COND - conditional load
+AGNo - exclusive load permanent
+ANo - exclusive load
+UNSI - unsigned conditional load
+XNo - exclusive load with changing sign
+5-2 SOFiSTiK2023OutputDescription|MAXIMA
+F - additional contributing load case
+Designation Designation of the action, designation of the load
+case
+5.2 Check List of the Generated Load Cases
+Generated load cases
+Number Number of the generated load case
+Combination Number of the combination
+Designation Designation of the generated load case,
+indicates the value according to which
+the superposition was made,
+has three parts
+The designation of the superposition load case is printed here. It is dependent on the used
+combination rule and the superposition variable. The first part (9 characters) describes the
+used combination rule and is printed also in the following output tables. The following outputs
+are possible:
+MAX/MIN Design fundamental combination
+MAXA/MINA Design accidental combination
+MAXE/MINE Design seismic combination
+MAXP/MINP Serviceability quasi-permanent combination
+MAXR/MINR Serviceability characteristic (rare) combination
+MAXF/MINF Serviceability frequent combination
+MAXN/MINN Serviceability infrequent combination
+MAXS/MINS Standard load cases
+SRMA/SRMI Load cases of the superposition for the root of
+the square sum (SUPP EXTR SRSS)
+MAXUSER/MINUSER Objective function
+SUM Determination of sums with record SUM
+Example: The designation for the accidental design combination of the beam normal force N
+is MAXA-N for the maximum value and MINA-N for the minimum value.
+An information about the element type is printed in the second part (5 characters). Following
+outputs are here possible:
+SOFiSTiK2023 5-3MAXIMA|OutputDescription
+NODE for nodes
+BOUN for boundary elements and their sums
+BEAM for beams
+DSLN for design elements
+BSEC for external beam sections
+TRUS for truss-bars
+CABL for cable elements
+SPRI for spring elements
+CFM for kinematic constraints
+QUAD for plane elements
+QUAK for node values of plane elements
+QBED for beddings of plane elements
+BRIC for volume elements
+BRIK for node values of volume elements
+SPAC for velocities and accelerations of nodes
+or the ID of the leading result set
+The third part (18 characters) corresponds to the input TITL in record SUPP or to input Name
+in the registry card Superposition Commands in WinMAX. For superposition with an objective
+function then the objective function is printed here.
+5.3 Output of the Used Load Cases
+One receives an output of the corresponding internal forces and moments or deformations of
+the initial load cases, before those of the superposition load cases, with the explicit input of
+ECHO LOAD.
+5.4 Output of the Superposition Factors
+The factors of the initial load cases for every superposition load case are printed with the
+explicit input of ECHO FACT. In this case the abbreviations mean the following:
+Act Type of the action
+sumGU Sum of the loads acting permanent and un-
+favourable
+for permanent actions with load cases of type
+PERM
+(decision of the factors action-wise)
+5-4 SOFiSTiK2023OutputDescription|MAXIMA
+sumGF Sumoftheloadsactingpermanentandfavourable
+for permanent actions with load cases of type
+PERM
+(decision of the factors action-wise)
+sumQ1 Sum of the loads first leading variable action
+sumQ2 Sum of the loads second leading variable action
+sumQ3 Sum of the loads third leading variable action
+sumQI Sumoftheloadsvariableoraccomanyingvariable
+actions
+A * behind the load value describes the decisive value.
+LC Number of the initial load case
+facGU Factor for the loads acting permanent
+and unfavourable
+facGF Factor for the loads acting permanent
+and favourable
+facQ1 Factor for first leading variable action
+facQ2 Factor for second leading variable action
+facQ3 Factor for third leading variable action
+facQI Factorforvariableoraccomanyingvariableactions
+Thesummaryoftheinitialloadcasesandtheircorrespondingresultantfactorsisprintedatthe
+end of this output:
+LC Numbers of the initial load cases
+factor Resultant factors, whereby the load cases which
+havethefactor0.0geta’-’duetoabetteroverview
+5.5 Output Tables of the Superposition Results of the Elements and
+Nodes
+In dependence on the selected output options in the record ECHO tables are printed with the
+intial values and the determined superposition values.
+SOFiSTiK2023 5-5MAXIMA|OutputDescription
+Overview of the tables:
+Nodes Nodal displacements and support forces
+Support forces in nodes
+Nodal displacements
+Velocities and accelerations of nodes
+Boundaries Sum of distributed forces along edges
+Distributed forces along edges
+Beams, Beam Sections, Forces in beam elements / design elements
+Design Elements Dispacementsinbeamelements/designelements
+Truss Elements Forces in truss elements
+Cable Elements Forces in cable elements
+Spring Elements Forces and displacements of springs
+Kinematic Constraints Eliminated forces from constraints
+Plane Elements Forces in quadrilateral elements
+Forces in nodes
+Stresses in quadrilateral elements
+Stresses in nodes
+Tendon stresses (from prestress of QUAD ele-
+ments)
+Bedding values for Plane Ele- Elastic bedding
+ments
+Solid Elements Stresses in 3D elements
+Stresses in nodes of 3D elements
+Storey Results of Seismic Storey forces (Base-Shear)
+Design Storey displacements
+5-6 SOFiSTiK2023OutputDescription|MAXIMA
+5.6 Relevant Superposition Values
+Only the relevant superposition values can be output with ECHO CHCK. This output is done
+in form the above described tables with information about the internal forces and moments
+or deformations of the initial load cases (ECHO LOAD) and the superposition factors (ECHO
+FACT). In the table heading the output is marked with Relevant, e.g. Relevant Forces in Plane
+Elements.
+5.7 Special Features for Superposition with an Objective Function
+With a definition of ECHO CHCK or ECHO LOAD the numerical value which the objective
+function uses is printed in the tables at the end of the values of the single load cases under
+Function.
+5.8 Result Sets
+Result-Sets
+Number Number
+LC Number of the load case
+ID 1st result set
+ID 2nd result set
+ID 3rd result set
+...
+SOFiSTiK2023 5-7

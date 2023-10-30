@@ -1,0 +1,190 @@
+!#!Info  Example:       Combination with Load Groups
+!#!Info  Keyword:       Superposition; Load Groups
+!#!Info  Program:       MAXIMA
+!#!Info  Version:       SOFiSTiK 2022
+!#!Info  Date:          $Date: 2021-01-20
+
++PROG AQUA urs:1
+HEAD Example for MAXIMA Load Groups
+HEAD Norm, Material and Cross Section
+NORM DIN EN199x-200x-bridge CAT B
+ECHO FULL full
+CONC 1 C 30
+STEE 2 S 500B
+
+SREC 1 600. 300. SO 50. MNO 1 MRF 2 RTYP ASYM  ASO 1.0 ASU 1.0 DASO 10 DASU 20
+END
+
++PROG SOFIMSHC urs:2
+HEAD Example for MAXIMA Load Groups
+HEAD System
+CTRL MESH 1
+CTRL HMIN 1.0
+SYST SPAC GDIR POSZ
+
+SPT  1  0.0  0.0  0.0 FIX ppmx
+     2  6.0  0.0  0.0 FIX xpmx
+     3 10.0  0.0  0.0 FIX xpmx
+SLN  1  1  2 SNO 1
+     2  2  3 SNO 1
+END
+
++PROG SOFILOAD urs:3
+HEAD Example for MAXIMA Load Groups
+HEAD Actions with Partial Factors and Combination Coefficients
+ACT G_1
+ACT G_2
+
+ACT XY   GAMU 1.4  0.0 0.6 0.4 0.2 0.6 PART Q SUP EXCL
+ACT XY_A GAMU 1.4  0.0 0.6 0.4 0.2 0.6 PART Q_1 SUP EXCL  $  Load group 1
+ACT XY_B GAMU 1.3  0.0 0.5 0.3 0.1 0.5 PART Q_1 SUP EXCL  $  Load group 1
+ACT XY_C GAMU 1.45 0.0 0.6 0.3 0.0 0.6 PART Q_2 SUP EXEX  $  Load group 2
+ACT XY_D GAMU 1.35 0.0 0.5 0.2 0.0 0.5 PART Q_3 SUP EXEX  $  Load group 3
+
+ACT S
+END
+
++PROG SOFILOAD urs:4
+HEAD Example for MAXIMA Load Groups
+HEAD Loads
+LC 1 G_1
+  LINE  SLN 1,2 TYPE PG P1 50.
+LC 2 G_2
+  LINE  SLN 1   TYPE PG P1 15.
+  LINE  SLN 2   TYPE PG P1 10.
+
+LC 11 XY_A
+  LINE  SLN 1   TYPE PG P1 25.
+LC 12 XY_A
+  LINE  SLN 2   TYPE PG P1 20.
+
+LC 21 XY_B
+  LINE  SLN 1   TYPE PG P1 15.
+LC 22 XY_B
+  LINE  SLN 2   TYPE PG P1 22.
+
+LC 31 XY_C
+  LINE  SLN 1   TYPE PG P1 20.
+LC 32 XY_C
+  LINE  SLN 2   TYPE PG P1 40.
+
+LC 41 XY_D
+  LINE  SLN 1   TYPE PG P1 15.
+LC 42 XY_D
+  LINE  SLN 2   TYPE PG P1 35.
+
+LC 51 S
+  LINE  SLN 1   TYPE PG P1 10.
+LC 52 S
+  LINE  SLN 2   TYPE PG P1  8.
+
+ECHO  ACT EXTR
+END
+
++PROG ASE urs:5
+HEAD Example for MAXIMA Load Groups
+HEAD Calculation of the Single Load Cases
+ECHO FULL NO
+LC ALLE
+END
+
+$ Combination 1 DESI with internally calculated intermediate superposition, results equal to combination 2 EXPL
+$ In a first step it is calculated whether the two possible load cases of XY_A and XY_B (due to PART Q_1 SUP EXCL one LC from XY_A
+$ and one LC from XY_B) or one load case from XY_C or XY_D (due to PART Q_2 and Q_3 and SUP EXEX: only one LC from XY_C
+$ or XY_D) are used. Then in a second step the determined load cases from XY_ are combined with the other actions.
+$
+$ For comparison of the internally calculated intermediate superposition see file  maxima_intermediate-superposition.dat
+$ example with explicit input of the intermediate superposition
+
++PROG MAXIMA urs:6
+HEAD Example for MAXIMA Load Groups
+HEAD Combination 1 DESI
+ECHO LOAD,FACT
+COMB 1 DESI TYPE DESI BASE 2100
+ ACT G_1
+ ACT G_2
+ ACT XY_A
+ ACT XY_B
+ ACT XY_C
+ ACT XY_D
+ ACT S
+$SUPP 1 MAMI ETYP BEAM TYPE MY
+SUPP 1 MAMI ETYP BEAM TYPE MY FROM 3 X 1[-]   $ 1st span middle beam 3 end
+SUPP 1 MAMI ETYP BEAM TYPE MY FROM 8 X 1[-]   $ 2nd span middle beam 8 end
+END
+
++PROG WING urs:9
+HEAD Example for MAXIMA Load Groups
+HEAD Combination 1 Bending Moments MY
+PAGE UNII 0
+CTRL OPT INP
+CTRL OPT GSTR VAL DEFA
+CTRL OPT AXIS VAL DEFA
+
+SIZE TYPE URS SC 0 SPLI '2*1'
+SIZ2
+AND  POSI 1 POSL 0 POSR 100 POSD 50 POSU 100
+SCHH H6 0.460000
+SCH2 DIRE STAN
+GRID TYPE NO DIRE DEFA OFFP 0 OFFC 0 OFF3 0 TOLA 15 TOLZ -5
+LC   NO 2129 DESI 1
+VIEW TYPE DIRE X 0 Y -1 Z 0 AXIS POSZ ROTA 0
+DEFO TYPE NO EXPO 0 SMOV NO
+SELE NUMB 0
+BEAM TYPE MY UNIT DEFA SCHH YES STYP BEAM FILL NO REPR DLIN
+
+AND  POSI 2 POSL 0 POSR 100 POSD 0 POSU 50
+LC   NO 2130
+BEAM TYPE MY UNIT DEFA SCHH YES STYP BEAM FILL NO REPR DLIN
+END
+
+$ For demonstration purposes:
+$ Combination 2 EXPL with internally calculated intermediate superposition, results equal to combination 1 DESI
+$ Combination 2 is the same combination as 1, however the input definition is different: here explicit defined combination.
+
++PROG MAXIMA urs:8
+HEAD Example for MAXIMA Load Groups
+HEAD Combination 2 EXPL
+ECHO LOAD,FACT
+COMB 2 EXPL TYPE DESI BASE 2200
+ ADD {G}   FACU GAM
+ ADD {Q1}  FACU GAMU  FACF 0
+ ADD {QI}  FACU PSIU  FACF 0
+$SUPP 2 MAMI ETYP BEAM TYPE MY
+SUPP 2 MAMI ETYP BEAM TYPE MY FROM 3 X 1[-]   $ 1st span middle beam 3 end
+SUPP 2 MAMI ETYP BEAM TYPE MY FROM 8 X 1[-]   $ 2nd span middle beam 8 end
+END
+
++PROG WING urs:10
+HEAD Example for MAXIMA Load Groups
+HEAD Combination 2 Bending Moments MY
+PAGE UNII 0
+CTRL OPT INP
+CTRL OPT GSTR VAL DEFA
+CTRL OPT AXIS VAL DEFA
+
+SIZE TYPE URS SC 0 SPLI '2*1'
+SIZ2
+AND  POSI 1 POSL 0 POSR 100 POSD 50 POSU 100
+SCHH H6 0.460000
+SCH2 DIRE STAN
+GRID TYPE NO DIRE DEFA OFFP 0 OFFC 0 OFF3 0 TOLA 15 TOLZ -5
+LC   NO 2229 DESI 1
+VIEW TYPE DIRE X 0 Y -1 Z 0 AXIS POSZ ROTA 0
+DEFO TYPE NO EXPO 0 SMOV NO
+SELE NUMB 0
+BEAM TYPE MY UNIT DEFA SCHH YES STYP BEAM FILL NO REPR DLIN
+
+AND  POSI 2 POSL 0 POSR 100 POSD 0 POSU 50
+LC   NO 2230
+BEAM TYPE MY UNIT DEFA SCHH YES STYP BEAM FILL NO REPR DLIN
+END
+
+!#!Chapter Loadcase Tracing
++PROG MAXIMA urs:7
+HEAD Example for MAXIMA Load Groups
+HEAD Loadcase tracing
+TRAC LC 2129 ETYP BEAM ELEM 3 x 1[-]  OPT 'IF'
+TRAC LC 2229 ETYP BEAM ELEM 3 x 1[-]  OPT 'IF'
+END
+

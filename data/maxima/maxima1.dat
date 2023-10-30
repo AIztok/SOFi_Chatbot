@@ -1,0 +1,89 @@
+!#!Info  Example:       Combination of wind and snow
+!#!Info  Keyword:       superposition; DIN EN 1992-1-1/NA; DIN EN 1990/NA
+!#!Info  Program:       MAXIMA
+!#!Info  Version:       SOFiSTiK 2022
+!#!Info  Date:          $Date: 2021-01-20
+
++PROG AQUA urs:1
+HEAD Example for MAXIMA
+HEAD Norm, Material and Cross Section
+NORM DIN EN199x-200x ALT 1050.    $ ground level 1050 m above mean sea level
+CONC 1 C 30
+STEE 2 S 500B TITL 'bar reinforcement'
+SREC 1 H 400. B 200. SO 50. MNO 1 MRF 2 RTYP ASYM ASO 1.0 ASU 1.0 DASO 10 DASU 20
+END
+
++PROG SOFIMSHA urs:2
+HEAD Example for MAXIMA
+HEAD System
+SYST 2D  GDIR POSY
+NODE 1 FIX PP ; 2 4.0 -4.0 FIX PY
+BEAM 1 1 2 DIV 4
+END
+
++PROG SOFILOAD urs:3
+HEAD Example for MAXIMA
+HEAD Loads, Actions with Partial Factors and Combination Coefficients
+ACT G  TITL 'Dead Load'
+  LC 1 DLY 1.0
+  BEAM 1 TYPE PYY PA 2.0
+ACT S TITL 'Snow for buildings 1000 m above sea level'
+  LC 2
+  BEAM 1 TYPE PYP PA 7.5
+ACT W TITL 'Wind'
+  LC 3
+  BEAM 1 TYPE PZ PA 5.0
+END
+
++PROG STAR2 urs:4
+HEAD Example for MAXIMA
+HEAD Calculation of the Single Load Cases
+CTRL I
+LC all
+END
+
++PROG MAXIMA urs:5
+HEAD Example for MAXIMA
+HEAD Superposition Ultimate Limit State
+ECHO LOAD,FACT
+COMB 1 DESI TYPE DESI
+ ACT G
+   LC 1
+ ACT S
+   LC 2
+ ACT W
+   LC 3
+SUPP 1 MAMI ETYP BEAM TYPE N,VZ,MY
+SUPP 1 MAMI ETYP NODE TYPE PX,PY
+END
+
++PROG MAXIMA urs:6
+HEAD Example for MAXIMA
+HEAD Superposition Serviceability Limit State Quasi-Permanent Combination
+ECHO LOAD,FACT
+COMB 2 PERM TYPE PERM
+ ACT G
+   LC 1
+ ACT S
+   LC 2
+ ACT W
+   LC 3
+SUPP 2 MAMI ETYP BEAM TYPE N,VZ,MY
+SUPP 2 MAMI ETYP NODE TYPE PX,PY
+END
+
++PROG MAXIMA urs:7
+HEAD Example for MAXIMA
+HEAD Superposition Ultimate Limit State Relevant Values
+ECHO CHCK
+COMB 3 DESI TYPE DESI
+ ACT G
+   LC 1
+ ACT S
+   LC 2
+ ACT W
+   LC 3
+SUPP 3 MAMI ETYP BEAM TYPE N,VZ,MY
+SUPP 3 MAMI ETYP NODE TYPE PX,PY
+END
+

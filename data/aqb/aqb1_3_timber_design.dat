@@ -1,0 +1,352 @@
+!#!INFO Example:     STRESS CHECKS EN 1995
+!#!INFO Keyword:     STRESS CHECK, SUPERPOSITION, DEFORMATION, HOT DESIGN
+!#!Info  PROGRAMM:   AQB, MAXIMA
+!#!Info  Date:       $Date: 2021-06-17 09:43:49 +0200 (Do, 17 Jun 2021) $
+
++PROG TEMPLATE
+HEAD Continuous beam DIN EN1995
+
+$ definition of variables / Variablendefinition
+STO#KDEF 0.6    $ definition of deformation coefficient / Definition Verformungsbeiwert K-def
+
+<TEXT>
+_________________________________________________________________________________________
+Description of example
+
+A three-span beam durais calculated as a continuous beam.
+The traffic loads are applied with different load duration.
+
+The stress verifications are carried out taking into account the service class and the duration of the load.
+The deformations are determined and output using the creep deformations.
+Deformation coefficient K-def = # (#KDEF, 4.2)
+
+A fire design is then carried out. For explanations, see chapter "Fire design"
+_________________________________________________________________________________________
+</TEXT>
+
+END
+
++PROG AQUA
+HEAD 'Code, material and cross section'
+ECHO MAT YES
+NORM DIN EN199X-200X
+TIMB 1 GL 24:1           $ material and Service Class / Material und Nutzungsklasse
+SREC 1 H 600 B 200 MNO 1
+END
+
++PROG SOFIMSHC
+HEAD 'System'
+SYST 2D  GDIV 1000
+CTRL MESH 1
+SPT  NO   X    Y    FIX
+      1   0.0  0.0  PP
+      2   8.0  0.0  PY
+      3  14.0  0.0  PY
+      4  18.0  0.0  PY
+SLN (1 3 1) (1 1) (2 1) SNO 1 GRP (1 1)
+END
+
++PROG SOFILOAD
+HEAD 'Actions and loads'
+$ preset actions
+ACT G    TITL 'self weight'
+ACT Q_E  TITL 'storage rooms'
+ACT Q_B  TITL 'offices'
+
+$ singe load cases
+LC 1  TYPE G FACD 1  TITL 'self weight'
+BEAM  TYPE PYY PA 2.5 $ further permanent loads
+
+LC 2 TYPE Q_E TITL 'storage rooms left span'
+BEAM GRP 1 TYPE PYY PA 10
+
+LC 3 TYPE Q_B TITL 'offices middle span'
+BEAM GRP 2  TYPE PYY PA 5
+
+LC 4 TYPE Q_B TITL 'offices right span'
+BEAM GRP 3  TYPE PYY PA 5
+END
+
++PROG ASE
+HEAD 'Calculation of single load cases'
+ECHO BDEF EXTR $ necessary to save beam deformations
+LC ALL
+END
+
++PROG WING
+HEAD 'Single load cases'
+SIZE -URS SPLI  4X1
+SCHH H6 .25  ND 2
+LOOP#N 4
+LC  1+#N; LOAD ALL
+ENDLOOP
+END
+
+!#!Chapter Stress check in ULS
+
++PROG MAXIMA
+HEAD 'Superposition and assignment of load duration'
+ECHO FULL NO; ECHO TABS YES
+$ ECHO CHCK
+COMB 11 DESI TYPE PT BASE 3100 TITL 'LC 31XX permanent combination'
+ ACT G
+   LC 0
+
+COMB 12 DESI TYPE LT BASE 3200  TITL 'LC 32XX = long term combination'
+ ACT G
+   LC 0   $ all load cases of action
+ ACT Q_E
+   LC -1  $ all load cases of action category
+
+COMB 13 DESI TYPE MT BASE 3300 TITL 'LC 33XX = middle term combination'
+ ACT G
+   LC 0
+ ACT Q_E
+   LC -1
+ ACT Q_B
+   LC -1
+
+$ execution of superpositions
+
+SUPP 11 MAMI ETYP BEAM TYPE N,VZ,MY
+SUPP 11 MAMI ETYP NODE TYPE PX,PY
+
+SUPP 12 MAMI ETYP BEAM TYPE N,VZ,MY
+SUPP 12 MAMI ETYP NODE TYPE PX,PY
+
+SUPP 13 MAMI ETYP BEAM TYPE N,VZ,MY
+SUPP 13 MAMI ETYP NODE TYPE PX,PY
+END
+
+
++PROG WING
+HEAD 'Envelope of middle term combination MT'
+SIZE -URS SPLI  3X1
+SCHH H6 .25  ND 1
+$ extremal supports
+SCHH H6 .25  ND 2
+LC 3353; COLO C13 4001 C14 -1; NODE SY  ; AND
+LC 3354; COLO C13 -1 C14 2001; NODE SY
+$ exremal internal forces
+LC 3325; COLO C13 4001 C14 -1; BEAM VZ ; AND
+LC 3326; COLO C13 -1 C14 2001; BEAM VZ
+LC 3329; COLO C13 4001 C14 -1; BEAM MY ; AND
+LC 3330; COLO C13 -1 C14 2001; BEAM MY
+END
+
++PROG AQB
+HEAD 'Stress design for all design combinations'
+LC TYPE (PT),(LT),(MT)
+COMB GMAX LCST 201  TITL 'extremal values'
+STRE E F
+ECHO STRE
+END
+
++PROG AQB
+HEAD 'Stress design only for long term combination LT'
+LC TYPE (LT)
+COMB GMAX LCST 203 TITL 'extremal values LT'
+STRE E F
+ECHO STRE
+END
+
++PROG AQB
+HEAD 'Stress design only for middle term combination MT'
+LC TYPE (MT)
+COMB GMAX LCST 205 TITL 'extremal values MT'
+STRE E F
+ECHO STRE
+END
+
++PROG WING
+HEAD 'Design results'
+SIZE -URS SPLI  4X1
+LC DESI 201;
+SCHH H6 .25
+ BEAM  SIGD ND 1; AND; BEAM  SIGZ ND 1
+ BEAM  CSHE ND 3
+ BEAM  CSGC ND 3; AND; BEAM  CSGT ND 3
+ BEAM  TCF  ND 3
+END
+
+!#!Chapter Check of deformations in SLS
+
+
++PROG TEMPLATE
+HEAD W-FIN = W-INST + W-CREEP: 'superposition of proportions'
+
+<TEXT>
+
+
+<B>Preliminary remarks on verifying deformation</B>
+--------------------------------------------------------------------------------------------------------
+To determine the final deflection W-FIN, first the following proportions are determined:
+W-INST - elastic initial deformation in characteristic action combination SLS-RARE
+W-PERM - elastic deformation in permanent action combination SLS-PERM
+
+These components are then superimposed in a final MAXiMA run, whereby the creep proportions
+from permanent deformations are determined under consideration of deformation coefficient K-DEF.
+For beams without superelevation:
+W-FIN = W-INST + W-CREEP = W-INST + W-PERM*K-DEF
+--------------------------------------------------------------------------------------------------------
+
+</TEXT>
+
+END
+
+
+
++PROG MAXIMA
+HEAD W-INST: 'deformations from SLS-RARE'
+ECHO FULL NO; ECHO TABS YES
+COMB 21 RARE BASE 4100
+ ACT G
+   LC 0
+ ACT Q
+   LC 0
+SUPP 21 MAMI ETYP BEAM TYPE UZ
+END
+
++PROG MAXIMA
+HEAD W-CREEP: 'proportion of creeping from SLS-RARE'
+ECHO FULL NO; ECHO TABS YES
+COMB 22 PERM BASE 4200
+ ACT G
+   LC 0 FACT #KDEF
+ ACT Q
+   LC 0  FACT #KDEF
+SUPP 22 MAMI ETYP BEAM TYPE UZ
+END
+
++PROG MAXIMA
+HEAD W-FIN = W-INST + W-CREEP: 'superposition of proportions'
+ECHO FULL NO; ECHO TABS YES
+COMB 23 STAN BASE 4300
+LC 4175,4176 TYPE A1  $ MAX/MIN deformations W-INST from SLS-RARE / MAX/MIN-Verformungen W-INST aus GZG-RARE
+LC 4275,4276 TYPE A2  $ MAX/MIN deformations W-CREEP from creeping from SLS-PERM / MAX/MIN-Kriechverformungen W-CREEP aus GSG-PERM
+SUPP 23 MAMI ETYP BEAM TYPE UZ
+END
+
++PROG WING
+HEAD 'Deformations'
+SIZE -URS SPLI  3X1
+SCHH ND 1 H6 .25
+MOVE 0.5 1.0 UNIT CM SCHH .3  DTYP TEXT;
+TEXT 'W-INST: elastic initial deformations SLS-RARE'
+COLO C13 4001 C14 -1; LC 4175; BEAM UZ ; AND;
+COLO C13 -1 C14 2001; LC 4176; BEAM UZ LAST
+
+MOVE 0.5 1.0 UNIT CM SCHH .3  DTYP TEXT
+TEXT 'W-CREEP: creeping proportions of deformations of SLS-PERM'
+COLO C13 4001 C14 -1; LC 4275; BEAM UZ ; AND
+COLO C13 -1 C14 2001; LC 4276; BEAM UZ LAST
+
+MOVE 0.5 1.0 UNIT CM SCHH .3  DTYP TEXT
+TEXT 'W-FIN: final deformations including creeping'
+COLO C13 4001 C14 -1; LC 4375; BEAM UZ ; AND
+COLO C13 -1 C14 2001; LC 4376; BEAM UZ LAST
+END
+
+!#!Chapter Fire design R30
+
++PROG TEMPLATE
+HEAD 'Fire design, definition of variables'
+$ Input / Eingaben:
+STO#T_FI 30            $ time of fire exposure in minutes / Branddauer in Minuten
+STO#SFI1  2            $ fire sideward => without/left/left+right: 0/1/2  /  Beflammung seitlich => ohne/links/links+rechts: 0/1/2
+STO#SFI2  1            $ fire above-below => without/above/below:  0/1/2  /  Beflammung oben-unten => ohne/oben/unten:       0/1/2
+STO#N_SFI #SFI1+#SFI2
+
+$ properties of materials / Materialkennwerte:
+STO#V_FI  0.7                  $ charring rate of laminated timber / Abbrandrate Brettschichtholz
+$STO#V_FI  0.8                 $ charring rate of solid soft wood / Abbrandrate Nadelholz
+STO#D_0   7.0                  $ additional thickness / zusätzliche Dicke
+
+STO#D_TF #T_FI*#V_FI           $ charring depth of each fired surface / Abbrandtiefe je beflammter Seite
+STO#D_EF #T_FI*#V_FI+#D_0      $ effective charring depth of each fired surface / ideelle Abbrandtiefe je beflammter Seite
+
+STO#B_FI  200-#SFI1*#D_EF      $ effective widt in mm / Restbreite in mm
+STO#H_FI  600-#SFI2*#D_EF      $ effective height in mm / Resthöhe in mm
+END
+
++PROG AQUA
+HEAD 'Redefiniton of material and cross section'
+CTRL REST 0       $ all old results are deleted / alle bisherigen Ergebnisse werden gelöscht
+ECHO MAT YES
+<TEXT>
+
+<LF>
+
+<B>Preliminary remarks on fire design:</B>
+------------------------------------------------------------------------------------------------------------
+Design of fire resistance for load-bearing component is carried out with reduced cross-section method
+in accordance with DIN EN1995-1-2:2004 chapter 4.2.2.
+Time of fire exposure                    T = <B> #T_FI MIN </B>        Charring rate           BETA-N = <B> #(#V_FI,5.2) MM/MIN </B>
+Charring depth of each fired surface  D-FI = <B> #D_TF MM </B>         Effective charring depth  D-EF = <B> #D_EF MM </B>
+Effective cross-section        B-FI / H-FI = <B> #B_FI / #H_FI MM</B>   Fire exposure                    <B> #N_SFI - sided </B>
+------------------------------------------------------------------------------------------------------------
+
+<LF>
+</TEXT>
+
+TIMB 1 GL 24:1  SCM 1.0  $ for fire design material safety factor SCM = 1.0 / Für Heißbemessung Materialsicherheit SCM = 1.0
+SREC 1 H #H_FI[MM] B #B_FI[MM] MNO 1  $ effective cross section / Restquerschnitt
+
+END
+
++PROG ASE
+HEAD 'Single load cases with effective cross-section'
+ECHO BDEF EXTR
+LC ALLE
+END
+
++PROG MAXIMA
+HEAD 'Superposition ULS-FIRE'
+COMB 31 ACCI TYPE ACCI BASE 3900
+ ACT G
+   LC 0
+ ACT Q
+   LC 0
+SUPP 31 MAMI ETYP BEAM TYPE N,VZ,MY
+SUPP 31 MAMI ETYP NODE TYPE PX,PY
+SUPP 31 MAMI ETYP BEAM TYPE UZ
+END
+END
+
++PROG WING
+HEAD 'Results of superposition ULS-FIRE'
+SIZE -URS SPLI  3X1
+SCHH H6 .25  ND 1
+$ extremal supports
+SCHH H6 .25  ND 2
+LC 3953; COLO C13 4001 C14 -1; NODE SY  ; AND
+LC 3954; COLO C13 -1 C14 2001; NODE SY
+$ exremal internal forces
+LC 3925; COLO C13 4001 C14 -1; BEAM VZ ; AND
+LC 3926; COLO C13 -1 C14 2001; BEAM VZ
+LC 3929; COLO C13 4001 C14 -1; BEAM MY ; AND
+LC 3930; COLO C13 -1 C14 2001; BEAM MY
+END
+
++PROG AQB
+HEAD 'Stress design for ULS-FIRE'
+ECHO STRE
+LC TYPE (A)
+COMB GMAX LCST 209  TITL 'Extremwerte Feuer'
+STRE E F  $ hints: GAMMA-M  = 1.0 by definition in AQUA
+          $        K-MOD,FI = 1.0 by missing time information in load type LC TYPE
+
+END
+
++PROG WING
+HEAD 'Design results of fire design ULS-FIRE'
+SIZE -URS SPLI  4X1
+LC DESI 209;
+SCHH H6 .25
+ BEAM  SIGD ND 1; AND; BEAM  SIGZ ND 1
+ BEAM  CSHE ND 3
+ BEAM  CSGC ND 3; AND; BEAM  CSGT ND 3
+ BEAM  TCF  ND 3
+END
+
+

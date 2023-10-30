@@ -1,0 +1,312 @@
+!#!Info  Example:       Combination
+!#!Info  Keyword:       Superposition; DIN EN 1992-1-1/NA; DIN EN 1990/NA
+!#!Info  Program:       MAXIMA
+!#!Info  Version:       SOFiSTiK 2022
+!#!Info  Date:          $Date: 2021-01-20
+
++PROG AQUA urs:1
+HEAD Example for MAXIMA
+HEAD Example DIN EN199x-200x Building Construction Plate with Balcony
+ECHO MAT EXTR
+NORM DIN EN199x-200x
+
+CONC 1 C   30
+STEE 2 S 500B
+CONC 5 C   30
+END
+
++PROG SOFIMSHA urs:2
+HEAD Example for MAXIMA
+HEAD System
+SYST 2DSL GDIV 10000 GDIR POSZ
+ECHO FULL NO ; ECHO MAT,SECT YES
+NODE  NO    X     Y
+       1   0.0   0.0
+       2   4.0   0.0
+       3   5.5   0.0
+       4   8.5   0.0
+       5  10.0   0.0
+      43   5.5   7.5
+      44   8.5   7.5
+$ horizontal boundaries
+BOUN  NA   NE   DIV
+       1    2      8
+       2    3      3
+       3    4      6
+       4    5      3
+$ generates the boundary from node 1 to node 5
+BOUN 1 5 FIT
+$
+$ transformation of the nodes
+TRAN NODE FROM 1 TO 5 FIT DY  1.154  DNO 10
+TRAN NODE FROM 1 TO 5 FIT DY  4.615  DNO 20
+TRAN NODE FROM 1 TO 5 FIT DY  5.769  DNO 30
+$
+$ vertical boundaries
+BOUN  NA   NE   DIV
+       1   11      2
+      11   21      6
+      21   31      2
+      33   43      3
+$
+$ generation of the QUAD elements
+GRP 1
+QUAD PROP T 220[mm] MNO 1  $ properties of QUAD elements
+QUAD  NO  N1  N2  N3  N4
+     FIT   1  11  12   2
+     FIT  11  21  22  12
+     FIT  21  31  32  22
+GRP 2
+QUAD PROP T 220[mm] MNO 1  $ properties of QUAD elements
+QUAD  NO  N1  N2  N3  N4
+     FIT   2  12  15   5
+     FIT  12  22  25  15
+     FIT  22  32  35  25
+GRP 3
+QUAD PROP T 180[mm] MNO 5  $ properties of QUAD elements
+QUAD  NO  N1  N2  N3  N4
+     FIT  33  43  44  34
+$
+GRP 0
+BOUN 1 TITL 'outer wall 1' ; BOUN  1  3 FIT TYPE CZ CA 500000
+BOUN 2 TITL 'outer wall 2' ; BOUN  4  5 FIT TYPE CZ CA 500000
+BOUN 3 TITL 'outer wall 3' ; BOUN 31 33 FIT TYPE CZ CA 500000
+BOUN 4 TITL 'outer wall 4' ; BOUN 34 35 FIT TYPE CZ CA 500000
+BOUN 5 TITL 'outer wall 5' ; BOUN  1 31 FIT TYPE CZ CA 500000
+BOUN 6 TITL 'outer wall 6' ; BOUN  5 35 FIT TYPE CZ CA 500000
+BOUN 7 TITL 'inner wall 1' ; BOUN  2 12 FIT TYPE CZ CA 500000
+BOUN 8 TITL 'inner wall 2' ; BOUN 22 32 FIT TYPE CZ CA 500000
+END
+
++PROG SOFILOAD urs:3
+HEAD Example for MAXIMA
+HEAD Actions and Loads
+ACT G  TITL   'Dead Load'
+LC 1 DLZ 1.0
+QUAD GRP 1 TYPE PG  P 2.6
+QUAD GRP 2 TYPE PG  P 2.6
+QUAD GRP 3 TYPE PG  P 1.2
+ACT  Q_C  TITL   'Buildings Category C'
+LC 2  TITL   'q-k-span 1'
+QUAD GRP 1 TYPE PG  P 5.0
+ACT  Q_B  TITL   'Buildings Category B'
+LC 3  TITL   'q-k-span 2'
+QUAD GRP 2 TYPE PG  P 2.0
+LC 4  TITL   'q-k-balcony'
+QUAD GRP 3 TYPE PG  P 4.0
+END
+
++PROG ASE urs:4
+HEAD Example for MAXIMA
+HEAD Internal Forces and Moments of Single Load Cases
+$ECHO DISP,REAC,FORC,NOST,BEDD NO
+$ECHO FULL NO
+LC all
+END
+
++PROG MAXIMA urs:5
+HEAD Example for MAXIMA
+HEAD Superposition ULS - Ultimate Limit State
+HEAD
+ECHO CHCK
+  COMB 1 desi TYPE desi                 $ desi = fundamental combination equation 6.10
+    ACT G
+      LC 1
+    ACT Q_C
+      LC 2
+    ACT Q_B
+      LC 3,4
+  SUPP 1 EXTR MAMI ETYP QUAD TYPE M     TITL   'ULS_QUAD'
+  SUPP 1 EXTR MAMI ETYP QNOD TYPE M     TITL   'ULS_QUAD'
+  SUPP 1 EXTR MAMI ETYP QUAD TYPE VX,VY TITL   'ULS_QUAD'
+  SUPP 1 EXTR MAMI ETYP QNOD TYPE VX,VY TITL   'ULS_QUAD'
+  SUPP 1 EXTR MAMI ETYP NODE TYPE PZ    TITL   'ULS_NODE'
+    $ SUPP 1 EXTR MAMI ETYP QBED TYPE P     TITL 'ULS_QUAD'
+    $
+    $ If QUAD beddings are available, previous line has to be activated.
+    $ Bedding stresses are necessary for punching!
+END
+END
+
++PROG WING urs:6
+HEAD Example for MAXIMA
+HEAD Superposition ULS - Ultimate Limit State
+#define graf1
+SIZE lp 0 FORM STAN SPLI 2x2 SLEG 1 ; SCHH FACW 0.55
+MOVE
+  LET#74 2.5
+  MOVE X -999 Y  #74; DRAW X 999 Y #74 DTYP ZZ
+  LET#74 7.0
+  MOVE X  #74 Y -999; DRAW X #74 Y 999 DTYP ZZ
+#enddef
+#include graf1
+LC    1 ; SECT TYPE MN UNIT 20 SCHH 0.25 DTYP PPLA
+LC    2 ; SECT TYPE MN UNIT 20 SCHH 0.25 DTYP PPLA
+LC    3 ; SECT TYPE MN UNIT 20 SCHH 0.25 DTYP PPLA
+LC    4 ; SECT TYPE MN UNIT 20 SCHH 0.25 DTYP PPLA
+LC 2101 ; SECT TYPE MN UNIT 20 SCHH 0.25 DTYP PPLA
+LC 2102 ; SECT TYPE MN UNIT 20 SCHH 0.25 DTYP PPLA
+LC 2103 ; SECT TYPE MN UNIT 20 SCHH 0.25 DTYP PPLA
+LC 2104 ; SECT TYPE MN UNIT 20 SCHH 0.25 DTYP PPLA
+END
+
++PROG BEMESS urs:7
+HEAD Example for MAXIMA
+HEAD Definition of the Reinforcement Parameters
+
+$ Internal rooms:
+GEOM - HA 25 DHA 10 HB 25 DHB 10 $ Exposition class XC1
+DIRE  0  0
+para NOG - DU 10 WKU 0.40        $ WKU for crack witdh check
+
+$ Balcony:
+GEOM - HA 40 DHA 10 HB 40 DHB 10 $ Exposition class XC4
+DIRE 90 90
+para NOG 3 DU 20 WKU 0.30
+$ 20 cm diameter only to get a result in the crack witdh check
+end
+
++PROG BEMESS urs:8
+HEAD Example for MAXIMA
+HEAD Short Design Input without Differentiated Design Values
+ECHO REIN,RSUG,RTAB NO
+LC   DESI
+END
+
++PROG BEMESS urs:9
+HEAD Example for MAXIMA
+HEAD Design Ultimate Limit State inclusive Punching Check
+ECHO REIN,RSUG,RTAB NO
+$ The program attempts not to use any shear reinforcement
+$ up to this bending reinforcement ratio. The shear check
+$ increases perhaps the bending reinforcement up to this value.
+CTRL RO_V 0.5
+PUNC    D 300[mm] B 300[mm] ro_v 1.50
+PUNC TYPE WALL D 240[mm]
+$ selects all necessary load cases from MAXIMA-ULS-superposition
+$ please check the selected load cases in the result file
+LC   DESI
+END
+
++PROG WING urs:10
+HEAD Example for MAXIMA
+HEAD Design ULS - Ultimate Limit State
+#include graf1
+SIZE SPLI 1x1
+QUAD ASPS   1 SCHH 0.25 ND 1 STYP QUAD
+#include graf1
+QUAD ASL 100 SCHH 0         STYP NODE; AND
+QUAD ASL   1 SCHH 0.25 ND 1 STYP NODE
+QUAD ASU 100 SCHH 0         STYP NODE; AND
+QUAD ASU   1 SCHH 0.25 ND 1 STYP NODE
+SECT TYPE  ASL  UNIT   5.00 SCHH 0.25 DTYP PPLA ; AND
+SECT TYPE  ASU  UNIT   5.00 SCHH 0.25 DTYP NPLA
+SECT TYPE  ASLQ UNIT   5.00 SCHH 0.25 DTYP PPLA ; AND
+SECT TYPE  ASUQ UNIT   5.00 SCHH 0.25 DTYP NPLA
+END
+
++PROG MAXIMA urs:11
+HEAD Example for MAXIMA
+HEAD Serviceability Limit State Quasi-Permanent Combination
+ECHO CHCK
+  COMB 2 perm TYPE perm                        $ perm = quasi-permanent
+    ACT G
+      LC 1
+    ACT Q_C
+      LC 2
+    ACT Q_B
+      LC 3,4
+  SUPP 2 EXTR MAMI ETYP QUAD TYPE M     TITL   'SLS_QUADperm'
+  SUPP 2 EXTR MAMI ETYP QNOD TYPE M     TITL   'SLS_QUADperm'
+  SUPP 2 EXTR MAMI ETYP QUAD TYPE VX,VY TITL   'SLS_QUADperm'
+  SUPP 2 EXTR MAMI ETYP QNOD TYPE VX,VY TITL   'SLS_QUADperm'
+  SUPP 2 EXTR MAMI ETYP NODE TYPE PZ    TITL   'SLS_NODEperm'
+    $SUPP 2 EXTR MAMI TYPE QBED ZUST P     TITL 'SLS_QUADperm'
+END
+END
+
++PROG BEMESS urs:12
+HEAD Example for MAXIMA
+HEAD Crack Width Check Serviceability Quasi-Permanent
+ECHO REIN,RSUG,RTAB NO
+CTRL SLS RMOD SUPE
+$
+$ load cases according to quasi-permament combination SLS
+LC PERM PERC 100
+$ Crack width check according to 7.3.3
+CRAC WK TAB
+MREI FFCT 0.5 KC 1.0
+NSTR CHKC YES
+END
+
++PROG WING urs:13
+HEAD Example for MAXIMA
+HEAD Superposition Serviceability Limit State Quasi-Permanent
+HEAD Final Result Design ULS+SLS
+#include graf1
+QUAD ASL 100 SCHH 0         STYP NODE; AND
+QUAD ASL   1 SCHH 0.25 ND 1 STYP NODE
+QUAD ASU 100 SCHH 0         STYP NODE; AND
+QUAD ASU   1 SCHH 0.25 ND 1 STYP NODE
+SECT TYPE  ASL  UNIT   5.00 SCHH 0.25 DTYP PPLA ; AND
+SECT TYPE  ASU  UNIT   5.00 SCHH 0.25 DTYP NPLA
+SECT TYPE  ASLQ UNIT   5.00 SCHH 0.25 DTYP PPLA ; AND
+SECT TYPE  ASUQ UNIT   5.00 SCHH 0.25 DTYP NPLA
+END
+END
+
++PROG BEMESS urs:14
+HEAD Example for MAXIMA
+HEAD Robustness Reinforcement to Consider the Ductile Member Behaviour
+ECHO REIN,RSUG,RTAB NO
+CTRL SLS RMOD SUPE
+$ The robustness reinforcement is independent of a loading.
+$ Therefore the design of an arbitrary load case suffices.
+$ CTRL ROBU FCTM may be input also additionally in a normal
+$ BEMESS calculation. In this case it is not anymore possible to
+$ identify the areas at which a reinforcement is not necessary due
+$ to load.
+LC 1
+$ robustness reinforcement with fctm
+MREI robu fctm
+END
+
++PROG WING urs:15
+HEAD Example for MAXIMA
+HEAD Final Result ULS+SLS+robustness reinforcement
+HEAD
+#include graf1
+QUAD ASL 100 SCHH 0         STYP NODE; AND
+QUAD ASL   1 SCHH 0.25 ND 1 STYP NODE
+QUAD ASU 100 SCHH 0         STYP NODE; AND
+QUAD ASU   1 SCHH 0.25 ND 1 STYP NODE
+SECT TYPE  ASL  UNIT   5.00 SCHH 0.25 DTYP PPLA ; AND
+SECT TYPE  ASU  UNIT   5.00 SCHH 0.25 DTYP NPLA
+SECT TYPE  ASLQ UNIT   5.00 SCHH 0.25 DTYP PPLA ; AND
+SECT TYPE  ASUQ UNIT   5.00 SCHH 0.25 DTYP NPLA
+END
+END
+
+!#!Chapter Loadcase Tracing
++PROG MAXIMA urs:18
+HEAD Example for MAXIMA
+HEAD Tracing for Combination ULS - Ultimate Limit State
+HEAD Max/Min-Support Reaction PZ in Node 12
+TRAC LC 2155 ETYP NODE ELEM 12  OPT 'IF'  CSAV 55
+TRAC LC 2156 ETYP NODE ELEM 12  OPT 'IF'  CSAV 56
+END
+
++PROG SOFILOAD urs:16
+HEAD Example for MAXIMA
+HEAD Generation of load cases from CSAV
+LC 201 TYPE NONE
+COPY 55 COMB
+LC 202 TYPE NONE
+COPY 56 COMB
+END
+
++PROG ASE urs:17
+HEAD Example for MAXIMA
+HEAD Calculation LC 201,202
+LC 201,202
+END

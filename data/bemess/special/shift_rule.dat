@@ -1,0 +1,134 @@
+!#!Info Example:    Design with Offset Value for Shift Rule
+!#!Info Program:    BEMESS
+!#!Info Keyword:    shift; shear shift; compression strut
+!#!Info Date:       06/19/2007
+
+$ english file name: bemess7_shift.dat
+$
+$ Shift of longitudinal reinforcement due to shear
+$
+$ Method:
+$ With an input        SHFT 1
+$ BEMESS will calculate an additional tensile force from the
+$ shear compression strut. Including this in the bending design,
+$ the effect will be a shift of the longitudinal bending
+$ reinforcement due to shear.
+
+!#!KAPITEL Material and System generation
++PROG AQUA URS:1
+HEAD
+NORM 'NS' 'en199X-200X'
+CONC 1 C 30
+STEE 2 S 500
+STEE 3 S 500
+STEE 4 S 500
+END
+
++PROG SOFIMSHA URS:24
+HEAD Shift of longitudinal reinforcement due to shear
+UNIT 0
+SYST GIRD gdiv 1000
+ECHO FULL NO ; ECHO SYST YES
+NODE NO   X   Y   FIX=PZ
+   11,12  0   0,1
+   21,22  6   0,1
+   31,32 12   0,1
+QUAD N1 N2 N3 N4 MNO=1 T=0.30[m] M=1 N=50
+     11 12 22 21
+     21 22 32 31
+END
+
++PROG SOFILOAD urs:5
+HEAD
+UNIT 5 $ units: sections in mm, geometry+loads in m
+LC 901 TYPE NONE
+  QUAD grp 0 TYPE PZZ 4*1.35+3*1.50 $ g_2 + L
+END
+
+!#!KAPITEL Analysis
++PROG ASE urs:3
+HEAD
+LC 1 FACD 1.35 TITL '1.35 g + 1.50 q'
+  LCC 901
+END
+
++PROG BEMESS URS:23
+HEAD Definition of reinforcement parameters and minimum reinforcement
+$
+$ normal rooms inside
+GEOM - HA 25[mm] DHA 10[mm] HB 25[mm] DHB 10[mm] $ exposition class XC1
+DIRE  90 90
+PARA NOG - DU 7[mm] ASU 0[cm2/m] 0[cm2/m] ASL 0[cm2/m] 0[cm2/m] WKU 0.40[mm] $ specification class F
+END
+
++PROG BEMESS URS:26
+HEAD design without shift
+CTRL LCR 1
+CTRL ULTI
+LC 1
+END
+
++PROG BEMESS URS:28
+HEAD design with shift
+CTRL COTT 1
+SHFT 1 $ consideration of the shift
+CTRL LCR 11
+CTRL ULTI
+LC 1
+END
+
++PROG BEMESS URS:29
+HEAD design with shift CTRL COTT 2
+CTRL COTT 2
+SHFT 1 $ consideration of the shift
+CTRL LCR 12
+CTRL ULTI
+LC 1
+END
+
++PROG BEMESS URS:30
+HEAD head design with shift default
+$
+SHFT 1 $ consideration of the shift
+CTRL LCR 13
+CTRL ULTI
+LC 1
+END
+
+
++PROG WING URS:27
+HEAD
+SCHH FACW 0.55
+MOVE
+  LET#74 0.5                       $ cut in X direction at y=#74m
+  MOVE X -999 Y  #74; DRAW X 999 Y #74 DTYP ZZ
+LC DESI 1
+  SECT TYPE  ASLQ UNIT   500 UMIN 1 SCHH 0.30 DTYP PPLA ; AND
+  SECT TYPE  ASUQ UNIT   500 UMIN 1 SCHH 0.30 DTYP NPLA
+LC DESI 11
+  SECT TYPE  ASLQ UNIT   500 UMIN 1 SCHH 0.30 DTYP PPLA ; AND
+  SECT TYPE  ASUQ UNIT   500 UMIN 1 SCHH 0.30 DTYP NPLA
+LC DESI 12
+  SECT TYPE  ASLQ UNIT   500 UMIN 1 SCHH 0.30 DTYP PPLA ; AND
+  SECT TYPE  ASUQ UNIT   500 UMIN 1 SCHH 0.30 DTYP NPLA
+LC DESI 13
+  SECT TYPE  ASLQ UNIT   500 UMIN 1 SCHH 0.30 DTYP PPLA ; AND
+  SECT TYPE  ASUQ UNIT   500 UMIN 1 SCHH 0.30 DTYP NPLA
+END
+END
+LC DESI 1
+  BOX XMIN 5 YMIN 2 XMAX 7 YMAX -2
+  STRU NUME DSGN NUMN FULL
+  QUAD TYPE ASUQ UNIT DEFA SCHH .3 STYP ELEM FILL NO REPR DTXT ; AND
+  QUAD TYPE ASUQ UNIT DEFA SCHH .3 STYP NODE FILL NO REPR DTXT
+LC DESI 2
+  BOX XMIN 5 YMIN 2 XMAX 7 YMAX -2
+  STRU NUME DSGN NUMN FULL
+  QUAD TYPE ASUQ UNIT DEFA SCHH .3 STYP ELEM FILL NO REPR DTXT ; AND
+  QUAD TYPE ASUQ UNIT DEFA SCHH .3 STYP NODE FILL NO REPR DTXT
+END
+
+$ Clean file folder:
++sys del $(project).$d?
+
+

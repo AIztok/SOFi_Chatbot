@@ -1,0 +1,193 @@
++PROG AQUA urs:1
+HEAD silo with volume loading
+NORM DIN EN199X-200X
+CONC 1 C 30
+STEE 2 B 500A
+END
+
+PROG SOFIMSHC urs:2
+HEAD silo with volume loading
+SYST SPAC  GDIV 10000
+$
+CTRL MESH 2                      $ a plane structure is generated
+CTRL HMIN 0.6 0.4                $ max. element size should be 0.6 m / cornes 0.4 m
+CTRL OPTI 2                      $ optimize bandwidth
+
+$ variables
+sto#rza   0.4     $ radius sink
+sto#rz    3.0     $ radius cylinder
+sto#rzl   3.0     $ radius cylinder for load generation
+sto#hz   10.0     $ height cylinder
+sto#hza   1.3     $ heigth sink zone
+sto#angle sin(45) $ sin 45 = cos 45
+sto#div 4         $ subdivision
+$
+$ centre node
+SPT  1  0  0  0
+$ sink zone
+$ corner points sink
+SPT 12    #rza*#angle    #rza*#angle  0
+SPT 13  -(#rza*#angle)   #rza*#angle  0
+SPT 14  -(#rza*#angle) -(#rza*#angle) 0
+SPT 15    #rza*#angle  -(#rza*#angle) 0
+$ circle around sink
+SLN  1  12  13 ; SLNB R #rza NZ 1.0
+SLN  2  13  14 ; SLNB R #rza NZ 1.0
+SLN  3  14  15 ; SLNB R #rza NZ 1.0
+SLN  4  15  12 ; SLNB R #rza NZ 1.0
+$ corner points cylinder below
+SPT 112    #rz*#angle    #rz*#angle  -1.30   FIX f
+SPT 113  -(#rz*#angle)   #rz*#angle  -1.30   ==
+SPT 114  -(#rz*#angle) -(#rz*#angle) -1.30   ==
+SPT 115    #rz*#angle  -(#rz*#angle) -1.30   ==
+$ circle around the cylinder below
+SLN 11  112  113 ; SLNB R #rz NZ 1.0
+SLN 12  113  114 ; SLNB R #rz NZ 1.0
+SLN 13  114  115 ; SLNB R #rz NZ 1.0
+SLN 14  115  112 ; SLNB R #rz NZ 1.0
+$ lines within sink zone
+SLN (15 18 1) (12 1) (112 1)
+$
+$ cylinder zone
+$ corner points cyliner above
+SPT 212    #rz*#angle    #rz*#angle  -11.30
+SPT 213  -(#rz*#angle)   #rz*#angle  -11.30
+SPT 214  -(#rz*#angle) -(#rz*#angle) -11.30
+SPT 215    #rz*#angle  -(#rz*#angle) -11.30
+$ circle around the cylinder above
+SLN 111  212  213 ; SLNB R #rz NZ 1.0
+SLN 112  213  214 ; SLNB R #rz NZ 1.0
+SLN 113  214  215 ; SLNB R #rz NZ 1.0
+SLN 114  215  212 ; SLNB R #rz NZ 1.0
+$ lines within cylinder zone
+SLN (115 118 1) (112 1) (212 1)
+$
+$ areas sink zone
+SAR  1 GRP 0 MNO 1 T 0.25[m] QREF ABOV ; SARB AUS NL  1,16,11,15
+ SARR ROTA 16 Z 0.00 NZ -1.0
+SAR  2 GRP 0 MNO 1 T 0.25[m] QREF ABOV ; SARB AUS NL  4,15,14,18
+ SARR ROTA 15 Z 0.00 NZ -1.0
+SAR  3 GRP 0 MNO 1 T 0.25[m] QREF ABOV ; SARB AUS NL  3,18,13,17
+ SARR ROTA 18 Z 0.00 NZ -1.0
+SAR  4 GRP 0 MNO 1 T 0.25[m] QREF ABOV ; SARB AUS NL  2,17,12,16
+ SARR ROTA 17 Z 0.00 NZ -1.0
+
+$ areas cylinder zone
+SAR 11 GRP 0 MNO 1 T 0.25[m] QREF ABOV ; SARB AUS NL 11,116,111,115
+ SARR ROTA 116 Z -1.30 NZ -1.0
+SAR 12 GRP 0 MNO 1 T 0.25[m] QREF ABOV ; SARB AUS NL 14,115,114,118
+ SARR ROTA 115 Z -1.30 NZ -1.0
+SAR 13 GRP 0 MNO 1 T 0.25[m] QREF ABOV ; SARB AUS NL 13,118,113,117
+ SARR ROTA 118 Z -1.30 NZ -1.0
+SAR 14 GRP 0 MNO 1 T 0.25[m] QREF ABOV ; SARB AUS NL 12,117,112,116
+ SARR ROTA 117 Z -1.30 NZ -1.0
+END
+
++PROG SOFILOAD urs:3
+HEAD silo with volume loading
+LC 1
+VOLU REF QGRP NO 0 TYPE PZ Z -(#hz+#hza-1) P1 -10
+$
+LC 2
+VOLU REF QGRP NO 0 TYPE PZ Z -(#hz+#hza-1) P1 -10   $$
+      X2  -7 -7 -4  X3   0   0  -4 $$                   $ box for the half system
+      X4 +14 -7 -3  X5 -14  +7  -3
+$     X2  -7 -7 -4 X3  +7  +7 -4 $$                     $ box for the complete system
+$     X4 +14 -7 -3 X5 -14  +7 -3
+$
+LC 3
+QUAD GRP 0 TYPE PZ P 0.0 X 0.0 Y 0.0 Z -(#hz+#hza) DPZ -10  $ liquid level upper edge cylinder
+$
+LC 4
+VOLU REF QGRP NO 0 TYPE PV P 20.0 X 0.0 Y 0.0 Z -9.0
+LC 5
+VOLU REF QGRP NO 0 A/U #rzl/2 TYPE PV P 20.0 X 0.0 Y 0.0  Z -9.0 $$
+                   P1 1.4 P2 0.55 P3 1.05 P4 0.45 P5 1.0
+$
+LC 11 DLZ 1.0
+ECHO LOAD EXTR
+END
+END
+
++PROG ASE urs:4
+HEAD silo with volume loading
+ECHO FULL NO
+ECHO REAC YES
+LC ALLE
+END
+
++PROG WING urs:5
+HEAD
+CTRL OPT INP
+CTRL OPT GSTR VAL FULE
+$
+SIZE TYPE -URS SC 50 MARG NO FORM STAN
+SIZ2
+PAGE LANO 0 UNIO 0
+AND POSI 1 POSL 0 POSR 100 POSD 0 POSU 100 SC 50
+SCHH H6 0.7400000
+SCH2 ABSO YES
+SCH3 HSPM 0.4500000 HSPT 0.4500000 HCPC 0.0200000
+GRID TYPE NO DIRE DEFA OFFP 0 OFFC 0 OFF3 0 TOLA 15 TOLZ -5
+LEGO TYPE PLEG COLE 1101
+LEGO TYPE SCAL COLE 1101
+LEGO TYPE SC COLE 1101
+LEGO TYPE COOR COLE 1101
+LEGO TYPE TWIS COLE 1101
+COLO C21 6001 6001
+COL2 C25 3001 3001 3001 3001
+LC NO 1 DESI 1
+VIEW TYPE DIRE X 1 Y 0 Z 0 AXIS POSZ ROTA 0
+DEFO TYPE NO EXPO 0
+CTRL OPT GSTR VAL FULE
+STRU NUME DSGN NUMN FULL
+STRU NUME FULL FILL NO REPR DSTR UNIT DEFA SCHH YES
+$
+SIZ2
+AND POSI 1 POSL 0 POSR 100 POSD 0 POSU 100
+SCHH H6 0.2400000
+SCH2 DIRE STAN
+STRU NUME GRP NUMN QUAD FILL NO REPR DTXT UNIT DEFA SCHH YES
+$
+SIZ2
+AND POSI 1 POSL 0 POSR 100 POSD 0 POSU 100
+SCHH H6 -0.7400000
+VIEW TYPE DIRE X 0.8648131 Y -0.4223506 Z 0.2715111 AXIS POSZ ROTA 0
+DSGN TYPE SING LENG -0.8000000
+STRU NUME COOZ NUMN QUAD FILL NO REPR DVEC UNIT DEFA SCHH NO
+$
+SIZ2
+AND POSI 1 POSL 0 POSR 100 POSD 0 POSU 100
+SCH2 DIRE STAN
+LEGO TYPE FSKL Y -5
+FILL TYPE RGB NUMB 5 MODE '' DMOD DDEF LIGH DEFA DARK 'A57'
+FILL NUMB 40
+VIEW TYPE DIRE X 0 Y -1 Z 0 AXIS POSZ ROTA 0
+LOAD TYPE ALL UNIT DEFA SCHH NO SING VECT FILL AREA REPR DTXT ETYP ALL GTYP ELEM
+$
+SIZ2
+AND POSI 1 POSL 0 POSR 100 POSD 0 POSU 100
+LC NO 2
+VIEW TYPE DIRE X 0.8688405 Y -0.3115530 Z 0.3847739 AXIS POSZ ROTA 0
+LOAD TYPE ALL UNIT DEFA SCHH NO SING VECT FILL AREA REPR DTXT ETYP ALL GTYP ELEM
+$
+SIZ2
+AND POSI 1 POSL 0 POSR 100 POSD 0 POSU 100
+LC NO 3
+VIEW TYPE DIRE X 1 Y 0 Z 0 AXIS POSZ ROTA 0
+LOAD TYPE ALL UNIT DEFA SCHH NO SING VECT FILL AREA REPR DTXT ETYP ALL GTYP INP
+$
+SIZ2
+AND POSI 1 POSL 0 POSR 100 POSD 0 POSU 100
+LC NO 4
+VIEW TYPE DIRE X 0 Y -1 Z 0 AXIS POSZ ROTA 0
+LOAD TYPE ALL UNIT DEFA SCHH NO SING VECT FILL AREA REPR DTXT ETYP ALL GTYP ELEM
+$
+SIZ2
+AND POSI 1 POSL 0 POSR 100 POSD 0 POSU 100
+LC NO 5
+VIEW TYPE DIRE X 1 Y 0 Z 0 AXIS POSZ ROTA 0
+LOAD TYPE ALL UNIT DEFA SCHH NO SING VECT FILL AREA REPR DTXT ETYP ALL GTYP ELEM
+$
+INTE SET 0 PAR1 7 PAR2 1 PAR3 1
+END

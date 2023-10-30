@@ -1,0 +1,136 @@
+!#!Info Example:    Static Design
+!#!Info Program:    BEMESS
+!#!Info Keyword:    Static Analysis, Design
+
+!#!KAPITEL Material and System generation
++PROG AQUA urs:1
+HEAD
+NORM 'DIN' 'en199X-200X'
+CONC 1 C   30    $ = C30/37
+STEE 2 S 500    $ Reinforcement steel
+SREC 1 H 0.40[m] b 1.0[m] SO 50[mm] 50[mm]
+END
+$
+$        +PROG BEMESS urs:2
+$        HEAD Design for External Forces and Moments
+$        echo rein full
+$        GEOM H 200[mm] HA 20[mm]  20[mm]  30[mm]  16[mm]
+$        DIRE  45  45
+$        S     12  01   MX  -10  -5
+$        GEOM H 200[mm]  HA 20[mm]  20[mm]  30[mm]  16[mm]  18[mm]  16[mm]
+$        THRE  90  135  40   45  135
+$        S     12  02   MX  -10  -5
+$        S     12  03   MX  -10   5
+$        DIRE  45  45
+$        S     12  04   MX  -10   5
+$        END
+
++PROG SOFIMSHA urs:8
+HEAD
+<TEXT>
+
+
+Serviceability checks can not be made with extern forces.
+For this a little one quad system must be made:
+</TEXT>
+SYST SPAC GDIV 1000 POSZ
+NODE        1 X          0.0 Y    1.0000000 Z          0.0
+NODE        2 X    2.0000000 Y    1.0000000 Z          0.0
+NODE        3 X    2.0000000 Y   -1.0000000 Z          0.0
+NODE        4 X          0.0 Y   -1.0000000 Z          0.0
+GRP 0
+  QUAD         -        1        2        3        4  T 0.40[m]
+grp 1
+  spri - 1,2,3,4 dz 1 cp 1 ct 1
+END
+
++prog sofiload urs:3
+head
+lc 911 titl 'mxx' ; node 2,3 type myy  1 ; node 1,4 type myy -1
+lc 912 titl 'myy' ; node 3,4 type mxx  1 ; node 1,2 type mxx -1
+lc 913 titl 'mxy' ; node 1   type mxx  1 ; node 1   type myy  1
+                   node 2   type mxx -1 ; node 2   type myy  1
+                   node 3   type mxx -1 ; node 3   type myy -1
+                   node 4   type mxx  1 ; node 4   type myy -1
+
+lc 921 titl 'nxx' ; node 2,3 type pxx  1 ; node 1,4 type pxx -1
+lc 922 titl 'nyy' ; node 3,4 type pyy -1 ; node 1,2 type pyy  1
+lc 923 titl 'nxy' ; node 1,2 type pxx  1
+                   node 3,4 type pxx -1
+                   node 2,3 type pyy  1
+                   node 1,4 type pyy -1
+lc 931 titl 'vx'  ; node 2,3 type pzz  1 ; node 1,4 type pzz -1
+                   node 2,3 type myy  1 ; node 1,4 type myy  1
+lc 932 titl 'vy'  ; node 1,2 type pzz  1 ; node 3,4 type pzz -1
+                   node 1,2 type mxx -1 ; node 3,4 type mxx -1
+$ ---------------------------------------------------------------------------
+$                     design forces:
+lc 1 titl 'design forces ULS'
+  copy 911                300 $ kNm/m mxx
+  copy 912                 20 $ kNm/m myy
+  copy 913                -70 $ kNm/m mxy
+
+  copy 921                400 $ kNm/m nxx
+  copy 922                -90 $ kNm/m nyy
+  copy 923                 20 $ kNm/m nxy
+
+  copy 931                 30 $ kN/m vx
+  copy 932                -20 $ kN/m vy
+
+lc 2 titl 'forces SLS'
+  copy 911                220 $ kNm/m mxx
+  copy 912                 12 $ kNm/m myy
+  copy 913                -50 $ kNm/m mxy
+
+  copy 921                270 $ kNm/m nxx
+  copy 922                -50 $ kNm/m nyy
+  copy 923                 12 $ kNm/m nxy
+
+  copy 931                 20 $ kN/m vx
+  copy 932                -12 $ kN/m vy
+end
+
++PROG BEMESS urs:5
+HEAD Design Parameter
+GEOM HA 50 DHA 10 HB 50 DHB 10
+DIRE UPP 0 LOW 0
+PARA - DU 20 WKU 0.15
+END
+
+!#!KAPITEL Analysis
++PROG ASE urs:7
+head Combinations
+echo disp,reac,load,grp no ; echo forc yes
+grp - full ; grp 1 yes
+lc 1,2
+end
+
++PROG BEMESS urs:6
+HEAD
+ctrl ulti
+lc 1 ; elem 1 $ without nodes
+END
+
++PROG BEMESS urs:14
+HEAD Crack design
+ctrl sls
+CTRL lcri 1 lcr 2
+CRAC WK PARA  $ \|verwendet WK 0.15 aus BEMESS-PARA    oder geben Sie WK 0.15 ein uses WKU 0.15 from BEMESS-PARA    or input WK 0.15
+LC  2 ; elem 1
+END
+
++prog aqb urs:2
+head AQB Check ULS
+S NCS 1 x 1 N 420 MY 370 $ here you can input forces manually
+DESI stat ulti           $ The 370 kNm come due to the moodarmer method:
+DESI stat ulti           $   m-reinforcement = m-xx + |mxy|
+end
++PROG RESULTS urs:4
+head AQB Check
+LC NO 0 ENO 1 X 1
+CROS TYPE RFSS ETYP EXPL RTYP NONL REPR DLIN FILL NO SCHH 0.40
+END
+
+$ Clean file folder:
++sys del $(project).$d?
+

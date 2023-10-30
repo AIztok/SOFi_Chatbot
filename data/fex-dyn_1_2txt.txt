@@ -1,0 +1,1009 @@
+FEX-DYN
+Nonlinear Explicit Dynamics
+SOFiSTiK | 2023FEX-DYN
+NonlinearExplicitDynamics
+FEX-DYNManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|FEX-DYN
+Contents
+Contents i
+1 Introduction 1-1
+1.1 What to expect from this tutorial? . . . . . . . . . . . . . . . . . . . . . . . . . 1-1
+1.2 FEX-DYN - Program Features . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-1
+1.2.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-1
+1.2.2 Finite Elements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-1
+1.2.3 Nonlinear Material Properties . . . . . . . . . . . . . . . . . . . . . 1-3
+1.2.4 Loads . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-3
+1.2.5 Time Step Size . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 1-3
+2 Simply Supported Beam 2-1
+2.1 Statement of the Problem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.2 FE Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.3 Free Vibrations due to Suddenly Applied Loading . . . . . . . . . . . . . . . 2-2
+2.3.1 Free Vibrations due to Suddenly Applied Loading . . . . . . . . 2-2
+2.3.2 Program Output and Interpretation of the Results . . . . . . . . 2-3
+2.4 Damped Vibrations (D=5%) . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-4
+2.4.1 Background . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-4
+2.4.2 Input File for FEX-DYN . . . . . . . . . . . . . . . . . . . . . . . . . 2-5
+2.4.3 Program Output and Interpretation of the Results . . . . . . . . 2-6
+2.5 Dynamic Relaxation/static Solution . . . . . . . . . . . . . . . . . . . . . . . . 2-7
+2.5.1 Input file for FEX-DYN. . . . . . . . . . . . . . . . . . . . . . . . . . 2-7
+2.5.2 Program Output and Interpretation of the Results . . . . . . . . 2-8
+2.6 Time-Varying Load . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-8
+2.6.1 Input file for FEX-DYN. . . . . . . . . . . . . . . . . . . . . . . . . . 2-8
+2.6.2 Program Output and Interpretation of the Results . . . . . . . . 2-10
+2.7 UndampedVibrationsUnderSimultaneousSelf-WeightandAxialLoad-
+ing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-10
+2.7.1 Background . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-10
+2.7.2 Input File for FEX-DYN . . . . . . . . . . . . . . . . . . . . . . . . . 2-11
+2.7.3 Program Output and Interpretation of the Results . . . . . . . . 2-12
+3 Plate with a Hole 3-1
+3.1 Statement of the Problem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.2 FE Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.3 Input File for FEX-DYN . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-2
+3.4 Program Output and Interpretation of the Results . . . . . . . . . . . . . . . 3-3
+4 Facade Beam Under Explosion 4-1
+4.1 Statement of the Problem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+SOFiSTiK2023 iFEX-DYN|Contents
+4.2 FE Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.3 Input file for FEX-DYN . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-2
+4.4 Program Output and Interpretation of the Results . . . . . . . . . . . . . . . 4-4
+5 Bridge Under the Earthquake - Uplifting Bearings 5-1
+5.1 Statement of the Problem . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-1
+5.2 FE model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-3
+5.3 Input File for FEX-DYN . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-4
+5.4 Program Output and Interpretation of the Results . . . . . . . . . . . . . . . 5-5
+Bibliography 5-9
+ii SOFiSTiK2023Introduction|FEX-DYN
+1 Introduction
+1.1 What to expect from this tutorial?
+This tutorial is intended to provide a first introduction into the program and to demonstrate the
+usage of the program with the help of simplified as well as more complex examples. It is not
+intended to be a substitute for the program manual.
+Severaldifferentexamplesrangingfromtheanalysisofthesimplysupportedbeamtononlinear
+analysisoftheboxgirderbridgeunderearthquakeexcitationwithupliftingbearingsaretreated.
+The input files for all the examples can be found in dyna.dat/english/fex folder.
+The underlining theory (mechanics and FEM technology) will, within the framework of this
+tutorial,beexplainedonlyuptoalevelwhichisnecessaryforunderstandingtheexamplesand
+for correct usage of the program.
+1.2 FEX-DYN - Program Features
+1.2.1 Introduction
+FEX-DYN is a FEM analysis kernel for the explicit integration of the equations of motion within
+aSOFiSTiKfamilyofprograms. FEX-DYNisefficientlyprogrammedtocopewiththephysically
+and geometrically non-linear problems and conceptualized for the usage on a multiprocessor
+machines (parallel computing). During the computation all the data necessary for the current
+time step computation are kept completely in RAM.
+1.2.2 Finite Elements
+At the moment primarily spatial continuum elements with different number of nodes are avail-
+able (Fig. 1.1). The input and mesh generation are, as usual, performed with the help of
+SOFiMSHA, SOFiMSHC or SOFiCAD. In order to avoid numerical instabilities (hour glass
+modes) all the elements are fully integrated. To prevent potential locking problems non-
+conforming shape functions according to Zienkiewicz [1] are used.
+Figure1.1: BRICcontinuumelemenswith8,6and4nodes
+The elements can be used for the calculations according to the theory of first order (small dis-
+SOFiSTiK2023 1-1FEX-DYN|Introduction
+placements; formulation of the equilibrium in the unreformed configuration) as well as accord-
+ingtothethirdordertheory(largedisplacements-inparticularlargedeformations;formulation
+of the equilibrium equations in the deformed configuration) (Table 1.1).
+Table1.1: BRICelements-supportedfeatures
+Continuum elements 8-node BRIC 6-node BRIC 4-node BRIC
+Order of integration: 8 8 1
+Number of Gauss points
+(cid:216) (cid:216) (cid:216)
+Interpolation functions:
+conforming
+(cid:216) (cid:216)
+Interpolation functions:
+non-conforming
+(cid:216) (cid:216) (cid:216)
+1st order theory
+(cid:216) (cid:216) (cid:216)
+3rd order theroy
+(cid:216) (cid:216) (cid:216)
+Elastic material behaviour
+(cid:216) (cid:216) (cid:216)
+SOFiSTiK nonlinear material models
+In addition truss and cable elements as well as the springs are available for the calculation
+(Fig. 1.1).
+Figure1.2: 2-nodetrussandcableelements
+Truss and cable elements can be calculated according to the 1st or 3rd order theory. These
+elementspossesnointernalnodesbetweentwoendnodes,todescribeforexamplethecable
+slackeffects. Forthedescriptionofcableslackeffectsoneshoulduseseveralcableelements.
+In contrast to truss elements, the cable elements are not able to resist pressure forces. Addi-
+tionally the spring elements are available for the calculation with FEX-DYN (Table 1.2).
+Hint
+All implemented finite elements in the 3D calculations posses only three displacement
+degrees of freedom (, , ) per node. For example in a spatial calculation of the beam
+elements there are (at least) three additional rotational degrees of freedom. These ele-
+ments are not yet supported by FEX-DYN.
+1-2 SOFiSTiK2023Introduction|FEX-DYN
+Table1.2: Truss,cableandsrpingelements-supportedfeatures
+Element TRUS CABL SPRI
+(cid:216) (cid:216) (cid:216)
+1st order theory
+(cid:216) (cid:216)
+3rd order theory
+(cid:216) (cid:216) (cid:216)
+Elastic material behaviour
+(cid:216) (cid:216) (cid:216)
+PRE, GAP, YIEL, CRAC
+1.2.3 Nonlinear Material Properties
+For the description of the material behaviour of the continuum elements all the linear and non-
+linear material models available in SOFiSTiK are available for FEX-DYN as well.
+Truss,cableandspringelementssupportfeaturessuchaspre-stress(PRE),gapinconnection
+elements(GAP),yieldingintensionandincompression(YIEL)aswellastherapture(CRAC).
+1.2.4 Loads
+At the moment the static and dynamic point, area and volume loads including the self- weight
+canbeused. Theloadsareconservative. Deformation-depended,externalloadsarecurrently
+not supported. The loads from temperature, creep and shrinkage, which are typically defined
+trough specification of strains, are not yet supported as well.
+1.2.5 Time Step Size
+The explicit integration of the equation of motions requires calculation with many small time
+steps. Thesizeofthetimestepdependsoftheelementsize(stabilitycriteria): Thesmallerthe
+elements (edge lengths) are, the smaller the chosen time step must be in order to perform a
+numerically stable calculation.
+Incertaincases,forexampleincaseofanearthquakeanalysis,inwhichtheexternalloadingis
+defined as discrete function with certain time resolution, it makes sense to specify a particular
+size of the time step. In many cases however the user wants to use the largest time step size
+possible,inordertolimitthetotalcomputationaltime. BasedontheelementedgelengthsFEX-
+DYN determines the critical time step size for the particular calculation model automatically.
+Hints for the meaningful modelling, time step and element sizes, as well as the expected com-
+putational times are given in the Chapter 5.
+SOFiSTiK2023 1-3FEX-DYN|Introduction
+1-4 SOFiSTiK2023SimplySupportedBeam|FEX-DYN
+2 Explicit Integration of the Equations of Motion - Simply
+Supported Beam
+2.1 Statement of the Problem
+Figure 2.1 shows the geometry of the simply supported beam. Since the cross-section is
+constant along the length of the beam, the bending stiffness E and the mass per unit length μ
+are constant as well.
+m
+5.0
+x =
+H
+I = 10 m B = 1.0 m
+Figure2.1: Geometryofthesimplysupportedbeam
+The material is reinforced concrete with material parameters E = 30000 MN/m2 and ρ =
+2500 kg/m3.
+Having in mind that the cross-sectional area is A = 0.5 m2, we can compute the mass per
+unit length as μ = ρA = 1250 kg/m. The bending stiffness is E = 30·106·0.53·1.0/12 =
+312500 kNm2.
+Thereferencesolutionoftheproblemcanbeobtainedinanalyticalforminwhichthemechan-
+ical behaviour of the system is modelled using the Bernoulli beam theory (shear deformations
+are neglected). It follows that the stiffness of the beam can be completely described by the
+bending stiffness E.
+Intheexampleconsideredhere,thebeamwillbeexcitedinitsfundamentalmodeofvibration.
+By neglecting the effects of shear deformations and the rotational inertia, the natural angular
+frequency of the fundamental mode can be computed analytical as:
+π2(cid:118) (cid:117)E π2 (cid:118) (cid:117)312500
+ω= (cid:116) = (cid:116) =49.348 rd/s . (2.1)
+2 μ 100 1250
+The eigenfrequency follows from the angular frequency by division with 2π, i.e.
+ω 49.348
+ƒ = = =7.854 s−1 , (2.2)
+2π 2π
+and from this the natural period of vibration T
+1
+T = =0.1273 s . (2.3)
+ƒ
+SOFiSTiK2023 2-1FEX-DYN|SimplySupportedBeam
+The fundamental mode of oscillation of the beam is in a form of a sinusoidal:
+(cid:129)π·(cid:139)
+()=sin . (2.4)
+
+For further calculations the generalized mass m gen, the generalized stiffness k gen as well as
+the generalized external load p gen corresponding to this fundamental mode will be helpful.
+They can be computed as follows:
+(cid:90)  μ·
+m gen = μ·2()·d= =6.25 t , (2.5a)
+2
+0
+k gen =ω2·m gen =15220.2 kN/m , (2.5b)
+(cid:90)  2
+p gen = μ·g·()·d=μ·g· ·=79.575 kN . (2.5c)
+π
+0
+2.2 FE Model
+In contrast to the analytical solution here the beam is modelled with the three-dimensional
+volume finite elements (BRIC). FE model is with AQUA and SOFiMSHA defined.
+It is important to define the specific weight of the volume elements with MAT GAM 25; this
+corresponds the mass density of our beam model.
+For the input it is important to note that only 3 translational degrees of freedom (dofs) per
+node (,  and ) are allowed. This can be assured with the command SYST FIX MM which
+suppresses the rotational dofs.
+FE mesh size is controled by the parameter K of the BRIC command. With the input BRIC K
+10 ten 8-node BRIC elements with the side lengths Δs in /y/z-direction =1.0/0.5/1.0 m are
+generated. In order to obtain numerically stable solution, the time step size Δt should not be
+larger than the critical value, i.e.
+Δs
+Δt<Δt krt = , (2.6a)
+c
+(cid:118)
+(cid:117)E 1−ν
+c=(cid:116) · . (2.6b)
+ρ (1+ν)·(1−2ν)
+Thecompressionwavevelocity c is c=3464 m/s,whichresultsinthetheoreticalcriticaltime
+step size of Δt krt =0.5/3464=0.000144 s.
+2.3 Free Vibrations due to Suddenly Applied Loading
+2.3.1 Free Vibrations due to Suddenly Applied Loading
+In order to start the computation, DYNA is called with the following input:
++PROG DYNA
+HEAD Explicit Integration - undamped
+CTRL OPT RLC VAL 1000 V2 1
+STEP N 15000 DT 0.0001 INT 100 THE 0.0
+2-2 SOFiSTiK2023SimplySupportedBeam|FEX-DYN
+LC NO 1 DLZ 1.0
+END
+In order to capture the dynamic response of the dynamically excited structure in DYNA, the
+results corresponding the selected time steps can be stored in the CDB successively. CTRL
+OPT RLC controls from which load case number (here VAL 1000) the results are stored. The V2
+parameter controls then which results are to be saved. E.g. with V2 1 the displacements and
+the stresses are stored.
+FEX-DYN is designed for computing on multiprocessor systems. The number of parallel
+threads is automatically selected by the program according to the available hardware; this
+however can be explicitly controlled by the user with CTRL CORE ... command (in context of
+available hardware possibilities).
+The actual, explicit time step calculation is triggered by specifying THE 0.0 in the STEP com-
+mand. Other values for THE result in the classical implicit integration calculations.
+STEP N 15000 instructs FEX-DYN to calculate maximal 15000 time steps; for the undamped
+vibrations there is no other criteria for the termination of the calculation.
+The time step size is with DT 0.0001 chosen to be 0.0001 s by the user. In Section 2.2 we
+determined that the maximum theoretically possible time step size is 0.000144 s. As long as
+the user specified time steps size is smaller than the theoretically possible time step size, the
+time step size specified by the user is used. Should the user chose a too large time step size,
+it would be automatically reduced by the program. The time step size used by the program
+is outputted. There is no adjustment of the number of the time steps in a sense that the total
+computational time would be kept constant, even in case when the time step size is changed.
+STEP INT 100controlsthateach100thtimestepisstoredinacontinuouslyincresingloadcase
+number.
+In this example no damping is specified.
+LC NO 1 applies the loading. In this example the loading was not specified in SOFiLOAD,
+but directly in DYNA as 1.0 times self-weight in z-direction. Since no time dependency was
+applied to the load, the specified load behaves as a load which starting from time 0 (start of
+the calculation) suddenly acts on the structure (rectangular load-time history). Therefore the
+load is in fact dynamic and hence the dynamic analysis is performed.
+2.3.2 Program Output and Interpretation of the Results
+Due to automatic visualization of successive load cases, the deformations of the structure can
+beanimated,i.e. themotionofthestructurecanbevisualized. Fig. 2.2showsasnapshotofa
+beam deformation under suddenly applied load at time step 800 (LC 1008).
+Figure 2.3 shows time history of the vertical displacement of the node 1005 (midspan).
+One can clearly identify the sinusoidal oscillation. The oscillation period is T = 1.41/11 =
+0.128 s (read from the diagram) fits well with the analytically determined oscillation period
+T =0.1273 s.
+Deviationsbetweentheanalyticalandnumericalsolutioncannotbeavoidedduetotheneces-
+sity of the numerical solution for the discretization as well as due to the consideration of the
+SOFiSTiK2023 2-3FEX-DYN|SimplySupportedBeam
+Figure2.2: Beamdeflectionshapeundersuddenlyappliedself-weight
+shear deformation and the rotational inertia (point masses in nodes ) in a numerical model.
+Duetothesuddenload,thebeamoscillatesundampedaboutitstaticequilibriumposition. The
+upperandlowerextremepositionsareofaparticularinterest: Intheupperextremepositionaf-
+tereachoscillationthebeamreachesit’sunloadedinitialposition;Inthelowerextremeposition
+themaximumdynamicdisplacementispreciselytwotimeslargerthanthestaticdisplacement.
+Thedynamicamplificationfactorrepresentstheratiobetweenthedynamicandstaticdisplace-
+ment. It follows that the dynamic amplification factor for the beam with suddenly applied load
+is equal to 2.
+2.4 Damped Vibrations (D=5%)
+2.4.1 Background
+FEX-DYN uses exclusively a diagonalized, mass proportional damping, which can be defined
+either as a Rayleigh and/or as a modal damping.
+For the Rayleigh damping the mass vector (i.e. diagonalized mass matrix) is multiplied with a
+fixed, constant factor which is specified by the user. For the expected, predominately exited
+vibration mode and its corresponding angular frequency ω one can compute this Rayleigh
+factor as:
+RADA=2·D·ω , (2.7)
+where D is the (viscous) damping ratio.
+Forthemodaldampingasimilarfactorisused,withadifferencetheuserdoesnothavetoworry
+about the estimation of the exited eigenfrequency but the program approximately determines
+the natural angular frequency by itself, and the user only needs to provide the damping ratio.
+2-4 SOFiSTiK2023SimplySupportedBeam|FEX-DYN
+Figure2.3: Historyofthemidspandisplacement[mm] (node1005)overtime[s]
+2.4.2 Input File for FEX-DYN
+The call for DYNA calculation for the free, damped vibrations is practical the same as for the
+previous example, except that here additionally the damping is specified via GRP record.
+In the following input block the command GRUP RADA 2*0.05*49.348 defines a 5% damping,
+where it is assumed that the beam will oscillate with the natural angular frequency of ω =
+49.348rd/s.
++PROG DYNA
+HEAD Explicit Integration - damped - Rayleigh A
+CTRL OPT RLC VAL 2000 V2 1
+GRP MODD 0.0 RADA 2*0.05*49.348
+STEP N 15000 DT 0.0001 INT 100 THE 0.0
+LC NO 2 DLZ 1.0
+END
+Alternatively one can specify the damping as the modal damping with a command GRUP MODD
+0.05:
++PROG DYNA
+. . .
+GRP MODD 0.05 RADA 0.00
+. . .
+END
+TheinputofboththeRayleighandthemodaldampingwillresultinaadditivedamping. There-
+fore is the other value, for clarity sake, here explicitly set to zero.
+In order to be able to compare the results of different calculations, the results are saved in the
+database from LC 2000 (STEU OPT ELF WERT 2000) and LC 3000 ( STEU OPT ELF WERT 3000).
+SOFiSTiK2023 2-5FEX-DYN|SimplySupportedBeam
+2.4.3 Program Output and Interpretation of the Results
+The natural angular frequency of the damped system is given by
+(cid:118)
+(cid:117) (cid:18) d (cid:19)
+ω d =(cid:116)ω2− . (2.8)
+2m
+For a small damping the natural frequency is practically unaffected, and the natural vibration
+period is almost the same as in the previous calculation.
+Figure2.4: Historyofthemidspan(node1005)displacement[mm] overtime[s]
+By looking at the displacement-time history diagram (Fig. 2.4) one can notice as the displace-
+ment decreases with each new cycle of oscillation.
+The logarithm of the ratio of two successive amplitudes is refereed to as logarithmic decre-
+ment. Using the decrees in amplitude between the first and the second oscillation ( read
+approximately from the graphic) we can compute the logarithmic decrement as follows:
+(cid:18)9.55−5.15(cid:19)
+δ=ln =0.312 . (2.9)
+8.37−5.15
+It should be understood that the oscillation takes place around the static equilibrium position
+=5.15 mm and that the oscillation amplitudes are computed relative to this position.
+The viscous damping ratio can be now computed as:
+δ
+D= =0.0498 . (2.10)
+2π
+After certain time (or a certain number of the oscillations), the kinetic energy is fully dissipated
+by the external damping, and the system reaches its static equilibrium position under the ex-
+ternal load.
+2-6 SOFiSTiK2023SimplySupportedBeam|FEX-DYN
+2.5 Dynamic Relaxation/static Solution
+2.5.1 Input file for FEX-DYN
+Apart from dynamic the program is capable of calculating static problems as well. In this case
+the behaviour of the structure under damped vibration conditions is exploited in a sense that
+a oscillation of damped system converges to a static equilibrium position. In order to keep the
+computationalcosts(equivalenttothenumberoftimesteps)toaminimum,itisoptimalforthe
+system to be in the dynamic relaxation state, i.e. damped with critical damping.
+The corresponding input file is similar to those previously used.
++PROG DYNA
+HEAD Dynamic Relaxation
+CTRL OPT RLC VAL 5000 V2 1
+GRP MODD 1.0 RADA 0.0
+STEP N 5000 DT 85 INT 100 THE 0.0
+LC NO 5 DLZ 1.0
+END
+The results are saved in the load cases starting from LC 5000 (CTRL OPT RLC VAL 5000).
+To set up dynamic relaxation the damping is selected close to the the critical damping; here
+the damping is set to 100% of the critical damping (MODD 1.0). Good results - in sense of the
+shortcomputationtimes-canbeusuallyachievedwithvaluesforthecriticaldampingbetween
+0.85 and 0.90.
+Indynamicrelaxationcalculationdiekineticenergyis,aswithanydampedoscillation,succes-
+sively reduced. The computation is terminated when either the actual kinetic energy in one
+time step is smaller than 1.0E− 15 times the maximal kinetic energy or when the maximal
+number of the times steps is reached.
+Forthisexampletheprogramrequireslessthan5000timesteps. ThereforeonecaninputSTEP
+N 5000. Otherwise the end static equilibrium state might not be exactly reached, in case when
+the number of time steps N is too small and this criteria determines the end of the calculation.
+Generally it is recommended to specify sufficient number of time steps, so that the program
+does not terminate the computation due to a limited number of time steps. In case of prelimi-
+nary test on a new, unknown system, it makes sense to limit the number of the time steps to
+reduce the computation time. In any case one should verify if the kinetic energy at the end of
+the calculation has been dissipated and the static equilibrium position is reached.
+In order to reach the static equilibrium one has to calculate approximately one period of oscil-
+lation T. Therefore one should choose the time step size as large as possible, but not larger
+thancriticaltimestepsize. Inordertomakethechoiceofthetimestepsizeeasierfortheuser,
+theprogramoffersthepossibilitytoautomaticallydeterminethemaximumtheoreticaltimestep
+size, depending on the geometry of the FE mesh.
+With DT 85 the time step of 85s will not be used (physically reasonable time step sizes are
+in the range of milliseconds!), but the program is instructed to set the actual time step size to
+be 85% of the theoretical possible time step size. This input is valid whenever DT is set to be
+larger than 1.0.
+SOFiSTiK2023 2-7FEX-DYN|SimplySupportedBeam
+2.5.2 Program Output and Interpretation of the Results
+Direct comparison of the displacements from the LC 10 and LC 5036 (end of the dynamic
+relaxationcomputation)showsagoodagreementbetweenASEandDYN-FEXcalculationand
+corresponds the theoretically expected displacement:
+p 79.575
+gen
+ stt = = =0.0052 m . (2.11)
+k 15220.2
+gen
+Table2.1: Displacements(forasystemhalf)calculatedwithASEandFEX(LC5036)
+ASE FEX (LC 5036)
+Nodes  y[mm]  z[mm]  y[mm]  z[mm]
+1 0.0000 0.0000 0.0000 0.0000
+1001 0.0225 1.6136 0.0225 1.6136
+1002 0.0850 3.0542 0.0850 3.0542
+1003 0.1775 4.1834 0.1775 4.1834
+1004 0.2900 4.9009 0.2900 4.9009
+1005 0.4125 5.1467 0.4125 5.1467
+2.6 Time-Varying Load
+2.6.1 Input file for FEX-DYN
+As in the standard DYNA model, in FEX-DYN time-varying loads in form of a load case with a
+corresponding time function can be defined and calculated.
+Inthisexamplewewanttoapplytheexternalloadwithatrapezoidalload-timefunction(instead
+of a suddenly applied rectangular load-time function as in the Section 2.3 and subsequent
+ones) to a damped system (D=10%).
+Theload-timefunctionstartsatt=0withƒ(0)=1.0,thengrowslinearlyuntilt=0.2swhereit
+reaches the value of 2.0. After that the load-time function stays constant (Fig. 2.5). As a load
+a half of the self-weight is taken so that the loading for times t > 0.2s has an amplitude of a
+1.0 times self-weight.
+The load-time function is defined with SOFiLOAD. The definition of the loading starts by the
+definitionofaLCloadblock,inwhich,asusual,theloadsaredefined. Afterthatcorresponding
+load-timefunctionisdefinedwithFUNK T 0.0 F 1.0; 0.2 2.0; 1.0 2.0. Thisdefinesadiscrete
+setoffunctionvalues(Tab. 2.2)whicharelinearlyconnectedtogiveaload-timefunctionshown
+on Fig. 2.5.
++prog sofiload
+head Dynamic Loading
+$$
+lc no 6 dlz 0.5 type none titl 'f(t)'
+func t 0.0 f 1.0; 0.2 2.0; 1.0 2.0
+$$
+end
+2-8 SOFiSTiK2023SimplySupportedBeam|FEX-DYN
+2.5
+2.0
+1.5
+1.0
+0.5
+0.0
+0.0 0.1 0.2 0.3 0.4 0.5
+Figure2.5: Load-timefunctionusedinFUNC
+Table2.2: Load-timefunction
+T [s] F [−]
+0.0 1.0
+0.2 2.0
+1.0 2.0
+The input for FEX-DYN corresponds the input from Section 2.3.
++PROG DYNA
+HEAD Load Time Function
+CTRL OPT RLC VAL 6000 V2 1
+GRP MODD 0.0 RADA 2*0.1*49.348
+STEP N 10000 DT 0.0001 INT 100 THE 0.0
+LC 6
+END
+With STEU OPT ELF WERT 6000 the results are saved in the subsequent load case numbers
+starting from the LC 6000.
+We want to perform the calculation up to 1.0s. Since the critical time step size is larger than
+0.0001s, we can use this time step size and calculate 10000 time steps (STEP N 10000 DT
+0.0001). With STEP INT 100 we instruct the program to store the results of every 100th time
+step, or in other words the results at every 100·0.0001=0.01s will be available.
+Hint
+When the time step size parameter DT smaller than 1.0 is, FEX-DYN will interpret this as
+a user defined time step size. In case this time step size is larger than the critical time
+steps size, as calculated by the program itself, it will be corrected correspondingly. The
+SOFiSTiK2023 2-9FEX-DYN|SimplySupportedBeam
+(Hintcontinued...)
+usershouldthenperformthecalculationseitherwiththesuggestedtimestepsizeorwith
+apercentageofthesuggestedtimestepsize(e.g. DT90whichmeans90%ofthecritical
+time step size).
+With GRUP RADA 2*0.1*49.348 a 10% damping is defined.
+2.6.2 Program Output and Interpretation of the Results
+The Duhamel-Integral [2] can be used in order to determine the response of the system ana-
+lytically. The generalized displacement is then given as:
+1 (cid:90)  dgen
+− (t−τ)
+(t)= · p gen(τ)·e 2mgen ·sin[ω d(t−τ)]·dτ . (2.12)
+ω ·m
+d gen 0
+Figure2.6: Timehistoryofthemidspandisplacementforthetime-varyingloading
+2.7 Undamped Vibrations Under Simultaneous Self-Weight and Axial
+Loading
+2.7.1 Background
+In case the beam is, in addition to a self-weight, loaded with a normal compression force, the
+frequencyofoscillationreduces. Inthelimitcasewhentheaxialcompressionforceisequalto
+the static buckling force, according to the 2nd order theory no oscillations will take place and
+the corresponding eigenvalues will be zero.
+The static buckling load for a beam in question is given by:
+E·π2 312500·π2
+P k = = =30842.5 kN . (2.13)
+2 100
+Under given boundary conditions, according to the 2nd order theory the relationship between
+thenaturalangularfrequencyωandtheangularfrequencyofthesystemwithouttheaxialforce
+2-10 SOFiSTiK2023SimplySupportedBeam|FEX-DYN
+ω¯ is given by
+(cid:118)
+(cid:117) N
+ω=ω¯ ·(cid:116)1− . (2.14)
+P
+k
+For the displacement we have
+P
+k
+=¯ . (2.15)
+P −N
+k
+2.7.2 Input File for FEX-DYN
+According to the Eq. 2.15 the natural angular frequency would be two times smaller in case
+the axial compression force is 75% of the buckling load.
+First in SOFiLOAD a corresponding axial load is defined. In order to avoid eccentricity effects
+(beamisonthelowerpartstaticallydeterminedandinparticularhorizontallyconstrained),the
+normal force is applied on on both sides of the beam.
++PROG SOFILOAD
+HEAD Axial loading
+LC NO 11 TITL 'N=0.75*P_ki'
+NODE NO 1,2,3,4 TYPE PYY P1 0.75*30842.5/4
+NODE NO 11,12,13,14 TYPE PYY P1 -0.75*30842.5/4
+END
+This load case is calculated with ASE as a static load case.
++PROG ASE
+HEAD Static load case
+LC NO 11
+END
+After the calculation with ASE the results are stored in the data base and are available for
+usagewithFEX-DYN.TheFEX-DYNinputcorrespondstothepreviousones;inadditionisthe
+loadcase11usedasaprimaryloadcase(CTRL PLC 11). Henceistheloadcase11alsoused
+as an externally acting load case, so that the equilibrium of internal forces from primary load
+caseareintheequilibriumwiththeexternalforces. Incasetherearenootheradditionalloads,
+the beam is in equilibrium, however not free of stresses but pre-stressed with a axial force of
+75% of the buckling load. With LF NR 4 EGZ 1.0 is then additionally (as in Section 2.3) the
+self-weight suddenly applied.
+HEAD Explicit Integration - undamped - compressive primary force
+SYST PROB TH3
+CTRL OPT RLC VAL 4000 V2 1
+CTRL PLC 11
+GRP MODD 0.00 RADA 0.00
+STEP N 15000 DT 0.0001 INT 100 THE 0.0
+LC NO 11
+LC NO 4 DLZ 1.0
+END
+SOFiSTiK2023 2-11FEX-DYN|SimplySupportedBeam
+2.7.3 Program Output and Interpretation of the Results
+The following figure 2.7 shows the comparison of the calculated displacement-time history for
+thecasewithoutnormalforce(correspondstotheresultsfromSection2.3)andthecaswwher
+the normal force equals 75% of the buckling load.
+Figure2.7: Comparisonofthemidspandisplacementwithoutaxialload(N=0)withthecalculation
+withN=0.75P
+k
+The natural angular frequency for the case with axial loading is equal to exactly the half of
+the angular frequency for the case without axial frequency, whereas the transversal oscillation
+amplitude is reduced by a factor of circa 4.
+2-12 SOFiSTiK2023PlatewithaHole|FEX-DYN
+3 Plate with a Hole - Von-Mises Material with Hardening
+3.1 Statement of the Problem
+In this example stress and displacement state of a rectangular plate with a hole subjected to a
+tension stress are investigated (Fig. 3.1).
+mc
+D = 20 cm 04
+=
+B
+L = 80 cm
+Figure3.1: Systemlayoutofaplatewithahole
+The plate has following dimensions: length/width/thickness = 80/40/2cm. The diameter of
+hole is 20cm.
+The material behaviour is described with a von Misses material model with hardening. The
+material model parameters are as follows:
+E module: E=210000MN/m2
+Poisson’s ratio: ν=0.3
+Density: ρ=7.850t/m3
+Yield stress: ƒ y =500MN/m2
+Hardening modulus: E y =105MN/m2
+The external stress is σ 0 =250MN/m2.
+3.2 FE Model
+The material properties are defined with AQUA. The input corresponds the input of a non-
+linear analysis which would would be performed with ASE or some other SOFiSTiK program.
+It is here important that the proper specific weight is defined with MAT GAM.
+Due to triple symmetry it is sufficient to model only one quarter of the plate and only one
+half in the depth direction. As before, with SYST FIX MM the rotation degrees of freedom are
+suppressed.
+SOFiSTiK2023 3-1FEX-DYN|PlatewithaHole
+The external area load on the side face of the plate is defined as a free load with the help of
+AREA record.
++PROG SOFILOAD urs:4
+HEAD Definition of external loading
+LC NO 1
+AREA REF GFA PROJ YY TYPE PYY $$
+P1 -250000 X1 0.0 Y1 -0.4 Z1 0.0 $$
+P2 -250000 X2 -0.2 Y2 -0.4 Z2 0.0 $$
+P3 -250000 X3 -0.2 Y3 -0.4 Z3 -0.01 $$
+P4 -250000 X4 0.0 Y4 -0.4 Z4 -0.01
+END
+In order to be able to compare the resutls, a linear and a non-linear analysis with ASE is
+performed first:
++PROG ASE
+HEAD Analysis with ASE linear
+SYST PROB LINE
+LC 100
+LCC NO 1
+END
++PROG ASE
+HEAD Analysis with ASE nonlinear
+SYST PROB NONL ITER 500 NMAT YES
+LC 101
+LCC NO 1
+END
+3.3 Input File for FEX-DYN
+DYNA computation is performed in form of a dynamic relaxation.
+With CTRL RLC 5000 the results are saved successively in the load cases starting with the LC
+5000. Parameter V2 tells DYNA that the displacements and stresses of all the nodes are to be
+saved.
+The damping is defined as modal damping. The external damping is with GRUP MODD 0.60 set
+to be 60% of the critical damping.
+The time step analysis is performed using the STEP command. Maximal 20000 time steps (
+STEP N 20000)arecomputed. WithSTEP DT 85thetimestepsizeisset85%ofthecriticaltime
+step size, determined by the program itself. The results of every 100th time step are saved
+STEU INT 100 in the data base. The input STEP THE 0.0 assures that the explicit integration is
+performed.
+Thesuddenlyapplied externalsideloadfromthe LC1(rectangulartimefunction)is appliedto
+the system.
++PROG DYNA
+HEAD Explicit Integration D_vis=60%
+3-2 SOFiSTiK2023PlatewithaHole|FEX-DYN
+CTRL OPT RLC VAL 5000 V2 1
+GRP MODD 0.60 RADA 0.0
+STEP N 20000 DT 85 INT 100 THE 0.0
+LC NO 1
+END
+3.4 Program Output and Interpretation of the Results
+Fig. 3.2 shows the distribution of the von Mises stresses of the LC 6900 (static equilibrium
+state) with Animator with the scaling factor 50 for the displacements.
+Figure3.2: DistributionofthevonMisesstressesinthestaticequilibriumstate
+Looking at previous examples one could expect that if an external modal damping which is
+closer to a critical one (D = 1.0) is used, the convergence of a dynamic relaxation will be
+faster. Incaseofamaterialnon-linearcalculations,inparticularwithplasticmaterialbehaviour,
+this does not necessary hold because due to the plastic material behaviour an additional in-
+ternal material damping is present. The convergence speed depends primarily from the total
+damping.
+Fig. 3.3 shows how the number of the required time steps to reach the static equilibrium state
+dependsontheexternaldamping. Onecannoticethat,forexample,fortheinputofD=100%
+manycomputationsteps(timesteps)areneededinordertoreachstaticequilibriumstate. For
+the smaller values of the external damping fewer time steps are needed. A sort of a minimum
+for this example corresponds to a damping of circa 50%. It can be observed that for a choice
+ofD=50%(orless)thecomputedstaticequilibriumstatedivergesfromtheexactsolutiondue
+to the fact that the dynamic computation results in a unwanted vibrations. The material is no
+longer only monotonously loaded but also during the process of loading in part also unloaded
+(hysteresis).
+SOFiSTiK2023 3-3FEX-DYN|PlatewithaHole
+Figure3.3: Dependencyofthenumberofrequiredtimestepsoftheexternaldampingin%
+Comparison between ASE and FEX-DYN calculations shows a good agreement of the dis-
+placements and stresses (Fig. 3.4).
+3-4 SOFiSTiK2023PlatewithaHole|FEX-DYN
+(a)ASEnon-linear,LC101 (b)FEX-DYNnon-linear,LC5069
+Figure3.4: Stressesiny-direction(directionoftheexternalloading)
+SOFiSTiK2023 3-5FEX-DYN|PlatewithaHole
+3-6 SOFiSTiK2023FacadeBeamUnderExplosion|FEX-DYN
+4 Facade Beam Under Explosion
+4.1 Statement of the Problem
+This examples is inspired by the design example from [3]. Facade beam of a building under
+blast load case is investigated. For a static model of a facade beam a simply supported beam
+is chosen. The beams carry no axial loads. Length of a beam is 3.50m (Fig. 4.1).
+Bending around weaker axis
+p(t)
+HEB 400 - simplified profile
+Profile height: 400 mm
+Profile width: 300 mm
+Web thickness: 24 mm m
+Flange thicnkess: 13.5 mm 05.3
+=
+Material S460 h
+ƒ =445 N/mm2
+y
+ƒ =600 N/mm2, ε =17h
+t t
+E=210000 N/mm2
+Mass: μ=155 kg/m
+Figure4.1: Staticsystemofthefacadebeam
+The facade designed to be resistant to explosion is made of beams at 6.0m distance from
+eachother. Thefacadecarriesadditionalmassperareaof80kg/m2. Fromthereflectionpeak
+overpressureandtheimpactingimpulseasimplifiedtimehistoryofaexplosionpressurewave
+can be calculated (Fig. 4.2).
+With P r0 =162.1 kP and  r =1062.9 P·s we have
+2
+r
+t∗ = =13.1 ms . (4.1)
+d P
+r0
+4.2 FE Model
+The facade beam is discretized with continuum elements. Due to the geometric dimensions of
+the finite elements the small time step size must be used.
+Apartfromthemassofthebeamtheadditionalmassofthefacadeistakenintoconsideration.
+Thereforethehalfoftheeachneighbouringfacadefieldisaddedtothemassofthebeam(per
+length of the beam):
+μ=155kg/m+2·6.0m·0.5·80kg/m2 =635kg/m (4.2)
+SOFiSTiK2023 4-1FEX-DYN|FacadeBeamUnderExplosion
+p(t)
+P
+r0
+t
+t
+d∗
+Figure4.2: Timehistoryoftheexplosionpressurewave
+Due to the geometrically simplified discretization of the HEB 400 profile the mass per length
+of the beam is 150.3kg/m instead of 155kg/m. Therefore the mass density of the beam
+elements are increased as follows:
+ρ=78.5·635/150.3=331.65kN/m3
+(4.3)
+The area load from the reflection peak overpressure p = 162.1kN/m2 is approximately mod-
+eled as an increase of the beam self-weigh in the horizontal direction:
+p=162.1kN/m2·2·6.0m·0.5=972.6kN/m
+(4.4a)
+E g =972.6kN/m/6.35kN/m=153.16 (4.4b)
+4.3 Input file for FEX-DYN
+The material behaviour is described with von Misses material model with hardening. The
+corresponding material parameters are given as:
+E modul: E=210000MN/m2
+Poisson’s ratio: ν=0.3
+Mass density: ρ=7.850t/m3
+Yield stress: ƒ y =445MN/m2
+Hardening modulus: E y =932MN/m2
++PROG AQUA
+HEAD Material
+MAT NO 1 E 2.1E08 MUE 0.3 GAM 78.5*635/150.3
+NMAT NO 1 TYPE VMIS P1 445E+03 P2 0.923E+06 P10 0.0
+END
+The mass of the facade is taken into consideration in the specify weight of the beam MAT GAM
+4-2 SOFiSTiK2023FacadeBeamUnderExplosion|FEX-DYN
+Table4.1: Last-Zeitfunktion
+T [s] F [−]
+0.000 1.0
+0.013 0.0
+78.5*635/150.3.
+The yield stress is defined with
+As in other examples, only three translation degrees of freedom are allowed (SYST ART RAUM).
+The displacements only in x and y direction are constrained (MOD FIX ZP). A constrain in z-
+direction for static calculation with ASE would be necessary. However, due to the dynamic
+calculation with loading in horizontal direction only, this constraint is not required. In other
+words: the system is free to move in vertical direction. But because the external loading are
+not acting in z-direction, the beam should stay still in vertical direction.
++PROG SOFIMSHA
+. . .
+$.. Constraints $
+$ Hint: A static determined fixation is not necessarily required for FEX-DYN $
+MOD TYPE NODE ZMIN 0.0 ZMAX 0.0 FIX zP
+MOD TYPE NODE ZMIN 3.5 ZMAX 3.5 FIX zP
+END
+The load-time function is defined as in Subsection 2.6.1. The volume loading in the form of
+theincreasedself-weighinx-direction,asdescribedinSection4.2isapplied(LF Egx 153.16).
+The time dependency of the load (Table 4.1) is specified with the FUNC command.
++PROG SOFILOAD
+KOPF Belastung
+LF NR 1 EGX 153.16
+FUNK 0.0 1.0; 0.013 0.0;
+ENDE
+The time step calculation is started with the following DYNA input:
++PROG DYNA
+HEAD Explicit Integration for case of explosion
+CTRL OPT RLC VAL 1000 V2 3
+GRP MODD 0.01 RADA 0.0
+STEP N 35000 DT 90 INT 100 THE 0.0
+LC 1
+END
+The external (viscous) damping is here as modal damping with a viscous damping ratio of a
+1% of a critical damping defined.
+SOFiSTiK2023 4-3FEX-DYN|FacadeBeamUnderExplosion
+4.4 Program Output and Interpretation of the Results
+Duetothehighdynamicloadingthebeamisstronglystressed. Thehighestbendingdisplace-
+ment happens at time of approx. 0.02s - well after the loading phase (t = 0 to 0.013s) has
+finished. Figure 4.3 shows the displacement state and the von Mises stresses at approx. the
+time of the the maximal straining (LC 4900) of the beam (with the scaling factor of 5). On the
+basis of the red coloured area, one can clearly notice how large the plastified area is.
+Figure4.3: VonMisesstressesoftheHEB400beam
+Fig. 4.4 shows time history of the horizontal displacement of the node 1350, located in the
+beam midspan in one of the external corners of the profile.
+Figure4.4: Timehistoryofthehorizontalmidspandisplacementofthebeam
+4-4 SOFiSTiK2023FacadeBeamUnderExplosion|FEX-DYN
+Duetotheplasticdeformationoftheflangesinthemidsectionofthebeamistheinternal(ma-
+terial) damping activated. The oscillations amplitudes in the free vibration stage are therefore
+significantly smaller than the amplitudes in the or close to loading stage. Therefore the struc-
+tureoscillatesaroundanewequilibriumstate,definedbythepermanentplasticdeformationof
+approx. 80mm
+In order to have an impression about the stress-strain relationship, in the Fig. 4.5 the strains
+inthez-directionoverstressesinz-directionfortheelement196(flangeinthebeammidspan)
+areshown. Theprogramdoesnotoutputthestrains. Thereforeisherethestrainapproximated
+with the difference of the displacements in z-direction (nodes 1350 and 1349) divided by the
+element length.
+Figure4.5: Stressin[MN/m2] -strainin[h] relationshipinthedirectionofthebeamlength
+One can see how the edge tension stress increases linearly first and then starts to plastically
+flowwhentheyieldstressisreached. Thesmalldeviationsoftheflowbranchfromthelineare
+probably due to the three-dimensional behaviour of the system.
+Afterfirstreversalofthevibrationthestress-straincurvefollowsthepathwhichisparalleltothe
+initial loading. At this time the beam still possess enough internal energy so that the elements
+in the midspan of the beam are also plastically deforming during the first reversed vibration.
+Only after that the stress-strain curve follows elastic unloading/reloading branch. The external
+permanent displacement of the beam in the new equilibrium position corresponds the transla-
+tion of the zero point of the stress-strain curve for approx. 20h.
+SOFiSTiK2023 4-5FEX-DYN|FacadeBeamUnderExplosion
+4-6 SOFiSTiK2023BridgeUndertheEarthquake-UpliftingBearings|FEX-DYN
+5 Bridge Under the Earthquake - Uplifting Bearings
+5.1 Statement of the Problem
+Nowadaysmoreandmoresinglespanbridgesystemsarebuiltintheearthquakepronezones.
+Forthesestructuresincaseofdifferenthorizontalstiffnessofadjacentpeers,e.g. duetodiffer-
+ences in peer heights or differences in ground conditions, it can happen that, under horizontal
+earthquake excitation, the bridge experiences torsional effects.
+Intheinitialstatethebridgegirderisinthecontactwithallfoursupports. Duringanearthquake
+due to high torsional loads significant tensile forces can occur on individual bearings. Due to
+structure design of various bridge bearings a vertical uplifting (tensile) force usually cannot be
+transferred. Within a framework of a linear earthquake analysis (e.g. integration of equations
+of motion using modal superposition or linear time history calculation) these (positive) effects
+cannotbetakenintoanaccount. Inorderfortheseandothernon-linereffectstobetakeninto
+consideration within a dynamic analysis, the equations of motion must be (fully) non-linearly
+integrated.
+Figure 5.1 shows a hollow box cross-section of a bridge girder with its main dimensions. The
+bridge has a span of 40m.
+d = 0.25 m
+m
+8.2
+s = 0.5 m
+=
+h
+d = 0.20 m
+b’ = 7.0 m
+b = 14.0 m
+Figure5.1: Crosssectionofthehollowboxgirder
+The bridge is supported on two peers, with heights of 17.10m and 22.10m.
+The bridge is exited by a horizontal earthquake, in the direction normal to the bridge axis. The
+acceleration time history of the San Francisco earthquake from 22.3.1957 ( station: Alexander
+Building NO-9-W) is used. The acceleration time history is recorded at each dt = 0.02s. The
+duration of the earthquake is approx. 400·0.02=8 seconds (Fig. 5.2).
+Before starting with the creation of a finite element model, prior to the analysis of the mesh
+size in the light of the expected results and in the light of the model size, the computation time
+and the scope of the results should be addressed.
+The computation times depend always on the type of the problem and can only be estimated
+approximately in advance. Apart from the actual computation, a significant part of the compu-
+tation time is needed for the output of the results in the output files and the data base. The
+main part of the computational effort is spent for the computation of the stresses in each indi-
+vidual BRIC element and the integration of the internal nodal forces per each time step. The
+computation effort for the explicit method depends almost exclusively on the number of the el-
+SOFiSTiK2023 5-1FEX-DYN|BridgeUndertheEarthquake-UpliftingBearings
+Figure5.2: Acceleration-timehistoryinthehorizontaldirection
+ements (and element type). As a reference value for a Intel Core i5/M460-Processor (2 CPUs
+/ 4 threads) with 2.53 GHz, 4GB RAM under Windows 7 SP1 one can count on between 200
+000 and 300 000 element time steps pro second.
+Number of the elements, for a structure with a predefined overall dimensions, depends on the
+element size. The same is true for the critical time step size. It also depends on the element
+size, in particular from the smallest size of the element edge.
+From the formula for the compression wave velocity
+(cid:118)
+(cid:117)E 1−ν
+c=(cid:116) · , (5.1)
+ρ (1+ν)·(1−2ν)
+one can compute the following relevant compression wave velocities:
+Table5.1: Typicalcompressionwavevelocitiesforconcreteandsteel
+Material E [kN/m2] ν [−] ρ [t/m3] c [m/s]
+Concrete 3.0·107 0.2 2.500 3650
+Steel 2.1·108 0.3 7.850 6000
+ThenonconformingBRICelementsarecapabletocapturebothbendingandshear. Itisthere-
+fore sufficient to use only one element in the thickness direction for the plates and shells.
+From the thickness dimensions we can estimate the minimal side lengths of the elements and
+using these with the compression wave velocity for the concrete, we obtain following time step
+sizes:
+5-2 SOFiSTiK2023BridgeUndertheEarthquake-UpliftingBearings|FEX-DYN
+Table5.2: Criticaltimestepsizesfordifferentstructuralelementsofthehollowboxgirder
+Bauteil Dicke [m] Δt [s]
+Fahrbahnplatte 0.25 0.0000685
+Stege 0.50 0.0001370
+Bodenplatte 0.20 0.0000540
+According to this analysis, in order to compute the entire earthquake response it is required
+to compute at least 8s/0.000054s = 150000 time steps. We want to compute 200 000 time
+steps in order also to observe the system behaviour after the elapse earthquake excitation.
+For the discretization of the bride cross-section in 42 and the bridge girder in 20 elements, we
+obtainintotal20x42=840elementswhichareusedforthespatialdiscretizationofthebridge
+girder. Forthetwopeerswehaveadditional1184elements,whichresultsin2024elementsin
+total.
+Nowwecanestimatethenecessarycomputationtimeas: 200000timestepsx2024elements
+/ 200.000 element time steps pro second = 2024 s.
+5.2 FE model
+Building of a FE model is performed in a familiar way. First the material properties are defined
+with AQUA. Additionally with SECT the cross-sectional properties of the truss elements, used
+to transfer the forces between the bridge girder and the peers, are defined.
+The system definition takes place in SOFiMSHA. As usual, the rotational degrees of freedom
+are suppressed with SYST FIX MM.
+FEX-DYN supports the standard kinematic coupling used by other SOFiSTiK modules. The
+horizontaldisplacementsofthebridgegirderandthepeersarecoupledtogether. Forexample
+thefollowinginputdefinedthecouplingofthedisplacementdegreeoffreedominthex-direction
+of the node 4095 (KINE ND 4095 FIX PX) with the displacement in the x-direction of the node
+35 (ND1 35.1 FD1 1.0):
+KINE ND FIX ND1 FD1
+$-------------------------$
+4095 Px 35.1 1.0
+. . .
+The truss elements should not be able to carry any tension forces and are hence defined with
+a small value for a crack force:
+TRUS NO NA NE NCS CRAC
+$-------------------------------$
+1 4095 35 1 0.001
+. . .
+The nodes on the foundation level of the peer are completely constrained (MOD TYP NODE FIX
+PP ...).
+SOFiSTiK2023 5-3FEX-DYN|BridgeUndertheEarthquake-UpliftingBearings
+An uplift of a bearing can occur when the uplifting forces resulting from the earthquake exci-
+tation become larger than the vertical force from the self-weight. Therefore the primary load
+case containing the self-weight of the structure must be first defined and calculated. The cor-
+responding loading is defined in SOFiLOAD as:
++PROG SOFILOAD
+HEAD Self weight
+LC 1 DLZ 1.0 TITL 'Self weight'
+END
+and with ASE staticaly computed:
++PROG ASE
+HEAD Self weight - static
+LC 1
+END
+5.3 Input File for FEX-DYN
+Before starting the actual dynamic calculation, the earthquake loading must be defined. Here
+theearthquakeexcitationisdefinedastheequivalentearthquakeloadinginformofanexternal
+loading on the structure (”mass x acceleration”).
+ACCE NODE defines the equivalent earthquake loading, where the ground acceleration in y-
+direction is defined with ACCE Ay 30.0. The time history of the earthquake acceleration is
+definedwithaFUNCrecord;thebaselinecorrectionisappliedtotheaccelerogramsothatthe
+finial velocity and displacement are equal zero:
++PROG SOFILOAD
+HEAD Definition SAN FRANCISCO ALEXANDERBUILDING NO-9-W 22.3.1957
+ECHO FUNC
+$$
+LC 100 TITL 'Subsoil acceleration [m/sec2]'
+ACCE NODE AY 30.0 $ Basic acceleration x f(t)$
+FUNC 0.00 0 TBLC 999.
+0.02 0 $ DELTA-T = 0.02 sec $
+FUNC F
+.013; .068; .087; .085; .084; .100; .105; .051; .007; -.022
+. . .
+-.062; -.038; -.012; .014; .040; .055; .047; .022; .006; .007
+ENDE
+The actual FE-DYN call corresponds to the previous described input files.
+The results of time step calculations are saved in the subsequent load cases starting from the
+load case LC 1000. GRP MODD 0.1 defines the external viscous modal damping equal to 10%
+of the critical damping.
+CTRL PLC 1 ensures that the displacements and the internal stress state of the structure from
+theprimaryloadcaseNo. 1aretakenover. Withoutincludingthecorrespondingexternalload,
+whichisinbalancewiththeprimaryloadcase,thestructurewouldunloaditselfandaccordingly
+5-4 SOFiSTiK2023BridgeUndertheEarthquake-UpliftingBearings|FEX-DYN
+dynamicallydisplaced. Henceaprimaryloadcaseisusedtogetherwithanexternalloadwhich
+are in an equilibrium state with each other.
+A total of 200 000 times steps are computed (STEP N 200000). The time step size is set to be
+85% of the critical time step size, computed by the program itself ( STEP DT 85). The results of
+every 100th time step are outputted and saved in the CDB (INT 100). STEP THE 0.0) tells the
+program to use explicit integration method.
+In addition to the self-weight from the LC 1 which is used as primary load case, the LC 100
+representing the earthquake excitation is applied to the structure.
++PROG DYNA
+HEAD Explicit time integration for earthquake
+ECHO FULL OFF
+CTRL OPT RLC VAL 1000 V2 3
+GRP MODD 0.1 RADA 0.0
+CTRL PLC 1
+STEP N 200000 DT 0.85 INT 100 THE 0.0
+LC 1 TITL 'Self weight - static'
+LC 100 TITL 'Seismic loading - dynamic'
+END
+5.4 Program Output and Interpretation of the Results
+The actual computational time was around 2100 seconds on a PC with Intel Core i5/M460
+(Dual Core) processor with 2,53GHz, 4GB RAM under Windows 7 SP1.
+Figure 5.3 shows the time history of the vertical support bearing force of a truss element
+number1forthenon-linearaswellasforthelinearanalysis(inwhichthebearingisnotableto
+experienceuplift). Atthestartoftheearthquakethereisnodifferenceinthedynamicresponse
+betweenthelinearandthenon-linearanalysis. Startingfromapprox. 2secondstheupliftstarts
+to appear in the bearings ( tension forces).
+Figure 5.3: Time history of the vertical bearing force of the truss No. 1 during a linear and non-
+linearanalysis
+SOFiSTiK2023 5-5FEX-DYN|BridgeUndertheEarthquake-UpliftingBearings
+Enlarged, figure 5.4 shows the differences in the responses for a linear and a non-linear anal-
+ysis between 2.0s and 6.0s. One can clearly notice how the tension forces are ”cut-off” in the
+non-linear analysis.
+Figure 5.4: Enlargement from the Fig. 5.3 at the time when the uplift occurs, between t = 2.0s
+and6.0s
+After an uplift phase the bridge girder hits the peers with an impulsive force. This results in an
+additional high frequency oscillations of the bridge girder in particular.
+In the final phase the bridge girder follows the behaviour, more or less, similar to that of the
+linear analysis. Due to the external damping the high frequency oscillations are relatively
+quickly damped out and after 6th second the the non-linear response of the bridge girder
+follows the response of the corresponding linear system ( see also Fig. 5.3).
+5-6 SOFiSTiK2023BridgeUndertheEarthquake-UpliftingBearings|FEX-DYN
+Figure5.5: DeformedbridepeersandgirderinLC1590withtheupliftoftwobearings
+SOFiSTiK2023 5-7FEX-DYN|BridgeUndertheEarthquake-UpliftingBearings
+5-8 SOFiSTiK2023Bibliography |FEX-DYN
+Bibliography
+[1] O.C. Zienkiewicz. Methode der finiten Elemente. Carl Hanser Verlag, 1975.
+[2] S. Bosniakowski. Baudynamik, Teil I. Mitteilungen aus dem Lehr- und Forschungsgebiet
+für Festigkeitsfragen des Konstruktiven Ingenieurbaus. Aachen: RWTH Aachen, 1986.
+[3] Max Gündel, Benno Hoffmeister, and Falko Bangert. Bemessung von Baustrukturen in
+Stahl-undVerbundbauweisefürAnprall-undExplosionslasten,B502.Selbstverlag,2010.
+SOFiSTiK2023 5-9

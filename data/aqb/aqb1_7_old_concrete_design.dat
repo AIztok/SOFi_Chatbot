@@ -1,0 +1,27 @@
+PROG AQUA
+HEAD Design according to the old working stress method
+ECHO MAT
+NORM din 1045-(1953) CAT USER
+CONC 1 CE   25 FC 9.0 ECR 15000 TITL "!B 225 DIN 1045 (1953)"
+STEE 2 BST 420 FY 240.          TITL "!Baustahl IV"
+SREC 1 0.40 0.30
+SREC 2 0.50 0.40 SO 4[cm] SU 4[cm]
+SREC 3 0.60 0.50
+END
+
+PROG AQB
+HEAD Design according to the old working stress method
+S 1 1 0.0 N -720 MY 86.5  $ 1.   22.8 CM2 SYMM.
+S 2 2 0.0 N -800 MY 170.  $ 3.   25.0 CM2 SYMM (140 MPa)
+S 3 3 0.0 N +250 MY 230.  $ 2.c) 14.2/12.1 CM2
+DESI SERV SC1 1.0 1.0 1.0 1.0 1.0 S2 1.143 SMOD NO
+TXE
+TXE The maximum compressive strain is automatically taken from the
+TXE strain stress law of the concrete, while the tensional strain
+TXE has to be specified explicitly.
+TXE As their are different approaches to get a solution by manual design
+TXE the given references will not always provide optimal solutions.
+TXE All old results providing more compressive reinforcement than
+TXE tension reinforcements are neither allowed today nor will AQB
+TXE evaluate such results.
+END

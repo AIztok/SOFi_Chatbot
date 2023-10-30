@@ -1,0 +1,174 @@
+!#!Info  Example:       Combination with Intermediate Superpositions
+!#!Info  Keyword:       Superposition; Load Groups
+!#!Info  Program:       MAXIMA
+!#!Info  Version:       SOFiSTiK 2022
+!#!Info  Date:          $Date: 2021-01-20
+
++PROG AQUA urs:1
+HEAD Example for MAXIMA Intermediate Superposition
+HEAD Norm, Material and Cross Section
+NORM DIN EN199x-200x-bridge CAT B
+ECHO FULL full
+CONC 1 C 30
+STEE 2 S 500B
+
+SREC 1 600. 300. SO 50. MNO 1 MRF 2 RTYP ASYM  ASO 1.0 ASU 1.0 DASO 10 DASU 20
+END
+
++PROG SOFIMSHC urs:2
+HEAD Example for MAXIMA Intermediate Superposition
+HEAD System
+CTRL MESH 1
+CTRL HMIN 1.0
+SYST SPAC GDIR POSZ
+
+SPT  1  0.0  0.0  0.0 FIX ppmx
+     2  6.0  0.0  0.0 FIX xpmx
+     3 10.0  0.0  0.0 FIX xpmx
+SLN  1  1  2 SNO 1
+     2  2  3 SNO 1
+END
+
++PROG SOFILOAD urs:3
+HEAD Example for MAXIMA Intermediate Superposition
+HEAD Actions with Partial Factors and Combination Coefficients
+ACT G_1
+ACT G_2
+
+ACT XY   GAMU 1.4  0.0 0.6 0.4 0.2 0.6 PART Q SUP EXCL
+ACT XY_A GAMU 1.4  0.0 0.6 0.4 0.2 0.6 PART Q SUP EXCL
+ACT XY_B GAMU 1.3  0.0 0.5 0.3 0.1 0.5 PART Q SUP EXCL
+ACT XY_C GAMU 1.45 0.0 0.6 0.3 0.0 0.6 PART Q SUP EXEX
+ACT XY_D GAMU 1.35 0.0 0.5 0.2 0.0 0.5 PART Q SUP EXEX
+
+ACT S
+END
+
++PROG SOFILOAD urs:4
+HEAD Example for MAXIMA Intermediate Superposition
+HEAD Loads
+LC 1 G_1
+  LINE  SLN 1,2 TYPE PG P1 50.
+LC 2 G_2
+  LINE  SLN 1   TYPE PG P1 15.
+  LINE  SLN 2   TYPE PG P1 10.
+
+LC 11 XY_A
+  LINE  SLN 1   TYPE PG P1 25.
+LC 12 XY_A
+  LINE  SLN 2   TYPE PG P1 20.
+
+LC 21 XY_B
+  LINE  SLN 1   TYPE PG P1 15.
+LC 22 XY_B
+  LINE  SLN 2   TYPE PG P1 22.
+
+LC 31 XY_C
+  LINE  SLN 1   TYPE PG P1 20.
+LC 32 XY_C
+  LINE  SLN 2   TYPE PG P1 40.
+
+LC 41 XY_D
+  LINE  SLN 1   TYPE PG P1 15.
+LC 42 XY_D
+  LINE  SLN 2   TYPE PG P1 35.
+
+LC 51 S
+  LINE  SLN 1   TYPE PG P1 10.
+LC 52 S
+  LINE  SLN 2   TYPE PG P1  8.
+
+ECHO  ACT EXTR
+END
+
++PROG ASE urs:5
+HEAD Example for MAXIMA Intermediate Superposition
+HEAD Calculation of the Single Load Cases
+ECHO FULL NO
+LC ALLE
+END
+
++PROG MAXIMA urs:6
+HEAD Example for MAXIMA Intermediate Superposition
+HEAD Combination 1 DESI  1st superposition
+ECHO LOAD,FACT
+$ 1st superposition COMB DESI with categories XY_A and XY_B
+$ It is determined which load case of XY_A and which load case of XY_B is used -> SUP EXCL
+COMB 1 DESI TYPE NONE  BASE 1100
+ ACT G_1
+ ACT G_2
+ ACT XY_A
+ ACT XY_B
+ ACT S
+$SUPP 1 MAMI ETYP BEAM TYPE MY
+SUPP 1 MAMI ETYP BEAM TYPE MY FROM 3 X 1[-]   $ 1st span middle beam 3 end
+SUPP 1 MAMI ETYP BEAM TYPE MY FROM 8 X 1[-]   $ 2nd span middle beam 8 end
+END
+
++PROG MAXIMA urs:7
+HEAD Example for MAXIMA Intermediate Superposition
+HEAD Combination 2 DESI  2nd superposition
+ECHO LOAD,FACT
+$ 2nd superposition COMB DESI with categories XY_C and XY_D
+$ It is determined which load case of XY_C or XY_D is used -> SUP EXEX
+COMB 2 DESI TYPE NONE BASE 1200
+ ACT G_1
+ ACT G_2
+ ACT XY_C
+ ACT XY_D
+ ACT S
+$SUPP 2 MAMI ETYP BEAM TYPE MY
+SUPP 2 MAMI ETYP BEAM TYPE MY FROM 3 X 1[-]   $ 1st span middle beam 3 end
+SUPP 2 MAMI ETYP BEAM TYPE MY FROM 8 X 1[-]   $ 2nd span middle beam 8 end
+END
+
+$ Endüberlagerung
++PROG MAXIMA urs:8
+HEAD Example for MAXIMA Intermediate Superposition
+HEAD Combination 3 STAN final superposition envelope
+ECHO LOAD,FACT
+$ Final superposition COMB STAN
+$ The envelopes of the results of the combination 1 LC 1129,1130 and combination 2 LC 1229,1230 are determined.
+$
+$ For comparison calculation with load groups see file maxima_loadgroups.dat
+$ example with load groups
+COMB 3 STAN TYPE DESI BASE 2100
+  LC 1129,1130 TYPE AG1            $ AG1 permanent alternative load case group 1
+  LC 1229,1230 TYPE AG1
+$SUPP 3 MAMI ETYP BEAM TYPE MY
+SUPP 3 MAMI ETYP BEAM TYPE MY FROM 3 X 1[-]   $ 1st span middle beam 3 end
+SUPP 3 MAMI ETYP BEAM TYPE MY FROM 8 X 1[-]   $ 2nd span middle beam 8 end
+END
+
++PROG WING urs:9
+HEAD Example for MAXIMA Intermediate Superposition
+HEAD Combination 3 Bending Moments MY
+PAGE UNII 0
+CTRL OPT INP
+CTRL OPT GSTR VAL DEFA
+CTRL OPT AXIS VAL DEFA
+
+SIZE TYPE URS SC 0 SPLI '2*1'
+SIZ2
+AND  POSI 1 POSL 0 POSR 100 POSD 50 POSU 100
+SCHH H6 0.460000
+SCH2 DIRE STAN
+GRID TYPE NO DIRE DEFA OFFP 0 OFFC 0 OFF3 0 TOLA 15 TOLZ -5
+LC   NO 2129 DESI 1
+VIEW TYPE DIRE X 0 Y -1 Z 0 AXIS POSZ ROTA 0
+DEFO TYPE NO EXPO 0 SMOV NO
+SELE NUMB 0
+BEAM TYPE MY UNIT DEFA SCHH YES STYP BEAM FILL NO REPR DLIN
+
+AND  POSI 2 POSL 0 POSR 100 POSD 0 POSU 50
+LC   NO 2130
+BEAM TYPE MY UNIT DEFA SCHH YES STYP BEAM FILL NO REPR DLIN
+END
+
+!#!Chapter Loadcase Tracing
++PROG MAXIMA urs:10
+HEAD Example for MAXIMA Intermediate Superposition
+HEAD Loadcase tracing
+TRAC LC 2129 ETYP BEAM ELEM 3 x 1[-]  OPT 'IF'
+END
+

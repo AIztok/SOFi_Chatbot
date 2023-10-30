@@ -1,0 +1,1785 @@
+SOFiSTiK
+Basics
+SOFiSTiK | 2023SOFiSTiK
+Basics
+SOFiSTiKManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|SOFiSTiK
+Contents
+Contents i
+1 If you miss something here... 1-1
+2 CADINP - Input Language 2-1
+2.1 Definitions and Descriptions . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.1.1 Lines (physical sentences) . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.1.2 Records (logical structure) . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.1.3 Separation Characters . . . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.1.4 Data . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-3
+2.2 Input Syntax. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-3
+2.2.1 Basic Input Format . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-3
+2.2.2 Default Value . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-4
+2.2.3 Repetition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-4
+2.2.4 Increments/Decrements . . . . . . . . . . . . . . . . . . . . . . . . 2-4
+2.2.5 Comments . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-4
+2.2.6 Record Continuation. . . . . . . . . . . . . . . . . . . . . . . . . . . 2-4
+2.2.7 Record Partition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-5
+2.2.8 Positioning . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-5
+2.2.9 Defining Tables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-5
+2.2.10 Help-Record . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-6
+2.2.11 Generation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-6
+2.2.12 List of Values . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-7
+2.2.13 Conversion of Units . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-7
+2.2.14 LET - and STO - Variables . . . . . . . . . . . . . . . . . . . . . . . 2-8
+2.2.15 Arithmetic Expressions . . . . . . . . . . . . . . . . . . . . . . . . . 2-10
+2.2.16 FUN - Definition of functions. . . . . . . . . . . . . . . . . . . . . . 2-12
+2.2.17 LOOP, ENDLOOP - Loops and Jumps . . . . . . . . . . . . . . . 2-13
+2.2.18 IF - Logical Conditions . . . . . . . . . . . . . . . . . . . . . . . . . 2-14
+2.2.19 @CDB - Selection of a CDBASE . . . . . . . . . . . . . . . . . . . 2-16
+2.2.20 @KEY - Access to the CDBASE . . . . . . . . . . . . . . . . . . . 2-17
+2.2.21 @() - Access to the CDBASE . . . . . . . . . . . . . . . . . . . . . 2-18
+2.3 General Records. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-20
+2.3.1 HEAD – Title Lines. . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-21
+2.3.2 END – End of an Input Block . . . . . . . . . . . . . . . . . . . . . 2-21
+2.3.3 TXB – Introducing Text . . . . . . . . . . . . . . . . . . . . . . . . . 2-21
+2.3.4 TXE – Concluding Text . . . . . . . . . . . . . . . . . . . . . . . . . 2-22
+2.3.5 <TEXT> – Text block . . . . . . . . . . . . . . . . . . . . . . . . . . 2-22
+2.3.6 </TEXT> – End of a text block . . . . . . . . . . . . . . . . . . . . 2-23
+2.3.7 ECHO – Output Control. . . . . . . . . . . . . . . . . . . . . . . . . 2-23
+2.3.8 UNIT – Units for Input/Output . . . . . . . . . . . . . . . . . . . . . 2-24
+SOFiSTiK2023 iSOFiSTiK|Contents
+2.3.9 PAGE – Control of Input/Output. . . . . . . . . . . . . . . . . . . . 2-26
+2.3.10 SIZE – Graphic Format . . . . . . . . . . . . . . . . . . . . . . . . . 2-28
+2.4 Generation of Pictures . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-31
+2.4.1 <PICT> – Start of a picture . . . . . . . . . . . . . . . . . . . . . . 2-31
+2.4.2 GNT – Scale of a picture . . . . . . . . . . . . . . . . . . . . . . . . 2-31
+2.4.3 GPL – Polyline . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-31
+2.4.4 GPM – Polymarker . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-32
+2.4.5 GFA – Fill Area . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-32
+2.4.6 GGDP – Generalized Drawing Primitive . . . . . . . . . . . . . . 2-33
+2.4.7 GTXT – Text Label . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-34
+2.4.8 GSCA – Dimensioning . . . . . . . . . . . . . . . . . . . . . . . . . 2-34
+2.5 Attributes of Graphic Representations . . . . . . . . . . . . . . . . . . . . . . 2-35
+2.5.1 GCOL – Colour Selection . . . . . . . . . . . . . . . . . . . . . . . 2-35
+2.5.2 GPLI – Polyline Attributes . . . . . . . . . . . . . . . . . . . . . . . 2-35
+2.5.3 GPMI – Polymarker Attributes. . . . . . . . . . . . . . . . . . . . . 2-37
+2.5.4 GTXI – Text Attributes . . . . . . . . . . . . . . . . . . . . . . . . . . 2-37
+2.5.5 GFAI – Fill Area Attributes . . . . . . . . . . . . . . . . . . . . . . . 2-38
+2.6 Insertion of a Picture . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-39
+2.6.1 <LINK> – Insertion of a Picture . . . . . . . . . . . . . . . . . . . 2-39
+2.7 Parametric Input . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-40
+2.8 Compatibility of Data files . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-41
+2.9 Starting an Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-42
+2.9.1 #DEFINE - Parameter Substitution. . . . . . . . . . . . . . . . . . 2-42
+2.9.2 #INCLUDE - Block Definitions. . . . . . . . . . . . . . . . . . . . . 2-43
+2.9.3 APPLY - Integration of data during the calculation . . . . . . . . 2-44
+2.9.4 #IF - Conditional Input . . . . . . . . . . . . . . . . . . . . . . . . . 2-45
+2.9.5 Templates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-46
+2.9.6 Iterative Analysis with Multiple Modules . . . . . . . . . . . . . . 2-46
+2.9.7 Operating System Commands . . . . . . . . . . . . . . . . . . . . 2-47
+ii SOFiSTiK2023Ifyoumisssomethinghere...|SOFiSTiK
+1 If you miss something here...
+Hint
+From version 2022 we have moved a large part of the content to the new SOFiSTiK FEA
+manual.
+The new SOFiSTiK FEA Manual can be opened by following:
+https://www.sofistik.de/documentation/2023/en/fea
+Or you may also open the manual by following:
+Help Ribbon (SSD, Teddy, ...) → Online Help → FEA Manual
+SOFiSTiK2023 1-1SOFiSTiK|Ifyoumisssomethinghere...
+1-2 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+2 CADINP - Input Language
+The input language CADINP for free input format of data is the result of a further development
+of a project CADINT, which originated from the Federal Ministry of Research and Technology
+forthestudyintheCADarea(M.Ahn,K.H.Böckeler,W.Haas/EingabeKonventionenfürCAD-
+Programme, CAD-Bericht Kfk-CAD 39, Kernforschungszentrum Karlsruhe, 1976).
+Thevariationofthisformat,whichwasdevelopedbySOFiSTiK,includesseveraladditionalca-
+pabilities. IncertainpointsitthereforehassomedeviationsfromtheabovementionedCADINT
+standard.
+ThefullcapabilityofthelanguagecanbeachievedincombinationwithSPSand/orWPS,when
+functions for block building and parameter substitution are used. CADINP and SPS represent
+a full programming language for the calculation of problems in structural engineering, which
+will outdo any guided GUI. The processing occurs in two stages.
+• SPS or WPS use a single file or a set of sub-files to create an input file for every program
+being used. This is called parsing. During this process globally defined text elements are
+inserted and larger blocks are inserted or skipped. Strings are addressed with $(name).
+The strings can be defined or undefined in the input file or the SOFiSTiK-environment. At
+this stage no calculations have take place, that is why there is a difference, whether the
+string A = ”2+2” is inserted at $(A)*3 or ($(A))*3.
+• EachcomputationalprogramstartsitsownCADINPprocessor,whichthenstartsthearith-
+meticcalculations. ThevariablesusedwithinCADINParemarkedwitha#atthebeginning.
+Theydonotneedanybracketsandrepresentnumbers. Theycanbeconvertedtotextinput
+datawhereneeded,especiallywithincomments. Howevertheycanonlybeusedwithinthe
+local scope of the single program.
+Thecombinationofthesetwostagesallowsthedescriptionofacompleteanalysissystemsby
+meansofmanualcalculationsanddocumentationoftheanalysisassumptionsandtheresulting
+computer calculations. This in turn produces a complete analysis document in the computer.
+Each computational program expects its input data in a file. The input consists of records,
+which have a name and are constructed in free format according to the CADINP rules.
+Generally several individual modules are executed while working on a project. The interaction
+ofthesemodulesisnecessaryforacompleteanalysis. Inthiscasethenormalprocedureisto
+gathertheentiredatainoneorafewfiles,andthroughtheappropriaterecordswithinthedata
+make calls to the respective programs.
+In principle, an input file may be structured as follows:
+PROG AQUA
+HEAD
+! Material and cross-section definition
+END
+PROG SOFIMSHA
+HEAD
+SOFiSTiK2023 2-1SOFiSTiK|CADINP-InputLanguage
+! Input data for FE-system
+END
+PROG ASE
+HEAD
+! Input data for analysis of 1st load case
+END
+PROG ASE
+HEAD
+! Input data for analysis of 2nd load case
+END
+! Copy the report file somewhere else ...
++SYS COPY "*.plb" d:
+PROG WING
+HEAD
+! System and result plots
+END
+The first line should be a PROG line. Each module can be called as often as desired. The
+order of execution of the programs corresponds to the order of the PROG lines in the file. If
+-PROG is entered instead of PROG or +PROG, the associated module will be omitted. Single
+modules can also be selected directly.
+Hint
+ProcessingacompleteSOFiSTiKinputfilecanbedoneeitherinteractivelyusingWPS or
+alternatively as a batch-job using SPS.
+2.1 Definitions and Descriptions
+2.1.1 Lines (physical sentences)
+The input consists of lines. Each line contains up to 255 characters and corresponds to one
+line on the screen.
+2.1.2 Records (logical structure)
+Similar or logical connected data are put together in records. Each record has a name. The
+records do not have to conform with the line separation.
+2.1.3 Separation Characters
+The individual values within a record are separated by the separation character. One or more
+blank characters (space bar) serve as separation characters.
+2-2 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+2.1.4 Data
+Data can be numbers or text (=Literals). Numbers may have a sign and an exponent. If an
+integer number is expected, the given number will be rounded to the nearest integer, e.g.
+2 0.04 -.5 3.7E8 -0.5E-3
+Texts are arbitrary strings of characters. Only the first four characters are significant. Text
+shouldbedelimitedbyapostrophesifthereisdangerofconfusionwithnumbers,recordnames
+or items, or if it includes blank spaces or the characters ’,’ or ’;’ or ’$’, e.g.
+ALFA NODE 1S45 'A B' '1.45' 'A;B' "Ab"
+With Version 2010 all international characters (UTF8) may be used, previous versions allowed
+only the local code-page characters. However the short ident keys with exactly 4 characters
+allow only for pure ANSI-characters (i.e. no Umlauts or accents).
+Lower case characters are automatically converted to uppercase characters, as long as they
+are not between apostrophes. However a few exceptions are enforced to upper case (e.g.
+names of actions) to avoid ambiguites, these will be marked as LITnn instead of Litnn in the
+column ”unit”.
+If a literal contains a variable (see ) there are three cases to be distinguished:
+• The literal has been defined with apostrophes and starts with an equal sign (=). In that
+case the literal is passed unchanged but without the leading = to the program allowing to
+define formulas. This if course only useful if the program can handle the literal in that form
+as intended.
+• If the variable has been defined with a literal, this content will be inserted instead of the
+variable.
+• If the variable has been defined with a value, this value will be formatted and inserted
+instead of the variable in the literal.
+Foranoptionalliterali.e. insteadofanumberandforvariablescontainingliteralsonlytheform
+#name without any arithmetics or indices is allowed (e.g. A#1 with #1=25 yields ”A25”). If a
+numberwitharithmeticsisrequiredanequalsignhastobeaddedatthebeginning. Thus#X/2
+will yield the literal "‘25/2"’, while =#X/5 will yield the number 12.5.
+Within a real pure Literal however the #() function with the format as a second parameter i.e.
+#(#ALPHA,8.3) has to be used. The integer part of the format selects the number of total
+characters (8), while the decimal part selects the numbers of decimal digits (3). The first
+argument may be any complex arithmetic expression.
+2.2 Input Syntax
+2.2.1 Basic Input Format
+• The input consists of records.
+• The input record consists of the record name followed by data in the order specified in the
+input description.
+• Each record occupies one input line.
+SOFiSTiK2023 2-3SOFiSTiK|CADINP-InputLanguage
+• Therecordnamecanbeomittedwhentherecordisofthesametypeastheprecedingone.
+• A record can start at any position in a line.
+• The data is separated from each other by one or several separation characters.
+2.2.2 Default Value
+If the minus sign (-) is given instead of a data value, the program uses the corresponding
+default value as specified in the programs description. This has been used in the past also to
+skip unwanted items. As this is strongly dependant on the sequence of the items which may
+change sometimes, it shouldn’t be used any more.
+Iflessdataisenteredforsomerecordthanitsdescriptiondemands,thecorrespondingdefault
+values will be used in the place of the missing data.
+The minus sign must be embedded between separation characters.
+Default values can be redefined inside a header record that defines a table.
+2.2.3 Repetition
+If the equal sign (=) is entered in the place of a data value, the program will use the corre-
+sponding value of the preceding record. However this is only possible if the record name has
+not been changed.
+If two equal signs (==) (with no blank spaces in between!) are entered, all of the values in the
+following records will be the same. Positioning of the preceding record is not considered.
+If the value of the previous record is a generation instruction or a list of values, the generation
+or the complete list will be repeated.
+The repetition characters must be enclosed in separation characters.
+2.2.4 Increments/Decrements
+If a double plus or minus (++ or --) is entered in the place of a data value, the program will use
+the corresponding value of the preceding record incremented or decremented by 1. This will
+also work with Literals, Lists and Generation sequences. However this is only possible if the
+record name has not been changed.
+The increment/decrement characters must be enclosed in separation characters.
+2.2.5 Comments
+Thecommentcharacters$,! or//turnstherestofalineintoacomment,whichwillbeignored
+by the program. All this comment operators should be separated from the comment itself and
+the input data in the same line with a separation character.
+Within a +PROG-line (see SPS) only the $-character is allowed as a comment and it must be
+separated by blancs. Within a +SYS-command line no comments are allowed at all.
+2.2.6 Record Continuation
+A double dollar sign $$ means that the input record is continued in the next line.
+2-4 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+The characters following $$ are considered as a comment.
+Aseparationcharactermustbeenteredrightbefore$$. Thusitisnotpossibletowriteexpres-
+sions or a list of values extending more than one line.
+2.2.7 Record Partition
+Morethanonerecordcanbeinthesameline. Therecordsmustbeseparatedbyasemicolon
+(;). The semicolon needs not to be between separation characters. This feature is not valid for
+the input of text lines (e.g. HEAD).
+2.2.8 Positioning
+Byenteringanameofaniteminsidearecord,youcanprovidethevalueforthatitemregardless
+of its position.
+Example:
+A record is defined by the items K1 K2 K3 K4 K5. The following input is then equivalent:
+RECORD 1.00 - - 2.00 3.00
+RECORD 1.00 K4 2.00 3.00
+RECORD K1 1.00 K4 2.00 K5 3.00
+RECORD K4 2.00 K1 1.00 K5 3.00
+2.2.9 Defining Tables
+The predefined order of the input data can be altered by entering a record consisting only of
+the names of the items. In this case the following records must not contain a record name, as
+this would reinitialize the sequence of items.
+The last example could have also been given as:
+RECORD K1 K4 K5
+1.00 2.00 3.00
+Atabledefinitionremainsvaliduntilanewrecordnameisenteredorthesamerecordnameis
+repeated. Inside a table the positioning is still possible even for those items not defined in the
+table definition.
+The default values can be modified inside the header of a table by following the item with an
+equal sign (=) and the new default value without any separation characters.
+RECORD K1 K2 K5=4
+1 2 6
+2 5
+3 6 -
+is equivalent to
+RECORD K1 K2 K5
+1 2 6
+2 5 4
+3 6 4
+SOFiSTiK2023 2-5SOFiSTiK|CADINP-InputLanguage
+Suchaconstructisalsoanicesuitablesolutiontotheproblemofambiguousliterals. Ifaliteral
+value exists (e.g. GRP) for the first item position which is also a valid record name, a change
+ofthesequenceandperhapsadefaultassignmentmaysolvethisproblemwithouttheneedto
+use quotes:
+BEAM TO TYPE PA FROM=GRP
+1 TEMP 30
+2 TEMP 25
+2.2.10 Help-Record
+A list of the possible record names can be obtained by entering HELP. HELP followed by a
+record name prints a list of the items of the record. HELP followed by a record name and an
+item name will print the allowable input values and parameters for the corresponding position.
+This option is meaningful especially during interactive error finding.
+2.2.11 Generation
+Aninstructionforautomaticrecordgenerationcanbegiveninsteadofadatavalue. Inthisway
+a series of records can be created automatically.
+When generating a record the command must be enclosed within parentheses. Its elements
+must be separated by separation or underline characters.
+There are two types of generation instructions:
+primary automatic generation instruction
+(Start_value End_value Increment)
+secondary generation instruction
+(Start_value Increment)
+The primary generation instruction specifies the number of the individual records to be gener-
+ated. It can be used only once per record, yet in any position inside the record. The corre-
+sponding secondary generation instruction can be defined for every parameter.
+The generation of literals is also possible. The increment is then also considered as a literal
+but may contain only numbers.
+The increment can also be negative.
+Long sequences of generated data may accumulate numerical round off errors. Thus if the
+specified end value of a primary generation instruction is not reached with an accuracy of
+0.0001 of the increment, or more than 9999 values would be created an error message will be
+issued and the generation will not start.
+Example:
+NODE (1 5 1) 0 (0.5 -0.1)
+generates the input records:
+2-6 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+NODE 1 0 0.5
+NODE 2 0 0.4
+NODE 3 0 0.3
+NODE 4 0 0.2
+NODE 5 0 0.1
+Example:
+REIN (A0.1 D0.4 10.1)
+generates the input records:
+REIN A0.1
+REIN B0.2
+REIN C0.3
+REIN D0.4
+2.2.12 List of Values
+Alistofvaluescanbegiveninsteadofagenerationloop. Thisisaseriesofvaluesseparated
+by commas or underline characters.
+Value,Value,Value,Value e.g. 1,2,7,9
+A list of values may not contain any separation characters and can not be spread across
+multiple lines.
+When several lists of values are defined within a single record, their number of values must
+agree not only with each other, but also with any other defined primary generation.
+Themaximumnumberofvaluesperlistislimitedbyaninternalamountofmemory. Alistof25
+values is usually possible.
+Alistofvaluescanalsobebuiltupbyfixedliterals(LIT).Combinationsofnumbersandliterals
+or a list of freely defined literals are however not allowed.
+2.2.13 Conversion of Units
+For every numerical value, list of values or generation it is possible in general to append the
+input unit explicitly in square brackets. So instead of definig a length in the default unit m as
+0.3048 it is also possible to specify 304.8[mm] or 12[in] . This option is available for explicit
+and implicit units (see section Units). CADINP will check if the specified unit is permitted, i.e.,
+belongs to the family of related units.
+If a unit is defined in a table header, this unit identifies the default unit for all data in the re-
+spective column; it may be overwritten with an explict definition of course. If only a default unit
+should be selected but no default value, the default value may be omitted, e.g.,
+NODE X=[m] Y=5.0[m] Z=[mm]
+SOFiSTiK2023 2-7SOFiSTiK|CADINP-InputLanguage
+2.2.14 LET - and STO - Variables
+One can define variables to be used in the following records. After the leadin LET# (only valid
+within current program) or STO# (value will be saved to database) the name of the variable
+is appended directly (up to 16 characters of an alpha-numerical text, 1st character has to be
+a letter) and an optional index, starting with zero. The variables can be used then instead
+of numbers. After the variable name a separation character and the value to be assigned
+to the variable is expected. The value may be either numeric or a literal inclosed in quotes.
+LET# or STO# do not alter the currently defined record name and thus must be given in each
+assignment. Namesofvariablesmustnotcontainspecialcharactersorcollidewithareserved
+sequenceofcharacterslike(SIN,COSorSQR).Insteadofonenumericalvaluealistofvalues
+or a primary generation instruction or a literal may be entered. In this case the rest of the
+values is assigned to the variables following the input variable. This defines an array if a
+named variable is used.
+If large arrays are used, it is strongly suggested to define the element with the largest index
+first, to avoid reallocation requests. However, no value will be assigned to the array elements.
+The unit of a variable is depending on the context, where this variable is used. Thus it is not
+possible in general to use the same variable for a section definition in [mm]] and a system
+definition in [m]. But it is possible to assign a unit to a variable, then the given value will be
+convertedimmediatelyandthevaluecanbeusedeverywhere. Ifavariablehasbeenassigned
+a unit, it will beinherited toall other variablesand expressions. Howeverthis will alsotrigger a
+check if the obtained unit is allowed for the current use.
+If for example a stress is expected and defined as #P/#A, both variables may have no unit, #P
+maybeaforceand#Aanarea,or#Pmaybealoadperlengthwhile#Aisawidth. Ifaconstant
+is added or subtracted to a variable, the constant will be taken as specified in the same unit.
+An array has for all members the unit which has been defined for the item with index 0.
+A variable is used if a leading # sign allows the clear identification as a variable name. If the
+expressionstartswithanadditionalleading=character,allunidentifiedcharacterswillbetaken
+as variable names.
+Forlocalusagethelegacyconventiontousescalarvariableswithpurenumberbetween1and
+9999 instead of a name is still supported.
+LET#TXT 'My Text' ! Assigning a literal
+LET#11 4,5,6 ! Assigned to legacy variables 11,12,13
+LET#A 4,5,6 7,8,9 ! 4,5,6 and 7,8,9 are assigned to A(0:5)
+LET#A(2) 5.1 ! Assignment to a single array element
+LET#A(0:10) 0.0 ! Assignment of the same value to consecutive elements
+LET#A(#1:#2) 1.0 ! Assignment of the same value to consecutive elements
+LET#1 #A ! Using first element of array
+LET#1 =A(1) ! Using second element of array
+LET#A(3) 7,8 ! Assignment to consecutive elements (3) and (4)
+LET#1 #A(#i) ! Access to the element with index #i
+LET#1 #A(2) ! Using third element of array
+LET#B #A(:) ! Copy all elements of array A to array B
+LET#B #A(3:) ! Copy all elements starting at 3 of array A to array B
+LET#B #A(2:4) ! Copy 3 elements starting at 2 of array A to array B
+2-8 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+LET#B #A(2:3) #A(5:6) ! Create a new array with different sequence
+// (but lists of sub-arrays are not allowed)
+LET#C #A(#11) ! Value of the variable, whose number is
+// stored in legacy variable 11
+// is assigned to variable 4
+LET#B 20[mm] ! Assignment with unit
+LET#D 1.5[m] ! Assignment with unit
+LET#A #B*#D ! Assignment with unit: A is 0.3[m2]
+LET#X #B*#D[-] ! Assignment without unit: A is 0.3[-]
+If a variable is assigned to an expression, the expression is calculated first and then its value
+is assigned to the variable.
+ToprintvariablesfordebuggingpurposeyoumayusetheconstructPRT#withasimilarsyntax
+for addressing the variable name. The name of the variable is expected without separation
+charactersimmediatelybehindthe#. FormorecomfortoneshoulduseTXB/TXEor<TEXT>
+within literal text.
+Variableswithanamemaybesavedpermanentlyinthedatabase. ThecommandSTO#name
+willsavethecurrentorspecifiedvalueofthisvariableinthedatabase,whichthencanbeused
+by all other programs accessing the database from that. E.g.
+STO#C 30 ! Assignment and storage of the variable in the database
+If a save variable should be removed from the database there is the command DEL#name.
+For this case it is also allowed to specify wild card characters. The commands DEL#OPT* or
+DEL#A?00willdeleteallvariableswiththatpattern. TheuseofDEL#withinacontrolconstruct
+like a loop or an IF-block may yield unexpected results.
+Forspecialcasesitispossibletoreinitializeavariablewiththelastsavedvaluewiththefollow-
+ing commands:
+RCL#ALL Read all named variables
+RCL#name Read one named variable/array
+RCL#name(3) Read one entry of an array
+RCL#name cdbfile Read variable from another CDB data base
+Reserved Variable-Names
+There are some reserved Names, which are automatically created by a programm run. The
+user may use and redefine those names however within his CADINP-data block with new
+values.
+• VariablesVERSION(0),VERSION(1)andVERSION(2)willbepresetwiththeversionnum-
+beroftheRelease,theservicepacknumberandtheintermediatereleasenumber,allowing
+to define common input data for multiple versions.
+• Variable PI will be preset to 3.141593.
+• The arrays of variables GRP_MASS, SCT_MASS and MAT_MASS as well as GRP_REIN
+and SCT_REIN are redefined after a print or evaluation of system statistics. They contain
+SOFiSTiK2023 2-9SOFiSTiK|CADINP-InputLanguage
+themasses(MASS)andreinforcements(REIN)ofallgroups(GRP_)andsectionnumbers
+(SCT_) or Materials (MAT_), where the index 0 contains the total sum.
+Allothervariablesstartwiththefirstthreecharactersoftheprogramcreatingthemfollowedby
+an underline:
+• ASE uses the array ASE_ITER as follows
+ASE_ITER(0) = first load case number
+ASE_ITER(1) = last load case number
+ASE_ITER(2) = last achieved load factor
+• Variables of Array AQB_USAGE will be set by AQB with the usage factors of the design
+tasks of the last input block.
+• All Variables starting with OPT_ are reserved for OPTIMA.
+To trace the assignment of values, there is a command DBG#. This will toggle test prints
+and an interactive debug mode. DBG# uses the variable #0, which can not be used for other
+purpose therefore
+DBG#0 No output of intermediate values
+DBG#1 Output of the generated input records
+DBG#2 Additional output of all value
+assignments
+DBG#3 Additional output of selected
+structures (CDB access)
+DBG#4 Printout to console stream/window
+DBG#8 Input from console stream/window
+(interactive mode)
+DBG# Switch between option 15 and option 0
+(=break and continue)
+and
+DBG# -2 Immediate STOP of total program run,
+although all outstanding
+TXE-Lines will be printed after the
+error message
+2.2.15 Arithmetic Expressions
+In place of a numerical value any desired arithmetic expression may be used. The expression
+may contain parentheses, but no separation characters.
+The allowable operators are:
++ - Addition, Subtraction
+* / Multiplication, Division
+** or ^ Exponentiation
+== <> Condition of equality/inequality
+>= <= Relational condition
+> < Relational condition
+result: true (1.) or false (0.)
+2-10 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+& | Bitwise logical operation on the
+integer part with AND or OR
+If no operator is given, a multiplication will be performed. The bindings of the operators are
+according to the mathematical rules. The logical operators have the same weight, thus it is
+strongly recommended to use parentheses for combined expressions.
+The following functions are allowed inside an expression:
+SIN(x),COS(x),TAN(x) Trigonometric functions
+ASIN(x),ACOS(x) Arc sine, arc cosine
+ATN(x),ATN(y,x) Arc of tangent x or y/x
+ARC(x) Convert angles to arcus
+SQR(x) Square root
+ABS(x) Absolute value
+EXP(x) Exponents of e
+LOG(x) Natural logarithm
+LGT(x) Base 10 logarithm
+DIV(x,y),xDIVy,DIV(x/y) Integer part of x/y
+MOD(x,y),xMODy Division remainder of x/y
+MOD(x) Division remainder of x/y
+MIN(x,y,..),MAX(x,y,..) Minimum or Maximum numbers
+RANDOM(x) random value between 0 and 1
+(x=0 reinitialises the seed)
+IIF(expr,val1,val2) returns val1 if expr is not
+equal zero and val2 if expr
+equals to zero.
+Arithmetic expressions may also appear within a list of values or generation instructions. The
+functions DEG, GON and RAD may be placed before any argument, but separated from it by
+a comma. Their definition is kept if an assignement contains only one of those names (e.g.
+LET#0 RAD).
+Examples:
+SIN(30.)+3*COS(45.) oder SIN30+3COS45
+SIN(RAD,2.435)
+100.+MOD(354,32) oder 100+354MOD32
+120.+12.
+3(5.0+4.0)
+COS(#1) SIN(#1)
+345*#11+##12
+Interpolation and Tables:
+Aspecialfeatureisavailablewhenaccessingarraysofvariables. Iftheindexisnotinteger,but
+rational, an interpolation between the values of the array will take place:
+SOFiSTiK2023 2-11SOFiSTiK|CADINP-InputLanguage
+LET#A(0) 10.0
+LET#A(1) 14.0
+LET#A(2) 16.0
+LET#A(3) 17.0
+LET#B =A(1.3) => #B = 14.6
+The same procedure is also available for higher interpolation schemes. Then we need two
+arrays of the X and Y values with the same length. These variables are then connected by a
+special assignement of a literal as a table definition:
+LET#X 0.0,2.0,3.5
+LET#Y 0.0,100.0,100.0
+LET#SIG 'TAB(X,Y)'
+The expression #SIG(1.73) interpolates for this X-value betwen the given Y-values linearly. If
+higher functions are requested, a third array is needed, giving the derivatives of the function:
+LET#DY -,0,-
+LET#SIG 'TAB(X,Y,DY)'
+For the example above only the derivative at the middle point has been specified. Thus we
+havequadraticparabulasfortheinterpolationfunction. Ifderivativesarespecifiedatbothends
+of an interval we have cubic splines as interpolation functions.
+Variables and Literals:
+In case it is required to store text in a variable this may be done with the LET/STO command
+in the same way (The use of apostrophes is manadatory):
+LET#TEXT 'ABCDEFGHIJK'
+The text will be saved in blocks with 8 characters each in the name of the variable, #TEXT(1)
+would thus be equivalent to ”IJK ” in the above example and it is possible to change that item
+only, but there is no storage of single characters. However when using a text variable it is
+possible to use sub strings with the format #TEXT(3:7) selecting the third to seventh charac-
+ter. (Instead of the numbers any arithmetic expresssionas are also valid of course). A text
+variable may be read from the CDB and it is possible to convert with a LET/STO command a
+text to numbers. The following example will save the two numbers in variables #VALT(0) and
+#VALT(1):
+LET#TEXT '1.23,1.48'
+LET#VALT VAL(#TEXT)
+2.2.16 FUN - Definition of functions
+If an arithmetic expression is needed more often or the meaning of a variable should be
+changed during the run, it is possible to define a function. Such definition is done as a lit-
+2-12 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+eral according to:
+LET#F '=FUN(var,formulaexpression)'
+! e.g.
+LET#F '=FUN(x,3*#x**3-2*#x**2+5*#x)'
+LET#1 #F(1.234)
+The Literal has to start with the character sequence ”=FUN(” , followed by a formal param-
+eter name, followed by an expression containing any variables defined so far. If the formal
+parameter’s name has been defined already, it will not be changed by the call.
+But this requires that this variable (LET#X) must be initialized before the first function call.
+Recursive calls are allowed.
+2.2.17 LOOP, ENDLOOP - Loops and Jumps
+The most powerful form of generation is achieved through loops. This form corresponds to
+the FORTRAN DO-Loops or to the FOR NEXT loops of BASIC. The loop is initiated by the
+record LOOP and terminated by the record ENDLOOP. A loop is executed as many times as
+determined by the number following LOOP (Default 9999). It may also be terminated if the
+expression following ENDLOOP becomes zero or negative. If the name of a variable is given
+instead of the number after the LOOP, then the number of elements contained in that variable
+will be used.
+Loops can be nested up to 32 levels, containing any number of input elements. If LOOP is not
+followed by a number, it will be performed at most 9999 times.
+Each loop construction must not exceed 255 lines. Multiple records, however, can be entered
+at the same line (separated by ;). If you still need more than 256 lines you have to specify
+before the first LOOP
+LET#LOOPSIZE number_of_lines
+It is possible to store the index of the loop in a variable, if the name is appended to the LOOP
+keyword. Theindexstartscountingatzero. Thevariablemaybechangedwithintheloop,butit
+willberestoredafterevaluationoftheterminatingconditionineachcycle. Generationofnodes
+and springs on a semicircle at a distance of 30 degrees.
+LET#1 1 , LET#2 0.
+LOOP 7
+NODE #1 COS(#2) SIN(#2)
+SPRI #1 #1 DX COS(#2) DY SIN(#2) CP 1.E5
+LET#1 #1+1
+LET#2 #2+30.
+ENDLOOP
+InsteadofLOOP7/ENDLOOPyoucoulduseLOOP/ENDLOOP#2<=180. Withanendloop
+condition one can leave a loop prematurely.
+Example for two-level generation:
+SOFiSTiK2023 2-13SOFiSTiK|CADINP-InputLanguage
+LOOP#1 3
+TXB ADEF #1+1
+LOOP 2
+TXB BDIV 0.5 #1+1
+TXB 0.2 1
+ENDLOOP
+ENDLOOP
+creates:
+ADEF 1
+BDIV 0.5 1
+0.2 1
+0.5 1
+0.2 1
+ADEF 2
+BDIV 0.5 2
+0.2 1
+0.5 2
+0.2 1
+ADEF 3
+BDIV 0.5 3
+0.2 1
+0.5 3
+0.2 1
+If you want to run a loop over all elements of an array, this may be done by giving only the
+name of the array (without the # ):
+LET#A 10,22,34,55,76,83
+LOOP#1 A ! Only the name, #A would be the value 10!
+NODE #1+1 X #A(#1)
+ENDLOOP
+If not all elements have been defined, ist is possible to perform the loop only over the defined
+elements, the loop index will then obtain the value of the defined elements only:
+LET#ANZ 0
+LOOP#1 DEF(A)
+LET#ANZ #ANZ+1
+ENDLOOP
+2.2.18 IF - Logical Conditions
+Conditional blocks are an important element of every programming language. The execution
+of jumps (go to) is not possible within CADINP as it is proven to be able to solve any problem
+without this feature. The conditional block is executed if the expression following the IF is
+greater than zero. You might want to use the logical expressions for this. Texts may be only
+compared with == and != operators, the comparison is case sensitive. As the complete string
+2-14 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+on both sides of the operator is considered, no parentheses are allowed, they are part of the
+strings.
+As float numbers cannot be represented exactly within a computer in most cases, comparison
+with == or != should use a tolerance if applied to fractional values.
+! #1 is the control variable with possible values +1/-1
+IF #1
+! These lines are input when #1 > 0
+! ...
+ELSE
+! These lines are input when #1 < 0 or = 0
+! ...
+ENDIF
+IF #1==12
+! These lines are input when #1 equals 12
+! ...
+ENDIF
+IF ABS(#1-0.35)<0.001
+! These lines are input when #1 equals 0.35
+! ...
+ENDIF
+The generation of a CASE construction is available by using a series of additional ELSEIF
+statements:
+if (Condition_1)
+....
+elseif (Condition_2)
+....
+elseif (Condition_3)
+....
+else
+....
+endif
+Example:
+IF (#A < 0.3) ! condition 1
+LET#VALUE 0.50
+ELSEIF (#A>1.0) ! or condition 2
+LET#VALUE 0.70
+ELSE
+LET#VALUE 0.50+0.20*(#A-0.3) ! else this value
+ENDIF
+SOFiSTiK2023 2-15SOFiSTiK|CADINP-InputLanguage
+VALUE
+0.7
+0.5
+A
+0.3 1.0
+Figure2.1: VALUEdependingonA
+That means that only one possibility is chosen for VALUE depending on A.
+In special cases it is possible to create the following input which can be used in different
+SOFiSTiK environments with various versions:
+IF (#VERSION>=2012)
+!....
+ELSEIF (#VERSION==2010)
+!....
+ELSE // older SOFiSTiK Releases
+!....
+ENDIF
+2.2.19 @CDB - Selection of a CDBASE
+CADINPallowstheaccesstodataofanySOFiSTiK-Database. Ofcourseyouneedadescrip-
+tion of the contents of the database (cdbase.chm ). The syntax has three parts. The @CDB
+selects the file name of the data base:
+@CDB filename
+Selects an arbitrary database filename.cdb . Default is the actual project database. An
+explicit definition of this database is however not allowed.
+All data within the CDB consists of multiple records with identical structures organised
+withindifferent64-BitindicesKWH/KWL.Ingeneraleachdatarecordhasapartcontaining
+integernumbersandasecondonecontainingthefloatingpointdata. Thedescriptionofall
+structures is given for the user within the file cdbase.chm and for the programs within the
+file cdbase.cdb .
+Materials, sections, load cases or other elements are organized to have a separate key for
+every instance. With the given example of a definition like:
+LET#mat KWL(MAT)
+LOOP#M mat
+TXB #mat(#M)
+2-16 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+ENDLOOP
+Other examples:
+LET#sect KWL(SECT) !cross-section numbers
+LET#sect KWL(9)
+LET#sect KWL(LC_CTRL) !loadcases
+LET#sect KWL(12)
+LET#sect KWL(GPT) !structural points
+LET#sect KWL(30)
+LET#sect KWL(GLN) !structural sub-lines
+LET#sect KWL(31)
+LET#sect KWL(GAR) !structural sub-areas
+LET#sect KWL(32)
+LET#sect KWL(SLVL_DEF) !storey levels
+LET#sect KWL(34)
+LET#sect KWL(DSLN_DEF) !design elements
+LET#sect KWL(35)
+the variable #mat will contain a list of defined material numbers which will be printed in the
+following loop.
+Instead of the argument MAT the name of any key defined in the (cdbase.chm ) or a direct
+number may be given.
+2.2.20 @KEY - Access to the CDBASE
+@KEY KWH KWL [ SEL1 SEL2 SEL3 SEL4 SEL5 SEL6 IERR ]
+Selects an access index KWH/KWL according to the CDBASE description. KWH is a 8
+character identifier while KWL is an optional number (e.g. load case or section number).
+Values KWL and SEL1 to SEL6 are preset automatically.
+For special purpose an optional filtering rule given by up to 6 integer or 4 character key
+values SEL1 to SEL6 may be specified. Key values which are not important or will be
+defined with the access-function have to be specified as -1. The keys correspond to the
+integer positions of the database.
+The record index has to exist in the database. You will get an error otherwise. The read
+position is set to the beginning of the index. If you specify for IERR a number of a variable
+(for example 999), its value will be set to a positive value if the given key exists. If the
+variable #CDB_IER has been defined, it will contain the same value.
+SOFiSTiK2023 2-17SOFiSTiK|CADINP-InputLanguage
+2.2.21 @() - Access to the CDBASE
+A record is accessed by the use of an arithmetic function @() as special case of an arithmetic
+expression:
+@(position+offset) or @(no,position+offset)
+Reads from the database the next record, which passes the @KEY-filter which is modified
+for the second case by ”no” at the position of the last defined KEY. The value of the ex-
+pression is the stored data with the name ”position” or if position is a number the value at
+thepositionrelativetothelastselectionvalueofthefilter. Thevalue0andnegativevalues
+will therefore yield the integer values within the selection keys. An access to the index of
+an array can be done via ”offset”.
+Theaccessfunctionwillstartatthecurrentposition. Ifyouaccessavaluewiththesameor
+a lower position, CDBASE will read the next record. If the end-of-file condition is encoun-
+teredanerrorwilloccurifyouhaveusedtheform@(position),whilefor@(nr,position)a
+loop is used once and the function jumps to the beginning.
+Youmayalsospecifytwostatevariables. Ifthesevariableshavebeendefinednonnegative,
+the result values will be saved there and error messages will not appear:
+• CDB_LEN for the actual length of the record
+• CDB_IER for the error-flag
+(0=ok, 1=record to short, 2=end_of_file, 3=key_not_defined).
+This is required to prevent the program to enter an infinite loop.
+To get the effective Iy-value of cross section 5 from the actual project-database, you enter:
+@KEY SECT_EFF 5
+LET#5 @(IY)
+To use shell forces of the nodes 101 and 102 of group 2 of load case 12 you enter:
+@CDB PROJECT1
+@KEY QUAD_NFO 12 2 ! Selector Group 2
+LET#101 @(101,MXX) ! moment m-xx
+LET#102 @(102,MYY) ! moment m-yy
+To get all support forces of nodes with last digit 0 as loads you may enter:
+LET#CDB_IER 0
+@CDB PROJECT1
+@KEY N_DISP 12
+LOOP ! All records
+LET#10 @NR,@PX,@PY,@PZ
+IF (#CDB_IER < 2)&(#10 <> 0) ! End or header
+IF 0==MOD(#10,10) ! Last digit 0
+LOAD #10 PX #11 #12 #13
+ENDIF
+2-18 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+ENDIF
+ENDLOOP #CDB_IER < 2 ! To terminate the loop
+To get the section number of the beam 101 (As we have to read two different cases alternate,
+we can not use the predefined literals):
+LET#CDB_IER 0
+@CDB PROJECT1
+! 4 Integer-Keys
+@KEY 100 0 -1 -1 -1 -1
+LET#NR 0
+! ALL records
+LOOP
+! 1. and 2. Integer
+LET#10 @(-3),@(-2)
+IF #10
+! New BEAM
+LET#NR #10
+ELSE
+IF #NR==101
+LET#Q #11
+ENDIF
+ENDIF
+ENDLOOP #CDB_IER < 2 ! To terminate the loop
+Fortextelementssavedinthedatabase,apropertreatmentisonlypossibleifthedatastructure
+is known. Respective by using the names defined in the cdbase.chm :
+@KEY LC_CTRL 101 ! Action and designation of load case 101
+LET#ACT LIT(@ITYP)
+LET#TXT LIT(@RTEX)
+! Designation of material 1
+@KEY MAT 1
+LET#MATTXT LIT(@TITLE)
+Hint
+With the variable names #COOR_X(number), #COOR_Y(number), #COOR_Z(number)
+it is possible to acces the nodal coordinates directly, if the module has initialized the
+nodalarrays,whichisdonebye.g. SOFILOADandallanlysistools(ASE,DYNA,TALPA,
+HYDRA). SOFIMSHA and SOFIMSHC cannot grant access to nodes during the input
+processing if theses nodes will be created only later.
+SOFiSTiK2023 2-19SOFiSTiK|CADINP-InputLanguage
+2.3 General Records
+The input consists of blocks. Each input block usually begins with the HEAD lines and ends
+with an END record. Some programs allow the input of more than one block. The analysis is
+ended in those cases when an empty block (END/END) is found.
+The same layout is used in all manuals for the input description of all records. Apart from the
+recordname,whichiswritteninaspecialboxattheupperright,therearefourcolumnsineach
+table.
+• The first column contains the names of the items of the record.
+• Explanations and allowable literals are given in the second column.
+• The unit of the input parameter can be found in the third column. The ”-” character stands
+forascalarparameterwithoutaunit,a ”*” standsforvalueswithdifferentpossibilities,that
+areselectedviaPAGEUNII.LITisgivenforitemsallowingonlypreddefinedliterals. LITnn
+definesinput,whichcanacceptfreetextofuptonncharacters. LITnndefinesliteralswhich
+are enforced to upper case.
+• The last column shows the default values. Here, the ”-” character means that no default
+value exists, and that the parameter itself is not necessary. On the contrary, a ”!” means
+thatavaluemustdefinitelybespecified. Finally,a”*”meansthatthedefaultvaluesdepend
+on various conditions which are explained in the text.
+2-20 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+2.3.1 HEAD – Title Lines
+HEAD
+Item Description Unit Default
+Title line LT72 -
+Up to 10 title lines can be defined. The first one is reserved for the structure description and
+canonlybedefinedintheprogramsAQUA,SOFiMSHA/B/CandintemplatesoftheSOFiSTiK
+series. Thislineisimportedbyallothermodulesfromthedatabase,thusitcannotbechanged.
+TherestofthelinescanfreelybedefinedbyenteringtherecordHEADfollowedbyaseparation
+character and any desired text up to 72 characters. If no title lines are defined inside a data
+block, the previous ones remain in use. See PAGE about specifying a page headline. Title
+lines must not be delimited by apostrophes. Defaults of the Heading lines may be specified in
+SOFiSTiK.DEF via the variables KOPF1, KOPF2 and KOPF3.
+2.3.2 END – End of an Input Block
+END
+Item Description Unit Default
+End of input or of an input block − -
+TherecordENDcloseseachinputblock. Insideadatablockforinstance,eachsingleloadcase
+of the analysis can be defined. The end of the entire input is defined by a double END record.
+If this record is missing and the input file is at its physical end, this record is automatically
+generated by CADINP.
+2.3.3 TXB – Introducing Text
+TXB
+Item Description Unit Default
+Introductory text LT72 -
+Tablecontinuedonnextpage.
+SOFiSTiK2023 2-21SOFiSTiK|CADINP-InputLanguage
+Item Description Unit Default
+2.3.4 TXE – Concluding Text
+TXE
+Item Description Unit Default
+Closing text LT72 -
+Any desired explanatory text can be added to an input block by TXB and TXE, either before
+the analysis (TXB) or after it (TXE). The number of lines is unlimited. For each of those two
+kinds of text, one may specify larger text blocks between <TEXT> ... </TEXT> and pictures
+betweentheitems <PICT> and </PICT>. Howeverapictureisnotallowedwithina <TEXT>
+... </TEXT> block.
+The TXB/TXE - lines should not be entered between apostrophes. Within the text variables in
+the form of #(variable,dd) will be replaced by their current value using the format dd.
+HTML components may be used within the text. A component starts with a < not followed
+by a blank or another < . Known components will be interpreted, unknown will be discarded.
+SOFiSTiK programs know about (others will be discarded):
+<FF> New Page
+<LF> Blank Line
+<b> .... </b> Bold
+<i> .... </i> Italic
+<u> .... </u> Underlining
+2.3.5 <TEXT> – Text block
+< >
+TEXT
+Item Description Unit Default
+Header of a text block LT72 -
+2-22 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+2.3.6 </TEXT> – End of a text block
+< >
+/TEXT
+Item Description Unit Default
+End of a text block LT72 -
+You may define a continuous block of text within the special record names <TEXT> and
+</TEXT> without the need of specifying record names. The text will be appended to the
+region selected by the last TXB or TXE command. The Text following the <TEXT> name will
+become part of the table of contents in Report Browser.
+The text block may be written to a file, by defining:
+<TEXT,FILE=foobar.txt>
+If a further text block should be added to the file, a + has to be input:
+<TEXT,FILE=+foobar.txt>
+For the definition of templates one can specify editable fields via special HTML-Tags:
+<EDIT:name>$(name) </EDIT>
+Editable Reference on Parameter value
+<EDIT:name,Format=6.2>$(name) </EDIT>
+Editable Reference on Parameter value
+with a format of ”###.##”
+(total width.decimal digits)
+Format=6 reserves 6 characters wide
+Format=-6 places left adjusted
+<EDIT:name,List=str1,str2,str3>$(name) </EDIT>
+Editable Reference on Parameter value
+with a list box of allowed values
+<EDIT:name,List=str1,str2,str3,Update=Yes>$(name) </EDIT>
+Enforces an update of the template
+immediately after input of data
+2.3.7 ECHO – Output Control
+SOFiSTiK2023 2-23SOFiSTiK|CADINP-InputLanguage
+ECHO
+Item Description Unit Default
+OPT Echo option LT FULL
+This parameter defines a set of output or computing
+options, to which the record ECHO applies. The ac-
+tual list of the possible options can be found in the
+corresponding manual.
+FULL stands for all output options.
+VAL -1 or OFF no computation LT FULL
+0 or NO no output
+1 or YES normal output
+2 or FULL extended output
+3 or EXTR extreme output
+At the beginning of the program all options for new results are preset to 1. The output pa-
+rameter for already computed values (e.g. nodal coordinates in analysis programs) is set to
+0. By entering ECHO NODE you can for example assign the value FULL to the option NODE.
+Therefore the default value for VAL will only be activated if an ECHO record for this option is
+given. The exact effect of all options can be found in the output description of the individual
+manuals. YoushouldgenerallynotethattheshortestpossibleoutputisachievedbyYES,while
+a rich output is obtained by FULL. By EXTR one achieves the output of values, which are ei-
+ther useful in further computational steps or can use up a lot of paper. Thus, use of this value
+should be made with care.
+If the user wants to prevent the output of certain results, he must deactivate them explicitly by
+NO. If for example one only wants the option REAC set, one must enter:
+ECHO OPT FULL VAL NO
+ECHO REAC
+2.3.8 UNIT – Units for Input/Output
+UNIT
+Item Description Unit Default
+TYPE No of a complete unit set (0-8) or Lt16 !
+No or designation of an implicit unit item
+USE The unit to be used for that item Lt16 *
+Tablecontinuedonnextpage.
+2-24 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+Item Description Unit Default
+DIG Number of decimal digits − *
+or E1 to E7 for exponential formats
+SET Effectiveness LT INOU
+OUT Output
+IN Input
+INOU Input and Output
+TheSOFiSTiKprogramsallowtheinputandoutputinthemostsuitableengineeringunits. The
+units used in the database are stored based on SI-units kN, m, sec. The Units for input and
+output will be preselected with the definition of the design code with a global set. However,
+other units can also be used for input and output (e.g. N, mm or cm2) as well as a different
+number of decimals. The record UNIT allows to specify within a current program run different
+unitstobeusedforinputoroutput. ItispossibleeithertoselectacompleteunitsetwithTYPE:
+0 = Standard units (m, kN, sec with some historic deviations)
+1 = German buildings (sections in cm, system in m)
+2 = German steel construction, (sections mm,cm2,dm4, system in m)
+3 = Bridge construction (like 0 but internal forces in MN instead of kN)
+4 = Soil Mechanics (m, kN, sec)
+5 = Structural Engineering (sections in mm, system in m)
+6 = Metric system (All dimensions in mm, loads in kN)
+7 = Mechanical (All dimensions in mm, loads in N)
+8 = US customary (Imperial) Units (AASHTO: foot, lbs, kip)
+9 = US customary (Imperial) Units (ACI/AISC: inch, lbs, kip)
+It is also possible to select a specific object form the list of implicit units, specified in the CD-
+BASE.CHMdescription(e.g. 1001orGEO_LENGTH,seecdbase.chm). Thenamatchingunit
+hastobespecifiedatUSEandoptionallythenumberofdecimaldigitsjustforthisitemmaybe
+selected.
+SOFiSTiK2023 2-25SOFiSTiK|CADINP-InputLanguage
+2.3.9 PAGE – Control of Input/Output
+PAGE
+Item Description Unit Default
+FIRS Number of the first page of the output − *
+Negative entries turn page numbering off
+LINE Number of lines per page − *
+MARG Column number for left margin − *
+LANO Output language, if implemented − *
+0 German
+1 English
+2 French
+3 Spanish
+LANI Input language, if implemented − *
+0 German
+1 English
+UNIO obsoleted: System of units for output − *
+UNII obsoleted: System of units for input − *
+FORM Format of page header − *
+0 single line header
+1 multiline header
+2 ZTVK with graphic char.
+3 ZTVK without graphic char.
+4 short header
+PRIL Printout level in the output file − 0
+-2 error messages only
+-1 warnings as well
+0 additional information
+1 computing times as well
+PAG Identification of page LT12 *
+(e.g. ”page II/”)
+TherecordPAGEissomehowobsolete,becauseitsparametersarederivedfromtheoperating
+system or should be defined in the sofistik.def file. All parameters except the languages and
+units may be defined in Report Browser at the time of printing.
+2-26 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+Standard
+SOFiSTiK AG * Bruckmannring 38 * 85764 Oberschleißheim Page 1
+SOFiSTiK 2018 AQUA - GENERAL CROSS SECTIONS 2017-12-05
+#HEAD1
+#HEAD2
+#HEAD3
+#HEAD4
+#HEAD5
+#HEAD6
+No Frame
+SOFiSTiK AG * Bruckmannring 38 * 85764 Oberschleißheim Page 1
+SOFiSTiK 2018 AQUA - GENERAL CROSS SECTIONS 2017-12-05
+Materials and Cross-Section
+Default design code is EuroNorm EN 1993-1-1:2005 Steel Structures (Europe) V 2018
+Structure: A (Buildings)
+Snow load zone : 1
+With Frame
+SOFiSTiK AG * Bruckmannring 38 * 85764 Oberschleißheim Page 1
+SOFiSTiK 2018 AQUA - GENERAL CROSS SECTIONS 2017-12-05
+#HEAD1
+#HEAD2
+#HEAD3
+#HEAD4
+#HEAD5
+#HEAD6
+Materials and Cross-Section
+German ZTF-K Frame
+IntheZTVKVersiononlythefirst48charactersofheaderlinesareused. Thepersistentname
+ofthecompanycanbechangedonlybySOFiSTiK.Howeveritispossibletochangethename
+for a specific project within the SOFiSTiK-Environment.
+Author : SOFiSTiK AG * Bruckmannring 38 * 85764 Oberschleißheim
+Program : SOFiSTiK 2018 AQUA - GENERAL CROSS SECTIONS
+Structure : #HEAD1 ASB No.: Date:
+#HEAD2 2017-12-05
+Part : #HEAD3 Archiv No.:
+Block : #HEAD4 Page 1
+Record : #HEAD5
+#HEAD6
+German ZTV-ING Frame
+In the sofistik.def few attributes should be manually inputted (Baumassnahme, Strassen-
+bauverwaltung Aufsteller). Every HEAD input will fill the next free space in the Page Frame
+options.
+KOPF1 Baumassnahme
+KOPF2 Strassenbauverwaltung
+KOPF3 Aufsteller
+SOFiSTiK2023 2-27SOFiSTiK|CADINP-InputLanguage
+KOPF4 Bauteil
+KOPF5 Kapitel 1
+KOPF6 Kapitel 2
+Baumaßnahme: #HEAD1 Bauwerksnummer (ASB):
+Straßenbauverwaltung: #HEAD2
+Aufsteller: #HEAD3 Date: 2017-12-05
+Materials and Cross-Section
+Default design code is EuroNorm EN 1993-1-1:2005 Steel Structures (Europe) V 2018
+Structure: A (Buildings)
+Snow load zone : 1
+Materials
+Mat Classification γ-M
+1 S 275 (EN 1993) 1.00
+Bauteil: #HEAD4 Page: 1
+Kapitel / Vorgang: #HEAD5 Archiv No.:
+#HEAD6
+2.3.10 SIZE – Graphic Format
+SIZE
+Item Description Unit Default
+TYPE Paper size − -URS
+Positive value landscape format
+Negative value portrait format
+SC Scale − *
+0 format filling
+* engineering scale, best pos-
+sible for filling the page
+W Paper width cm *
+H Paper height cm *
+MARG Draws a border LT FULL
+NO
+draws an inner border + scale
+here W and H define the size
+of the area to be drawn at
+(for single sheet plotters and
+laser printers)
+Tablecontinuedonnextpage.
+2-28 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+Item Description Unit Default
+YES
+draws a free border around
+the drawing W and H define
+the size of the paper (2cm
+margin, otherwise .5cm)
+FULL
+an additional border to cut the
+drawing at the outer paper
+limits is drawn (for drum
+plotters)
+FORM Form of the border LT *
+STAN standard frame
+ZTVK ZTVK-88 frame
+URS Report Browser definition
+Thisrecordappearswithinallprogramshavingagraphicaloutput. Itdefinestheoutputformat.
+In general, there are two variations of the task.
+• The user selects the paper format either implicitly using TYPE or explicitly by the width W
+and the height H.The program can set the scale itselfby picking the largest possible scale
+with the common values of 1:1, 1:2 and 1:5 or their multiples. An explicit setting of the
+scale SC will be used, if technically feasible. Setting SC to 0 results in the largest possible
+drawing regardless of the scale.
+• The user specifies the scale and by setting W and/or H to zero the appropriate paper size
+is automatically chosen. If only one of the two values is set to zero, then the drawing size
+will be automatically calculated to fit in the second direction, the scale does not need to be
+defined in this case.
+WhenusingTYPEyoucanalsospecifytheAmericanformatsorthespecialformatforHewlett-
+Packard Plotters instead of the DIN sizes. In this case a frame is created around the picture
+usingtheinputsofFORMandMARG.ThispicturewillprintedwithprogramReportBrowserin
+exactlythisform. InthecaseofURSorFORMURSapicturewithoutaframeiscreated. Then
+the frame is drawing from program Report Browser before printing. DINA URS correspond to
+a DIN-A4 paper, in this case W and H change the picture size. FORM URS calculates the
+pictures size from the given paper size, e.g. ”SIZE 3 FORM URS”; in this case W and H set
+the paper size. A preceding minus sign selects the portrait orientation:
+URS,-URS The maximum picture size usable within Report Browser
+A,-A ANSI Paper A (11 x 8.5 inch)
+B,-B ANSI Paper B (17 x 11 inch)
+SOFiSTiK2023 2-29SOFiSTiK|CADINP-InputLanguage
+C,-C ANSI Paper C (22 x 17 inch)
+D,-D ANSI Paper D (34 x 22 inch)
+HPA,-HPA Hewlett Packard Paper A (259 x 199 mm)
+HPB,-HPB Hewlett Packard Paper B (416 x 259 mm)
+HPC,-HPC Hewlett Packard Paper C (529 x 378 mm)
+HPD,-HPD Hewlett Packard Paper D (809 x 528 mm)
+HP4,-HP4 Hewlett Packard Paper 4 (276 x 193 mm)
+HP3,-HP3 Hewlett Packard Paper 3 (404 x 276 mm)
+HP2,-HP2 Hewlett Packard Paper 2 (564 x 366 mm)
+HP1,-HP1 Hewlett Packard Paper 1 (787 x 564 mm)
+WIN,-WIN Paper size of current WINDOWS printer
+MP,-MP Matrix printers with 8 x 12 inch (200 x 287 mm)
+LP,-LP Laser printers with A4 paper (198.4 x 280 mm)
+MPW Wider Matrix-printers 14 x 12 inch paper
+For these formats the default is MARG NO.
+2-30 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+2.4 Generation of Pictures
+With the following records true scale sketches may be inserted within the comments before or
+aftertheanalysis. TheclassicalGKS-primitivesPolyline,Polymarker,fillareaandtextareavail-
+able. Further there are the generalized Drawing primitive and a special command to measure
+distances which provides extended labelling possibilities.
+2.4.1 <PICT> – Start of a picture
+< >
+PICT
+Item Description Unit Default
+XCM Horizontal size cm *
+YCM Vertical size cm *
+TEXT Heading of picture Lt64 -
+Everypicturestartswiththerecord <PICT> . Itcontainsallelementsuptothenext </PICT>.
+A transformation No 1 will be preset in cm as dimension.
+2.4.2 GNT – Scale of a picture
+GNT
+Item Description Unit Default
+NO Number of transformation − *
+SC Desired Scale − -
+XMIN Window of user-coordinates ∗ -
+YMIN ∗ -
+XMAX ∗ -
+YMAX ∗ -
+WXMI Window of workstation (paper space) cm 0
+WYMI cm *
+WXMA cm 0
+WYMA cm *
+A transformation is selected (only NO given) or defined with this record. The program will
+automatically select an uniform scaling in all directions. If the user wishes different scalings
+in X and Y-direction. he has to specify SC < 0 and all four coordinates of the window. GKS
+supports three different transformations.
+2.4.3 GPL – Polyline
+SOFiSTiK2023 2-31SOFiSTiK|CADINP-InputLanguage
+GPL
+Item Description Unit Default
+X1 Coordinates of Polygon ∗ !
+Y1 ∗ !
+X2 (Alternate definition of polygons is via multiple ∗ X1
+recordseachcontainingonlyonesinglevertexX1,Y1.
+This allows the definition of up to 255 vertices)
+Y2 ∗ Y1
+.... ... ...
+X16 ∗ X15
+Y16 ∗ Y15
+2.4.4 GPM – Polymarker
+GPM
+Item Description Unit Default
+X1 Coordinates of Polymarker locations ∗ !
+Y1 ∗ !
+X2 ∗ X1
+Y2 ∗ Y1
+.... ... ...
+X16 ∗ X15
+Y16 ∗ Y15
+2.4.5 GFA – Fill Area
+GFA
+Item Description Unit Default
+X1 Coordinates of Fill area ∗ !
+Y1 ∗ !
+X2 (Alternate definition of polygons is via multiple ∗ X1
+recordseachcontainingonlyonesinglevertexX1,Y1.
+This allows the definition of up to 255 vertices)
+Tablecontinuedonnextpage.
+2-32 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+Item Description Unit Default
+Y2 ∗ Y1
+.... ... ...
+X16 ∗ X15
+Y16 ∗ Y15
+2.4.6 GGDP – Generalized Drawing Primitive
+GGDP
+Item Description Unit Default
+TYPE Type of element LT CIRC
+CIRC Full circle
+BUTT Filled circle
+ARC circular arc
+VECT centred vectors
+VEC1 starting vectors
+VEC2 ending vectors
+X1 Coordinates or ∗ !
+Y1 Increments of coordinates of element ∗ !
+X2 ∗ !
+Y2 ∗ !
+.... .... ....
+X15 ∗ -
+Y15 ∗ -
+The GGDP is a method provided by GKS to create more complex primitives. With SOFiSTiK
+these are:
+CIRC A full circle with centre at (X1,Y1) and a point on the periphery (X2,Y2). OPT is not
+used.
+BUTT A filled circle with centre at (X1,Y1) and a point on the periphery (X2,Y2). OPT is
+not used.
+ARC A circular arc with centre at (X1,Y1) and a periphery from point (X2,Y2) to (X3,Y3).
+OPT is not used.
+VECT Asinglevectoratpoint(X1,Y1)withthedirectionalcomponents(X2,Y2)oranarray
+of vectors extending along the base line from P1 to P3 to P5 etc in the direction P2,
+SOFiSTiK2023 2-33SOFiSTiK|CADINP-InputLanguage
+P4 P6 etc. VECT will draw the vectors with its centre at the baseline, while VEC1
+willputthestartingpointandVEC2willusetheendpointwiththearrowheadatthe
+baseline.
+2.4.7 GTXT – Text Label
+GTXT
+Item Description Unit Default
+X Coordinates of insertion point ∗ !
+Y ∗ !
+TEXT Text − -
+VAL numeric value ∗ -
+UNIT Unit Lt/− 1
+ND Number of digits − *
+Text may be positioned in several ways. The displayed text itself may be composed from a
+given text and an numerical value. For the latter you may select a conversion and format
+according to the cdbase.chm.
+2.4.8 GSCA – Dimensioning
+GSCA
+Item Description Unit Default
+X1 Coordinates of first point ∗ !
+Y1 ∗ !
+X2 Coordinates of second point ∗ -
+Y2 ∗ -
+TEXT Text − 1
+VAL Numeric value ∗ *
+UNIT Unit Lt/−
+ND Number of digits −
+GSCAisaspecialformoflabelling. Adimensioninglinewillbedrawnandatextwillbewritten
+attheline. Thedefaultofthetextisthedistancebetweenthetwopoints,butitmaybespecified
+asexplicitnumberand/oragiventext. Thecombinationofthedefaultdistancewithagiventext
+requires the text to end with an equal ”=” sign. For the shown value a conversion and format
+according to the cdbase.chm see may be selected.
+2-34 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+2.5 Attributes of Graphic Representations
+The drawing elements Line, Mark, Text and Area can have various attributes. The user usu-
+ally specifies all the attributes within the programs with graphical output by entering bundled
+numbers. These are constructed according to the following expression:
+nd = 1000 · co + 100 · br + typ
+For Windows programs different palettes are foreseen for screens with bright or dark back-
+ground as well as monochrome or coloured printers. You can change these definitions via
+Report Browser Options in the Registry for all programs.
+The following CADINP-records are only available within the picture definitions <PICT> ...
+</PICT>. The comments and descriptions of the parameters are valid however for all other
+graphical programs as well.
+2.5.1 GCOL – Colour Selection
+GCOL
+Item Description Unit Default
+COL Pen number or colour name − 1
+R Red component − -
+G Green component − -
+B Blue component − -
+GCOL selects the colour for all primitives. For COL you have the choice between one of the
+numbers from 1 to 15 or the literals for the standard colours from below. If your device allows
+it, you may specify a colour (recommended 9 to 15) by its RGB-components.
+col = Colour Index 0 = background
+STAN 1 = black or white (Pen 1)
+RED 2 = red (Pen 2)
+GREE 3 = green (Pen 3)
+BLUE 4 = blue (Pen 4)
+YELL 5 = yellow (Pen 5)
+MAGE 6 = magenta (Pen 6)
+CYAN 7 = cyan (Pen 7)
+BROW 8 = brown (Pen 8)
+2.5.2 GPLI – Polyline Attributes
+SOFiSTiK2023 2-35SOFiSTiK|CADINP-InputLanguage
+GPLI
+Item Description Unit Default
+IND Bundled SOFiSTiK-Index − 1
+COL Colour (as with GCOL) −/LT -
+TYPE Line type LT -
+SOLI solid
+DASH dashed
+DOT dotted
+DDOT dash-dotted
+NDAS narrow dashed
+NDOT narrow dotted
+NDDO narrow dash dotted
+WDAS wide dashed
+WDOT wide dotted
+WDDO wide dash-dotted
+WIDT Width factor of line − -
+SCAT Style of dimensioning GSCA − 2
+1 inclined small lines
+2 small circles
+3 arrow heads
+For Polylines holds for the bundled index:
+nd = 1000 · co + 100 · dt + type
+widt = Line thickness factor 0 = normal thickness
+1 = thickness times 1.4
+2 = thickness times 2.0
+3 = thickness times 2.8
+4 = thickness times 4.0
+5 = thickness times 5.6
+etc.
+type = line style 1 = continuous
+2 = medium dashed
+3 = medium dotted
+4 = medium dotted dashed
+2-36 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+5 = tightly dashed
+6 = tightly dotted
+7 = tightly dotted dashed
+8 = sparsely dashed
+9 = sparsely dotted
+10 = sparsely dotted dash
+2.5.3 GPMI – Polymarker Attributes
+GPMI
+Item Description Unit Default
+IND Bundled SOFiSTiK-Index − 1
+COL Colour (as with GCOL) −/LT -
+TYPE Marker type (Number or Literal) LT -
+. + * o X
+SIZE Scale factor − -
+For Polymarkers hold:
+nd = 1000 · co + 100 · sze + type
+size = marker size 0 = normal size
+1 = size times 1.4
+2 = size times 2.0
+3 = size times 2.8
+4 = size times 4.0
+5 = size times 5.6
+etc.
+type = Mark type 1 = . Point
+2 = + Plus
+3 = * Star
+4 = o Circle
+5 = x Cross
+2.5.4 GTXI – Text Attributes
+GTXI
+SOFiSTiK2023 2-37SOFiSTiK|CADINP-InputLanguage
+Item Description Unit Default
+IND Bundled SOFiSTiK-Index − 1
+COL Colour (as with GCOL) −/LT -
+H Text height cm -
+BX Writing direction − 1
+BY − 0
+HALI Horizontal alignment LT NORM
+NORM default of PATH
+LEFT aligned to the left
+CENT centred
+RIGH aligned to the right
+VALI Vertical alignment LT NORM
+NORM default of PATH
+TOP top of cell
+CAP top of characters
+HALF centre line
+BASE writing line
+BOTT lower bottom line
+PATH Writing direction LT RIGH
+RIGH to the right
+LEFT to the left
+UP upwards
+DOWN downwards
+EXPA Expansion factor − 1.0
+SPAC Additional spacing − 0.0
+FONT Font number − -
+For text the following hold for the bundled index:
+nd = 1000 · co + ƒont
+font = Character style installation dependent
+2.5.5 GFAI – Fill Area Attributes
+GFAI
+2-38 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+Item Description Unit Default
+IND Bundled SOFiSTiK-Index − 1
+COL Colour (as with GCOL) −/LT -
+STYL Fill area Style LT -
+HOLL Hollow
+SOLI Solid
+PATT Pattern
+HATC Hatch
+BPAT Pattern with boundary
+BHAT Hatch with boundary
+TYPE Style index − -
+For areas (Fill Area) for the bundled index holds:
+nd = 1000 · co + 100 · sty + type
+ibr = Fill Area Style 0 = hollow (only boundary drawn)
+1 = solid (entire area filled)
+2 = pattern
+3 = hatch
+type = Fill Area Style Index (only styl =2/3)
+The effect of the parameter type is device dependent. Classical vector plotters for example
+cannotrepresentanybitpatterns. Pattern1correspondstocompletelyblank,whereaspattern
+2 usually corresponds to a uniform sparse shading, which gets more dense by increasing
+numbers. Specialpatternsarereservedfromtype=11andabove. Addinga32toapatternwill
+make it opaque.
+Different variations exist for opaque hatch lines, in one or two directions.
+type 1 / 2 / 3 = vertical / horizontal / vertical+horizontal
+4 / 5 / 6 = diagonal +45 deg / -45 deg / +45 and -45 deg
+7-12 = as 1 to 6 dashed
+13-24 = as 1 to 12 with larger scale
+25,26 = reinforced concrete
+27 = earth
+2.6 Insertion of a Picture
+2.6.1 <LINK> – Insertion of a Picture
+SOFiSTiK2023 2-39SOFiSTiK|CADINP-InputLanguage
+< >
+LINK
+Item Description Unit Default
+filename.bmp LT72 -
+Pictures with BMP-format can be inserted with <Link> in input files and templates.
+The insertion of pictures is not possible in a block for texts with <Text> ... </Text> or for
+pictures which should be generated with <Pict> ... </Pict>.
+2.7 Parametric Input
+The current version of the input language CADINP allows the definition of standard input with
+free parameters.
+For example, a simple truss of the following type can be defined by:
+Figure2.2: Truss
+The parameters here are the span width, the height as well as the cross-sectional area of the
+bars. An input for SOFIMSHA could be defined as follows:
++PROG SOFIMSHA
+HEAD TRUSS
+LET#1 12.40 ! SPAN WIDTH
+LET#2 2.30 ! HEIGHT
+NODE 1 0 0 PP
+(2 4 1) (#1/4 #1/4) 0
+5 #1 0 PP
+NODE 6 #1/4 -#2/2
+7 #1/2 -#2
+8 3*#1/4 -#2/2
+TRUS (1 4 1) (1 1) (2 1) NCS 1
+TRUS 5 1 6 NCS 1
+6 6 7 ==
+2-40 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+7 7 8 ==
+8 8 5 ==
+TRUS (11 13 1) (2 1) (6 1) NCS 2
+TRUS (14 15 1) (6 2) 3 NCS 2
+END
+Morepowerfuldatagenerationisavailableusingloops. Forexample,thefollowinginputallows
+the generation of a series of nodes on a hyperbolic arc:
++PROG SOFIMSHA
+HEAD COOLING TOWER
+! MERIDIAN HYPERBOLIC EQUATION (R/R0)**2-((Z-Z0)/ZZ)**2 = 1
+! (R1/R0)**2-(-Z0/ZZ)**2 = 1 => (1/ZZ)**2
+! (R2/R0)**2-((H-Z0)/ZZ)**2 = 1
+! PARAMETER:
+STO#H 160.0 ! TOTAL HEIGHT
+STO#R0 30.0 ! SMALLEST RADIUS
+STO#R1 55.0 ! RADIUS AT BOTTOM
+STO#R2 35.0 ! RADIUS AT TOP
+LET#1 SQR(#R1**2-#R0**2)
+LET#Z0 #H*#1*(SQR(#R2**2-#R0**2)-#1)/(#R2**2-#R1**2)
+LET#ZZ #Z0/SQR((#R1/#R0)**2-1.0)
+LET#M 16 ! SUBDIVISION IN HEIGHT
+TXB GENERATION OF A HYPERBOLIC COOLING TOWER
+TXB HEIGHT RADIUS
+TXB 0.0 #(R1,9.1)
+TXB #(Z0,9.1) #(R0,9.1)
+TXB #(H,8.1) #(R2,9.1)
+TXB
+TXB PARAMETER ZZ OF HYPERBOLIC EQUATION = #(ZZ,9.3)
+LET#2 #H/#M ! DELTA-Z
+LOOP#1 #M+1
+LET#Z #1*#2
+NODE #1*50+1 #R0*SQR(1.+((#Z-#Z0)/#ZZ)**2) 0.0 #Z
+ENDLOOP
+END
+For the beginner these inputs are likely to be confusing, however, this is a very powerful pos-
+sibility which allows to automize frequently happening calculations. Many macros have devel-
+oped from simple beginnings.
+2.8 Compatibility of Data files
+Textbasedinputdataissuitedtobeusedforlongtermstorageofdata,betterthananypropri-
+etary binary format. Unfortunately the input syntax is changed some times,
+SOFiSTiK2023 2-41SOFiSTiK|CADINP-InputLanguage
+SOFiSTiK has to trade the readability of the manual, the catch of data errors and the compati-
+bility of the data records.
+Thus we have established the following guidelines:
+• Input records will be extended most likely at the end of the structure, but if an entry fits
+in better at an other position (e.g. third coordinate added) it will be inserted. Especially
+designations will remain the last entry in most cases. Thus the user should use the names
+of the item as a prefix for all extended data, eg.:
+NODE 100 10.25 20.00 24.00 FIX PZ
+Forlargerdatavolumestheuseofatableisalwaysfavourable,theuseofexplicitstandard
+items’-’shouldbeavoided. Forexporteddatathedeletionof”unnecessary”datamayhelp
+to reuse elder data records.
+• It is also possible that the names of a record or the items will be changed. This is a strong
+indication for a changed syntax or data format. The general procedure is that there will be
+a warning about an obsolete feature to be removed in a future release. We recommend to
+change data records to be intented to be used in upcoming versions rather soon. Althouh
+wetrytokeeptheobsoletedinputaslongaspossible,itwillberemovedfromthemanuals
+for the next major release.
+• The most critical issue is the change of the format for an unchanged item name. We try to
+catch old data definitions (eg. mm instead of m) or to issue a warning about possible old
+data (If a warning is issued, an explicit unit definition might clearify the subject.) But the
+user should control his data after a switch to a new major release thoroughly.
+• However a rather common case is that the defaults have to be changed. This may be
+triggeredbychangeofthedesigncodes,abetterprogramminglogicorthedemandsofour
+customers. Thereisnogoldenway. Ifonespecifiesonlytheminimumrangeofvalues,one
+mayreusethedatamoreeasily,butitmayhappenthatanewreleasewillproducedifferent
+results. The default to select national dependant parameters depending on the settings
+of the operating system is a nice feature, but it may create different results on different
+computers and should be avoided therefore.
+2.9 Starting an Analysis
+2.9.1 #DEFINE - Parameter Substitution
+SPS is further capable of making global replacements in the input file. The declaration of text
+blocks must take place before they are used. This is done via a line #define text=name. The
+nameofatextblockconsistsofupto40characterswithout$. Thefirstcharacterofanameofa
+textblockhastobealetter. Thevalueofthetextblockisatextofarbitrarylength. Parameters
+within an assignment are not evaluated until the replacement. A redefinition of an assignment
+is possible.
+A parameter in the input data or in a block can be referred to by using the syntax $(name).
+Blank spaces are not allowed between $ and (. Upper/lower case letters have no influence.
+The replacement can be recursive. Definitions like $(A$(INDEX)) are allowed.
+Example:
+2-42 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+$PROG (extension for TEDDY)
+#define LENGTH=3.70
+#define WIDTH=30
+#define HEIGHT=50
+#define PLATE=50 20 10 80
+PROG AQUA
+CONC 1 B 25
+STEE 1 BST 500
+SREC 1 $(HEIGHT) $(WIDTH)
+SREC 2 $(PLATE) ASU 2.3
+END
+PROG SOFIMSHA
+SYST GIRD
+NODE 1 0.0 0.0 FIX PP
+NODE 2 $(LENGTH)/2 0.0
+NODE 3 $(LENGTH)
+BEAM 1 1 2 1
+BEAM 2 2 3 1
+END
+Unlike the CADINP variables #() the $() variables are replaced by strings, so we can insert
+literals or generation macros.
+Therearetwodefaultparameters,namely$(NAME)containingtheprimarynameoftheoutput
+file and $(PROJECT) containing the name of the project. These can be helpful especially for
+SYS commands.
+Text blocks which are not defined in the input file can be set with a SET-record. When the
+command (e.g. in the environment) is given:
+SET SIZE=LP O FORM ZTVK
+SPS can insert in all the files the relevant format:
+SIZE $(SIZE)
+Moreover it is possible to describe global parameters for SPS in a SOFISTIK.DEF file. This
+results in a hierarchy of three layers:
+Firstly a definition in the input data
+Secondly the definition with SET (to be avoided!)
+Lastly a definition in SOFISTIK.DEF
+2.9.2 #INCLUDE - Block Definitions
+By the use of block building several lines of the data can be used more than once at any point
+inthedataset. Amaximumof256internalblocksandanunlimitednumberofdatablocksinan
+arbitrary order are allowed. Blocks can be recursively built in a depth of up to 32 levels.
+SOFiSTiK2023 2-43SOFiSTiK|CADINP-InputLanguage
+#DEFINE name Beginning of block name (up to 40 characters)
+#ENDDEF End of block
+#UNDEF name Delete a defined block
+#INCLUDE name Insertion of block name from memory or file name
+Usingblocksdoesnotonlyfreetheuserfromcopyingre-occurringinputlines,butalsoenables
+the use of sub-programs.
+Example:
+#define SECT
+$PROG AQUA
+$ TRAPEZOIDAL CROSS-SECTION PARAMETER BO,BU,H
+POLY UPZ
+VERT 1 #1/2 -#3/2
+2 #2/2 #3/2
+CURF 3
+#enddef
+PROG AQUA
+STEE 1 ST 37
+SECT 1 ; LET#1 0.60,0.20,0.60
+#include sect
+SECT 2 ; LET#1 0.60,0.30,0.60
+#include sect
+SECT 3 ; LET#1 0.60,0.30,0.70
+#include sect
+END
+When inserting files in UNIX it is important to consider the lower/uppercase letters used for
+the filenames! The old formats $BLOCK BEG/END/SET are still supported, but should not be
+used anymore.
+2.9.3 APPLY - Integration of data during the calculation
+With the APPLY command a file can be included anywhere between two blocks in the input
+data set, but not inside a module. This file should contain one or more module calls +PROG.
+Whilewith#INCLUDE(seeSection2.9.2: #INCLUDE-BlockDefinitions)thedataareinserted
+before the calculation into the data set, the APPLY command is executed during the computa-
+tion, i.e. the data can be generated during a calculation and thereafter be inserted at the right
+place.
+Additionally APPLY is controlled with a sign +/- , that means with +APPLY the command is
+executed, with -APPLY it will be skipped.
+A typical example for the use of APPLY is the program CSM (Construction Stage Manager).
+With the CSM a file $(NAME)_csm.dat is created. This file is inserted with APPLY into the
+calculation.
+2-44 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
++PROG CSM
+...
+END
++APPLY "$(NAME)_csm.dat" $ contains at least one +PROG
++PROG ASE
+...
+END
+2.9.4 #IF - Conditional Input
+IF THEN ELSE constructions can be defined. This means that larger input blocks can be
+inserted and removed, which is more difficult using the IF constructions in CADINP, and that
+several program calls can be grouped in one block.
+The relevant control lines are familiar to all C-Programmers. In the first column the following
+possibilities can be used:
+#if expression
+any line, also PROG and SYS
+#else
+any line, also PROG and SYS
+#endif
+”expression” may be just the name of a block or a variable which is evaluated to be true if it is
+definedandnotemptyandnotequaltozero. Butitmightbealsoacomparison$(MODE)==EC
+or $(MODE) < >EC or $(MEMBERS)>3. Be aware however that the comparisons are purely
+lexically based on strings, adjusted to the right for numbers, and to the left for all other cases.
+Therefore we have A < B, AA < BA, 10 < 18 but unfortunately also 10.0 > 12.
+If ”expression” is not true, the first block will be skipped and the block after #else will be used.
+Naturally the second block can be omitted if not needed.
+These constructionscan be nested in upto 32 levels. An unmotivated #else or#endif will lead
+to errors, as well as an unfinished construction.
+Example:
+#define DOAQB=0
+#if DOAQB
+PROG AQB
+HEAD .....
+LC .....
+DESI .....
+END
+#endif
+PROG STAR2
+HEAD .....
+#if DOAQB
+$ Design with AQB
+SOFiSTiK2023 2-45SOFiSTiK|CADINP-InputLanguage
+#else
+DESI .....
+#endif
+.....
+END
+Theindentationisonlyusedforreadability. IntheaboveexampleSTAR2isusedforthedesign.
+If DOAQB=1, AQB is used for the design task.
+2.9.5 Templates
+Aspecialformofinputfilesiscalledatemplate. Thestructureofthesefilesisgivenasfollows:
+#DEFINE L1=10.0
+#DEFINE L2=20.0
+#DEFINE L3=30.0
+#DEFINE P=12.0
+PROG TEMPLATE (or any other program name)
+LET#L1 $(L1)
+LET#L2 $(L2)
+LET#L3 $(L3)
+LET#L #L1+#L2+#L3
+TXA Introduction
+<TEXT>
+This is the analysis of a continuous beam with 3 spans:
+L1 = <EDIT:L1>$(L1)</EDIT>
+L2 = <EDIT:L2>$(L2)</EDIT>
+L3 = <EDIT:L3>$(L3)</EDIT>
+SUM = #(L,10.2)
+</TEXT>
+<PICT>
+....
+</PICT>
+PROG AQUA
+following al the data
+Inmanycasesthisislikeanormaldataset,whichonlyincludestheprefaceofthetotalanalysis.
+It is summarised under a special program name called TEMPLATE. The input consists only of
+textandpictureelementscombinedwitharithmeticexpressions. Butthemechanismisgeneral
+available for all programs.
+NowwithinReportBrowseryoumaychangetheselectedparametersandre-analysethisgiven
+module. This allows other users to benefit from these macros which may contain rather com-
+plicated treatment, but need only a few problem dependant parameters .
+2.9.6 Iterative Analysis with Multiple Modules
+2nd Order Theory for nonlinear materials is contained in the programs STAR2/AQB. However,
+only one method of computation of the reinforcement can be considered by STAR2. A com-
+2-46 SOFiSTiK2023CADINP-InputLanguage|SOFiSTiK
+putation with different methods can be implemented by an iteration between AQB and STAR2.
+The iteration is controlled by the parameter ITER of the record PROG.
+PROG STAR2 1st Step for 1st Order Theory
+CTRL I Definition of loading cases
+LC ....
+END
+PROG AQB ITER parm parm separated by blank spaces
+BEAM ....; LC.... 1st selection and design definition
+ULTI ....; NSTR....
+END
+BEAM ....; LC.... 2nd selection and design definition
+ULTI ....; NSTR....
+END
+PROG STAR2 ITER parm
+HEAD ....
+CTRL II 1
+END
+The maximum number of iterations to be made is regulated by ITER (e.g. ITER 30), default is
+20 iterations.
+This mechanism has been extended with Release 23 for other combinations of general mod-
+ules. To terminate the iteration it is required to specify within the CADINP-definition explicitly
+EXIT_ITERATION.
+PROG TEMPLATE
+STO#TARGET 0 ; STO#PARAM 1.0
+PROG AQUA ITER
+RCL#PARAM
+QNR .... Definition of sectuion using #PARAM
+PROG AQB ITER
+BEME .... Design and save results
+ENDE
+@KEY / LET# TARGET ... Calculate a target function to
+become zero
+IF ABS(#TARGET) < 0.001
+EXIT_ITERATION
+ELSE
+STO#PARAM new_target_value
+ENDIF
+2.9.7 Operating System Commands
+Any desired shell commands can be integrated in an analysis. Parameter substitution is also
+active for these lines, for example the character string $(NAME) is replaced by the primary
+name of the input or the output file, while $(PROJECT) is replaced by the name of the project.
+*SYS command command will be executed as in any
+batch file, if the last PROG
+SOFiSTiK2023 2-47SOFiSTiK|CADINP-InputLanguage
+line was active.
++SYS command command will be executed as in any
+batch file.
+-SYS command command will not be executed, all
+following *SYS lines
+deactivated.
+e.g:
++SYS del "$(PROJECT).$D1" deletes the stiffness matrix
++SYS wait "name.exe" parameter WPSisinitiatedtowaitwiththeprocess-
+ing of the further modules until the ac-
+tive process is finished with ”+SYS -wait
+name.exe”.
+2-48 SOFiSTiK2023

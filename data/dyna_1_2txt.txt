@@ -1,0 +1,3413 @@
+DYNA
+Dynamic Analysis
+SOFiSTiK | 2023DYNA
+DynamicAnalysis
+DYNAManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|DYNA
+Contents
+Contents i
+1 Task Description 1-1
+2 Theoretical Principles 2-1
+2.1 Introduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.2 Direct Time History Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-3
+2.2.1 Duhamel’s Integral . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-3
+2.2.2 Integration of the Equations of Motion . . . . . . . . . . . . . . . 2-3
+2.3 Modal Time History Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-5
+2.3.1 Modal Decomposition . . . . . . . . . . . . . . . . . . . . . . . . . . 2-5
+2.3.2 Eigenvalue Problem . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-6
+2.3.3 Generalized Modal SDOF System . . . . . . . . . . . . . . . . . . 2-7
+2.3.4 Computation of the Modal Damping . . . . . . . . . . . . . . . . . 2-8
+2.3.5 Solution of the Modal Equations . . . . . . . . . . . . . . . . . . . 2-9
+2.4 Modal Steady-State Analysis to Harmonic Excitation . . . . . . . . . . . . . 2-10
+2.5 Excitation through a Spectra . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-12
+2.5.1 Earthquake Response Spectra . . . . . . . . . . . . . . . . . . . . 2-12
+2.5.2 Wind Spectrum Analysis . . . . . . . . . . . . . . . . . . . . . . . . 2-13
+2.5.3 Superposition of the Maximum Responses . . . . . . . . . . . . 2-14
+2.5.4 Sign of Corresponding Forces . . . . . . . . . . . . . . . . . . . . 2-14
+2.6 Dynamic excitation as ground acceleration . . . . . . . . . . . . . . . . . . . 2-16
+2.6.1 Effective earthquake forces . . . . . . . . . . . . . . . . . . . . . . 2-16
+2.6.2 Uniform Support Excitation . . . . . . . . . . . . . . . . . . . . . . 2-17
+2.6.3 Multiple Support Excitation . . . . . . . . . . . . . . . . . . . . . . 2-18
+2.6.4 Large Mass and Large Stiffness Method . . . . . . . . . . . . . . 2-20
+2.6.5 Baseline Correction . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-21
+2.6.6 Dynamic load as ground acceleration . . . . . . . . . . . . . . . . 2-22
+2.6.7 Total Response . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-23
+2.6.8 Equivalent Modal Loads . . . . . . . . . . . . . . . . . . . . . . . . 2-23
+2.6.9 Effective Modal Mass . . . . . . . . . . . . . . . . . . . . . . . . . . 2-24
+2.6.10 Base Shear and Base Overturning Moment . . . . . . . . . . . . 2-25
+2.7 Storey level definition . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-28
+2.7.1 Computation of the center of rigidity (COR) of a diaphragm
+floor . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-29
+2.7.2 Computation of the center of mass (COM) of a storey . . . . . 2-31
+2.7.3 Storey results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-31
+2.8 Kinematic Constraints . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-31
+2.9 Elastic Stiffnesses . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-31
+2.10 Geometric Stiffness and P-delta . . . . . . . . . . . . . . . . . . . . . . . . . . 2-32
+2.11 Nonlinear Effects. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-32
+SOFiSTiK2023 iDYNA|Contents
+2.12 FAQ . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-33
+2.12.1 Manual Checks of the RSA Results . . . . . . . . . . . . . . . . . 2-33
+2.12.2 Modal Participation Factor . . . . . . . . . . . . . . . . . . . . . . . 2-36
+2.12.3 Equivalent Modal Loads . . . . . . . . . . . . . . . . . . . . . . . . 2-37
+2.12.4 Scaling of the Generalized SDOF Properties for a Different
+Eigenvector Normalization . . . . . . . . . . . . . . . . . . . . . . . 2-38
+3 Input Description 3-1
+3.1 Input Language . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.2 Input Records. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.3 SYST – System Parameters . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-3
+3.4 CTRL – Calculation Parameters . . . . . . . . . . . . . . . . . . . . . . . . . . 3-4
+3.4.1 SOLV Equation solver . . . . . . . . . . . . . . . . . . . . . . . . . . 3-8
+3.4.2 CORE Parallel computation control . . . . . . . . . . . . . . . . . 3-10
+3.5 GRP – Selection of Element Groups . . . . . . . . . . . . . . . . . . . . . . . 3-12
+3.6 MAT – General Material Properties . . . . . . . . . . . . . . . . . . . . . . . . 3-14
+3.7 BMAT – Elastic Support / Interface . . . . . . . . . . . . . . . . . . . . . . . . 3-15
+3.7.1 Derivation of bedding constants from reference material . . . . 3-16
+3.7.2 Rigid Frictional Interface . . . . . . . . . . . . . . . . . . . . . . . . 3-17
+3.8 SMAT – SBFEM - Material Properties . . . . . . . . . . . . . . . . . . . . . . 3-19
+3.9 MASS – Lumped Masses . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-20
+3.10 EIGE – Eigenvalues and Eigenvectors . . . . . . . . . . . . . . . . . . . . . . 3-22
+3.11 MODD – Modal Damping . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-24
+3.12 STEP – Parameter of the Step-wise Integration . . . . . . . . . . . . . . . . 3-28
+3.12.1 Static Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-28
+3.12.2 Steady State Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . 3-28
+3.12.3 Frequency Dependent Steady State Analysis . . . . . . . . . . . 3-29
+3.12.4 Transient Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-29
+3.13 LC – Load Case . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-31
+3.14 CONT – Contact and Moving Load Function . . . . . . . . . . . . . . . . . . 3-33
+3.15 HIST – Results within Time . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-35
+3.16 EXTR – Evaluation of Max. Internal Forces and Moments . . . . . . . . . 3-38
+3.17 ECHO – Extent of Output . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-43
+4 Output Description 4-1
+4.1 Nodes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.2 Cross Sections . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.3 General Parameters. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.4 Elements. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.5 Natural Frequencies. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-2
+4.6 Load Cases, Functions and Loads . . . . . . . . . . . . . . . . . . . . . . . . 4-2
+4.7 Displacements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-3
+4.8 Internal Forces and Moments. . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-4
+4.9 Time Variations. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-5
+Bibliography 4-7
+ii SOFiSTiK2023TaskDescription|DYNA
+1 Task Description
+The program DYNA can be used for static and primarily for dynamic analysis of three-
+dimensional structures. It can perform the following tasks (Special licenses may be needed):
+• Static analysis of load cases acting upon three-dimensional structures, as well as planar
+and axisymmetric structures.
+• Static analysis of load cases after second-order theory
+• Computation of the natural frequencies of three-dimensional structures.
+• Computation of the buckling eigenvalues of three-dimensional structures.
+• Implicit direct integration of the equations of motion for structures with arbitrary damping
+• Explicit direct integration of the nonlinear equations of motion
+• Interaction with load trains and wind loading
+• Soil structure interaction with the SBFEM
+• Integration of the equations of motion by superposition of the mode shapes.
+• Steady-state oscillations and excitation through spectra.
+Thestaticsystemisstoredinthedatabaseafteritsgeneratione.g. bytheprogramSOFiMSHA,
+SOFiMSHC or SOFiPLUS.
+The following elements can be processed by DYNA:
+• Point masses (with off diagonal components)
+• Three-dimensional prismatic bending beams with haunches, warping torsion and bedding
+profiles (piles)
+• Truss- and cable elements
+• Spring elements, boundary and FLEX elements
+• Scaled boundary finite elements (SBFEM)
+• Damping elements
+• Shell elements
+• 3D-solid elements
+For the explicit integration not all features are supported. Only the truss, cable, spring and
+the 3D volume (BRIC) element are available. All interactions (Wind, Loadtrain, Soil) are not
+available. But geometric and material nonlinearity are supported.
+The results of the dynamic analysis including the mode shapes are stored in the database as
+displacements and stresses with a load case number.
+The mode shapes can also be transferred from the database after a calculation with the pro-
+gram ASE.
+Forthepurposesofadynamicanalysis,theprogrammayoutputthemaximalandtheminimal
+of all displacements, velocities or accelerations as well as internal forces and moments, and
+eventually the time variation of selected degrees of freedom or internal forces and moments.
+SOFiSTiK2023 1-1DYNA|TaskDescription
+For speed reasons almost all algorithms follow what is called IN-CORE solutions. The size
+of the problem is therefore limited by the amount of available main memory. Modal solutions
+transferring the eigenvalues from ASE are not subjected to this limitations.
+1-2 SOFiSTiK2023TheoreticalPrinciples|DYNA
+2 Theoretical Principles
+2.1 Introduction
+Equations of Motion
+Themostbasicdynamicsystemisaanelementarysingledegreeoffreedomdynamicsystem
+- the mass-spring-damper system depicted in Fig. 2.1.
+(t)
+k
+k·(t)
+m·¨(t)
+m p(t) p(t)
+c·˙(t)
+c
+Figure2.1: Mass-spring-dampersystem
+One way of deriving the governing linear equation of motion of this linear single degree of
+freedom system (SDOF) is using the D’Alembert’s principle, to assume viscous damping and
+writing the balance of forces acting on the mass in motion (Fig. 2.1)
+m·¨(t)+c·˙(t)+k·(t)=p(t) , (2.1)
+where (t), ˙(t) and ¨(t) are displacement, velocity and acceleration, while k, c and m are
+stiffness, damping and mass of the SDOF system, respectively. p(t) is the external excitation
+force.
+Quite often the same equation is reformulated in a so called modal form:
+p(t)
+¨(t)+2ξω·˙(t)+ω2·(t)=
+, (2.2)
+m
+where ω=(cid:112)k/m is the eigenfrequency, while ξ=c/(2·m·ω) is the modal damping, which is
+also the fraction of the so called critical damping.
+Similarly, governing equationsof motionofa linearmulti degreeof freedom(MDOF)system is
+given by the following system of coupled 2nd order differential equations:
+M·¨(t)+C·˙(t)+K·(t)=p(t) (2.3)
+where(t),˙(t)and¨(t)arethedisplacement,velocityandaccelerationvectorsoftheMDOF
+system, respectively. M, C and K are mass, damping and stiffness matrices of the MDOF
+system, respectively. p(t) is the time dependent loading vector.
+Mass Damping and Stiffness Matrices
+In general, all matrices have the same structure. It is common, however, to diagonalise the
+massandthedampingmatrix. Thisispermittedinmostcaseswithoutlargeerrors,butcannot
+SOFiSTiK2023 2-1DYNA|TheoreticalPrinciples
+be applied to rotational masses and kinematic constraints with rotational degrees of freedom.
+The consistent mass matrices imposes a larger numerical effort and bigger memory require-
+ments, but produce in general more accurate results. However there is another disadvantage.
+The violation of the discrete maximum principle may lead in case of very small time steps to
+oscillations of the solutions. The times steps in such case must not be smaller that the time
+needed by the wave to propagate through a single element.
+For these reasons the program provides an input entry for the type of matrix assembly in the
+CTRL MCON record.
+Dynamic Loading
+Theloadingvectorp(t)canbeexpressedasasumofn p differenttime-dependentloadingvec-
+tors p (t), each of which represented by a product of space vector (load shape, load pattern)
+j
+p 0,j, which is not a function of time, and a time function g p,j(t)
+n n
+p p
+(cid:88) (cid:88)
+p(t)= p j(t)= p 0,j·g p,j(t) . (2.4)
+j=1 j=1
+Solution of the Equations of Motion
+To obtain the solution of the governing equations of motion even for a SDOF system is very
+demandingtask. Onlyafewproblemscanbesolvedanalytically. Ingeneral, anumericalsolu-
+tion is necessary. In the following sections some methods of solving the governing equations
+of motion will be addressed.
+Ifthenumberofequationsisverylarge,itmightbeusefultotransformtheprobleminanother
+(modal) vector space. The extra benefit is then obtained if only the lowest significant modes
+need to be used.
+However,sometimestherearealotofEigenvectorsnotrelevantfortheresponse. Thegeneral
+recommendation is to omit or reduce the masses of those eigenvalues (e.g. the vertical mass
+of the slabs with the MASS command) to get rid of those unwanted eigenvalues.
+But there exists also a solution technique called Ritz-Analysis as an alternate way. The pro-
+cedure is identical to the Lanczos-Eigenvalue analysis, but instead of a general random static
+load vector a specific load vector (e.g. acceleration in the global X direction) is used. Thus the
+obtained base vectors are more relevant and the number of required vectors might become
+much less.
+But as the danger exists that essential contributions will be skipped, it is not recommended to
+use this type of analysis if the required percentage of modes can be obtained with a classical
+eigenvector analysis, which is the accurate solution.
+2-2 SOFiSTiK2023TheoreticalPrinciples|DYNA
+2.2 Direct Time History Analysis
+2.2.1 Duhamel’s Integral
+One way to determine the response of a linear SDOF system to an arbitrary excitation force,
+whose governing equation is described by Eq. 2.1, is provided by the Duhamel’s integral:
+1 (cid:90) t
+(t)= p(τ)·e−ξω(t−τ)·sin[ω D(t−τ)]·dτ , (2.5)
+mω
+D 0
+where ω D =ω(cid:198) 1−ξ2 represents the resonance circular frequency of damped vibration.
+ThissolutionislimitedtolinearSDOFsystemsbecauseitisbasedonthesuperpositionprinci-
+ple. ItisrelativelyoftenusedforthesolutionoftheSDOFequationforpurposesofdetermining
+the response spectrum. Generally this integral needs to be solved numerically, but the meth-
+odsusedforitssolutionarenotveryefficient[1]. Moreefficientmethodsfornumericalsolution
+of the differential equations of motion are presented in the subsequent subsection.
+2.2.2 Integration of the Equations of Motion
+In the most general case, the equations of motion (Eq. 2.6) need to be solved numerically
+by the direct integration of these coupled 2nd order differential equations. In order to do so,
+firstly the time is subdivided into discrete time steps t ∈ {t 1,...,t n} and then the continuous
+dynamic equations are discretized, i.e. written in the the discrete form for the time t +1
+M·¨(t +1)+C·˙(t +1)+K·(t +1)=p(t +1) , (2.6)
+where  = 1,...,n−1 and t +1 = t +Δt (time step Δt is usually kept constant). This problem
+now becomes a problem of solving the equations of motion for the time t +1 based on the
+known solution for the previous discrete times, i.e. t ≤ t , including the initial conditions. As
+aforementioned the solution can be achieved by the integration, i.e. by using the following
+equations (for simplicity sake we drop the vector notation)
+(cid:90) Δt
+˙(t +1)=˙(t )+ ¨(τ)dτ (2.7a)
+0
+(cid:90) Δt
+(t +1)=(t )+ ˙(τ)dτ (2.7b)
+0
+which express the velocity and displacement at the end of the time step Δt =t +1−t  in terms
+of the known values at the beginning of the time step ˙(t ) and (t ) with the addition of the
+integralquantities. Obviouslyinordertoobtainthesolutionatthetimet +1 weneedtoassume
+how the acceleration ¨(τ) will vary within the time step.
+The simplest form is to assume a constant acceleration during each time step (Fig. 2.2, left).
+Howeveramoreenhancedprecisionisobtainedusingalinearapproximationfortheaccelera-
+tion (Fig. 2.2, right)
+τ
+¨(τ)=¨(t )+ ·[¨(t +1)−¨(t )] . (2.8)
+Δt
+According to the Newmark method the following expressions hold for the velocity and the dis-
+SOFiSTiK2023 2-3DYNA|TheoreticalPrinciples
+¨(τ)=¨=1 ¨(τ)=¨+¨+1 Δt−¨
+2(¨+¨+1) τ
+¨ ¨
++1 +1
+¨ ¨
+ 
+2τ ˙(τ)=˙+¨τ+¨+1 Δt−¨ τ 22
+˙(τ)=˙+(¨+¨+1)
+˙ ˙
++1 +1
+˙ ˙
+ 
+τ2 τ2 ¨+1−¨ τ3
+(τ)=+˙τ+(¨+¨+1) (τ)=+˙τ+¨ +
+4 2 Δt 6
+ 
++1 +1
+ 
+ 
+τ τ
+Δt Δt
+t t t t
+ +1  +1
+Figure2.2: Avarageacceleration(left)andlinearacceleration(right)methods
+placement at the end of the time interval Δt:
+˙(t +1)=˙(t )+Δt·[(1−δ)·¨(t )+δ·¨(t +1)] (2.9a)
+(t +1)=(t )+Δt·˙(t )+Δt2·[(1/2−β)·¨(t )+β·¨(t +1)] (2.9b)
+¨(t)
+¨
++1
+¨
+
+t
+t  t +(1−α)Δt t +1 t +θΔt
+Δt
+Figure2.3: Integrationintime-α andWilson-θmethods
+Then we have the choice between five different possibilities to select how or for which time
+t +θ·Δt the equilibrium equation is fulfilled:
+• Explicit Integration (θ=0.0)
+Asthevariationoftheaccelerationalongthetimestepisconstantitispossibletocalculate
+all values highly efficient explicitly by the mass matrix. The method is well suited to be
+parallelized, but it is only stable if the time step is below a certain critical value which is
+2-4 SOFiSTiK2023TheoreticalPrinciples|DYNA
+approximately equal to the wave speed divided my the minimum mesh size.
+• Newmark-Method (θ=1.0,δ≥0.50,β≥0.25(0.5+δ)2)
+The default of the parameters has no numerical damping at all. Thus small errors may
+enlargeespeciallyfortheaccelerations. Inthosecasesthevalueof δ shouldbeenlarged1.
+• Wilson-Theta-Method (θ≥1.37)
+ThisvalueisamodificationoftheNewmarkmethodwherethenumericaldampingenlarges
+the period to a greater extent, but keeps the amplitudes to a higher accuracy (Abb. 2.3).
+In the literature the parameter β is given as α but this has been changed to avoid conflicts
+with the next method.
+• α-Method Hilber-Hughes-Taylor (θ<1.0,δ=(1−2α)/2,β=(1−α)2/4)
+This method (Abb. 2.3) has been developed to introduce a numerical damping without
+degrading the order of accuracy. It is especially suited for non linear problems. The value
+α istakenfromtheinputvalue θ as α=(θ−1.0). Thuswehaveaformalequivalenttothe
+Crank-Nicholson method (see program HYDRA).
+• Modal Analysis
+The system of equations to be solved can be significantly simplified if the solution is calcu-
+lated in the subspace of a few eigenvectors. This requires knowledge of the eigenvalues
+and the eigenvectors, the calculation of which is relatively extensive. But then it is possible
+to integrate the linear equations exactly. Nonlinear effects may be treated in a simplified
+way if the modes contain the nonlinear displacement possibilities.
+The implicit methods lead to a system of equations for the displacements or accelerations at
+t + Δt. Compared to the explicit methods, the time step may be chosen considerably larger.
+Specific errors (oscillations) may be introduced however by a time step chosen too small with
+a consistent mass matrix.
+For more info about the integration methods please consult other literature sources (e.g. [2],
+[3], [4], [5], etc.).
+2.3 Modal Time History Analysis
+2.3.1 Modal Decomposition
+For a linear system, the displacement vector of an n degrees of freedom system (t) can be
+expressed as the superposition of the modal contributions (modal decomposition):
+n n
+(cid:88) (cid:88)
+(t)=  k(t)= ϕ k·q k(t)=·q(t) (2.10)
+k=1 k=1
+where:
+ k(t) contribution of the kth mode to the displacement vector (t) (kth modal displace-
+ment vector),
+ϕ kth natural mode shape (eigenvector),
+k
+q k(t) generalized modal displacement (coordinate) for mode k (modal coordinate re-
+sponse),
+ matrix of mode vectors, =(cid:2)ϕ ··· ϕ (cid:3) ,
+1 n
+1Intheliteratureparameterδisoftengivenasγ.
+SOFiSTiK2023 2-5DYNA|TheoreticalPrinciples
+q(t) vector of generalized modal coordinates, q(t)=[q 1(t) ··· q n(t)]T .
+In other words, the displacement vector (t) has been expressed as a linear combination of
+the time independent eigenvectors ϕ with the time dependent scalars q k(t).
+k
+Substituting the Eq. 2.10 into the equations of motion of the MDOF system (Eq. 2.6) and
+premultiplying everything with T we obtain the following
+T ·M··q¨(t)+T ·C··q˙(t)+T ·K··q(t)=T ·p(t) . (2.11)
+At the first glance, the Eq. 2.11 is very similar to the Eq. 2.6. However, by a certain choice of
+theeigenvectors,thematricesT·M·,T·C·andT·K·willbecomediagonal,which
+in turn means that the system of COUPLED second order differential equations of motion will
+be transformed into a system of UNCOUPLED second order differential equations.
+2.3.2 Eigenvalue Problem
+One way to determine the eigenvectors  so that the decoupling takes place is to start from
+the equations of motion for a freely vibrating undamped system
+M·¨(t)+K·(t)=0 . (2.12)
+The solution of this equation is given by the harmonic function
+(t)=ϕ·sin(ωt+φ) . (2.13)
+Substituting Eq. 2.13 into Eq. 2.12 we obtain the so-called eigenvalue problem
+(cid:148) K−ω2M(cid:151)
+ϕ=0 , (2.14)
+in which ω represents the circular eigenfrequency and ϕ is the natural mode shape. λ=ω2 is
+calledtheeigenvalue. Thissetofnhomogeneousalgebraicequationshasanontrivialsolution
+if the following is satisfied
+det(cid:148) K−ω2M(cid:151)
+=0 . (2.15)
+Thisequationhasnroots{ω 1,...,ω n}whichrepresentthecirculareigenfrequencies(natural
+circular frequencies) of the n modes of vibration. Once the circular eigenfrequency ω k is
+known, the corresponding eigenvector ϕ could be determined from the Eq. 2.14.
+k
+The computation of the eigenvalues is done either by a simultaneous inverse vector iteration
+ordirectlybytheLanczosmethod. Thealgorithmsfindtheeigenformsϕ andtheEigenvalues
+k
+are obtained by the Rayleigh coefficient.
+ϕT ·K·ϕ
+
+ω2 =  . (2.16)
+ ϕT ·M·ϕ
+
+
+One benefit of this approach is that duplicate eigenvalues do not impose any problem for the
+solution.
+Hint
+It is obvious from the eigenvalue problem equation 2.14 that the absolute amplitude of
+2-6 SOFiSTiK2023TheoreticalPrinciples|DYNA
+(Hintcontinued...)
+the vectors ϕ are not known; only the shape of the vectors are known. In other words,
+k
+if a vector ϕ is an eigenvector satisfying the Eq. 2.14, then a vector α·ϕ is also an
+k k
+eigenvector, where α is a non-zero real scalar value.
+A very important property of the eigenvectors is that they satisfy the following orthogonality
+conditions
+ϕT ·M·ϕ =0 , (cid:54)=j (2.17a)
+ j
+ϕT ·K·ϕ =0 , (cid:54)=j . (2.17b)
+ j
+2.3.3 Generalized Modal SDOF System
+A very important issue is that in general the important properties of a structure may be de-
+scribedbyafeweigenforms,generallythosewiththelowesteigenvalues. Wecantakethislike
+a shadow of the full solution to a reduced vector space. So the number n in eq. 2.10 may be
+selected with a very low value if no local effects are dominant.
+Using the Eqs. 2.17, the Eq. 2.11 can be rewritten, and after singling out the kth row we get
+ϕT ·M·ϕ k·q¨ k(t)+ϕT ·C·ϕ k·q˙ k(t)+ϕT ·K·ϕ k·q k(t)=ϕT ·p(t) , (2.18)
+k k k k
+which is a scalar SDOF equation for a mode k. Hence the orthogonality property has enabled
+us to uncouple the equations of motion.
+Hint
+In order to uncouple the equations of motion for a system with damping, it is obvious that
+thedampingmatrixCmustbesuchthatT·C·isadiagonalmatrix. Whichformshould
+C take in order for this to be possible is explained in the Section 2.3.4.
+We can simplify the Eq. 2.18 to obtain
+m k·q¨ k(t)+c k·q˙ k(t)+k k·q k(t)=p k(t) (2.19)
+where the properties of a this kth-mode generalized SDOF system are:
+m k =ϕT k ·M·ϕ k generalized modal mass for mode k,
+c k =ϕT k ·C·ϕ k generalized modal damping for mode k,
+k k =ϕT k ·K·ϕ k generalized modal stiffness for mode k,
+p k(t)=ϕT ·p(t) generalized modal load for mode k.
+k
+Hint
+In SOFiSTiK eigenvectors ϕ are normalized in such a way that the generalized modal
+k
+mass m k is equal to 1 , for each natural mode k, i.e.
+m k =ϕT k ·M·ϕ k =1 . (2.20)
+SOFiSTiK2023 2-7DYNA|TheoreticalPrinciples
+(Hintcontinued...)
+As a consequence, the generalized modal stiffness k k is given by:
+k k =ϕT k ·K·ϕ k =ω2 k . (2.21)
+Taking Eq. 2.4 into an account, generalized modal load for mode k can be written as
+n n
+p p
+p (t)=ϕT ·p(t)=(cid:88) ϕT ·p (t)=(cid:88) ϕT ·p ·g (t)=
+k k k j k 0,j p,j
+j=1 j=1
+(2.22)
+n n
+p p
+(cid:88) (cid:88)
+= p 0,kj·g p,j(t)= p kj(t) ,
+j=1 j=1
+where
+p kj(t)=p 0,kj·g p,j(t) (2.23)
+represents generalized modal load for mode k corresponding to the load function j, while
+p 0,kj =ϕT k ·p 0,j (2.24)
+isdefinedasthemodalloadparticipationfactor2 formodek correspondingtotheloadfunction
+j.
+Dividing everything with m k we get
+p (t)
+q¨ k(t)+2ξ kω k·q˙ k(t)+ω2 ·q k(t)= mk , (2.25)
+k
+k
+where:
+ω k =(cid:112)k k/m k undamped circular eigenfrequency for mode k,
+ξ k =c k/(2m kω k) viscous modal damping ratio for mode k.
+2.3.4 Computation of the Modal Damping
+If we have a damping the eigenvalues become complex numbers with an independent imagi-
+nary part. However there is no strict need to use complex eigenvalues. We can use the real
+eigenvaluesinnearlyallcases. Formallythedescriptionofasystembyitseigenformsisjusta
+transformation into an other vector space. In order for the damping matrix to become diagonal
+too, damping could be selected to be proportional to the mass and/or the stiffness matrix:
+C=·M+b·K (2.26)
+When (2.26) is used, the resulting modal damping ξ (Lehr’s damping factor) is also a diagonal
+matrix:
+1 (cid:20)  (cid:21) δ
+k
+ξ k = · +b·ω k = (2.27)
+2 ω 2π
+k
+In a complex system the individual elements may have quite different damping properties.
+The proportionality of the damping is then no longer given and the damping matrix C does
+2Modalloadparticipationfactorsp 0,kj=ϕT k ·p 0,j areoutputtedinTable4.3.
+2-8 SOFiSTiK2023TheoreticalPrinciples|DYNA
+not become a diagonal matrix. One possibility would be to account for this exactly during the
+integrationofthemodalequations. Butasthedampingissmallinmostcasesandthedamping
+properties are the most uncertain material properties in the total process, it is possible to use
+a simplified diagonal modal damping.
+Toobtainthis,eachgroupofelementsmaybeassignedindividualRayleighfactorsAandB.For
+an eigenvalue analysis, a modal group damping value D may be used to add for every eigen
+frequency a stiffness proportional equivalent damping. Then the complete modal damping
+matrix will be calculated, printed if requested and the individual energetic equivalent modal
+damping will be calculated or simplified according EN 1998-2 4.1.3 (1) by using the diagonal
+entries only for every individual eigen frequency.
+The same approach is used for aeroelastic effects.
+2.3.5 Solution of the Modal Equations
+The SDOF Eq. 2.25 can be solved analytically (if such solution exists) or what is more com-
+monbynumericalintegrationusingtheDuhamel’sintegralorsomeothernumericalintegration
+technique,asithasbeendescribedinSection: IntegrationoftheEquationsofMotion. Solving
+the SDOF Equations 2.25 means determining the modal coordinate responses q k(t) for each
+mode k over time 3.
+Once the solution of the SDOF Equation 2.25 is known, the total displacement response can
+be obtained by the back transformation from the modal to physical space using the Eq. 2.10,
+which is repeated here for completeness sake
+n n
+(cid:88) (cid:88)
+(t)=  k(t)= ϕ k·q k(t) . (2.28)
+k=1 k=1
+Infact,anyresponsequantityR(t)(e.g. cross-sectionalforces,stresses,etc.) canbeobtained
+by the linear combination of the corresponding modal response quantities R k0 and modal co-
+ordinate responses q k(t), i.e.
+n n
+(cid:88) (cid:88)
+R(t)= R k(t)= R k0·q k(t) , (2.29)
+k=1 k=1
+where R k(t) represents a kth mode contribution to a response quantity R(t). The modal re-
+sponse quantities R k0 are the quantities which correspond to the eigenvector displacements
+ϕ . They are determined by the standard static FEM techniques during the computation of
+k
+the eigenvalues and eigenvectors directly from the eigenvector displacements ϕ . This is the
+k
+approach which is used in SOFiSTiK.
+There is another possibility to determine the response quantities R(t). Once the kth modal
+coordinate response q k(t) is known, we can at each given time t compute the internal elastic
+forces associated with the kth mode ƒ (t) as follows
+k
+ƒ k(t)=K· k(t)=K·ϕ k·q k(t) . (2.30)
+Alternatively, by utilizing the eigenvalue problem equation 2.14, i.e. Kϕ = ω2Mϕ , we can
+k k
+3Maximalmodalcoordinateresponsesmx|q k(t)|areoutputtedinTable4.5.
+SOFiSTiK2023 2-9DYNA|TheoreticalPrinciples
+express these forces in terms of mass matrix
+ƒ k(t)=M·ϕ k·(cid:148) ω2·q k(t)(cid:151) . (2.31)
+By performing a static analysis at a given time by using these forces as external forces we
+obtain R k(t), and finally by superimposing these using
+n
+(cid:88)
+R(t)= R k(t) , (2.32)
+k=1
+weobtainthetotalresponsequantityR(t). TheforcesgivenbyEq. 2.30or2.31arealsocalled
+as equivalent modal forces (equivalent modal load vector).
+The advantage of the direct approach used by SOFiSTiK compared to the equivalent modal
+forces approach is that the additional effort to compute the total responses by introducing
+new load cases is small. All one needs to do in that case is to compute the modal coordinate
+responsesq k(t)correspondingtothenewloadcasesandperformthesuperpositionaccording
+to Eq. 2.29.
+2.4 Modal Steady-State Analysis to Harmonic Excitation
+Ifaloadingisinaformofaharmonicexcitationwiththeamplitudevectorp andtheexcitation
+0
+circular frequency Ω p, i.e.
+p(t)=p 0·sin(cid:0)Ω p·t−φ p(cid:1) , (2.33)
+the solution of the modal generalized SDOF equation given by Eq. 2.19 can be found in an
+analyticalform. Thissolutionq k(t)comprisesofatransient (homogeneoussolution, q k,h)and
+a steady-state part (particular solution, q k,p). In the presence of damping (all real mechanical
+systems have damping) the transient part decays with time and, depending on level of damp-
+ing, can bedamped outafter onlycouple vibrationcycles. Whatpersist then isthe stead-state
+response which has the same frequency as the excitation force but a different phase
+q k,p(t)=q 0,k,p·sin(cid:0)Ω p·t−φ k(cid:1)=q k,st·R D(η k)·sin(cid:0)Ω p·t−φ k(cid:1) , (2.34)
+where (see also Eqs. 2.24)
+p ϕT ·p
+q k,st = 0,k = k 0 (2.35a)
+k ω2·m
+k
+Ω
+p
+η k = (2.35b)
+ω
+k
+q 1
+0,k,p
+R D(η k)= = (2.35c)
+q k,st (cid:115) (cid:128) 1−η2(cid:138)2 +(2ξ η )2
+k k k
+(cid:32)2ξ η (cid:33)
+k k
+φ k(η k)=φ p+rctn . (2.35d)
+1−η2
+k
+q k,st is the static deformation, η k is the ratio of the loading frequency to the natural frequency
+and φ k is the phase angle of the kth-mode generalized SDOF system. The ratio of the har-
+monicresponseamplitudeq 0,k,p andthestaticdisplacementq k,st (resultingfromthestatically
+applied force p 0,k) is called the dynamic response magnification factor R D(η k). R D(η) and
+2-10 SOFiSTiK2023TheoreticalPrinciples|DYNA
+φ(η) are show on Fig. 2.4.
+R (η)
+D
+ξ=5%
+5
+10%
+4
+3
+25%
+2
+50%
+1
+100%
+0 η=ω p/ω
+1 2 3 4
+(a)DynamicresponsemagnificationfactorR D(η).
+φ(η)
+180◦ ξ=5%
+10%
+25%
+50%
+100%
+90◦
+0 η=ω p/ω
+1 2 3 4
+(b)Phaseangleφ(η).
+Figure2.4: Dynamicresponsemagnificationfactorandphaseangleforadampedsystemexcited
+byharmonicforce.
+These classical response functions have a region below the resonance frequency where the
+structure follows the loading with a dynamic magnification factor and a region above the reso-
+nance where it is no longer possible for the structure to follow the loading, yielding in a steady
+decay of the counter phase response until zero for high frequencies.
+Theseresponsefunctionsyieldthetrueresponseincludingtheshiftoftheresonancepeakdue
+to damping effects. All frequencies used in DYNA are always there for those of the undamped
+oscillation.
+Thetransientoscillationsmaybeaccountedforbasedonzeroinitialconditionsbyanadditional
+r-multiple component. The superposition of these oscillations results in a floating effect, which
+can be accurately registered by time integration. DYNA can selectively omit this component or
+add it if it’s unfavourable.
+Anaccuratecalculationofthemaximumstressingtakingintoconsiderationthephaseshiftcan
+be carried out only for the final transient oscillation state by neglecting the transient compo-
+nents. if multiple load cases should be combined in this way, the extreme values have to be
+searched in the time interval of one periodic response (STEP -n). Thus it is clearly to identify
+which loadings are synchronized (like vertical and horizontal out of balance forces) and which
+SOFiSTiK2023 2-11DYNA|TheoreticalPrinciples
+are to be combined based on stochastic. For every single run only one of these methods can
+be applied. For the case of multiple machinery a superposition in MAXIMA with SRSS has to
+be used for the intermediate results obtained with STEP -n.
+Otherwise,andespeciallyifthephasedifferencesaresmallastatisticalsuperpositionasinthe
+case of spectrum excitation can be carried out.
+2.5 Excitation through a Spectra
+Dynamicloadingwhichisnotdeteministicmaybeaccountedforbyaspectrum. Thisisafunc-
+tiongivinganyresponsevaluebasedonthefrequencyforanSDOF.Spectramaybeobtained
+fromagivenload-timefunction orestablishesasapowerspectrum. Theyarecommonlyused
+for wind and waves and especially for earthquake response.
+2.5.1 Earthquake Response Spectra
+If the earthquake ground acceleration function ¨ gX(t) is known, the solution of the equation
+of motions can be obtained by a numerical integration (see Section 2.2). However, in most
+practical applications the seismic excitation is usually represented by the earthquake (elastic
+or inelastic) response spectrum. The maximal response of the SDOF is then given by
+(cid:12) EQX (cid:12) EQX EQX
+mx(cid:12) (cid:12)D (t)(cid:12) (cid:12)=S (T k,ξ k)=S , (2.36a)
+k D D,k
+(cid:12) EQX (cid:12) EQX EQX
+mx(cid:12) (cid:12)A (t)(cid:12) (cid:12)=S (T k,ξ k)=S , (2.36b)
+k pA pA,k
+EQX EQX
+whereS (T k,ξ k)isthespectralrelativedisplacementresponseandS (T k,ξ k)isthetrue
+D pA
+acceleration spectral response of the kth-mode generalized SDOF system for the earthquake.
+EQX
+Ifthedampingissmallthetrueaccelerationspectra S (T k,ξ k) maybeapproximatedbythe
+pA
+pseudo-acceleration spectra
+SE pQ AX (T k,ξ k)≈ω2 ·SE DQX (T k,ξ k) . (2.37)
+k
+Stresses and forces in the structure are based on the displacements, thus the pseudo-
+accelerationspectra. Butmeasurementsaremadeonthetrueaccelerations. Thusthespectra
+to be defined is always expected to be a pseudo-acceleration spectra.
+An example of a smooth norm-specific pseudo-acceleration and relative displacement spectra
+are shown in the Fig. 2.5.
+2-12 SOFiSTiK2023TheoreticalPrinciples|DYNA
+S (T,ξ)/
+pA g
+S
+B
+S
+A
+T
+T T T T
+B C D E
+(a) Pseudo-acceleration response spectrum normalized w.r.t. ground acceleration
+
+g
+S (T,ξ)
+D
+T
+T T T T
+B C D E
+(b)Relativedisplacementresponsespectrum
+Figure2.5: Smoothnorm-specificresponsespectra
+2.5.2 Wind Spectrum Analysis
+For the wind there are various power spectra. Which can be defined with some parameters
+in SOFILOAD: RESP. For the structural analysis the main loading is in the frequency range
+between 0.1 and 1.0 Hertz. The best known spectrum is that from Karman.
+ƒ·S
+σ2
+1.0
+0.1
+0.01
+ƒ·L
+0.001
+U
+0.001 0.01 0.1 1 10
+Figure2.6: WindspectraaccordingKarmann
+For the wind the response is obtained by a background and a resonance response. While the
+dynamicresponseisobtainedfromanormalizedpowerspectrum,thebackgroundcontribution
+is always assumed to be 1.0, as this is on the safe side and is appropriate if the coherence
+SOFiSTiK2023 2-13DYNA|TheoreticalPrinciples
+effects are introduced by the loading itself.
+(cid:118)
+(cid:117) π2 ƒ ·S
+q=(cid:116)1+ ∗ (2.38)
+2δ σ2
+ƒ ·S  ·X+ ·X2+ ·X3
+1 2 3
+= (2.39)
+σ2 (1+b·Xc)d
+ƒ ƒ ·L ƒ ·z
+X= = or (2.40)
+ƒ V V
+m
+2.5.3 Superposition of the Maximum Responses
+The maximum displacements and stresses must be superimposed according to probability
+theory. The CQC (Complete Quadratic Combination) method by Wilson, or the Sum of the
+Absolute Values or the Square Root of the Sum of Squares (SRSS) can be used for this
+purpose. The SRSS method is known to be rather faulty in case of multiple eigenvalues,
+but the CQC method is no guarantee for correct results either. It should be especially noted
+that the method without modal dampings will yield different values to SRSS only for multiple
+eigenvalues.
+(cid:114)(cid:88)(cid:88)
+R= R ·ρ j·R j (2.41a)
+8(cid:198)ξ ξ (cid:0)ξ +η ·ξ (cid:1)·η3/2
+ j  j j j
+ρ j = (2.41b)
+(cid:128) 1−η2(cid:138)2 +4ξ ξ η (cid:128) 1+η2(cid:138) +4(cid:128) ξ2+ξ2(cid:138) η2
+j  j j j  j j
+ω
+j
+η j = (2.41c)
+ω
+
+Forthecaseofshearwithinaquadraticsectionitcanbeeasilyshown,whicherrorisintroduced
+by the SRSS Method. The acceleration in X-direction exits the two diagonal Eigenforms with
+the same amount of 25 % of the total shear.
+Eigenform 2
+a
+= +
+Eigenform 1
+Eigenform 1 Eigenform 2
+Figure2.7: Shearwithinaquadraticsection
+The SRSS-Method yields 35 % for all 4 walls, while the CQC Method will give 50 % for the x-
+wallsandzeroforthey-wallswhichisthecorrectvalue. Ifthemaximumstressatthecorneris
+required,adifferenttargetfunctionisrequired,theloadcasesmax-My,min-My,max-Mz,min-Mz
+do not cover this result.
+2.5.4 Sign of Corresponding Forces
+For every type of superposition yielding only positive values, the sign of the corresponding
+2-14 SOFiSTiK2023TheoreticalPrinciples|DYNA
+forces and moments should not be neglected. Although it is quite common to use positive
+values for all results, this is not true and uneconomical in most cases.
+For example if we look at a plane horizontally loaded framework, the internal forces and mo-
+mentsvarydependingonthesignofthehorizontalforce,yetineverycaseithastobeobserved
+thatthesignofthemomentandnormalforceinoneofthecolumnareidentical,whiledifferent
+in the other one.
+Figure2.8: Planeframework
+If we search for the maximum moment, then the associated normal forces must have different
+signs. Exactly this is available from the mode shapes. If we now assemble the maximum
+moment of different mode shapes, then we should thus always add the mode shapes only
+completelywithaglobalfactor. Whenweintendtoaddtheabsolutevalues,thenitissufficient
+that all mode shapes are either added or subtracted according to the sign of the leading force.
+So we are replacing the rule of combination
+SUM j =(cid:88)(cid:12) (cid:12)s j(cid:12) (cid:12) (2.42)
+
+by the general form for the vector of internal forces and for the maximum value of force j:
+
+(cid:88)  +1, s j ≥0
+SUM= ƒ ·S  ; ƒ  = (2.43)
+−1, s <0
+  j
+The same can be used for the method SRSS (Square Root of Sum of Squares) the rule:
+(cid:118)
+SUM j =(cid:117) (cid:116)(cid:88) s j2 (2.44)
+
+is replaced through
+s
+(cid:88) j
+SUM= ƒ ·S  ; ƒ  = (2.45)
+(cid:113)(cid:80) s 2
+  j
+Last but not least the same can be done for the CQC-method. In any case the leading force
+SOFiSTiK2023 2-15DYNA|TheoreticalPrinciples
+value will be positive hence it must be introduced as an alternating load in the final design
+superposition.
+Thesamemethodmaybealsousedforthedirectionalsuperpositionforthemostunfavourable
+direction. Three load cases with accelerations in orthogonal directions may be analyzed to-
+gether in a single DYNA run and combined with the SRSS method. The correct sign of the
+corresponding forces will yield correct results, while the method used in other programs with
+independent extreme values may yield results considerably to large.
+Compared to this the Pseudo-superpositions R  + ⊕0.30·R y which have to be calculated in
+MAXIMA with alternate loading groups is much harder.
+2.6 Dynamic excitation as ground acceleration
+2.6.1 Effective earthquake forces
+Seismicloadingdoesnotcontributetotheexternaldynamicloading(i.e. righthandsideofthe
+Eq. 2.6). Earthquake acts as an induced motion on the base of the structure (the part of the
+structure in contact with the soil).
+ (t)
+t
+(t)
+m·¨ (t)=
+t
+m m·(cid:2)¨ (t)+¨(t)(cid:3)
+g
+k·(t)
+k, c c·˙(t)
+ (t)
+g
+Figure2.9: SDOFsubjectedtogroundmotion g(t)
+The total (absolute) displacement of the mass  t(t) subjected to the earthquake- induced
+ground motion  g(t) is related to the relative displacement between the ground and the mass
+(t) by the following relation (Fig. 2.9)
+ t(t)= g(t)+(t) . (2.46)
+The elastic and damping forces depend solely of the relative motion (t), i.e. the rigid-body
+motion g(t)contributesnothingtotheinternalstructuralforces. Havingthisinmindandtaking
+the Eq. 2.46 into consideration while assuming no external loading is applied to the structure,
+the equation of motion of a SDOF system subjected to earthquake excitation can be derived
+using the concept of dynamic equilibrium (Fig. 2.9)
+m·¨ t(t)+c·˙(t)+k·(t)=m·(cid:2)¨ g(t)+¨(t)(cid:3)+c·˙(t)+k·(t)=0 , (2.47)
+2-16 SOFiSTiK2023TheoreticalPrinciples|DYNA
+where the inertial force is related to the total acceleration of the mass ¨ t(t). Since the
+earthquake-inducedgroundaccelerationsaregenerallyregardedasknown g(t),wecanrear-
+rangingtheEq. 2.47slightlysothattheunknownsremainonthelefthandsideoftheequation
+m·¨(t)+c·˙(t)+k·(t)=−m·¨ g(t)≡p eƒƒ(t) . (2.48)
+In this equation the term on the right hand side, i.e. p eƒƒ(t) = −m · ¨ g(t), represents the
+effective earthquake force (or more general effective support excitation force).
+Comparing the Eqs. 2.47 and 2.48 we can conclude that the structural response (relative
+displacement (t)) caused by the ground acceleration ¨ g(t) is equivalent to the response of
+thestructurewithstationarybasesubjectedtoanexternalloadequalto −m·¨ g(t) (Fig. 2.10).
+ t(t)= g(t)+(t) (t)
+p (t)=−m·¨ (t)
+eƒƒ g
+¨ (t)
+g stationarybase
+Figure2.10: Effectiveearthquakeforcep eƒƒ(t)
+2.6.2 Uniform Support Excitation
+Assuming uniform support excitation (all the points where the structure is connected to the
+ground undergo identical prescribed motion) we can extending the previously derived concept
+from SDOF to MDOF system and we can write
+p eƒƒ(t)=−M·¨ g(t) (2.49)
+where p eƒƒ(t) represents the vector of effective earthquake forces, while ¨ g(t) is the ground
+acceleration vector.
+Choosingavectorbasis( X, Y, Z)wecanrepresentthegroundaccelerationvectorasalinear
+combination of these three vectors as follows
+¨ g(t)= X·¨ gX(t)+ Y ·¨ gY(t)+ Z·¨ gZ(t) , (2.50)
+where ¨ gX(t), ¨ gY(t) and ¨ gZ(t) are the three components of the ground acceleration in the
+Cartesian coordinate system (X,Y,Z). The vectors  X ,  Y and  Z are called the influence
+vectors andtheyrepresentthedisplacementsofthemassesresultingfromstaticapplicationof
+aunitdisplacementinX,Y orZdirectiontostructuralpointsincontactwiththeground(support
+SOFiSTiK2023 2-17DYNA|TheoreticalPrinciples
+points) (see Fig. 2.11).
+m1 m2 m3
+1 3 5
+ 
+=  1 
+2 4 6  2
+X 3
+  4 
+Y  5
+6
+¨gX(t)
+¨gY(t)
+1=1 3=1 5=1
+  2=1 4=1 6=1  
+ 1   0 
+0 1
+1 0
+X= Y=
+ 0   1 
+1 0
+0 1
+gX≡1 gX≡1
+gY≡1 gY≡1
+Figure 2.11: (top) Frame with two DOFs per node subjected to uniform ground acceleration in X
+and Y direction. (bellow) Influence vectors  X and  Y as static displacements due to  gX = 1 and
+ =1,respectively.
+gY
+The load which is defined with the command ACCE NO 0 in SOFiLOAD will be interpreted as
+theeffectivesupport(earthquake)excitationload. ForexampletheinputofACCE TYPE NODA NO
+0 AX 1.0 AY 0 AZ 0 will be interpreted as the effective support (earthquake) excitation load
+p eƒƒ,X(t) = −M· X ·¨ gX(t), where the ¨ gX(t) is defined with the FUNC command. For more
+details about this please refer to SOFILOAD: ACCE.
+2.6.3 Multiple Support Excitation
+Insomecases,e.g. forthestructureswithlargedimensions(bridges,pipelines,tunnels,dams,
+etc.) founded on a strongly non-uniform soil, the assumption of uniform seismic excitation on
+all structural points in contact with the ground, i.e. disregarding the variation of the seismic
+waves in space and time, is sometimes not justified.
+In these cases it is necessary to take these effects into consideration by exciting the structure
+in multiple supports with different ground acceleration functions ¨ g,(t), where  = 1,··· ,n g
+and n g is the number of supports.
+Under the assumption of linear systems and with some simplifications (neglecting contribution
+of the damping and assuming that the mass matrix is predominately diagonal) the effective
+force vector for multiple support excitation can be represented in a similar way as in case of
+2-18 SOFiSTiK2023TheoreticalPrinciples|DYNA
+uniform support excitation (Eqs. 2.49 and 2.50), i.e.
+n n
+g g
+(cid:88) (cid:88)
+p eƒƒ(t)= p eƒƒ,(t)=− M· ·¨ g,(t) . (2.51)
+=1 =1
+The only difference to Eqs. 2.49 and 2.50 is that now for each ground support  we have one
+influence vector  , whereas in the case of uniform support excitation we had one vector (per
+earthquake direction) for all supports.
+The influence vector   can be obtained by the static procedure by applying the unit displace-
+ment at the supports  g, ≡ 1 and determining the resulting structural displacements which
+then represent the influence vector  . An example of determining influence vectors is shown
+on Fig. 2.12.
+m 11 m2 m3 m4 =   1  
+3 5 7  2
+ 3
+X 2 4 6 8
+4
+Y   5 
+ 6
+ 7
+8
+¨g,1(t) ¨g,2(t) ¨g,3(t)
+   
+ −0 0. .5 .05 13   −0 00. .2 0.05 115 
+0 . 0 1 7 30
+0 5 5 1 0 . 2 5 7
+7
+1= 2=
+ −0 00. .5 0.03 003   −0 0. .2 .06 07 
+54 0 . 0 0 0
+0 . 5 2 4 0 2 6 4
+2
+g,1≡1 g,2≡1
+Figure 2.12: (top) Frame with two DOFs per node subjected to multi support ground acceleration.
+(bellow)Influencevectors 1and 2asstaticstructuraldisplacementsduetosupportdisplacements
+ =1and =1,respectively.
+g,1 g,2
+Forexample,assumingthatthestructureissupportedinpoints1,3and5wecandefinethree
+load cases with loading in form of a support displacements of those points and once these
+load cases are computed statically, the displacement vectors of the structure correspond to
+the influence vectors for those support points. For more details about the derivation of the
+equations for effective forces in case of multiple support excitation, see for example Chopra
+[1], Section 9.7.
+Another more general way to realize the multiple support excitation is to use the Large Mass
+orLargeStiffnessMethod,asitisdescribedintheSection2.6.4. Thesearealsoapplicablefor
+a nonlinear analysis.
+SOFiSTiK2023 2-19DYNA|TheoreticalPrinciples
+2.6.4 Large Mass and Large Stiffness Method
+Itisoftenthecasethattheuserwantstoapplythedynamicloadingdirectlyasanenforced(pre-
+scribed)motions(accelerationsordisplacements)andperformthedirecttimehistoryanalysis.
+One of the ways to achieve this is to use the Large Mass (LMM) or Large Stiffness Method
+(LSM). In these methods an element with large mass or stiffness is placed internally at the
+nodes where the accelerations or displacements are to be prescribed. These points are then
+excited by the large force which is equal to the product of the large mass with prescribed
+accelerations or large stiffness with prescribed displacements.
+To illustrate how this numerical approach works, let us imagine that we want to excite the
+structurebyprescribingtheaccelerations¨ g, atadegreeoffreedom. Weplacealargemass
+M atthisdegreeoffreedomandatthesametimeapplyalargeforceequaltoM rge·¨
+rge g,
+to the same DOF
+     
+m ··· m ··· m ¨ p
+11 1 1n  1   1 
+   
+ . . . . . .     . .       . .   
+ . . .    .     .  
+     
+   
+  m 1 ··· M rge ··· m n  · ¨  + ··· = M rge·¨ g, (2.52)
+ 
+  . . . . . . . . .       . . .         . . .    
+         
+   
+   
+m n1 ··· m n ··· m nn  ¨ n   p n 
+Choosing now only the equation for the th-DOF and rearranging it so that the term associated
+with the M rge is singled out form the left hand side (LHS)
+M rge·¨ +(rest oƒ the LHS)=M rge·¨ g, , (2.53)
+and dividing everything with M rge we obtain
+(rest oƒ the LHS)
+¨ + =¨ g . (2.54)
+M
+rge
+Assumingthatthe M rge issolargethat (rest oƒ the LHS)/M rge <<1 holds, wefinallyend
+up with
+¨  ≈¨ g . (2.55)
+Tosumup-byprescribingthelargemassM rge onagivenDOFandsimultaneouslyapplying
+alargeforceequaltoM rge·¨ g,wehavepracticallyprescribedtheacceleration¨ g totheDOF
+in question.
+Large Mass Method is activated when the user by the definition of the ACCE TYPE NODA NO
+commandinSOFiLOADspecifiesthenodenumberdifferentthanzerofortheoptionNO.DYNA
+will then automatically place a large mass at the defined node and apply the large force equal
+to the product of this large mass and the defined acceleration function.
+The Large Stiffness Method works in the same way only instead of large mass, large stiffness
+is used. For this method to work, the user needs to use the SOFiLOAD command NODE TYPE
+WXX/WYY ... together with the definition of the displacement function.
+LMM and LSM techniques are very useful in the case of the multiple support excitation, es-
+2-20 SOFiSTiK2023TheoreticalPrinciples|DYNA
+pecially in case of the non-linear systems where the equivalent force method is very difficult
+to realize. One should keep in mind that these techniques, unlike effective force methods,
+produce absolute accelerations and displacements (rigid body + relative movement).
+2.6.5 Baseline Correction
+In case where the dynamic loading is defined as the prescribed acceleration of the ground
+(for example using the Large Mass Method) the acceleration time-history is often given by the
+recorded accelerogram. These acceleograms are obtained from the seismograph, which is
+triggeredafterasomesmallprescribedlevelofmotionhasbeenreached. Thismeansthatthe
+accelerogram contains an error which when integrated results in a linear error in velocity and
+a quadratic error in displacements [6].
+To correct these errors a best-fit parabola (baseline correction Δ g(t)) can be applied to the
+originalaccelerationfunction g(t)inordertoobtainnew,correctedaccelerationfunction¯ g(t)
+which,whenintegrated,willresultinzerodisplacementsandzerovelocitiesatagivenbaseline
+time t b (which is usually chosen to be equal to the maximal analysis time)
+g(t)+(cid:128) b·t+c·t2(cid:138)
+¯ g(t)= g(t)+Δ g(t)= , (2.56)
+where b and c represent the unknown coefficients of the baseline acceleration correction
+parabola.
+Velocity and displacement time-histories which correspond to the new corrected acceleration
+¯ g(t) can be obtained by the integration of Eq. 2.56
+(cid:90) t (cid:90) t (cid:18)b c (cid:19)
+¯ g(t)= ¯ g(τ)dτ=  g(τ)dτ+ ·t2+ ·t3 (2.57a)
+2 3
+0 0
+(cid:90) t (cid:90) t (cid:18)b c (cid:19)
+¯ g(t)= ¯ g(τ)dτ=  g(τ)dτ+ ·t3+ ·t4 . (2.57b)
+6 12
+0 0
+The coefficients b and c can now be determined from the system of equations with two un-
+knowns which are obtained from the Eqs. 2.57 and the condition that new corrected velocity
+and displacement are zero at baseline correction time, i.e. ¯ g(t b)=0 and ¯ g(t b)=0
+b c (cid:90) t b
+·t b2+ ·t b3 =−  g(t)dt (2.58a)
+2 3
+0
+b c (cid:90) t b (cid:90) t b(cid:130)(cid:90) t (cid:140)
+·t b3+ ·t b4 =−  g(t)dt=−  g(τ)dτ dt . (2.58b)
+6 12
+0 0 0
+TheintegralsontherighthandsideoftheEqs. 2.58areusuallydeterminedbysomenumerical
+integration rule (e.g. trapezoidal).
+Baseline correction of an acceleration time-history function can be triggered with the input
+of the baseline correction time TBLC in the SOFiLOAD command FUNC (see SOFILOAD:
+FUNC).
+SOFiSTiK2023 2-21DYNA|TheoreticalPrinciples
+2.6.6 Dynamic load as ground acceleration
+Startingfromtheequationfortheeffectiveearthquakeforces(Eq. 2.49)andusingEq2.22we
+can derive the equations for the generalized modal load in case when the load is given as the
+ground acceleration function
+p k(t)=−ϕT k ·M·(cid:2) X·¨ gX(t)+ Y ·¨ gY(t)+ Z·¨ gZ(t)(cid:3) . (2.59)
+Modal equation 2.19 now becomes
+q¨ k(t)+2ξ kω k·q˙ k(t)+ω2 ·q k(t)=E kQX ·¨ gX(t)+E kQY ·¨ gY(t)+E kQZ ·¨ gZ(t) (2.60)
+k
+EQX EQY EQZ
+where  ,  and  are modal participation factors for the earthquake in X, Y and Z
+k k k
+direction, respectively. They are given as
+EQX EQY EQZ
+L L L
+EQX = k ; EQY = k ; EQZ = k , (2.61)
+k m k m k m
+k k k
+where
+LE kQX =−ϕT k ·M· X ; LE kQY =−ϕT k ·M· Y ; LE kQZ =−ϕT k ·M· Z . (2.62)
+Hint
+Since in SOFiSTiK m k ≡1, we have that  k =L k =−ϕT k ·M·.
+Hint
+m k, L k and  k are dependent on the eigenvector normalization.
+Utilizing the superposition principle, we can represent the total solution of the modal equation
+2.60 as follows
+EQX EQY EQZ
+q k(t)=q (t)+q (t)+q (t) , (2.63)
+k k k
+EQX
+where q (t) is the generalized modal coordinate response due to the earthquake ground
+k
+acceleration acting in global X direction, ¨ gX(t). This means that we can split the Eq. 2.60
+intothreeequations,eachofwhichcorrespondingtoonedirectionoftheearthquake,andtreat
+them separately.
+FocusingontheearthquakegroundmotionactinginX direction,wecanwritethemodalequa-
+tion of motion as follows
+q¨E kQX (t)+2ξ kω k·q˙E kQX (t)+ω2 ·qE kQX (t)=E kQX ·¨ gX(t) . (2.64)
+k
+EQX
+Dividing everything with participation factor  we can obtain an alternative representation
+k
+of the modal equation of motion
+D¨E kQX (t)+2ξ kω k·D˙E kQX (t)+ω2 ·DE kQX (t)=¨ gX(t) (2.65)
+k
+EQX EQX
+wheretherelationbetweentheq (t)andanewgeneralizedmodaldisplacementD (t)is
+k k
+2-22 SOFiSTiK2023TheoreticalPrinciples|DYNA
+given by
+EQX EQEQX EQX
+q (t)= ·D (t) . (2.66)
+k k k
+EQX
+By solving the equation 2.65 for D (t) using one of the techniques described in Section 2.2
+k
+EQX
+wecandetermineq (t)fromEq. 2.66. 4Thecontributionofthekthmodetothedisplacement
+k
+vector due to earthquake in X direction EQX(t) is
+EQX EQX EQX EQX
+ (t)=ϕ ·q (t)=ϕ · ·D (t) . (2.67)
+k k k k k k
+2.6.7 Total Response
+The total displacement vector due to earthquake in X direction is given by the superposition of
+its modal contributions (modal superposition)
+n
+EQX(t)= (cid:88) EQX (t) . (2.68)
+k
+k=1
+Finally the total displacement vector due to spatial earthquake action is given by the sum of
+displacements vectors due to the earthquake in all three directions (spatial superposition)
+n
+(t)=EQX(t)+EQY(t)+EQZ(t)= (cid:88) (cid:148) EQX (t)+EQY (t)+EQZ (t)(cid:151)
+. (2.69)
+k k k
+k=1
+All other response quantities are determined analogue to the direct method described by
+Eq.2.29 given in the Section 2.3.5, i.e.
+n
+R(t)=REQX(t)+REQY(t)+REQZ(t)= (cid:88) (cid:148) REQX (t)+REQY (t)+REQZ (t)(cid:151)
+k k k
+k=1
+(2.70)
+n
+(cid:88) (cid:148) EQX EQX EQY EQY EQZ EQZ (cid:151)
+= R ·q (t)+R ·q (t)+R ·q (t) .
+k0 k k0 k k0 k
+k=1
+2.6.8 Equivalent Modal Loads
+Equivalentmodalforcesforthemodek duetotheearthquakeinXdirectioncanbedetermined
+in the same way as it has been described in Section 2.3.5
+EQX EQX EQX EQX EQX
+ƒ (t)=K· (t)=K·ϕ ·q (t)=K·ϕ · ·D (t) , (2.71)
+k k k k k k k
+or with the help of the mass matrix
+ƒEQX ·ω2·qEQX (t)=EQX ·AEQX
+(t)=M·ϕ ·M·ϕ (t) , (2.72)
+k k k k k k k
+where
+AEQX (t)=ω2·DEQX
+(t) , (2.73)
+k k k
+4q m,k perresponsespectrumisoutputtedinTable4.4.
+SOFiSTiK2023 2-23DYNA|TheoreticalPrinciples
+denotes the pseudo-acceleration response of the kth mode generalized SDOF system due to
+earthquake acceleration in X direction ¨ gX(t). 5
+2.6.9 Effective Modal Mass
+We can also write Eq. 2.72 as follows
+EQX EQX EQX
+ƒ (t)=M ·A (t) , (2.74)
+k eƒƒ k
+where
+EQX EQX
+M = ·M·ϕ , (2.75)
+eƒƒ,k k k
+represents the effective modal mass vector of the mode k for the earthquake in X direction.
+ThisvectoringeneralcontainscomponentsofallthenodalDOFs(translationalandrotational).
+In earthquake engineering it is very useful to have a sum of the translational components (X,
+Y and Z) of the effective modal mass vector, i.e.
+MEQX =bT ·MEQX =EQX ·bT ·M·ϕ (2.76a)
+eƒƒ,k,X X eƒƒ,k k X k
+MEQX =bT ·MEQX =EQX ·bT ·M·ϕ (2.76b)
+eƒƒ,k,Y Y eƒƒ,k k Y k
+MEQX =bT ·MEQX =EQX ·bT ·M·ϕ , (2.76c)
+eƒƒ,k,Z Z eƒƒ,k k Z k
+EQX EQX EQX
+where M , M and M are the effective modal masses 6 of the mode k in X, Y
+eƒƒ,k,X eƒƒ,k,Y eƒƒ,k,Z
+andZdirectionforanearthquakeactinginXdirection(EQX). Thevectorb X isthevectorwhich
+has ones at places where DOF is a translational DOF in X direction, and zeros elsewhere. 7
+Hint
+M eƒƒ,k is independent of how the eigenvector is normalized (invariant).
+The total effective masses in X, Y and Z direction for an earthquake acting in X direction are
+n n n
+EQX (cid:88) EQX EQX (cid:88) EQX EQX (cid:88) EQX
+M = M ; M = M ; M = M . (2.77)
+eƒƒ,X eƒƒ,k,X eƒƒ,Y eƒƒ,k,Y eƒƒ,Z eƒƒ,k,Z
+k=1 k=1 k=1
+If all the modes of the system are computed, total effective mass must be equal to the total
+mass of the structure. But as there might be some masses which are not active because
+they are associated to a support, DYNA evaluates two factors. First the above equations
+are evaluated for the active masses. The result will be 100 % if all eigen forms have been
+calculated. The effective massed will be evaluated based on all mass elements and thus is an
+indicator for the quality of the mesh.
+It is generally required that all modes which contribute significantly to the total response of the
+structure should be taken into account. In some seismic norms this requirement is quantified
+5For the undamped structures the pseudo-acceleration is equal to the total acceleration, i.e. A(t) = D¨(t)+
+¨ g(t). Inrealityallstructurespossessomedamping, butthisstructuraldampingisusuallyverysmallsothatthe
+pseudo-accelerationcanbeapproximatedwiththetotalaccelerations. Theinternalresistancestructuralforcesare
+proportionaltothepseudo-accelerations.
+6A.k.a. Participatingmass[5]
+7For the uniform support excitation vectors b X, b Y and b Z are equal to influence vectors  X,  Y and  Z (see
+Section2.6).
+2-24 SOFiSTiK2023TheoreticalPrinciples|DYNA
+by demanding that the total effective mass for the modes taken into account is not less then
+certain threshold (i.e. 90% of total mass of the structure). However a standard approach is
+to include the "‘Missing Mass"’ as the difference of the sum of all modal loadings to the static
+loading R  with the spectral value of period 0.0. The enhanced implementation calculates this
+foreverysingledegreeoffreedombasedontheparticipationfactors,butasimplifiedandmore
+general method based on the percentage of the effective masses is also available.
+(cid:18) M (cid:19)
+(cid:88) eƒƒ,
+R m = 1− ·R  (2.78)
+M
+tot,
+For a spectral loading with CQC this will become:
+R=(cid:114)(cid:88)(cid:88)
+R ·ρ ·R +(ZPA·R )2 (2.79)
+ j j m
+The effective modal masses and total effective masses are not dependent on the earthquake
+loading, only on its direction. This means that they are available upon the solution of the
+eigenvalue problem. 8
+2.6.10 Base Shear and Base Overturning Moment
+Sum of all the equivalent modal forces (Eq. 2.74) for mode k in X, Y and Z direction due to
+earthquake acting in X direction are (see also Eq. 2.76)
+VEQX (t)=bT ·ƒEQX (t)=EQX ·bT ·M·ϕ ·AEQX (t)=MEQX ·AEQX (t) (2.80a)
+b,k,X X k k X k k eƒƒ,k,X k
+VEQX (t)=bT ·ƒEQX (t)=EQX ·bT ·M·ϕ ·AEQX (t)=MEQX ·AEQX (t) (2.80b)
+b,k,Y Y k k Y k k eƒƒ,k,Y k
+VEQX (t)=bT ·ƒEQX (t)=EQX ·bT ·M·ϕ ·AEQX (t)=MEQX ·AEQX (t) , (2.80c)
+b,k,Z Z k k Z k k eƒƒ,k,Z k
+EQX
+where V (t) represents the base shear for mode k in X direction due to earthquake acting
+b,k,X
+in X direction.
+Ifwithh eƒƒ,k wedenotetheheight(relatedtosomereferencepoint)atwhichtheresultantforce
+of the equivalent modal loads is acting (base shear) V b,k(t), we can then also calculate the
+corresponding kth-mode base overturning moments in X, Y and Z direction for an earthquake
+acting in X direction
+EQX EQX EQX
+M (t)=V (t)·h (2.81a)
+b,k,X b,k,X eƒƒ,k,X
+EQX EQX EQX
+M (t)=V (t)·h (2.81b)
+b,k,Y b,k,Y eƒƒ,k,Y
+EQX EQX EQX
+M (t)=V (t)·h . (2.81c)
+b,k,Z b,k,Z eƒƒ,k,Z
+EQX
+h is the effective modal height.
+eƒƒ,k,X
+Bylookingattheformulas2.80and2.81wecanconcludethatthekth-modebaseshearV b,k(t)
+and base overturning moment M b,k(t) of a MDOF system is the same as the base shear and
+baseoverturningmomentofaSDOFsystemwithamassequaltoeffectivemodalmassM
+eƒƒ,k
+and height equal to effective modal height h eƒƒ,k (see Fig. 2.13). This gives a mechanical
+meaning to the effective modal mass and the effective modal height.
+8TotaleffectivemassesM andeffectivemodalmassesM inX,Y andZdirectionareoutputtedinTable
+eƒƒ eƒƒ,k
+4.2.
+SOFiSTiK2023 2-25DYNA|TheoreticalPrinciples
+mn
+ƒn,k(t)
+M
+eƒƒ,k
+V b,k(t) mj M eƒƒ,k·A k(t)
+ƒj,k(t)
+h h
+eƒƒ,k eƒƒ,k
+m1
+ƒ1,k(t)
+V (t) V (t)
+b,k b,k
+M (t) M (t)
+b,k b,k
+Figure2.13: (left)BaseshearV b,k(t)andbaseoverturningmomentM b,k(t)(right)SDOFsystem
+witheffectivemodalmassM andeffectivemodalheighth
+eƒƒ,k eƒƒ,k
+The total base shears in X, Y and Z direction due to an earthquake acting in X direction are
+n n n
+EQX (cid:88) EQX EQX (cid:88) EQX EQX (cid:88) EQX
+V (t)= V (t) ; V (t)= V (t) ; V (t)= V (t) , (2.82)
+b,X b,k,X b,Y b,k,Y b,Z b,k,Z
+k=1 k=1 k=1
+and the corresponding total base overturning moments
+n n n
+EQX (cid:88) EQX EQX (cid:88) EQX EQX (cid:88) EQX
+M (t)= M (t) ; M (t)= M (t) ; M (t)= M (t) . (2.83)
+b,X b,k,X b,Y b,k,Y b,Z b,k,Z
+k=1 k=1 k=1
+Modal Response
+Themaximal(peak)contributionofthekth-modetothedisplacementvectorduetoearthquake
+EQX
+in X direction  is
+m,k
+EQX (cid:12) EQX (cid:12) EQX EQX EQX
+ =mx(cid:12) (cid:12) (t)(cid:12) (cid:12)=ϕ k·q =ϕ k· ·S (T k,ξ k) . (2.84)
+m,k k m,k k D
+EQX
+Maximal response quantities of the kth-mode R can be obtained by using Eqs. 2.29 and
+m,k
+2.70
+EQX (cid:12) EQX (cid:12) EQX EQX EQX EQX EQX
+R =mx(cid:12) (cid:12)R (t)(cid:12) (cid:12)=R ·q =R · ·S (T k,ξ k) . (2.85)
+m,k k k0 m,k k0 k D
+Equivalent modal loads associated with peak (maximum) response of the kth-mode are (see
+Eq. 2.72)
+ƒE mQ X =mx(cid:12) (cid:12) (cid:12)ƒE kQX (t)(cid:12) (cid:12) (cid:12)=M·ϕ k·ω2 ·qE mQ X =E kQX ·M·ϕ k·SE pQ AX (T k,ξ k) . (2.86)
+,k k k,k
+As aforementioned (Section 2.3.5) SOFiSTiK does not work directly with these forces and
+hence they are not saved in the database. However, if there is a real need for them, it is
+2-26 SOFiSTiK2023TheoreticalPrinciples|DYNA
+possible for the user to construct them, as it is explained in the Section 2.12.3.
+SimilarlybaseshearforcesinX,Y andZdirectionassociatedwiththekth-modepeakresponse
+for the earthquake acting in X direction (EQX) are
+V bE ,Q kX =mx(cid:12) (cid:12) (cid:12)V bE ,Q kX ,X(t)(cid:12) (cid:12) (cid:12)=E kQX ·bT X·M·ϕ k·SE pQ AX (T k,ξ k) (2.87a)
+,X
+V bE ,Q kX =mx(cid:12) (cid:12) (cid:12)V bE ,Q kX ,Y(t)(cid:12) (cid:12) (cid:12)=E kQX ·bT ·M·ϕ k·SE pQ AX (T k,ξ k) (2.87b)
+,Y Y
+V bE ,Q kX =mx(cid:12) (cid:12) (cid:12)V bE ,Q kX ,Z(t)(cid:12) (cid:12) (cid:12)=E kQX ·bT Z·M·ϕ k·SE pQ AX (T k,ξ k) , (2.87c)
+,Z
+or written in terms of effective modal masses (see Eq. 2.80)9
+EQX EQX EQX
+V =M eƒƒ,k,X·S (T k,ξ k) (2.88a)
+b,k,X pA
+EQX EQX EQX
+V =M ·S (T k,ξ k) (2.88b)
+b,k,Y eƒƒ,k,Y pA
+EQX EQX EQX
+V =M eƒƒ,k,Z·S (T k,ξ k) . (2.88c)
+b,k,Z pA
+Base overturning moments associated with the kth-mode peak response are (see Eq. 2.81)10
+EQX EQX EQX
+M =V ·h (2.89a)
+b,k,X b,k,X eƒƒ,k,X
+EQX EQX EQX
+M =V ·h (2.89b)
+b,k,Y b,k,Y eƒƒ,k,Y
+EQX EQX EQX
+M =V ·h . (2.89c)
+b,k,Z b,k,Z eƒƒ,k,Z
+Hint
+In DYNA base overturning moment is always evaluated relative to the origin of the global
+coordinate system.
+Sometimes maximum base shear and maximum base overturning moment per mode at some
+specified height z are needed as well (see Fig. 2.14 (right)). DYNA can compute these with
+the help of the command CTRL BLEV.
+Total Response
+In Section 2.6.6 (Eqs. 2.68 - 2.70) we saw how in a modal time history analysis (MTHA)
+any total response quantity R(t) as a function of time can be determined by the sum of its
+modal contributions R k(t). In the response spectrum analysis (RSA) the things are a bit more
+complicated. The results of the RSA analysis are the maximal (peak) response quantities per
+mode R m,k. These values are exact (i.e. equal to those obtained from MTHA). However
+since in general maximal (peak) responses for different modes are not reached at same time
+instants the total response R m is no longer a simple sum of the maximal modal responses
+values R m,k. In fact a sum of all the modal response quantities provides an upper bound for
+9Baseshearpermode,perdirectionandperearthquakespectraisoutputtedinTables4.6and4.7.
+10Baseoverturningmomentpermode,perdirectionandperearthquakespectraisoutputtedinTables4.6and
+4.7.
+SOFiSTiK2023 2-27DYNA|TheoreticalPrinciples
+mn mn
+ƒm,n,k ƒm,n,k
+V b,k mj mj
+ƒm,j,k ƒm,j,k
+h
+eƒƒ,k
+V (z)
+m1 b,k
+ƒm,1,k
+z
+z=0
+V
+b,k
+M (z)
+b,k
+M
+b,k
+Figure 2.14: (left) Base shear and base overturning moment for the entire structure (right) Base
+shearandbaseoverturningmomentaboveheightz
+the total response quantity
+n n
+REQX =mx(cid:12) (cid:12)REQX(t)(cid:12) (cid:12) ≤ (cid:88) mx(cid:12) (cid:12)REQX (t)(cid:12) (cid:12)= (cid:88) REQX . (2.90)
+m (cid:12) (cid:12) (cid:12) k (cid:12) m,k
+k=1 k=1
+Obviouslyonecouldadoptthesumofabsolutevaluesasarepresentativevalueforthedesign,
+however in many cases this is a too conservative estimate. In practice one adopts some other
+modal combination rule which is less conservative (SRSS, CQC, etc.). We can then write
+REQX =MCOMBn (cid:148) REQX (cid:151)
+, (2.91)
+m k=1 m,k
+where MCOMB denotes that a modal combination rule is used. Which ever rule the user
+chooses,itshouldbeclearthatthecombinedvaluefortotalresponseisonlyanapproximation
+of the exact total response.
+Similarly, once the total response quantities are computed using Eq. 2.91 for each individual
+component of ground motion (REQX, REQY and REQZ) they must be superimposed by using
+m m m
+somespatialcombinationrule inordertoobtainthetotalresponsequantitiesduetothesimul-
+taneous action of three components of ground motion R m
+R m =SCOMB(cid:148) RE mQ X , RE mQ Y , RE mQ Z (cid:151) , (2.92)
+where SCOMB denotes that a spatial combination rule is used (SRSS, 100-30-30, etc.).
+Modal and spatial combination of response quantities is discussed in more detail in Sections
+2.5.3 and 2.5.3.
+2.7 Storey level definition
+For assessment of earthquake resistance capability of a multi-storey building, storey level re-
+lateddesigncriteriaarefrequentlyadopted. Fig. 2.15showsamulti-storeybuildingandcorre-
+2-28 SOFiSTiK2023TheoreticalPrinciples|DYNA
+sponding storey definitions.
+LVL3
+Shearforce
+h3
+drift
+LVL2
+Shearforce
+u
+h2
+LVL1
+Shearforce
+ZLVL h1
+LVL0(baselevel)
+G
+Figure2.15: Definitionofstoreysinamulti-storeybuilding
+Theinter-storeyheightofastoreylevelistheverticaldistancetothestoreylevelsituatedbelow.
+The storey level at the very bottom constitutes the base level.
+Hint
+By definition, the inter-storey height of the base level is always h=0.
+Storey level definition is system related and can, e.g., be accomplished by SOFIMSHC: SLVL.
+2.7.1 Computation of the center of rigidity (COR) of a diaphragm floor
+Thecenterofrigidityofarigiddiaphragmflooristhecenterofrotationofthefloorunderapplied
+moments. For every force applied in the direction of the COR, the floor will only undergo
+translational displacements and no rotations. The other floors can undergo displacements as
+well as rotations. The center of rigidity can be calculated by applying three load cases, F  and
+F y atanarbitrarypointandaMomentM zz. Writingtheequilibriumwithrespecttothemoment,
+for the two forces, see Fig. 2.16 (left) we get
+−(F ·ΔY)=K zz·φ z (2.93a)
+F y·ΔX=K zz·φ zy . (2.93b)
+and the equilibrium for the moment M zz reads as
+M zz =K zz·φ zz , (2.94)
+where K zz denotes the rotational stiffness. Substituting K zz from Eq. 2.94 into Eqs. 2.93 and
+solving for ΔX and ΔY, we obtain the distance of center of rigidity from the point where the
+loadsareapplied. Thedistanceofthecenterofrigidityfromthepointwheretheloadisapplied
+SOFiSTiK2023 2-29DYNA|TheoreticalPrinciples
+Y Y
+U
+2 2
+F  M YΔ− 1
+zz
+F U 1 1 y M YΔ 2 YΔ 2
+zz YΔ
+1
+YΔ
+COR COR
+1y 2y
+ΔX
+U U
+ΔX ΔX −ΔX
+1 2 1
+ΔX
+2
+X X
+Figure2.16: Calculationofcenterofrigidity(left)andcalculationofrotations(right)
+is calculated with opposite sign as
+φ M
+zy zz
+ΔX=− , (2.95a)
+φ F
+zz y
+φ M
+z zz
+ΔY = . (2.95b)
+φ F
+zz 
+The rotation of the floor can be calculated by using the small-angle approximation, i.e. φ =
+tn(φ).
+Alternatively,thecenterofrigiditycanalsobecalculatedbytheassumptionthatunderapplied
+moments the center of rotation of the floor corresponds with the center of rigidity. From the
+application of an arbitrary moment, the rotation of the diaphragm can be calculated from the
+displacements of two arbitrary points (eg. two nodes)
+U U U −U
+2 1 2 1
+φ=− =− =− , (2.96)
+ΔY ΔY ΔY −ΔY
+2 1 2 1
+or by using U y as
+U U U −U
+y2 y1 y2 y1
+φ= = = . (2.97)
+ΔX ΔX ΔX −ΔX
+2 1 2 1
+After calculating the rotation from Eq. 2.96 or Eq. 2.97, the distance of the center of rigidity
+from the point  where the displacements are evaluated can be computed as
+U
+y
+ΔX  =− (2.98a)
+φ
+U
+
+ΔY  = . (2.98b)
+φ
+2-30 SOFiSTiK2023TheoreticalPrinciples|DYNA
+2.7.2 Computation of the center of mass (COM) of a storey
+The coordinates of the center of mass of a particular storey are calculated as
+(cid:80)(m · )
+ 
+X= , (2.99a)
+(cid:80)(m )
+
+(cid:80)(m ·y )
+ 
+Y = , (2.99b)
+(cid:80)(m )
+
+(cid:80)(m ·z )
+ 
+Z= , (2.99c)
+(cid:80)(m )
+
+where  ,y ,z  and m  are the coordinates and masses of each node  in the storey.
+2.7.3 Storey results
+Information about the storey results can be found in FEABENCH: Storey-results.
+2.8 Kinematic Constraints
+Frequent use of condensations is made in dynamic analysis. These require a certain exper-
+tise, because the selection of the reference nodes is critical. The same holds for kinematic
+constraints too.
+WhileaforceatadistanceageneratesamomentP·,theinertiaofaneccentricmassisgiven
+bym·2. DYNAtakesthiseffectintoaccountautomaticallyforstandardkinematicconstraints.
+This, however, results in off diagonal mass matrix components, which necessitate the use of
+a consistent, i.e. not diagonalised, mass matrix. These do not need not only more memory,
+but can lead also to oscillation of solution through violation of the discrete maximum principle
+atsmalltimestepsthatperformdisturbingly. Butasthesematricesarenotalwaysacceptable,
+the user therefore can switch to the use of a diagonalised mass matrix, which then requires
+special care in the description of the constraints. When modeling rigid floor disks one should
+place the reference node as close as possible to the gravity or the shear centre in order to get
+the most realistic results.
+Kinematicconstraintsincreasethebandwidthconsiderably. Thememorycapacitycanthusbe
+quickly exceeded in cases of large systems or strongly recursive kinematic constraints.
+2.9 Elastic Stiffnesses
+DYNAemploysverycompactformulationsoftheelementstiffnesses. Thespringandboundary
+elements are in the classical form given and do not distinguish from those ones in programs
+ASE or STAR2.
+ThebeamelementisarealfiniteelementwithadisplacementaccretionwithHermitianfunction
+of second redundancy (therefore cubical polynomials). That is considered at:
+– variable stiffnesses and location of centre of gravity
+– variable locations of shear centre
+– shear deformations over correction terms
+– optional warping force torsion
+SOFiSTiK2023 2-31DYNA|TheoreticalPrinciples
+– elastic bedding for pile elements
+– all beam loads from database
+The element produces for static load cases results also for internal sections.
+The QUAD shell element is available in the basic version (Hughes and/or Bathe-Dvorkin) or
+with"‘assumedstrains"’. ThedefaultversionoftheQUADincludesthesixthdegreeoffreedom
+(drilling perpendicular to the element plane) with a variational principle of the rotational field.
+The BRIC element is available in the basic version or with "‘assumed strains"’.
+Specialprovisionsareavailableforsocalled"‘incompressibleelements"’forthedynamicanal-
+ysis of fluids with QUAD or BRIC elements.
+Anisotropic material or thickness definitions are not available in DYNA.
+2.10 Geometric Stiffness and P-delta
+For all elements a primary load case can be read, which can be used for the determination of
+the geometric stiffness. The second order theory effects are exact in those cases where the
+axial force does not change due to geometric nonlinear effects. For cable elements large de-
+formationsofthisprimaryloadcasearealsoaccountedfor. Forwarpingtorsiontherearealso
+contributions from bending and warping moments which have to be accounted for iteratively.
+Thusthisapproachmaybeusedeitherforabucklingeigenvalueorforperformingalinearized
+dynamic or static analysis based on the tangential stiffness. So it exceeds classical P-delta
+effects. This approach is faster by magnitudes compared to a general geometric non linear
+analysis.
+The eigen frequency of member with tension will thereby increase, while those of members
+under compression will decrease until they reach the value of zero for the buckling load. How-
+ever for cable elements the complete separation of geometric stiffness is not always a good
+approach, as this might generate negative eigenvalues in a buckling analysis. On the other
+side a buckling factor is defined as the factor of the loading. So it is generally foreseen for
+cables to split the prestress in two parts. One part is included in the general stiffness (this
+is the value defined with the element itself) and the difference from the actual primary estate
+to that general value is then used to form the geometric stiffness for the buckling analysis. If
+that general value is not defined and option CTRL PLC does not select otherwise, the primary
+estate will be taken as general prestress.
+For beam elements there are some extra effects for static load cases available. For analysis
+according 2nd order theory a primary load case (in many cases only with a constant normal
+force) may be added to the results for a total design case(CTRL PLC W2 3) or omitted to save
+incrementalresultswhichmightbeusedforalinearsuperposition(CTRLPLCW21=default)
+Further it is possible to calculate the incremental loading for beam elements automatically
+(CTRL PLC W2 7).
+2.11 Nonlinear Effects
+DYNA uses linear Algorithms for performance reasons. Some important non linear effects are
+available however:
+2-32 SOFiSTiK2023TheoreticalPrinciples|DYNA
+– For vehicle-structure interaction a moving contact condition is available
+– Spring elements can perform all non linear effects including explicit force-displacement
+relations.
+There is no extra iteration for the residual forces, thus the change of the stiffness should
+not become to large.
+These effects are also avaiable for a modal analysis if the used eigen values allow suffi-
+cient relative displacements of the spring nodes.
+– Beam elements can account for all non linear effects form an interaction of a structure
+with a steady-state or transient wind field. This includes galloping and flutter.
+– Cable, Truss and QUAD elements may account for relative flow velocities as well
+– For BRIC elements all nonlinear material models are available for the explicit integration
+scheme
+2.12 FAQ
+2.12.1 Manual Checks of the RSA Results
+Inthissectionmanualchecksoftheextremeandcorrespondingforcescomputedusingmodal
+superposition rules during the response spectrum analysis will be illustrated trough an exam-
+ple.
+The structure is a frame subjected to earthquake loading in global X-direction in form of a
+response spectrum (Fig. 2.17). The task is to manually determine extreme value of a moment
+M y,m andcorrespondingnormalforce N andtocompareitwiththeextremeresultsobtained
+from DYNA calculation (Fig. 2.18). SRSS modal combination rule is used. Only first two
+eigenmodes are relevant to the overall structural response.
+3
+12
+X
+2 
+y
+Z
+11 z
+1
+EQX
+Figure2.17: FramesubjectedtoresponsespectruminX direction: nodesandbeamsofinterest
+According to Eq. 2.85 maximal kth-mode moment and normal force can be obtained from
+M y,m,k =M y,0,k·q m,k (2.100a)
+N m,k =N 0,k·q m,k , (2.100b)
+where M y,0,k and N 0,k are the moment and normal force which correspond to the eigenvector
+displacements of the mode k and which are saved in the corresponding eigenmode load case
+(seeFig. 2.19). Maximalmodalcoordinateresponsesq m,k canbeobtainedfromtheReport
+SOFiSTiK2023 2-33DYNA|TheoreticalPrinciples
+834.6
+−280.5
+230.6
+89.1 M y,m 232.4 N
+1371.8 280.6
+Figure 2.18: Total maximum (extreme) bending moment M y,m and corresponding normal force
+NcomputedbyDYNAusingtheSRSSmodalcombinationrule
+Browser Table ”Modal Responses” (Table 4.4) and for this example they read
+q =−1.386·10−1
+m,1
+q m,2 =+1.168·10−3 .
+Total maximal moment can, according to Eq. 2.91, be determined by applying the modal
+combination rule (SRSS in the example) to the modal moments, i.e.
+(cid:118)
+(cid:117) n
+M y,m =SRSSn k=1(cid:2)M y,m,k(cid:3)=(cid:117) (cid:116)(cid:88) M2 y,m,k . (2.101)
+k=1
+NormalforceNcorrespondingtothetotalmaximalmomentM y,mcanbecomputedaccording
+to the rules described in Section 2.5.3, i.e. according to Eq. 2.45
+n
+(cid:88)
+N= ƒ k·N m,k , (2.102)
+k=1
+where the factors ƒ k are given as
+M
+y,m,k
+ƒ k = . (2.103)
+M
+y,m
+Finally the results at the ends of the beams 11 and 12 can be determined (Fig. 2.17):
+• Beam 11
+– Start section (node 1)
+Maximal modal moments and normal forces for the modes 1 and 2 (Eqs. 2.100 and
+Fig. 2.19):
+M =(+9893)·(−1.386·10−1)=−1371.0
+y,m,1
+M =(−46368)·(+1.168·10−3)=−54.2
+y,m,2
+N =(+2031)·(−1.386·10−1)=−281.5
+m,1
+N =(+11995)·(+1.168·10−3)=+14.0
+m,2
+2-34 SOFiSTiK2023TheoreticalPrinciples|DYNA
+−6019
+2023
+512 M y,0,1 N 0,1
+2031
+9893
+(a)Eigenmode1
+−25374
+10775
+46248 M y,0,2 N 0,2
+11995
+−46368
+(b)Eigenmode2
+Figure2.19: Bendingmomentsandnormalforcescorrespondingtoeigenvectordisplacements
+Total maximal moment (Eq. 2.101):
+(cid:198)
+M = 1371.02+54.22 = +1372.0
+y,m
+Corresponding normal force (Eqs. 2.102 and 2.103):
+−1371.0 −54.2
+N= ·(−281.5)+ ·(+14.0)= +280.7
+1372.0 1372.0
+– End section (node 2)
+Maximal modal moments and normal forces for the modes 1 and 2:
+M =(+512)·(−1.386·10−1)=−71.0
+y,m,1
+M =(+46248)·(+1.168·10−3)=+54.0
+y,m,2
+N =(+2031)·(−1.386·10−1)=−281.5
+m,1
+N =(+11995)·(+1.168·10−3)=+14.0
+m,2
+Total maximal moment:
+(cid:198)
+M = 71.02+54.02 = +89.2
+y,m
+Corresponding normal force:
+−71.0 +54.0
+N= ·(−281.5)+ ·(+14.0)= +232.5
+89.2 89.2
+SOFiSTiK2023 2-35DYNA|TheoreticalPrinciples
+• Beam 12
+– Start section (node 2)
+Maximal modal moments and normal forces for the modes 1 and 2:
+M =(+512)·(−1.386·10−1)=−71.0
+y,m,1
+M =(+46248)·(+1.168·10−3)=+54.0
+y,m,2
+N =(+2023)·(−1.386·10−1)=−280.4
+m,1
+N =(+10775)·(+1.168·10−3)=+12.6
+m,2
+Total maximal moment:
+(cid:198)
+M = 71.02+54.02 = +89.2
+y,m
+Corresponding normal force:
+−71.0 +54.0
+N= ·(−280.4)+ ·(+12.6)= +230.5
+89.2 89.2
+– End section (node 3)
+Maximal modal moments and normal forces for the modes 1 and 2:
+M =(−6019)·(−1.386·10−1)=+834.2
+y,m,1
+M =(−25374)·(+1.168·10−3)=−29.6
+y,m,2
+N =(+2023)·(−1.386·10−1)=−280.4
+m,1
+N =(+10775)·(+1.168·10−3)=+12.6
+m,2
+Total maximal moment:
+(cid:198)
+M = 71.02+54.02 = +834.7
+y,m
+Corresponding normal force:
++834.2 −29.6
+N= ·(−280.4)+ ·(+12.6)= −280.9
+834.7 834.7
+The results obtained by the manual calculation are in agreement with the results obtained by
+DYNA (Fig. 2.18).
+2.12.2 Modal Participation Factor
+Modal participation factor for the earthquake in X direction is defined by (see Eq. 2.61)
+EQX
+L
+E kQX = mk ≡1 =ϕT k ·M· X . (2.104)
+k
+DYNAdoesnotoutputthemodalparticipationfactorsintheReportBrowser,howeveriftheuser
+hasaneedtohavethesevaluesitispossibletogetthemfromthedatabase. Iftheeigenvalue
+EQX EQY EQZ
+analysis has been performed with DYNA, then the participation factors  ,  and 
+k k k
+aresavedinthedatabaseintherecordLC_CTRL(012/LC)forthecorrespondingeigenvalueload
+case on the positions RX, RY and RZ, respectively. For example the CADINP input
+2-36 SOFiSTiK2023TheoreticalPrinciples|DYNA
+@KEY LC_CTRL #lc_eig+#k ! lc_eig+k = k-th eigenmode load case
+STO#PFx @(RX) ! modal part. factor for eq. in X direction
+STO#PFy @(RY) ! modal part. factor for eq. in Y direction
+STO#PFz @(RZ) ! modal part. factor for eq. in Z direction
+will read the modal participation factors from the CDB record LC_CTRL for the kth-eigenmode
+(saved in the load case #lc_eig+#k).
+2.12.3 Equivalent Modal Loads
+It is often the case that the user wants have the equivalent modal loads of the response spec-
+trum analysis as defined by Eq. 2.86 and repeated here for completeness sake
+EQX EQX EQX
+ƒ =− ·M·ϕ k·S (T k,ξ k) . (2.105)
+m,k k pA
+As already explained (see Sections 2.3.5, 2.6.6 and 2.5.1) DYNA does not work directly with
+these forces in order to compute the modal responses but it uses the direct method. Hence
+these forces are not saved in the database. However it is possible for the user to construct
+them. How to achieve this is explained in the following.
+During the eigenvalue analysis DYNA will save the following load vector in the corresponding
+kth eigenvalue load case
+ω2·M·ϕ
+. (2.106)
+k k
+Comparing Eqs. 2.105 and 2.106 it is evident that the equivalent modal loads can be con-
+structed by applying the factor
+EQX EQX
+ ·S (T ,ξ )
+k pA k k
+, (2.107)
+ω2
+k
+to the loads from the eigenvalue load case. In the Section 2.12.2 we have seen how to get
+EQX EQX
+ k from database. Values ω k and S pA (T k,ξ k) can be obtained from the Report Browser
+output, or alternatively from the database.
+ω k is saved in the CDB record LC_CTRL (012/LC) for the corresponding eigenvalue load case
+on the position RPAR and can be, for example, obtained by the following CADINP input
+@KEY LC_CTRL #lc_eig+#k ! lc_eig+k = load case of the k-th eigenvalue
+STO#w @(RPAR)
+ProductE kQX ·SE pQ AX (T k,ξ k)issavedinthedatabaseanditcanbeobtainedfromthevalueLSAF
+of the CDB record SLVL_RES for the corresponding response spectrum load case (#lc_rs_x),
+level-id (#lvl_id) and the given eigenmode number (#k)
+@KEY SLVL_RES #lc_rs_x #lvl_id #k
+STO#SPax_PFx @(LSAF)
+Now that the load factor is know, all one needs to do is to apply it to the corresponding eigen-
+value load case, e.g.
+SOFiSTiK2023 2-37DYNA|TheoreticalPrinciples
++PROG ASE
+HEAD
+!...
+LC ...
+LCC #lc_eig+#k FACT #SPax_PFx/#w**2
+!...
+END
+2.12.4 Scaling of the Generalized SDOF Properties for a Different Eigenvector Nor-
+malization
+As already mentioned, in SOFiSTiK eigenvectors ϕ are normalized in such a way that the
+k
+generalized modal mass m k is equal to 1, for each natural mode k. It is however often the
+case that the user wants to determine generalized modal properties for different normalization
+of the eigenvectors. The procedure to achieve this is described in the following.
+Starting from the known generalized modal properties (m k ≡ 1, c k, k k and p k(t)) and the
+eigenvalues and original eigenvectors (ω k and ϕ k) the task is to determine new generalized
+modal properties (m¯ k ≡ 1, c¯ k, k¯ k and p¯ k(t)) so that they correspond to the new eigenvectors
+ϕ¯ . New eigenvectors ϕ¯ and old eigenvectors ϕ must be linearly dependent, i.e. they must
+k k k
+be proportional to each other
+ϕ¯ =α k·ϕ , (2.108)
+k k
+where α k denotesthefactorofproportionality(permode k). Usingthisequationandhavingin
+mind the definition of the generalized modal properties, we obtain the following
+m¯ k =ϕ¯T k ·M·ϕ¯ k =α k2·ϕT k ·M·ϕ k =α k2·m k =α k2·1.0=α k2 (2.109a)
+k¯ k =ϕ¯T k ·K·ϕ¯ k =α k2·ϕT k ·K·ϕ k =α k2·k k =α k2·ω2 k ·m k =α k2·ω2 k (2.109b)
+c¯ k =ϕ¯T k ·C·ϕ¯ k =α k2·ϕT k ·C·ϕ k =α k2·c k =α k2·2ξ kω k/m k =α k2·2ξ kω k (2.109c)
+p¯ k =ϕ¯T k ·p=α k·ϕT k ·p=α k·p k . (2.109d)
+So with the known factor of proportionality between the new and original eigenvectors α k, the
+new generalized modal properties can be easily obtained from the old ones by using the Eqs.
+2.109.
+Other properties, like for example L k or  k (see Eqs. 2.62 and 2.61), which depend on eigen-
+vector normalization can be similarly transformed, i.e.
+L¯ k =ϕ¯T k ·M·=α k·ϕT k ·M·=α k·L k (2.110a)
+ϕ¯T ·M· α ·ϕT ·M· 1
+¯ k = k = k k = · k . (2.110b)
+ϕ¯T k ·M·ϕ¯ k α k2·ϕT k ·M·ϕ k α k
+For a special case where the eigenvectors are scaled in such a way that the maximal vector
+2-38 SOFiSTiK2023TheoreticalPrinciples|DYNA
+component mx 1≤j≤n(cid:0)ϕ¯ j,k(cid:1) is equal to 1.0, the proportionality factor α k is given by
+1.0
+α k = mx (cid:0)ϕ (cid:1) , (2.111)
+j,k
+1≤j≤n
+wheremx 1≤j≤n(cid:0)ϕ j,k(cid:1) representsthemaximalcomponentoftheoriginaleigenvectorformode
+k. This value can be easily obtained by looking (in e.g. WinGRAF, Result Viewer, etc.) at the
+maximal displacements of the load case in which the eigenvectors are saved.
+SOFiSTiK2023 2-39DYNA|TheoreticalPrinciples
+2-40 SOFiSTiK2023InputDescription|DYNA
+3 Input Description
+3.1 Input Language
+The input is made in the CADINP language (see general manual SOFiSTiK: ’Basics’).
+Three categories of units are distinguished:
+mm Fixed unit. Input is always required in the specified unit.
+[mm] Explicit unit. Input defaults to the specified unit. Alternatively, an explicit as-
+signment of a related unit is possible (eg. 2.5[m] ).
+[mm] Implicit unit. Implicit units are categorised semantically and denoted by a cor-
+1011
+responding identity number (shown in green). Valid categories referring to the
+unit ”length” are, for example, geodetic elevation, section length and thickness.
+Thedefaultunitforeachcategoryisdefinedbythecurrentlyactive(designcode
+specific) unit set. This input default can be overridden as described above. The
+specified unit in square brackets corresponds to the default for unit set 5 (Eu-
+rocodes, NORM UNIT 5).
+3.2 Input Records
+The following record names are defined:
+Record Items
+SYST TYPE NCS PROB PHYS CS PLC STAT
+CTRL OPT VAL VAL2
+GRP NO VAL CS FACS HING RADA RADB
+MODD FACP FACM WIND LMAX NCSP
+MAT NO E MUE G K GAM GAMA
+ALFA EY MXY OAL OAF SPM TITL
+BMAT NO C CT CRAC YIEL MUE COH
+DIL GAMB REF MREF H
+SMAT NO LC EX EY EZ RHOX RHOY
+RHOZ ALF BET
+MASS NO MX MY MZ MXX MYY MZZ
+MXY MXZ MYZ MB
+EIGE NEIG TYPE NITE MITE LMIN STOR LC
+LCUP
+MODD NO D A B PERS
+STEP N DT INT A B BET DEL
+THE EIGB EIGT EIGS DTF STHE
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-1DYNA|InputDescription
+Record Items
+LC NO FACT DLX DLY DLZ MODB TITL
+CONT TYP REF NR V TMIN LCUV LCUT
+LCUR
+HIST TYPE FROM TO STEP RESU LCST XREF
+YREF ZREF DUMP
+EXTR TYPE MAX MIN STYP ACT
+ECHO OPT VAL
+The records HEAD, END and PAGE are described in the general manual SOFiSTiK: ’Basics’.
+A description of each record follows:
+3-2 SOFiSTiK2023InputDescription|DYNA
+3.3 SYST – System Parameters
+Seealso: CTRL,STEP,GRP
+SYST
+Item Description Unit Default
+TYPE Type of System LT REST
+REST use existing main system
+SECT use subsystem of section SNO
+SNO Section number − -
+PROB Geometric type of the analysis LT *
+LINE linear analysis
+TH2 2nd order theory
+TH3 3rd order theory
+PHYS Physical type of the analysis LT LINE
+LINE linear analysis
+NONL non linear analysis (all)
+NSPR non linear analysis (Spring)
+NMAT non linear analysis (Material)
+CS Construction stage − -
+PLC Primary load case − -
+STAT State of analysis LT -
+SERV serviceability
+ULTI ultimate limit
+CALC general nonlinear
+The system for the analysis has to exist in the database. DYNA can use also the FE-meshes
+of a specific section. This may be selected with SYST SECT nnn, where nnn is the number of
+that section. The FE-system of the sections is saved in separate data base in a sub-directory.
+The geometric type of the analysis may be linear or according 2nd order theory (small defor-
+mations, but stress induced geometric stiffness and 3rd order theory (large deformations but
+small strains). The stresses for the geometric stiffness are taken from the primary load case.
+Thus without a primary load case the analysis is always linear, with a primary load case the
+default is TH2. Option TH3 is currently only available for explicit integration.
+The physical type of the analysis may be linear or including the nonlinear properties of the
+springelementsand/orthefullmaterialnonlinearity(explicitintegrationonly). Thedefinitionof
+the state presets the selection of stress strain laws and safety factors according to the INI-file
+of the selected design code.
+TheanalysisusesthepropertiesforconstructionstageCSandthestressesanddeformations
+according CTRL PLC from load case PLC.
+SOFiSTiK2023 3-3DYNA|InputDescription
+3.4 CTRL – Calculation Parameters
+See also: ECHO, GRP, MASS, EIGE, MODD, STEP, LC, CONT,
+CTRL
+HIST,EXTR
+Item Description Unit Default
+OPT Calculation parameter LT !
+VAL Value of the parameter − !
+V2 Secondary value of the parameter − -
+V3 Secondary value of the parameter − -
+V4 Secondary value of the parameter − -
+V5 Secondary value of the parameter − -
+V6 Secondary value of the parameter − -
+CTRL defines parameters of calculation. These are:
+PLC Primary load case
+When entering a primary load case initial stress stiffness will be included in the
+analysis, thus the linearized dynamic analysis is based on the tangential stiffness.
+Non-linear stiffness created by AQB will be taken into account.
+Details for the procedure may be found in chapter 2.
+V2 Usage of primary load case
+0 = only for geometric stiffness
++1 = displacements for transient analysis will be set (default)
++2 = static beam results will be added
++4 = create incremental beam loading automatically
++7 = all options 1 to 4 together
+V3 Usage of primary load case stiffness for beams (default n=7), where:
++1 = axial force
++2 = bending moments
++4 = torsion
+V4 Options for geometric stiffness of cables (default 0)
++1 = do not set the general prestress value for cables from the pri-
+mary load case for buckling eigenvalues.
++2 = suppress the coordinate update
+RLC Result load case for Histories
+WithinputofaresultcaseRLCyouwillsaveresultstothedatabaseaftereverytime
+step interval of an direct integration with individual load cases starting at RLC+1.
+These results may be used for an animated sequence. Via V2 you may control by
+adding the options:
++1 = Displacements (default)
++2 = Results of elements
+3-4 SOFiSTiK2023InputDescription|DYNA
++4 = Velocities and accelerations
++8 = Loadpatterns for travelling load trains
+value = user defined load case number (>9999)
+BEAM Formulation of beam element (Bitpattern), alias: BTYP
++1 = with all sections (static analysis only)
++4 = classical Timoshenko beam
++8 = non-conforming Timoshenko beam (Default)
++12 = classical beam with shear correction factors
+CONT Deactivation / activation of the extrapolation of contact point displacement
+0 = deactivation
+1 = activation
+WARP Warping torsion and lateral torsional buckling
+0 = no, the 2nd order Saint Venant theory for torsion is applied
+1 = yes,unlessthesectioniswarpfree. (CM≈0.) Theinitialstressstiffness
+for lateral torsional buckling is applied.
+2 = yes,evenifCM≈0.0. Asthecharacteristiclengthbecomeszerointhat
+case, we do not obtain torsional stresses directly at a warping support
+condition. Please use this option only for very special cases.
+BETA Treatment of buckling length after buckling Eigenvalues
+0 = save
+1 = superposition
+The estimate of the buckling length will be saved only for those beam elements
+where the estimate is less than the limit value LMAX specified in record GRP. It
+has to be marked however, that there are many cases not applicable for a buckling
+length approach and that the second order analysis will be more suitable in most
+cases.
+QUAD Formulation of QUAD elements
+0 = conforming elements with “bbar” correction
+1 = nonconforming elements
+2 = four assumed strains + drilling degrees
+3 = five assumed strains + drilling degrees
+BRIC BRIC Formulation of QUAD elements
+0 = conforming elements with “bbar” correction
+1 = nonconforming elements
+SPRI Formulation of Spring elements (Bitpattern)
++1 = apply eccentricity effects (default)
++2 = account for nonlinear effects
++32 = do not extrapolate displacements in time
++64 = do not extrapolate damping forces in time
+MCON Formulation of the mass matrix
+SOFiSTiK2023 3-5DYNA|InputDescription
+1 = Diagonal mass matrix (default)
+2 = Consistent mass matrix for system
+Consistent translatoric element matrices
+(default if such relevant kinematic constraints exist)
+3 = Consistent element- and system matrices including
+rotational masses (default if CTRL WARP 1)
+Hint
+Rotational masses for torsion are always referred on the shear centre. A con-
+straint rotation must be considered therefore with the definition of the cross
+section.
+CCON Formulation of the damping matrix
+(same as MCON, definition however only in very special cases)
+HLC Numberofinterimresultsfortransientanalysisofwindhistories(onlyforinternalpur-
+pose)
+SRES Steady-state response
+0 = Simplified analysis of phases by sign only
+1 = As above, but account for transient components of
+initial conditions (to be used only in very special cases)
+2 = Exact account of phases within a load case (default) The superposition
+ofmultipleloadcasesisonlypossiblewithmethodsselectedbySTYP,if
+multipleloadcaseshavetobeanalyzedsynchronouslytheextremeval-
+ueshavetobesearchedwithSTEP-nforselectedtimevalues. Ifthese
+intermediate results are then to be combined stochasticly MAXIMA has
+to be used.
+STYP Superposition of results of spectra and stationary response
+MAX Thefunctionsareevaluatedseparatelyfollowedbyamax/minselection.
+ADD All functions are added algebraically.
+SUM All functions are added by absolute values.
+SRSS The square root of the sum of squares is computed.
+The default is dependant on the type of analysis.
+V2 Default for EXTR and the evaluation of the resultant shear base values:
+ADD All functions are added algebraically.
+SUM All functions are added by absolute values.
+SRSS The square root of the sum of squares is computed.
+CQC Complete Quadratic Combination (default)
+V3 Load case to define the sign of the final results:
++n A freely selectable load case with number n
+-n the nth Eigenform, may be also defined as n[−].
+BLEV Height ordinate of a layer for which the resultant base shear should be calculated
+during the response spectra evaluation (may be defined multiple times). The result-
+ing moment is always taken to the reference of the origin of the global coordinate
+system to allow the superposition of different levels. Requires the gravity direction
+3-6 SOFiSTiK2023InputDescription|DYNA
+tobealignedwiththeglobalZ-coordinateaxis(positiveornegative).
+Hint
+This input option has become obsolete; for full functionality, please follow the
+approach outlined in section 2.7.
+COR Calculation of the center of rigidity for each defined storey level.
+With the input COR, the center of rigidity for each defined level is calculated. The
+floor is considered as a rigid diaphragm floor and will undergo rigid body motions
+in the plane of the defined level. This assumption is only applied internally during
+the calculation of the COR and will not be effective in the model for the subsequent
+calculations, see subsection 2.7.1.
+COM Calculation of the center of mass for each defined storey level.
+With the input COM, the center of mass for each defined storey is calculated, see
+subsection 2.7.2.
+TMID Averagingtimeforthemeanwindvelocityusedforpeakfactorevaluation. (600sec)
+If the peak factor is already included in the load factor set to 0.0 to deactivate the
+feature.
+SOFiSTiK2023 3-7DYNA|InputDescription
+3.4.1 SOLV Equation solver
+SOLV Description Unit Default
+VAL Selection of equation solver − 3
+1 Direct Skyline Solver
+(Gauss/ Cholesky)
+2 Iterative Sparse Solver
+3 Direct Sparse LDL Solver
+4 Direct Parallel Sparse Solver (PARDISO)
+ForsolvingtheequationsystemsoftheFinite-Elementproblem,SOFiSTiKprovidesanumber
+of solvers. Which solver is used best depends highly on the type of the system and requires
+knowledge of relevant system parameters. Following types are available:
+• Direct Skyline Solver (Gauss/Cholesky)
+This is the classical solver of the FE-Method. The current implementation works best on
+a skyline oriented matrix. The storage needed depends on the internal optimization of the
+node numbers and may become quite large for 3D structures.
+• Iterative Solver (Conjugate Gradients)
+One advantage of the iterative solver lies in its reduced requirements for storage, but it
+may also provide reduced computing time compared to the previous two types especially
+in case of large volume structures.
+• Direct Sparse Solver
+These types of solvers correspond to state of technology. A quite efficient version based
+on the work of Davis [7] is available as well as a direct parallel solver PARDISO.
+The advantage of the direct solvers is especially given in case of multiple right hand sides, as
+theeffortforsolvingthemisverysmallcomparedtothetriangulizationoftheequationsystem.
+Thus they are the first choice for any dynamic analysis or in case of many load cases.
+Inordertominimizecomputationaleffort,thesolversneedanoptimizedsequenceofequation
+numbers. Thisoptimizationstepisusuallyperformedduringsystemgeneration. Theprograms
+SOFIMSHA/Cbydefaultalwayscreateasequencewhichissuitableforthedirectsparsesolver
+(3). Thesolvers(1)or(2)howeverrequireaskylineorientednumberingwhichmaybeobtained
+using the option (CTRL OPTI 1) or (CTRL OPTI 2) during system generation. The correct
+settingwillbecheckedandawarningwillbeissuedincaseacorrectnumberingisnotavailable.
+The iterative (CTRL SOLV 2) and the parallel sparse solver (CTRL SOLV 4) can be run in par-
+allel providing an additional reduction in computing time. A parallelization basically requires
+a license of type ”HISOLV”. More information about parallelization can be found in subsec-
+tion 3.4.2 describing the input parameter (CTRL CORE).
+The equation solvers are selected using the parameter (CTRL SOLV). The first value defines
+the type of the solver, followed by optional additional parameters.
+Direct Skyline Solver (Gauss/ Cholesky)
+3-8 SOFiSTiK2023InputDescription|DYNA
+SOLV Description Unit Default
+VAL 1 Direct Skyline Solver (Gauss/ Cholesky) − !
+Noadditionalparametersarerequired. Howeveritismandatorytooptimizetheequationnum-
+bersinSOFIMSHA/Cusing(CTRLOPTI1)or(CTRLOPTI2)inordertominimizecomputation
+time as well as storage requirements.
+Iterative equation solver
+SOLV Description Unit Default
+VAL 2 Iterative equation solver − !
+V2 Maximum number of iterations − *
+V3 Tolerance in numeric digits (5 to 15) − *
+V4 Type of preconditioning: − 1
+0 Diagonal Scaling (not recommended)
+1 Incomplete Cholesky
+2 Incomplete Inverse
+V5 Threshold value of preconditioning − *
+V6 Maximum bandwidth in preconditioning − *
+Theiterativesolverusesaconjugategradientmethodincombinationwithpreconditioning. For
+the preconditioning, following variants are supported:
+• Diagonal scaling (V4=0)
+Although this is the fastest method with the least memory requirements, it will need a
+considerable high amount of iterations and is therefore not recommended in most cases.
+• Incomplete Cholesky (V4=1)
+Thistypeofpreconditioningperformsapartialtriangulizationoftheinputmatrix. Compared
+to a full triangulization with the Cholesky method, the Incomplete Cholesky saves time by
+ignoring the so called Fill-In during decomposition.
+• Incomplete Inverse (V4=2)
+This type of preconditioning is generally inferior to the Cholesky method. This applies to
+the convergence-rate as well as the time required for computing the inverses. It shows
+however better performance in case of more densely populated matrices (Recommended
+threshold V5: 0.01).
+Foranykindofpreconditioningthenumberofmatrixentriestakenintoaccountduringprecon-
+ditioning can be reduced either by giving a relative threshold value at V5 or via a maximum
+bandwidth size at V6. The optimum choice depends on the type of the structure and may only
+be found by some tests.
+Hint
+SOFiSTiK2023 3-9DYNA|InputDescription
+(Hintcontinued...)
+The correctness of the solution of the iterative solver depends primarily on the tolerance
+threshold. Therefore, changing the default setting V3 is not recommended. In any case
+the analyst should carry out a proper assessment of the computation results.
+Direct Sparse LDL Solver (Default)
+SOLV Description Unit Default
+VAL 3 Direct Sparse LDL Solver − !
+Additional parameters are not required. The mesh generators SOFiMSHA/C generate by de-
+fault an equation numbering required for this type of solver which minimizes the so-called Fill
+In of the matrix.
+PARDISO - direct parallel sparse solver
+SOLV Description Unit Default
+WERT 4 Direct parallel sparse solver − !
+ThissolverPARDISOusesprocessoroptimizedhighperformancelibrariesfromtheIntelMath
+Kernel Library MKL. It usually provides the least computing times. It does not require an a
+priori optimization of the equation numbers during system generation. Hence, the equation
+optimization in SOFiMSHA/C could also be deactivated using (CTRL OPTI 0) in order to save
+memory during system generation. On the other hand however, this solver does not allow
+reusing the factorized stiffness matrix in other programs. Thus, a usage in combination with
+the program ELLA is not possible.
+3.4.2 CORE Parallel computation control
+CORE Description Unit Default
+VAL Number of used threads − *
+SOFiSTiK supports parallel computing for selected equation solvers. Additionally, some pro-
+grams offer parallel element processing capabilities – independent of the chosen equation
+solver (CTRL SOLV).
+Activation of parallel computing
+By default parallel computing is triggered automatically where it is feasible.
+Parallel computing requires corresponding hardware and operation system support. In addi-
+tion, availability of an adequate SOFiSTiK license is obligatory.
+Hint
+3-10 SOFiSTiK2023InputDescription|DYNA
+(Hintcontinued...)
+Parallel computing requires availability of a HISOLV license (ISOL granule).
+Number of available threads for parallel computing
+If parallel computing is active, the number of adopted threads is determined as follows (listed
+with increasing priority):
+a) The software retrieves the information about the number of available physical processor
+cores on the system. This number defines the default number of threads that are used
+when a parallel computation is activated.
+b) This default can be modified via the environment variable SOF_NUM_THREADS, which is
+also available as sofistik.def parameter.
+c) Finally, an explicit statement CTRL CORE NN (or as relative input CTRL CORE NN[%])
+temporarily assigns the number of available threads for the respective run.
+Hint
+Neither option b) nor option c) state an explicit parallel computation request. The deci-
+sionif a parallelcomputation istriggered, dependson theactual analysisoption (parallel
+processing must be supported for the specific task) and the availability of an adequate
+license. Parallel computing can be suppressed by explitly setting the number of available
+threads to 1 (or 0).
+Parallel options for equation solvers
+License
+Solver CTRL SOLV Serial Parallel
+Skyline Gauss/ Cholesky 1 – n.a.
+Iterativ 2 HISOLV HISOLV
+Sparse LDL (default) 3 – n.a.
+Sparse Parallel (Pardiso) 4 HISOLV HISOLV
+SOFiSTiK2023 3-11DYNA|InputDescription
+3.5 GRP – Selection of Element Groups
+See also: ECHO, CTRL, MASS, EIGE, MODD, STEP, LC, CONT,
+GRP
+HIST,EXTR
+Item Description Unit Default
+NO Group number − !
+VAL Selection LT FULL
+OFF do not use
+YES use, but do not print
+FULL use and print the results
+SOIL elements define boundary to halfspace for
+SBFEM
+CS Number of the construction stage − -
+CSDL Number of self weight construction stage − CS
+FACS Factor of the group stiffness − 1.0
+HING blocked degrees of beam hinges Lt16 -
+RADA Mass proportional damping 1/sec 0.0
+RADB Stiffness proportional damping sec 0.0
+MODD Modal damping − 0.0
+FACP Factor of the primary stresses − 1.0
+FACM Factor of the masses of the group − 1.0
+WIND Options for Wind-Loading − -
+AERO Factor for aeroelastic effects − 1.0
+EIGL Estimate of lateral bending frequency (WIND) Hz -
+EIGB Estimate of main bending frequency (WIND) Hz -
+EIGT Estimate of torsional frequency (WIND) Hz -
+LMAX Limiting Slenderness for buckling length − -
+NSCP Node number for the scaling point of the SBFEM − *
+Method
+All elements are used if nothing is input. When there is input, only the specified groups get
+activated. This effect has to be especially taken care of, if only some groups get a damping
+assigned to. If properties are defined in mutliple secondary groups for the same element, the
+definition of the lexically last will win.
+Theelementsofagroupcanbeprovidedwithtwodampingtypes. ThevalueRADArepresents
+an external damping proportional to the mass and thus the excursion (e.g. air or water).The
+value RADB represents an internal damping proportional to the stiffness (material damping).
+3-12 SOFiSTiK2023InputDescription|DYNA
+ThegeometricinitialstressstiffnesswillnotbemultipliedwiththefactorRADBingeneral. Only
+for the cable the prestress defined with the element is contributing to the damping.
+C = RADA·m + RADB·K
+kNsec/m = 1/sec·Nsec2/m + sec·kN/m
+For a eigenvalue analysis it is possible to specify a modal damping for every group. This
+value is then converted for every eigen frequency using the stifness matrix to an approximate
+equivalentmodaldampingofeveryeigenform. AmixtureofMODDwithRADAorRADBisnot
+allowed.
+The definition of modal damping parameters will have no effect in case of EIGE REST.
+More explanations for the damping you will find at MODD.
+Aeroelastic effects may be activated if the selected primary load case has a wind field. As
+theseeffectsareautomaticallyincludedinatransientanalysis,adefinitionisonlysuitablefora
+modal analysis. WIND 1 activates aeroelastic stiffness, WIND 2 aeroelastic damping, WIND 3
+botheffects. WithAEROafactorontheseconributionsmaybedefined. BitB6(64)deactivates
+the predictor-step for the evaluation of the angle of attack at the end of the time step.
+The values EIGL, EIGB and EIGT may be used to specify the expected frequencies more
+precisely than with STEP. These values are helpful to select the size of the sensing window
+and to evaluate the derivativa in the start phase.
+For very special cases higher bits may be used to deactivate certain derivativa features: (B10
+for the admittance, B11 to B13 for lateral, vertical or rotational components, B14 for the inter-
+polation of the angle of attack)
+Thedescriptionofthehalfspacewiththe”ScaledBoundaryElementMethod”(SBFEM)allows
+to define the respective static and dynamic properties of the infinite space accounting for the
+radiation damping properties. GRP selects the boundary elements of a 2D Analysis or the
+QUAD elements of a 3D analysis defining the boundary of the half space. The local z axis
+mustshowintothedirectionofthehalfspace. WithoutdefinitionofNSCPthescalingpointwill
+be located on the upper centre of all soil interface nodes. For more details about SBFEM, see
+[8].
+SOFiSTiK2023 3-13DYNA|InputDescription
+3.6 MAT – General Material Properties
+MAT
+Item Description Unit Default
+NO Material number − 1
+(cid:2)kN/m2(cid:3)
+E Elastic modulus *
+1088
+MUE Poisson’s ratio (between 0.0 and 0.49) − 0
+automatic default for nonlinear materials NMAT
+(cid:2)kN/m2(cid:3)
+G Shear modulus *
+1088
+(cid:2)kN/m2(cid:3)
+K Bulk modulus *
+1088
+(cid:2)kN/m3(cid:3)
+GAM Specific weight 25
+1091
+(cid:2)kN/m3(cid:3)
+GAMA Specific weight under buoyancy *
+1091
+ALFA Thermal expansion coefficient [1/K] E-5
+1083
+(cid:2)kN/m2(cid:3)
+EY Anisotropic elastic modulus Ey E
+1088
+MXY Anisotropic Poisson’s ratio m-xy − MUE
+OAL Meridian angle of anisotropy about the local x axis deg 0
+OAF Descent angle of anisotropy about the local x axis deg 0
+SPM Material safety factor − 1.0
+TITL Material name Lt32 -
+Materials which can be used for SVAL or QUAD and BRIC elements may be defined with the
+record MAT and MATE. The number of the material must not be used for other materials.
+Thedifferencesbetweenthetworecordsaremainlytheuseddimensions. MATEisanalogueto
+CONC,STEEetc. (MPa)andhasadditionalstrengthvalues,whileMATuses(kN/m2)analogue
+to NMAT. MAT has older item names for the orthotropic parameters.
+3-14 SOFiSTiK2023InputDescription|DYNA
+3.7 BMAT – Elastic Support / Interface
+BMAT
+Item Description Unit Default
+NO Material number − 1
+C Elastic constant normal to surface C s (cid:2)kN/m3(cid:3) 0.
+1097
+CT Elastic constant tangential to surface C t (cid:2)kN/m3(cid:3) 0.
+1097
+(cid:2)kN/m2(cid:3)
+CRAC Maximum tensile stress of interface 0.
+1089
+(cid:2)kN/m2(cid:3)
+YIEL Maximum stress of interface -
+1089
+MUE Friction coefficient of interface − -
+(cid:2)kN/m2(cid:3)
+COH Cohesion of interface -
+1089
+DIL Dilatancy coefficient − 0.
+(cid:2)t/m2(cid:3)
+GAMB Equivalent mass distribution 0
+1184
+TYPE Reference type LT NON
+NON Unspecific
+RIGD Rigid Frictional Interface
+PESS Plane stress condition
+PAIN Plane strain condition
+HALF Circular bedding at half space surface
+CIRC Circular hole in infinite disk
+SPHE Spherical hole in infinite space
+MREF Number of a reference material − NO
+H Reference dimension [m] !
+1001
+(thickness H or radius R)
+RFAC Interface strength: Strength reduction factor related [m] 0.0
+-
+to reference material’s shear strength
+BMAT defines for an existing material (e.g. MATE/CONC/BRIC) properties for elastic support.
+For a QUAD element it is thus possible to select the properties of the plate and the soil by a
+single material number. The support stiffness may be calculated from the elasticity constants
+ofMREF,ageometricdimensionHandaspecificgeometryrule. Thebeddingapproachworks
+according to the subgrade modulus theory (Winkler, Zimmermann/Pasternak). It facilitates the
+definition of elastic supports by an engineering trick which, among others, ignores the shear
+deformations of the supporting medium. The bedding effect may be attached to beam or plate
+elements,butingeneralitwillbeusedasanownelement. (seeSPRI,BOUN,BEAMorQUAD
+and the more general description of BORE profiles)
+The determination of a reasonable value for the foundation modulus often presents consider-
+SOFiSTiK2023 3-15DYNA|InputDescription
+able difficulty, since this value depends not only on the material parameters but also on the
+geometry and the loading. One must always keep this dependance in mind, when assessing
+the accuracy of the results of an analysis using this theory.
+The subgrade parameters C and CT will be used for bedding of QUAD elements or for the de-
+scriptionofsupportorinterfaceconditions. AQUADelementofaslabfoundationwillthushave
+a concrete material and via BMAT the soil properties attached to the same material number.
+ThevalueCisthanactinginthemaindirectionperpendiculartotheQUADsurfaceinthelocal
+z-direction, while CT is acting in any shear direction in the QUAD plane.
+If subgrade parameters are assigned to the material of a geometric edge (GLN), spring ele-
+ments will be generated along that edge based on the width and the distance of the support
+nodes.
+3.7.1 Derivation of bedding constants from reference material
+Sometimesitisconvenienttoderivethesubgrademodulifromareferencematerial’selasticity
+modulus E, shear modulus G and Poisson’s ratio μ[1] by providing a reference dimension H
+and the type of support:
+• Unspecific:
+E G
+C s = C t = (3.1)
+H H
+• Planar layer with horizontal constraints e.g. for modeling elastic support by columns and
+supporting walls (plane stress condition):
+E 1 G
+C s = · C t = (3.2)
+H (1+μ)(1−μ) H
+• Planarlayerwithhorizontalconstraintsforsettlementsofsoilstrata(planestraincondition):
+E (1−μ) 2·G
+C s = · C t = (3.3)
+H (1+μ)(1−2μ) H
+• Equivalent circular disk with radius R on an infinite halfspace:
+E 2
+C s = · C t =C s (3.4)
+R π(1+μ)(1−μ)
+• Circular hole with radius R in infinite disk with plane strain conditions (bedded pipes or
+piles):
+E 1
+C s = · C t =C s (3.5)
+R (1+μ)(1−2μ)
+• Spherical hole with radius R in infinite 3D elastic continua:
+E 2
+C s = · C t =C s (3.6)
+R (1+μ)
+Including a dilatancy factor describing the volume change induced by shear deformations, we
+haveforthebeddingstressesthefollowingequationsdependingonthenormalandtransverse
+3-16 SOFiSTiK2023InputDescription|DYNA
+displacements:
+σ = C s · ( s+DL ·  t) τ = C t ·  t (3.7)
+Non-linear effects are controlled by CRAC, YIEL, MUE and COH:
+Cracking: Upon reaching the failure stress, the interface fails in both the axial
+and the lateral direction. The failure load is always a tensile stress.
+If the bedding reaction is applied to a QUAD element, a deformation
+in the direction of the local z-axis will create compressive (negative)
+stresses.
+Yield load: Upon reaching the yield stress, the principal deformation component
+of the interface increases without an increase of the stress.
+Friction/cohesion: Defining a friction and/or a cohesion coefficient, the lateral shear
+stress can not become larger than:
+Friction coefficient * normal stress + Cohesion
+Please note, that before reaching this limit the stiff-ness CT will pro-
+duce the shear stress only if a deformation is present.
+If the principal interface has failed (CRAC), then the lateral bedding acts only if 0.0 has been
+entered for both friction- coefficient and cohesion.
+The non-linear effects can only be taken into account by a non-linear analysis. The friction is
+an effect of the lateral bedding, while all other effects act upon the principal direction.
+3.7.2 Rigid Frictional Interface
+The Rigid Frictional Interface describes the mechanical behavior of a thin interface layer inbe-
+tween two bodies with frictional contasct by adopting a friction law of Coulomb type. For the
+interface layer a quasi-rigid behavior is assumed.
+A typical field of application is the modeling of soil-structure interaction in geotechnical analy-
+ses. The Rigid Frictional Interface Element (I2D) is available in the FEA module TALPA.
+Hint
+For the Rigid Frictional Interface Element (I2D), an explicit provision of stiffness parame-
+ters is normally not required; instead, the program establishes appropriate stiffness val-
+ues automatically in a mesh adaptive manner. Explicit provision of stiffness parameters
+overrides this mechanism, the provided values are adopted unmodified.
+Interface strength is determined from the reference material by means of the strength
+reduction factor:
+MUE=RFAC·tnφ reƒ (3.8a)
+COH=RFAC·c reƒ (3.8b)
+RSS=ƒ t,reƒ (3.8c)
+Alternatively, a direct input of strength parameters is supported, too.
+SOFiSTiK2023 3-17DYNA|InputDescription
+(Hintcontinued...)
+Dilatancy coefficient and equivalent mass distribution have no effect on the interface be-
+havior.
+3-18 SOFiSTiK2023InputDescription|DYNA
+3.8 SMAT – SBFEM - Material Properties
+SMAT
+Item Description Unit Default
+NO Material number − 1
+LC Characteristic Length m !
+EX Coefficient of elasticity in X-direction − 0
+EY Coefficient of elasticity in Y-direction − 0
+EZ Coefficient of elasticity in Z-direction − 0
+RHOX Coefficient of density in X-direction − 0
+RHOY Coefficient of density in Y-direction − 0
+RHOZ Coefficient of density in Z-direction − 0
+ALF Inhomogenity of elasticity − 0
+BET Inhomogenity of density − 0
+Record SMAT defines dependency of material values for the SBFEM:
+(cid:150) (cid:18)||(cid:19)α (cid:18)|y|(cid:19)α (cid:18)|z|(cid:19)α(cid:153)
+E=E reƒ · E  +E y +E z (3.9)
+L L L
+c c c
+ 
+(cid:18)||(cid:19)β (cid:18)|y|(cid:19)β (cid:18)|z|(cid:19)β
+ρ=ρ reƒ · ρ  +ρ y +ρ z  (3.10)
+L L L
+c c c
+The material number of the soil is taken from the material number of the SBFEM-QUAD-
+element in 3D. The material number of the soil is taken from the material number of the
+SBFEM-BOUN-eement in 2D. If no material number has been assigned to BOUN element,
+material with number 1 is used.
+SOFiSTiK2023 3-19DYNA|InputDescription
+3.9 MASS – Lumped Masses
+Seealso: ECHO,CTRL,GRP,EIGE,MODD,STEP,LC,CONT,HIST,
+MASS
+EXTR
+Item Description Unit Default
+NO Node number − !
+MX Translational mass t 0.
+MY Translational mass t MX
+MZ Translational mass t MX
+MXX Rotational mass tm2 0.
+MYY Rotational mass tm2 0.
+MZZ Rotational mass tm2 0.
+MXY Rotational mass tm2 0.
+MXZ Rotational mass tm2 0.
+MYZ Rotational mass tm2 0.
+MB Rotational mass tm2 0.
+LC Load case from the CDB − !
+PRZ Percentage of permanent load for mass LT/− 100
+PSI0,PSI1,PSI2 (combination value)
+SELE Selection of a load direction LT PG
+PG, PXX, PYY, PZZ (translatoric)
+M-XX, M-YY, M-ZZ (rotatoric)
+ALL (every component on its own)
+The masses are additional to the primary masses defined in program SOFIMSHA in the
+database. They are maintained over several input sets until they are redefined. They are
+not effective as dead load in static load cases as do the primary masses, but the have also
+a group number of the last GRP-record (allowing mass proportional damping definitions) but
+they are always active. MASS 0 can be used to delete all temporary masses, thus the primary
+masses from SOFIMSHA are kept.
+A mass acts usually the same in all three coordinate directions and thus, it need to be defined
+independentlyonlyforspecialcases. Rotationalmasseswithinclinedaxiswillhaveoffdiagonal
+masses MXY till MYZ.
+The dead weight of the entire structure is always applied in the form of translational masses.
+If necessary, rotational masses must be defined separately with MASS or CTRL MCON 3. If the
+dead weight of a structure is not to be applied, the dead weight of the material or the cross
+section should be input as zero.
+MASScanbeusedalsotoimportnodalloadsfromthedatabaseasmassestoDYNA.Theload
+3-20 SOFiSTiK2023InputDescription|DYNA
+case number must then be defined at LC. The values MX till MZ, with default value of 1.0, are
+thenthefactorsfortheindividualdirectionsofthemasscomponentswhicharegeneratedfrom
+the loads in the dead weight direction. If other load directions are to be converted to masses
+as well, these directions have to be specified additionally with SELE. The input:
++PROG DYNA
+HEAD
+!...
+MASS LC 12 PSI2
+!...
+END
+creates translational masses from all loads of load case 12 in the direction of the dead weight.
+If the load case has an action assigned, the permanent combination value ψ 2 will be taken as
+factor. By contrast the input
++PROG DYNA
+HEAD
+!...
+MASS LC 12 SELE PZ MX 1.0 0.5 1.0
+MASS LC 13 50[%] SELE PY MX 0.0 1.0 0.0
+!...
+END
+creates masses (t) in the x and z direction from all PZ loads (kN) of load case 12. Only half
+of the mass is activated in the y direction, however. The second input processes 50% of the
+PY-loads of the load case 13 only in Y-direction.
+Masses can get also a factor with MASS. For this purpose the literal FACT has to be input for
+NO. This can be reasonable particularly for larger systems, where it is favourable to suppress
+many low frequencies which are not essential for the analysis. With the input
+MASS FACT MZ 0.01
+The mass in global Z direction is reduced to one percent only.
+SOFiSTiK2023 3-21DYNA|InputDescription
+3.10 EIGE – Eigenvalues and Eigenvectors
+See also: ECHO, CTRL, GRP, MASS, MODD, STEP, LC, CONT,
+EIGE
+HIST,EXTR
+Item Description Unit Default
+NEIG Number of sought eigenvalues − !
+TYPE Method for the eigenvalue computation LT SIMU
+REST Eigenvalues already available
+SIMU Simultaneous vector iteration
+LANC Method of Lanczos
+BUCK Buckling (Vector iteration)
+BULL Buckling (Lanczos)
+NITE Number of iterations − *
+Lanczos vectors
+MITE Maximum number of iterations and options − *
+LMIN Eigenvalue shift 1/sec2 0
+STOR Number of eigenform to be stored − NEIG
+LC Load case number of lowest eigenform − 1
+OPT Options − *
+1 Include Missing Mass
+The input of EIGE requests calculation of the eigenvalues and the mode shapes. If the eigen-
+vectors have been already computed, one must enter TYPE REST. Special attention must be
+paid to this when importing eigenvalues from program ASE.
+Eigenvaluesandformsmayrepresentdynamicvibrationmodesorbucklingeigenforms. While
+the first uses a well defined positive definite mass matrix, the second problem may encounter
+indefinite geometric stiffness matrices (negative Eigenvalues) and establish problems. Only
+SIMU has provisions for that type of problem. In any case you should start with a few Eigen-
+values in those cases.
+Themodeshapescanbestoredinthedatabasesimilarlytostaticloadcasesandcanbethen
+represented graphically as deformed structure. A modal evaluation of forces is possible only
+when all required mode shapes have been stored also as stresses or forces of the elements.
+With OPT 1 up to three extra load cases are created, containing the rigid body response of
+the missing masses. These will be included in the analysis if a uniform ground acceleration is
+applied as loading. For a restart the number of the eigenvalues must then match the number
+at the evaluation analysis. For other load cases there is a simplified more general method
+available via LC BASE AUTO.
+The eigenvalue problem can be shifted by one value. This finds application in structures that
+are not supported (zero eigenvalue is the smallest value) as well as in checking the number of
+eigenvaluesbymeansofaSturmsequence. Thenumberofskippedeigenvaluesismanifested
+during the shift by the number of sign changes of the determinant.
+3-22 SOFiSTiK2023InputDescription|DYNA
+The choice of method for the eigenvalue analysis depends on the number of the eigenval-
+ues. The simultaneous vector iteration is used in most cases. The number of iterations can
+be reduced when a somewhat expanded subspace is used for the eigenvalue iteration. For
+that reason the default value for NITE is the minimum between NEIG+2 and the number of
+unknowns. The iteration is terminated when the maximum number of iterations (default max
+(15,2·NTE)) is reached or when the highest eigenvalue has only changed by a factor less
+than 0.00001 compared to the previous iteration.
+The method of Lanczos is significantly quicker than the vector iteration, when a large number
+of eigenvalues is sought. A good accuracy is achieved when the number of vectors NITE is at
+leastdoublethenumberofsoughteigenvalues(default). IncaseofNITE=NEIG,bycontrastto
+the vector iteration, the higher eigenvalues are usually worthless.
+IfaprimaryloadcaseisselectedwithCTRL PLC,thegeometricinitialstiffnessisincludedinthe
+eigenvalueanalysis. Soyouwillgetthefrequencyzeroifyouareapproachingabucklingcase.
+In that case you may however evaluate the buckling eigenform directly via TYPE BUCK (or
+BULL).
+Vektoriteration Lanczos
+Number of Eigenvalues moderate high
+Range of Eigenvalues Ritz-Step problematic no problems
+multiple Eigenvalues yes yes
+missing Eigenvalues very rare rare
+negative Eigenvalues yes does not work
+Memory requirement moderate high
+Speed moderate fast
+Overview of the algorithms
+SOFiSTiK2023 3-23DYNA|InputDescription
+3.11 MODD – Modal Damping
+Seealso: ECHO,CTRL,GRP,EIGE
+MODD
+Item Description Unit Default
+NO Number of the eigenvalue − all
+D direct Lehr’s modal damping − 0
+A Mass proportional damping 1/sec 0
+B Stiffness proportional damping sec 0
+PERS Persistent value LT Y
+Y/N = YE/NO
+The damping may be specified within the GRP record with different values for each group.
+When using direct integration, these values will become effective in just this way. For a modal
+analysishoweverthemodaldampingwillbecalculated,followingthecomputationoftheeigen-
+values, from the defined damping values by a diagonalisation process. Each Eigenform will
+then have one distinct modal damping value.
+However the modal damping (Lehr’s damping factor), can also be defined separately for each
+mode by three independent parts (direct value of D, mass proportional A and stiffness propor-
+tional B). The values are stored in the database. The definition of this value will overwrite any
+damping definitions in the GRP record or from explicit damper elements!
+As the values in the literature are mostly given as modal damping values or logarithmic decre-
+ments δ we will give some important formulas:
+δ 1 A 1
+d  = =D+ · + ·B·ω  (3.11)
+2π 2 ω 2
+
+InthenextpicturesyouwillseetheinfluenceofthefactorsAandBdependingontheeigenfre-
+quencies of a SDOF-oscillator. The damping is shown as logarithmic decrement δ,describing
+the ratio of two consecutive amplitudes A1 and A2.
+(cid:20)A1(cid:21)
+logarithmic dekrement δ=og (3.12)
+A2
+3-24 SOFiSTiK2023InputDescription|DYNA
+−
+Verschiebun g SY [mm]
+A1
+1600.00
+0
+A2
+1400.00
+0
+1200.00
+0
+N
+1000.00
+0
+800.00
+0
+600.00
+0
+400.00
+0
+200.00
+0
+0.00 Zeit
+0 1.0 2.0 3.0 4.0 5.0 6.0 7.0 8.0 9.0 10.0 [sec]
+Figure3.1: logarithmicdekrement
+The decrement δ is related to the modal damping with a factor of 2π. Usual values for the
+modal damping D are (Müller [9]):
+elastic conditions [%] plastic conditions [%]
+Reinforced concrete 1-2 7
+Prestressed concrete 0.8 5
+bolted steel constructions 1 7
+welded steel constructions 0.4 4
+Hint
+MODD have to be specified as absolute value or with an explicit unit [%] !
+For a direct integration without eigenvalues, there is no modal damping, thus it is necessary
+to convert a given damping value to the parameters A and B. The conversion of parameters A
+and B can be seen from the next picture.
+SOFiSTiK2023 3-25DYNA|InputDescription
+B = 0.0005
+50
+B = 0.001
+45
+B = 0.002
+40
+B = 0.005
+35
+A = 0.1
+30
+A = 0.2
+25
+A = 0.5
+20 A = 1.0
+15 ALF = 0,3 DEL = 0,52 Dekremente
+10 ALF = 0,25 DEL = 0,55
+ALF = 0,4 DEL = 0,52
+5
+ALF = 0,4 DEL = 0,55 [%]
+0
+0.5 1 2 5 10 20 50 ALF = 0,17 DEL = 0,5 THE
+= 1,4
+Eigenfrequenzen [Hz]
+Figure3.2: ParameterAandB
+To achieve a 10 % logarithmic decrement for a frequency of 5 Hz you may either define A as
+1.0 or B as 0.001. In general you want to define the damping between two frequencies f1 and
+f2 with a relatively constant decrement. You have then to specify a combination of A and B
+given by: (circular frequencies ω=ƒ ·2·π)
+ξ ·ω −ξ ·ω
+1 2 2 1
+A=2·ω 1·ω 2· (3.13)
+ω 2−ω 2
+2 1
+ξ ·ω −ξ ·ω
+2 2 1 1
+B=2· (3.14)
+ω 2−ω 2
+2 1
+If the damping at the start of the interval should be equal to the damping at the end of the
+interval and by converting to the standard frequencies ω=ƒ ·2·π we have:
+ƒ ·ƒ
+1 2
+A=ξ·4π· (3.15)
+ƒ +ƒ
+1 2
+1
+B=ξ· (3.16)
+π·(ƒ +ƒ )
+1 2
+Example: A structural steel with bolted connections should have a mean modal damping of
+0.01between2Hertzand10Hertz. Wethushaveadecrementof2·π·ξ=2·π·0.01=0.063
+i.e. the amplitude of a free oscillation should reduce by 6.3 % from peak to peak within the
+range from 2 Hertz to 10 Hertz.
+3-26 SOFiSTiK2023InputDescription|DYNA
+(ƒ −ƒ ) (10−2)
+Factor 2 1 is given by =0.083. Thus:
+(cid:128) ƒ 2−ƒ 2(cid:138) (102−22)
+2 1
+2·10
+A=4·π·0.01· =0.21 (3.17)
+2+10
+1 0.01
+B= · =0.000266 (3.18)
+π 2+10
+To check this we have from the diagram or the formulas:
+at 2.0 Hertz at 10.0 Hertz at 5.0 Hertz
+from A 0.0525 0.0105 0.021
+from B 0.0105 0.0525 0.026
+total 0.0630 0.0630 0.047
+i.e. at the bounds of the interval we have the desired damping, but between we have a little bit
+less. For 5.0 Hertz we have only d = 0.047.
+Foradirectintegrationthereisanadditionalnumericaldampingeffectpossiblewiththeselec-
+tion of the integration constant BET, DEL and THE. The default (BET = 0,25; DEL = 0,5; THE
+= 1) will not have any damping effect. The same is valid for modal analysis there is also no
+damping effect, because the equations are integrated exactly.
+SOFiSTiK2023 3-27DYNA|InputDescription
+3.12 STEP – Parameter of the Step-wise Integration
+See also: ECHO, CTRL, GRP, MASS, EIGE, MODD, LC, CONT,
+STEP
+HIST,EXTR
+Item Description Unit Default
+N Number of time steps or divisor − 10
+DT Time step or total time (sec) − 0.1
+INT Output interval every INT steps −/LT 1
+A Mass proportional damping 1/sec 0.
+B Stiffness proportional damping sec 0.
+BET Parameter of the integration method − 1/4
+DEL − 1/2
+THE relative time value for equilibrium − 1.
+EIGL Estimate of lateral bending frequency (WIND) Hz -
+EIGB Estimate of main bending frequency (WIND) Hz -
+EIGT Estimate of torsional frequency (WIND) Hz -
+EIGS Estimate of soil frequency (SBFEM) Hz -
+DTF Number of steps for SBFEM convolution − *
+STHE Extrapolation factor for SBFEM − 1.4
+STEP prescribes the type of time-dependent analysis. Four cases must be distinguished:
+3.12.1 Static Analysis
+Static analysis will be perfomed if no STEP and no EIGE record is defined. All load cases will
+be analyzed separately.
+3.12.2 Steady State Analysis
+Steady-state or stochastic excitations will be analyzed in the frequency domain if no STEP or
+STEP ≤ 0 is defined and an EIGE record is also present.
+Only periodic or spectral load functions will be used. Within any load case the phase shift
+betweentheeigenformswillbeconsideredtoobtainthemaximumresponse. Theextremesof
+all load cases will then be combined according to the CTRL STYP definition.
+If N is < 0 a window of the periodic response is visualized including the phase shift. N is the
+number of data points, DT is the size of the window, defaulting to the load frequency. In that
+case all load cases will be added including the phase shift.
+3-28 SOFiSTiK2023InputDescription|DYNA
+3.12.3 Frequency Dependent Steady State Analysis
+If the literal TIME or FREQ is input for INT, a response analysis for the periods or frequencies
+in the region from 0 to N·DT times the specified load function frequency 2π/T 0 is performed.
+If the literal STIM or SFRE is given, the load is normalised to a constant displacement instead
+of the acceleration. If the literal VTIM or VFRE is selected, the normalisation is based on a
+constant velocity.
+All load cases are treated as with the steady state analysis.
+3.12.4 Transient Analysis
+TransientanalysisofatimesegmentwithdurationN·DT bydirectnumericaloranalyticalmodal
+(if EIGE is present) integration is obtained via:
+STEP N >0
+WhenN<1isinput,DTisinterpretedastotaltimeandtheindividualtimestepbecomesN·DT.
+All load cases and load functions are applied simultaneously.
+For the numerical analysis there are four subtypes
+• THE=0.0 for the explicit integration (extra license reuqired)
+• THE=1.0 for the Newmark method (Default constant average)
+• THE≥1.4 for the Wilson method (BET =1/6,DEL=1/2)
+• THE<1.0 for the Hughes-Alpha method (0.7<THE<1.0)
+A suitable size of the time step depends on the frequency of the expected response. In case
+of the direct method components with periods smaller than about ten times the time step are
+dampedoutofthesolution. Acomparisonanalysisshouldbeperformedifindoubtwithastep
+approximately equal to one fourth of the initial time step.
+Itshouldbetakencareofthefact,thatthestandardNewmark-Methodhasnonumericaldamp-
+ing. Thus small errors may amplify easily. Those errors may be introduced by a time step
+chosen to small together with consistent mass matrices. In that or other cases the integration
+constant should be modified, eg.:
+• Definition of DEL>0.5 for a damped Newmark-Method
+• Definition of THE>1.4 for the Wilson Method
+• Definition of THE<1.0 for the Hughes-Alpha Method
+For those dynamic effects requiring convolution (Wind-Derivativa, SBFEM) the performance
+and the precision depend on the number of the latest time steps, which may be controlled by
+chracteristic frequencies.
+Wind derivativas use the values EIGL, EIGB and EIGT. See GRP.
+SBFEMusesEIGS,withoutadefinitionthefullconvolutionintegralisevaluated,whichcreates
+an effort quadratic in time. One component to reduce the effort is the evaluation of those
+matrices in larger intervals and to interpolate between. The value DTF defines a multiple on
+the system time step to be adopted to the properties of the far field. The essential paraemter
+isthelimitofthetotalconvolutionbythetotalnumberofmatricesM.Thiswillbedefinedbythe
+SOFiSTiK2023 3-29DYNA|InputDescription
+frequency EIGS = 1/(DT*DTF*M).
+3-30 SOFiSTiK2023InputDescription|DYNA
+3.13 LC – Load Case
+See also: ECHO, CTRL, GRP, MASS, EIGE, MODD, STEP, CONT,
+LC
+HIST,EXTR
+Item Description Unit Default
+NO Load case number − *
+FACT Factor for all loads of the load case − 1.0
+DLX Dead weight factor in X direction − 0.0
+DLY Dead weight factor in Y direction − 0.0
+DLZ Dead weight factor in Z direction − 0.0
+BASE Number of a static reference load case − -
+STAT load case is included as static
+AUTO load case is factorized as missing mass
+nn load case is used as influence line
+MODB Modal base load case number − -
+TITL Identifier of the load case Lt32 -
+The loading in DYNA is subdivided in load cases identified by a number. Each load case can
+beassignedinprogramSOFiLOADloadings,time-functionsoraresponsespectrum. Theuse
+of the load cases differs according to the computational procedure:
+1. Transient analysis
+Duringatimevariationanalysis(STEP N >0)alltheselectedloadcasesandtheirfunctions
+definethetimedependenceoftheloadingandthestartingtime. Allfunctionsactwiththeir
+loads simultaneously upon the structure. DYNA allows the extra definition of a contact
+condition CONT for a moving load.
+2. Static or steady-state analysis
+In case of steady-state analysis the periodical loads are converted to corresponding re-
+sponses according to Section 2.4. In case of static analysis the load cases are analysed
+separately.
+If spectra are defined, DYNA computes by double interpolation of all the spectra a system
+response, which is then superimposed by statistical methods according to the input for CTRL
+STYP.
+With BASE STAT an static load cases is added to the modal superposition completely. With
+BASE AUTO the fraction of the load case according to the "‘missing mass method"’ is evalu-
+ated. The load case with the equivalent forces of the accelerations has to be calculated be-
+forehand. BASE with a number is used to introduce influence functions, needed for separated
+ground accelerations.
+For a modal analysis the general case is to apply the same load vector for all eigenforms.
+However if every eigenform should obtain a separate loading as in a modal wind analysis, the
+item MODB allows to specify the load case number for the loading to the first eigen form. All
+following eigenforms will be associated to the consecutive load case numbers.
+SOFiSTiK2023 3-31DYNA|InputDescription
+In this case there is a special feature for spectral loading:
+FortheloadcasestheuserdefinedparameterCRITwillbeevaluated. Ifitiszero,noevaluation
+will be taken from the spectra. The response is 1.0. If defined otherwise the period of the
+eigenforms will be scaled with that value. Thus for a Wind spectrum this value is to be defined
+with L trb/ men/ or z/ men/ .
+3-32 SOFiSTiK2023InputDescription|DYNA
+3.14 CONT – Contact and Moving Load Function
+Seealso: ECHO,CTRL,GRP,MASS,EIGE,MODD,STEP,LC,HIST,
+CONT
+EXTR
+Item Description Unit Default
+TYPE Selected contact value (obsoleted) LT -
+REF Ident of a reference axis for load trains − 0
+NR Number of an edge element − -
+V Travel speed m/sec -
+YEX Local Eccentricity m 0.0
+TMIN Time at start of travel sec 0.0
+LCUV Load case for vertical track irregularities − -
+LCUT Case for transverse track irregularities − -
+LCUR Case for rotational track irregularities − -
+Dynamic contact is governed by a changing location of contact point within time, as it is given
+in the case of a vehicle travelling along a bridge.
+This record allows the definition of the development in time of the contact point and a mecha-
+nism to create loads based on current deformations of the system.
+For the time dependant location you have to select a sequence of nodes and specify the time
+valueforeachnodewhenthecontactpointisexactlyatthatpoint. Inmostcasestheselection
+of the number NO of a boundary/edge element will select all nodes in the given sequence.
+However explicit definitions with FUNC (program SOFiLOAD) records and mixing and concate-
+nationofseveralelementsispossible. DefiningatravellingspeedVwillgeneratealltheneeded
+time values from the distance either directly or taken along the reference axis and the optional
+start time TMIN.
+IftheloadcasehasaloadtraincreatedwithinSOFiLOAD,allloadsofthetrainwillfolloweach
+otherwiththeappropriatedistance. Iftheloadtrainhasalsostructural-orvisualisationobjects
+created via the TREX command, the nodes of those objects will receive the current coordinates
+asdisplacementsandtheabsolutevelocities. OnlythepointloadsareprocessedbytheCONT
+command.
+The three load cases LCUV, LCUT and LCUR allow to introduce track irregularities or uneven
+pavements as additional displacements or rotations for the contact-point. The load functions
+of these load cases must have the absolute displacements as a function of the travelling time
+of the load reference point.
+The reference displacement at the contact point is obtained by a linear interpolation between
+the adjacent nodes. The loading at the contact point is similarly distributed between the ad-
+jacent nodes. External nodal loads are placed at the contact point only if the node number is
+specified as 0.
+SOFiSTiK2023 3-33DYNA|InputDescription
+ForthedefinitionofaloadtrainmovingalongabridgeaccordingtoDINFB101/EC1theinput
+may be as follows:
++PROG SOFILOAD
+HEAD DEFINE A DEFAULT LANE GEOMETRY
+ECHO FULL
+GAX 'AXIS' 0.0 X 0.0 0.0 R 150 NZ +1.0
+'AXIS' 3.0 X 30.0 0.0 R 150
+LC 191 TITL 'Railway Loading'
+TRAI RFAT 4 P4 0.0
+TREX 191 901 900 11 1
+LC 199 TITL 'Pedestrian Loading'
+TRAI USER ; TRPL P 0.8[kN]
+FUNC MULT ; FUNC S WALK END
++PROG DYNA
+GRP 1,2,3
+GRP 901 FACS 0.0
+CTRL RLC 1001 7
+LET#1 30.0 ! SPEED in m/sec
+STEP 0.01 300.0/#1 ! TOTAL TIME FOR TRAVELING
+LC 191 ! LOAD TRAIN
+CONT REF AXIS NO 10 #1 2.0 ! AUTOMATIC TIMEVALUES IN NODES FROM EDGE
+END
+Further variants may be seen within the example dyna9_travelling_loads.dat and at
+SOFiLOAD loadtrains.dat.
+3-34 SOFiSTiK2023InputDescription|DYNA
+3.15 HIST – Results within Time
+See also: ECHO, CTRL, GRP, MASS, EIGE, MODD, STEP, LC,
+HIST
+CONT,EXTR
+Item Description Unit Default
+TYPE Result value (see table) LT S
+FROM Smallest node or element number − 1
+TO Largest node or element number − FROM
+INC Increment or Identifier −/Lt 1
+RESU Output request LT SAVE
+SAVE save values in database
+PRIN save and print values
+PHAS save amplitudes and phases
+LCST Number of case to store in database − *
+XREF Beam section or reference point for the m 0.
+YREF sum of the spring force components m 0.
+ZREF or dP/P width m 0.
+DUMP Filename for a dump of the values Lt48 -
+The record HIST requests the time history of particular values. These will be saved into the
+databaseforthepresentationwithDYNR,butitisalsopossibletoprintthevaluesdirectlyorto
+save them to an external dump file. Up to 32 values can be addressed per input record.
+The computed maximum and minimum values of the curves will be printed in any case.
+Table3.21: PossibleliteralsforTYPE
+TYPE Meaning
+U UX, UY, UZ
+U-X U- U-Z Displacements
+U-RX U-RY U-RZ Rotations
+V VX, VY, VZ
+V-X V-Y V-Z Velocities
+V-RX V-RY V-RZ Angular velocity
+A AX, AY, AZ
+AX AY AZ Accelerations
+ARX ARY ARZ Angular acceleration
+P PT M Spring forces and moment
+PX PY PZ Spring force total global components
+PT/P DP/P Spring force ratios
+SOFiSTiK2023 3-35DYNA|InputDescription
+Table3.21: (continued)
+TYPE Meaning
+SP Sum of all spring force components
+SPX SPY SPZ Sum of the spring force components
+SPRX SPRY SPRZ Sum of the spring moment components
+TRUS Truss-bar axial force
+CABL Cable axial force
+BEAM All Beam forces
+N VY VZ Beam forces normal and shear
+MT MY MZ Beam moments torsion and bending
+SECT SIG TAU Stresses in sectional points
+QUAD All Shell forces
+MXX MYY MXY Shell moments
+VXX VYY Shell shear forces
+NXX NYY NXY Shell membrane forces
+BRIC All continua stresses
+TXX TYY TZZ Stresses of 3D continuum
+TXY TXZ TYZ Shear stresses of 3D continuum
+DSX DSY DSZ Impedance of translatoric degrees of freedom
+DSRX DSRY DSRZ Impedance of rotational degrees of freedom
+For the beam results XREF is used to define the section where the results are evaluated. A
+negative definition is taken as the ratio of the section to the total beam length, thus a value of
+-1.0 selects the end of the beam.
+For the stresses INC is used to define the identifier of the stress point (SPT) within the section
+where the stresses should be evaluated.
+The spring force ratios may be useful for vehicle-structure-interaction. They are defined as
+follows:
+PT/P The ratio of the resulting transversal force PT to the main force P of a spring
+DP/P Theratioofthedifferenceofthemainforcesoftwospringstothemeanvalueof
+the same spring forces:
+ΔP P −P
+1 2
+= (3.19)
+P P 1+P 2
+INC=0 only between FROM and TO
+INC>0 change relative to the prestressing force or:
+For all springs a following rotational spring is searched having the
+samenodes. ThenthevalueΔPwillbeestablishedfromthemoment
+and the plan view distance derived from values XREF to ZREF.
+3-36 SOFiSTiK2023InputDescription|DYNA
+The impedance for frequency analysis is defined by the two factors of the complex stiffness:
+R(t)
+K = =k+·ω·c (3.20)
+(t)
+SOFiSTiK2023 3-37DYNA|InputDescription
+3.16 EXTR – Evaluation of Max. Internal Forces and Moments
+See also: ECHO, CTRL, GRP, MASS, EIGE, MODD, STEP, LC,
+EXTR
+CONT,HIST
+Item Description Unit Default
+TYPE Structural magnitude LT !
+MAX Load case number for maximum − 0
+MIN Load case number for minimum − 0
+0 print only
+STYP Superposition type statistical/steady-state LT *1
+ADD sum of values
+SUM sum of absolute values
+SRSS square root of sum of squares
+CQC Complete Quadratic Combination
+ACT Action names of the results LT
+See below
+With these records the evaluation of maximum results is selected, which may be saved within
+a result load case. It has to be distinguished. if every result record contains all the individual
+extreme values or if the extreme key value is accompanied with corresponding forces.
+Thefirstoptionisappliedforallboldliterals,thesecondforallother. Thefirstoptioncannotbe
+used for any superposition with other results in a meaningful way.
+The following literals are possible for TYPE.
+Table3.23: Fornodes
+TYPE Designation
+U Displacements and support forces
+V Velocities
+A Accelerations
+Table3.24: Forbeams(BEAM)
+TYPE Designation
+BEAM Maximum values for beam elements
+(not usable for superposition)
+N Normal force
+VY Shear force Vy
+VZ Shear force Vz
+1ThedefaultsuperpositiontypeisdeterminedbyCTRLSTYPV2settings.
+3-38 SOFiSTiK2023InputDescription|DYNA
+Table3.24: (continued)
+TYPE Designation
+MT Torsional moment
+MY Bending moment My
+MZ Bending moment Mz
+MB Warping moment
+MT2 Secondary torsional moment
+Table3.25: Fortrusselements(TRUS)
+TYPE Designation
+TRUS Forces in truss elements
+Table3.26: Forcables(CABL)
+TYPE Designation
+CABL Forces in cable elements
+Table3.27: Forsprings(SPRI)
+TYPE Designation
+SPRI Maximum values for spring elements
+(not usable for superposition)
+P Spring force in main direction
+PT Resultant spring force in transverse direction
+PT =(cid:112) PTX2+PTY2+PTZ2
+PTX Spring component in global X direction
+PTY Spring component in global Y direction
+PTZ Spring component in global Z direction
+M Spring moment
+SP Sum of spring forces
+SPX Sum of spring force components in X direction
+SPY Sum of spring force components in Y direction
+SPZ Sum of spring force components in Z direction
+SPRX Sum of rotational spring forces about X direction
+SPRY Sum of rotational spring forces about Y direction
+SPRZ Sum of rotational spring forces about Z direction
+SOFiSTiK2023 3-39DYNA|InputDescription
+Table3.28: Forplates/shells(QUAD)
+TYPE Designation
+QUAD Maximum values for QUAD elements
+(not usable for superposition)
+MXX Bending moment m-xx
+MYY Bending moment m-yy
+MXY Torisonal moment m-xy
+VXX Shear force v-x
+VYY Shear force v-y
+NXX Membrane force n-xx
+NYY Membrane force n-yy
+NXY Membrane shear force n-xy
+NZZ Membrane force n-zz
+Table3.29: Forvolumeelements(BRIC)
+TYPE Designation
+BRIC Maximum values for BRIC elements
+(not usable for superposition)
+TXX Stress in global X direction
+TYY Stress in global Y direction
+TZZ Stress in global Z direction
+TXY Shear stress in global XY plane
+TXZ Shear stress in global XZ plane
+TYZ Shear stress in global YZ plane
+Table3.30: Forresultsets(RSET)
+TYPE Designation
+RSET Maximum values for RSET elements
+(not usable for superposition)
+RS1 the first entry of each RSET
+RS2 the second entry of each RSET
+...
+RS31 the 31th entry of each RSET
+3-40 SOFiSTiK2023InputDescription|DYNA
+Table3.31: Forstoreysets(SLVL)
+TYPE Designation
+SLVL Maximum values for storeys
+(not usable for superposition)
+S_PX Shear in global X
+S_PY Shear in global Y
+S_PZ Force in global Z
+S_MX Moment in global X
+S_MY Moment in global Y
+S_MZ Moment in global Z
+S_UX Displacement in global X
+S_UY Displacement in global Y
+S_UZ Displacement in global Z
+S_DX Drift in global X
+S_DY Drift in global Y
+Hint
+StoreyrotationandrotationdriftinglobalZarenotavailableasmaximumresultselection
+since the rigid diaphragm method is not used when calculating these results.
+Themaximumvaluesarestoredinthedatabase,ifaloadcasenumberisinputforMAXand/or
+MIN. For nodal values (U,V,A) only the maximum values are output as default. Use ECHO
+DISP, VELO, ACCE or REAC to see all nodal results.
+Special remarks on support forces
+As the evaluation of support forces requires quite a demanding effort and the amount of data
+is kept small, there is no direct option to evaluate them in DYNA. There are only the following
+possibilities:
+support forces within a result set
+spring elements
+modal analysis with Eigenvalues from ASE
+To get extended results with correspondig values, the use of RSET is recommended. But
+saving complete results with CTRL RLC might be also a solution.
+Special remarks on the extreme values of response spectra
+SUM offersan upper limit, SRSS may overestimateor underestimate theprobable magnitude.
+CQCusuallygivesthemostreasonableresults. Thedefaultvalue(CQC)maybechangedwith
+CTRL STYP V2.
+SOFiSTiK2023 3-41DYNA|InputDescription
+The maximum forces will become always positive for SUM, SRSS and CQC.
+For the global maximum values(e.g. U, V, A, REAC, BEAM, QUAD, BRIC) the extrema will
+be calculated for every force independently. The extrema will be collected and stored within
+a single record. But the real response may be any positive or negative combination of these
+individual values. This is inconvenient for design purpose, and it is definitely not suited for a
+display with the program ANIMATOR.
+At superposition of a single internal force on the other hand the corresponding internal forces
+are formed in the same ratio with a linear combination, so that one can employ the complete
+set of the internal forces and moments. The algorithm used for that has been invented by
+SOFiSTiK and is therefore hardly to be found in other programs.
+Thus the calculated forces have the correct corresponding signs, but the leading force ist still
+positive. Thus the results have to be inserted in other tasks alternatively with a positive or a
+negativesignmultiplier. Insomecasesitisasimplificationtoapplyasignbasedonareference
+load case, assuring that the results are always unfavourable.
+This can be achieved with a definition of a refernce load case with CTRL STYP V3.
+The base accelerations are also included within the resulting nodal accelerations. Displace-
+ments and velocities however are always relative to the free field movements of the soil.
+The types SP and SPX, SPY, SPZ address the total sum of all components of support spring
+forces in the global coordinate directions. The output is done group-wise. Types PTX to PTZ
+have only the tangential components.
+Action names of the results
+At ACT the results can be assigned to a specific action for a later superposition. All actions
+preset in program SOFiLOAD record ACT are possible here.
+3-42 SOFiSTiK2023InputDescription|DYNA
+3.17 ECHO – Extent of Output
+Seealso: CTRL,GRP,MASS,EIGE,MODD,STEP,LC,CONT,HIST,
+ECHO
+EXTR
+Item Description Unit Default
+OPT A literal from the following list: LT FULL
+NODE Nodal values
+SECT Cross section values
+ELEM Elements
+MASS Masses in nodes
+EIGE Natural frequencies
+LOAD Loads
+DISP Displacements
+FORC Internal forces and moments
+VELO Velocities
+ACCE Accelerations
+REAC Support reactions
+STAT Warning for convergence check
+FULL All the above options
+VAL The extent of the output LT FULL
+OFF Option complete deactivate
+NO No output
+YES Regular output
+FULL Extensive output
+EXTR Extreme output
+ThenameECHOmustberepeatedineachrecordtoavoidconfusionwithsimilarrecordnames
+(e.g. CROS).
+The default value is NO for NODE, CROS, and ELEM; for all others it is YES.
+The warning no. 10918 (No convergence of the iterative equation solver in load vector) for
+convergence checks can be switched off with ECHO STAT NO.
+Special hints to the echo options may be found in the next chapter.
+SOFiSTiK2023 3-43DYNA|InputDescription
+3-44 SOFiSTiK2023OutputDescription|DYNA
+4 Output Description
+4.1 Nodes
+The nodes are output by use of ECHO NODE YES only. The table includes the coordinates and
+constraints, and by ECHO NODE FULL the equation numbers of the freedom degrees as well.
+4.2 Cross Sections
+The table of the cross sections appears after request by ECHO SECT and contains the following
+value:
+CROSS SECTIONS
+A Cross sectional area
+Ay Shear cross sectional area
+Az Shear cross sectional area
+It Torsional moment of inertia
+Iy Geometric moment of inertia about principal axis
+Iz Geometricmomentofinertiaaboutsecondaryaxis
+E Elastic modulus
+G Shear modulus
+Da Factor of external (mass proportional) damping
+Di Factor of internal (stiffness proportional) damping
+Rho Mass density
+4.3 General Parameters
+At the beginning of a dynamic analyses appears a table CONTROL INFORMATIONS with the
+general parameters. These are:
+• Number of unknowns and profile size of the equation system
+• Number of used eigenvalues
+• Number and size of time steps
+• Rayleigh’s damping by direct integration
+• Parameters of the integration method
+4.4 Elements
+The tables of beam elements and spring or truss elements as well as lumped masses and
+damping elements appear upon request by ECHO ELEM. They contain for each element the
+participating nodes, the length, the spring stiffnesses, the local axis directions and the mass
+components.
+SOFiSTiK2023 4-1DYNA|OutputDescription
+Inthetableofthetotalmasses,thefirstlinehasthesumofthenodalmasses,i.e. therotational
+masses are only the rotational inertias of the nodes. However the following rows contain the
+ordinatesoftheglobalcentreofgravityandthetotalrotationalinertiaofalltranslatoricmasses
+measured to this centre as a 3x3 matrix.
+4.5 Natural Frequencies
+Afterthefirstcomputationofthenaturalfrequenciestheprogramoutputstheerrorintheeigen-
+values along with the number of the required iterations. The rest of the output is controlled by
+ECHO EIGE as follows:
+ECHO EIGE YES frequencies and modal damping only
+ECHO EIGE FULL node displacements as well
+ECHO EIGE EXTR element internal forces and moments as well
+For a uniform ground acceleration in the three coordinate directions the modal contributions
+may be evaluated (columns f-XX, f-YY and f-ZZ). Taken as percentage of the total mass this
+gives a criteria for a sufficient number of eigenvalues.
+Theeigenvectorsarenormalisedwithrespecttothemasses(Eq. 2.20ofthetheoreticalprinci-
+ples). Theinternalforcesandmomentsoftheeigenvectorsareusuallytobeunderstoodasan
+indication of the stressing type. The absolute value depends on the normalisation and it can
+take considerably large values.
+Table4.2: Eigenvalues(ECHOEIGE)
+Eigenvalues
+No. Z LC Z λ Z error Z ω Z f Z T Z ξ Meff
+[rad2/sec2] Z [-] Z[rad/sec] Z [Hz] Z [sec] Z [o/o] ZX[o/o] ZY[o/o] ZZ[o/o]
+1 n 9001 n8C2106Eq00 n 0C00Eq00 n 2C865 n 0C456 n 2C193 n 0C000 n 0C0 n 25C9 n 0C0
+2 n 9002 n1C2585Eq01 n 0C00Eq00 n 3C548 n 0C565 n 1C771 n 0C000 n 26C7 n 0C0 n 0C0
+3 n 9003 n5C3080Eq01 n 0C00Eq00 n 7C286 n 1C160 n 0C862 n 0C000 n 2C2 n 43C0 n 0C0
+4 n 9004 n5C3080Eq01 n 0C00Eq00 n 7C286 n 1C160 n 0C862 n 0C000 n 43C0 n 2C2 n 0C0
+5 n 9005 n2C2238Eq02 n 1C31EL09 n 14C912 n 2C373 n 0C421 n 0C000 n 3C4 n 0C0 n 0C0
+6 n 9006 n2C2238Eq02 n 9C81EL09 n 14C912 n 2C373 n 0C421 n 0C000 n 0C0 n 3C4 n 0C0
+7 n 9007 n2C8301Eq02 n 3C40EL12 n 16C823 n 2C677 n 0C373 n 0C000 n 0C0 n 0C0 n 35C0
+8 n 9008 n4C3733Eq02 n 1C11EL07 n 20C913 n 3C328 n 0C300 n 0C000 n 0C0 n 1C8 n 0C0
+9 n 6C1899Eq02 n 2C63EL04 n 24C880 n 3C960 n 0C253 n ΣgMeffu¹n 75C3n 76C3n 35C0
+10 n 7C6523Eq02 n 2C00EL07 n 27C663 n 4C403 n 0C227
+¹n TotalneffectivenmassninnXLynYLnandnZLdirectionC
+NoCn eigenmodennumbern fn eigenfrequency
+LCn loadncasen Tn eigenperiod
+λn eigenvaluen ξn modalndampingnratio
+errorn relativeneigenvaluenerrorn Meffn effectivenmodalnmassninnXLynYLnandnZLdirection
+ωn circularneigenfrequency
+4.6 Load Cases, Functions and Loads
+The table of functions and loads is always introduced before the description of the function,
+followed by the loads of this load case.
+The generalised loads of the individual modes and the sum of their squares are output in the
+case of a modal loading.
+4-2 SOFiSTiK2023OutputDescription|DYNA
+Table4.3: Modalloadparticipationfactorsperloadfunction(ECHOLOAD)
+Modal load participation factors per load function
+LC Mode Φ·p Φ2·p Mode Φ·p Φ2·p
+901 h 1 h 1.323E-14 h -7.794E-30 h 4 h 1.359Eb01 h -4.297Eb00
+2 h -1.046Eb01 h -4.720Eb00 h 5 h 3.710Eb00 h -4.892Eb00
+3 h -4.695E-01 h -5.125E-03 h 6 h -4.786E-04 h -1.403E-07
+Σh 3.081Eb02¹h -1.391Eb01²
+902 h 1 h -1.030Eb01 h -4.756Eb00 h 4 h 4.695E-01 h -5.125E-03
+2 h -1.914E-15 h -5.447E-30 h 5 h -4.786E-04 h -1.403E-07
+3 h 1.359Eb01 h -4.297Eb00 h 6 h -3.710Eb00 h -4.892Eb00
+Σh 3.049Eb02¹h -1.395Eb01²
+¹hΣiφ·pg²h-hsumhofhsquareshofhthehmodalhvalueshiφ·pg
+²hΣiφ2·pgh-hsumhofhmodalhvalueshiφ2·pg
+LCh loadhcase
+Modeheigenmodehnumber
+Φ·ph modalhloadhparticipationhfactorhperhloadinghfunctionhashahscalarhproducthofhanheigenvectorhφhandhahloadhshape
+h vectorhp
+Φ2·phfactorhashahscalarhproducthofhanhvectorhofhsquareshofheigenvectorhcomponentshφ2handhahloadhshapehvectorhp
+Thereisasecondvalueprinted,whichmaybeusedtointegratethesquareofEigenvaluesfor
+only parts of the structure via special load patterns.
+The modal response is shown in separate tables:
+Table4.4: ModalResponses-RSA
+Modal Responses
+LC Mode q,max f[Hz] ξ[o/o] T[sec] S(ξ,T)
+901 1 6.701E-16 0.456 5.000 2.193 0.416
+2 -4.691E-01 0.565 5.000 1.771 0.565
+3 -1.026E-02 1.160 5.000 0.862 1.160
+4 2.969E-01 1.160 5.000 0.862 1.160
+902 1 -5.218E-01 0.456 5.000 2.193 0.416
+2 -8.588E-17 0.565 5.000 1.771 0.565
+3 2.969E-01 1.160 5.000 0.862 1.160
+4 1.026E-02 1.160 5.000 0.862 1.160
+Response of periodic loading is exact including the phases.
+Contributions of all functions will be added as sum of squares.
+LC load case
+Mode eigenmode number
+q,max maximal modal coordinate response per loading function
+f[Hz] eigenfrequency
+ξ[o/o] modal damping ratio
+T[sec] eigenperiod
+S(ξ,T) pseudo-acceleration spectral response normalized w.r.t. ground acceleration
+Table4.5: ModalResponses-MTHA
+Modal Responses
+Mode q(t),max Mode q(t),max Mode q(t),max
+1 2.543E-18 2 2.492E-17 3 7.744E-03
+4 2.242E-01 5 1.500E-19 6 5.326E-18
+7 5.099E-20 8 1.301E-19 9 1.872E-18
+10 5.170E-18 11 8.089E-19 12 1.694E-18
+13 8.212E-04 14 1.965E-03 15 3.590E-18
+16 2.970E-18 17 6.437E-19 18 1.057E-04
+19 2.718E-04 20 1.382E-16
+Mode eigenmode number
+q(t),max maximal modal coordinate response
+4.7 Displacements
+The displacements of the individual load cases are output by static analysis.
+SOFiSTiK2023 4-3DYNA|OutputDescription
+In case of dynamic analysis the maximum displacements, velocities and accelerations can be
+outputforallnodes. Thereresulttwolinespernodewiththeminimumandmaximumvaluesas
+wellasthecorrespondingtimevaluesifatimeanalysiswascarriedout. Incaseofstochasticor
+steady-stateexcitationtheextremevalueswerecomputedbystatisticalmethodsorbyanalysis
+of one period of the steady-state excitation.
+Witha definition of ECHO DISP nn the print may be limited to those important nodes with a
+number less than the value nn.
+4.8 Internal Forces and Moments
+The internal forces of the individual load cases are output by static analysis.
+The maximum values are calculated for all internal forces and moments specified by EXTR
+along with the other corresponding values. The given time value holds for the whole line. In
+case of stochastic or steady-state excitation the extreme values were computed by statistical
+methods.
+For the base shear there are special tables:
+Table4.6: Sumofforces(Base-Shear)(ECHORESP)
+Sum of forces (Base-Shear)
+LC H Mode Vb Mb
+[m] X[kN] Y[kN] Z[kN] X[kNm] Y[kNm] Z[kNm]
+9wX r base¹ r SRSS² r Y9CZ r -C, r wCw r X7CY9 r ,x7C,x r wCww
+9w- r base¹ r SRSS² r -C, r Y8Cx r wCw r ,x,Cw- r X7CY9 r YYCX,
+SRSS³r Y9Cxr Y8C7r wCwr ,x,CYYr ,x7C78r YYCX,
+¹r Vbrisrcomputedrforrtherentirerstructurerl“base”rofrtherstructureMC
+²r TotalrVbrandrMbrobtainedrbyrthergivenrmodalrsuperpositionrruleC
+³r SuperposedrtotalrVbrandrMbrobtainedrbyrthergivenrresponserspectrarsuperpositionrruleC
+LCr loadrcaser Moder eigenmodernumber
+Hr heightratrwhichrVbrisrcalculatedr Vbr basershearrperrmoderinrXLvrYLrandrZLdirection
+Mbr baseroverturningrmomentrperrmoderaboutrXLvrYLrandrZLaxisrevaluatedrrelativertortheroriginrofrthercoordinatersystem
+Table4.7: Sumofforces(Base-Shear)(ECHORESPFULL)
+Sum of forces (Base-Shear)
+LC H Mode Vb Mb
+[m] X[kN] Y[kN] Z[kN] X[kNm] Y[kNm] Z[kNm]
+901 base¹ 1 0.0 0.0 0.0 0.00 0.00 0.00
+2 -13.7 0.0 0.0 0.00 81.65 0.00
+3 -0.1 1.6 0.0 12.37 0.43 0.00
+4 -47.6 -1.6 0.0 -12.37 358.17 0.00
+SRSS² 49.5 2.3 0.0 17.49 367.36 0.00
+902 base¹ 1 0.0 -9.8 0.0 -59.16 0.00 44.13
+2 0.0 0.0 0.0 0.00 0.00 0.00
+3 1.6 -47.6 0.0 -358.17 -12.37 0.00
+4 -1.6 -0.1 0.0 -0.43 12.37 0.00
+SRSS² 2.3 48.6 0.0 363.02 17.49 44.13
+SRSS³ 49.6 48.7 0.0 363.44 367.78 44.13
+¹ Vb is computed for the entire structure (“base” of the structure).
+² Total Vb and Mb obtained by the given modal superposition rule.
+³ Superposed total Vb and Mb obtained by the given response spectra superposition rule.
+LC load case Mode eigenmode number
+H height at which Vb is calculated Vb base shear per mode in X-, Y- and Z-direction
+Mb base overturning moment per mode about X-, Y- and Z-axis evaluated relative to the origin of the coordinate system
+4-4 SOFiSTiK2023OutputDescription|DYNA
+4.9 Time Variations
+The time variation of the structural magnitudes specified with HIST is finally saved in the
+database for further processing with DYNR. There is also the possibility to dump values to
+an ASCII file.
+SOFiSTiK2023 4-5DYNA|OutputDescription
+4-6 SOFiSTiK2023Bibliography |DYNA
+Bibliography
+[1] A.K. Chopra. Dynamics of structures: theory and applications to earthquake engineering.
+Vol. 2. Prentice Hall Englewood Cliffs, NJ, 1995.
+[2] K.J. Bathe. Finite Element Procedures. Prentice Hall, 1996.
+[3] R.W. Clough and J. Penzien. Dynamics of Structures. Computers and Structures, Incor-
+porated, 2003.
+[4] T.J.R. Hughes. The Finite Element Method: Linear Static and Dynamic Finite Element
+Analysis. Dover Publications, 2000.
+[5] E.L. Wilson. Three Dimensional Static and Dynamic Analysis of Structures: A Physical
+Approach with Emphasis on Earthquake Engineering. Computers and Structures, 2000.
+[6] S.L. Kramer. Geotechnical Earthquake Engineering. Prentice Hall, 1996.
+[7] TimothyA.Davis.LDL:aconsisesparseCholeskyfactorizationpackage.http://www.cise.
+ufl.edu/research/sparse/ldl. 2003-2012.
+[8] B. Radmanovic´ and C. Katz. “A High Performance Scaled Boundary Finite Element
+Method”. In: IOP Conference Series: Materials Science and Engineering 10 (2010).
+[9] F.P. Müller. Baudynamik. Betonkalender, Teil II, 1978, 745?962.
+SOFiSTiK2023 4-7

@@ -1,0 +1,45 @@
+!#!Info  Example:       Nonlinear analysis with shear/axial force interaction
+!#!Info  Keyword:       Yield, Non linear analysis; DIN 18800
+!#!Info  Program:       AQB
+!#!Info  Date:          $Date: 2015-05-14 13:57:22 +0200 (Do, 14 Mai 2015) $
+
+PROG AQUA
+HEAD YIELDING-ZONE WITH SHEAR/AXIAL FORCE INTERACTION
+NORM EN 199X-200X
+STEE 1 S 235 SCM 1.0
+SECT 1 ; PROF 1 IPE 300 DTYP T
+END
+
+PROG SOFIMSHA
+HEAD YIELDING-ZONE WITH SHEAR/AXIAL FORCE INTERACTION
+SYST FRAM
+NODE 1,2,3 0,4,8 0
+BEAM 101,102 1,2 2,3 DIV 20
+NODE 1   FIX PP
+     2,3 FIX PY
+END
+
+PROG SOFILOAD
+HEAD LOAD INPUT
+LC 1 TYPE NONE
+BEAM 101 102 1 TYPE PYY PA 80
+END
+
+PROG STAR2
+HEAD START OF NON-LINEAR ANALYSIS
+$ If the transverse shear force is larger than the capacity no convergence will be achieved
+CTRL I
+LC 1
+END
+
+PROG AQB ITER30
+ECHO NSTR
+CTRL WARN 2055
+CTRL INTE 2
+LC 1 ; NSTR US1
+END
+
+PROG STAR2 ITER
+CTRL I
+END
+

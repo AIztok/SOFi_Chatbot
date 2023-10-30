@@ -1,0 +1,1861 @@
+HYDRA
+Seepage and Thermal Analysis
+SOFiSTiK | 2023HYDRA
+SeepageandThermalAnalysis
+HYDRAManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|HYDRA
+Contents
+Contents i
+1 General Description 1-1
+2 Theoretical Background 2-1
+2.1 Mathematical Basics . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.2 Mathematical Treatment . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.3 Element Formulation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.4 Solution of the System . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-2
+2.5 Transient Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-3
+2.6 Iterations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-3
+2.7 Basics of Thermal Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-4
+2.8 Basic Equations of Thermal Analysis . . . . . . . . . . . . . . . . . . . . . . . 2-5
+2.9 Boundary Conditions of Thermal Analysis. . . . . . . . . . . . . . . . . . . . 2-5
+2.10 Hydration of concrete . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-5
+2.11 Basics of Hydrology . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-7
+2.12 The Governing Law of Hydrology . . . . . . . . . . . . . . . . . . . . . . . . . 2-8
+2.13 Basic Equations of Hydrology . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-9
+2.14 Dupuit-Hypothesis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-10
+2.15 Pipes and Channels. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-10
+2.16 Boundary Conditions of Hydrology . . . . . . . . . . . . . . . . . . . . . . . . 2-11
+2.17 Coordinate System . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-13
+2.18 Elements. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-13
+2.18.1 Pipe Element . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-13
+2.18.2 Link Element . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-13
+2.18.3 Plane Element . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-13
+2.18.4 Axissymmetric Element . . . . . . . . . . . . . . . . . . . . . . . . . 2-14
+2.18.5 Volume Element . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-14
+2.19 Boundary Conditions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-14
+2.19.1 Free Surface. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-14
+2.19.2 Seepage Areas . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-15
+2.19.3 Konvection and Radiation Boundaries . . . . . . . . . . . . . . . 2-15
+2.20 Principal Program Organisation . . . . . . . . . . . . . . . . . . . . . . . . . . 2-16
+3 Input Description 3-1
+3.1 Program Limits . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.2 Input Language . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.3 SYST – System Parameters . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-3
+3.4 CTRL – Control Values . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-5
+3.5 STEP – Transient Analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-8
+3.6 PLC – Primary Load Case. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-9
+SOFiSTiK2023 iHYDRA|Contents
+3.7 COPY – Modification of Results . . . . . . . . . . . . . . . . . . . . . . . . . . 3-10
+3.8 GRP – Selection of Groups . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-11
+3.9 NVAL – Material Values at Nodes . . . . . . . . . . . . . . . . . . . . . . . . . 3-13
+3.10 HMAT – Material Constants HYDRA . . . . . . . . . . . . . . . . . . . . . . . 3-14
+3.10.1 Hydraulic Parameters . . . . . . . . . . . . . . . . . . . . . . . . . . 3-15
+3.10.2 Heat Conduction . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-15
+3.10.3 Hydration of Concrete . . . . . . . . . . . . . . . . . . . . . . . . . . 3-18
+3.11 LINK – Connecting Element. . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-20
+3.12 PIPE – Pipe or Channel Elements. . . . . . . . . . . . . . . . . . . . . . . . . 3-22
+3.13 LC – Analysis Case . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-23
+3.14 BOUN – Boundary Conditions . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-24
+3.14.1 Thermal Conductivity and Emissivity. . . . . . . . . . . . . . . . . 3-26
+3.15 SURF – Surface and Volume Boundary Conditions . . . . . . . . . . . . . . 3-27
+3.16 FUNC – Transient Conditions . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-29
+3.17 HIST – Transient Results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-31
+3.18 COPY – Modify nodal results in the database . . . . . . . . . . . . . . . . . 3-32
+3.19 IMPO – Import of Results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-33
+3.20 ECHO – Output Options . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-34
+4 Output Description 4-1
+4.1 System Parameters . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.2 Nodes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.3 Materials . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-1
+4.4 Sections . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-2
+4.5 Elements. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-2
+4.6 Boundary Conditions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-3
+4.7 Statistical Information . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-4
+4.8 Results of the Elements . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-4
+4.9 Results at Nodes. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-5
+4.10 Balancing . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 4-5
+5 Graphical Output of Transient Results 5-1
+5.1 SIZE – Graphic Format. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-1
+5.2 SCHH – Set Character Heights . . . . . . . . . . . . . . . . . . . . . . . . . . 5-2
+5.3 FUNC – External Function . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 5-3
+5.4 HIST – Display of Transient Results. . . . . . . . . . . . . . . . . . . . . . . . 5-3
+ii SOFiSTiK2023GeneralDescription|HYDRA
+1 General Description
+Agreatnumberofphysicalproblemsmaybedescribedaspotentialproblemsgovernedbythe
+Laplace (ΔH = 0) or the Poisson differential equation (ΔH = q). Among these are magnetic
+flow, heatflow and groundwater seepage. HYDRA is specialised on the the last and last but
+one type of problem, but may be used for other problems with a similar background as well.
+A finite element method discretizes the real continua in a finite number of small elements with
+simplifiedphysicalproperties. Theelementsareconnectedatnodes. Aninterpolationfunction
+within the elements represents a numerical estimate to the real solution.
+Thermal analysis allows the evaluation of the temperature distribution within a solid due to a
+steady or transient heating or cooling or temperature gradient.
+Groundwater models are used to compute the movement of water (seepage) within a porous
+solid needed for geology, hydrology, soil mechanics or groundwater supply.
+Problems of seepage may be subdivided in categories, matching different requests of preci-
+sion.
+• Plane or 3D problems
+The real situation is always 3D. For the analysis you may select a system which ne-
+glects one of the dimensions. For a structure extending along a line like a dam, we may
+select a plane cut with constant thickness. For aquifers with a vertical thickness much
+less than the horizontal dimensions, we may use the hypothesis of Dupuit to switch to a
+simplified, but not necessarily plane system.
+• Linear or nonlinear flow models
+Nonlinear flow is needed for turbulent flow, this is important for pipes and culverts
+but not so for seepage. However one important case is the free surface problem. All
+nonlinear problems may be solved with an iterative procedure.
+• Free, confined or partial saturated flow
+The free surface problem is governed by a surface with pressure zero, which is the
+boundary of the flow domain and is not known a priori. A partial saturated flow may be
+accounted for with a pressure dependant conductivity to some extend.
+• Steady or transient
+All estates which do not change in time are steady. For a transient analysis with
+changing boundary conditions in time, we need to solve a linear or nonlinear problem for
+every time step.
+SOFiSTiK2023 1-1HYDRA|GeneralDescription
+1-2 SOFiSTiK2023TheoreticalBackground |HYDRA
+2 Theoretical Background
+2.1 Mathematical Basics
+AscalarvalueUwhichisdefinedineverypointofspacewithadistinctvalue(eg. Temperature,
+Potential, electrical voltage) is called a scalar field.
+A value u which is defined in every point of space as a vector (e.g. displacements, flow veloci-
+ties) is called a vector field.
+A partial derivative of a scalar field U defines a vector field:
+∂U
+∂
+ = grdU = ∇U =  ∂U  (2.1)
+∂y
+ 
+∂U
+∂z
+(cid:82)
+A conservative field or potential field is a vector field, where the integral along a curve udr
+depends only on the start point A and the end point B, but not on the integration path. A
+conservative field is free of vortices, i.e. the closed integral with A=B is zero. If sources or
+sinksarepresentinthesystemhowevertheclosedintegralwillbeequaltothesumofsources
+(vortices).
+In general the potential is only defined by the selection of a reference value in any arbitrary
+point. As the fundamental solution (Greens function) of a 2D problem is the logarithm resp.
+arcustangens,whilein3Ditisthe1/rfunction,thereisanimportantdifference. Whilein3Dwe
+may easily select a zero potential at infinity, for 2D we have to select this point within a finite
+distance. This makes 2D solutions in many cases less unique than 3D solutions.
+Differentiating a vector field we have the divergence and the curl or rotation given by:
+(cid:20)∂ ∂ ∂ (cid:21)
+ y z
+d = ∇· = + + (2.2)
+∂ ∂y ∂z
+ ∂ z − ∂ y
+∂y ∂z
+ 
+rot = ∂  − ∂ z (2.3)
+ ∂z ∂ 
+∂ 
+y − ∂
+∂ ∂y
+A conservative field has its largest and smallest potential value at the boundary (Maximum
+principle).
+2.2 Mathematical Treatment
+With the variation calculus it is possible to transform the differential equation of the potential
+problem into a corresponding functional. The minimisation of the functional is equivalent to
+the solution of the differential equation. In the following we use H for the potential, for thermal
+analysis it is the temperature T. The differential equation:
+δH
+d(K · grd H) + S − Q = 0 (2.4)
+δt
+SOFiSTiK2023 2-1HYDRA|TheoreticalBackground
+with the boundary conditions
+H = H o on  1 (2.5)
+T · n = q on  2 (2.6)
+has for the stead state the functional:
+(cid:90) δH δH (cid:90) δH (cid:90)
+ = 1/2·k j· · ·dΩ + (H−H o)·k j· N j·d 1+ H·q·d 2 (2.7)
+δ δ δ
+Ω  j   
+1 2
+The principle of the finite elements is given by the approach to replace the exact solution by a
+piece wise local (elemental) interpolation and to solve the minimum problem for this projected
+system. Thesolutionwillfulfilthedifferentialequationonlyinaweaksense,whiletheboundary
+conditions are met exactly in most cases. The estimated solution has to fulfil the dirichlet
+boundary conditions for the potential or temperature
+H = ƒ (s) (2.8)
+on the boundaries in advance. The minimisation will yield the natural boundary condition on
+all other boundaries:
+T · n = 0 (2.9)
+which is an impermeable or adiabatic boundary.
+2.3 Element Formulation
+The simplest elements, the plane triangle with 3 nodes resp. the Tetrahedron with 4 nodes
+have then three resp. four degrees of freedom which allow a linear approach to the potential.
+The derivatives are then constant all across the element.
+The four resp eight noded isoparametric elements have a slightly more enhanced precision
+especially for twisted saddle points. Moreover they have advantages for the mesh definition
+which pay off the little extra effort quite well.
+With some mathematical treatment (cmp. Zienkiewicz, 1975) the expression for the functional
+may be written as matrix product:
+(cid:90)
+ e = Ht  · B t · K · B · dV · H  (2.10)
+Kisthepermeability/conductivitytensorandBisamatrixdependingontheelementgeometry.
+The potentials of the nodes H are constant for the Integration and can be excluded from the
+integration therefore.
+2.4 Solution of the System
+The total functional is the sum of all elemental and boundary functionals (matrices}
+ = 1/2 HT · A · H + H · Q (2.11)
+2-2 SOFiSTiK2023TheoreticalBackground |HYDRA
+where A is the total conductivity matrix and Q the vector of external quantities. The minimisa-
+tion is equivalent to set the derivatives to zero:
+A · H + Q = 0 (2.12)
+This last equation is after the incorporation of the prescribed potential values with a penalty
+functiontheequationsystemtobesolvedviaGausseliminationoraniterativeconjugategradi-
+entsolver. WithoutanyPotentialboundaryconditiontheequationsystemisstillmultivalued.
+2.5 Transient Analysis
+For the transient analysis we use the Crank-Nicholson-method with a variable coefficient θ.
+The evolution within time the following approach is selected:
+δh/δt = 1/Δt (H  − H −1) (2.13)
+The differential equation respective the functional will be established at time t+ θ·Δt which
+yields the following matrix equation:
+1 (cid:18) 1 (cid:19)
+(θ · A + · C) · H  = (θ−1) · A + · C H −1 − Q (2.14)
+Δt Δt
+or directly for the increments:
+(cid:18) 1 (cid:19)
+θ · A + · C · ΔH  = −A · H −1 − Q (2.15)
+Δt
+Where A is the conductivity matrix and C the storage matrix, given for any element by:
+(cid:90)
+C j = N  S N j dV (2.16)
+with the storage coefficient S. For free surface problems the Matrix C has to be enhanced by
+a part described by the effective porosity on the free surface.
+For transient problems it is especially for free surface problems to choose the time step de-
+pendingonthemeshsizeneithertosmallthantolarge. LargetimestepswillmaketheCrank-
+Nicholsonschemelessprecise,butthestabilityiskeptunlessthevalueofθischosentosmall.
+Tosmalltimestepsmightintroduceanoscillatingbehaviourduetotheviolationofthediscrete
+maximum principle, which is physically unreasonable. This effect my be suppressed by using
+diagonalized matrices, but the general rule of thumb is not to chose time steps less than the
+speedofthevariationsacrosstheelementmeshwilldistribute. HYDRAhasanautomatictime
+stepping facility therefore.
+2.6 Iterations
+The solution is obtained at the first step if neither a free surface nor any nonlinear boundary
+conditions other nonlinear material effects occur. In those cases we need iterations.
+Thiswillbeachievedbyapiecewiselinearisationfromthefirstlinearguesstowardsmoreand
+more corrected potential distributions to meet the material laws or boundary conditions.
+(A + ΔA(H )) · H +1 − Q +1 = 0 (2.17)
+SOFiSTiK2023 2-3HYDRA|TheoreticalBackground
+We can use the tangential stiffness or the initial stiffness of a quasi-Newton approach. If the
+solution of Hi differs only slightly from H+1 we can rewrite the above equation:
+A · H +1 = Q +1 − ΔA(H ) · H  (2.18)
+ThisallowstokeeptheMatrixAseveraltimesforthesolution. Theiterationsrunfasterbutwe
+might need more. Thus it is recommended for large systems with only slight nonlinearities.
+The Quasi-Newton-Methods may be enhanced with mathematical tools (Criesfield, Broyden-
+Fletcher-Goldfarb-Shanno) to become as effective than the Newton method.
+For transient problems there is also a derivative in time from H and H−1 to be accounted for
+in an appropriate way.
+2.7 Basics of Thermal Analysis
+For the thermal analysis problem the Potential H is directly the temperature T. A heat flow will
+be occur if we have a temperature gradient and a heat conducting media.
+The law of energy conservation requires that for any selected region the sum of entering and
+leaving heat quantities has to be equal to the sum of sources or sinks and the heat stored
+internally.
+δT
+d  = q − ρ · c p · (2.19)
+δt
+v = Vector of heatfluxes [W/m2]
+q = Power of sources or sinks [W/m3]
+ρ = Specific weight of the material [kg/m3]
+cp= specific thermal capacity [Wsec/K·kg]
+Remarks:
+1 kcal = 4186.8 Joule
+1 Joule = 1.0 Wsec = 1.0 kgm2/sec2
+The Fourier equation combines the temperature gradient grad T with the fluxes induced by it.
+According to Biot/Fourier this is
+ = −K · grd T (2.20)
+where K is the tensor of conductivity
+(cid:12) (cid:12)
+(cid:12)k  k y k z(cid:12)
+(cid:12) (cid:12)
+K = (cid:12) (cid:12)k y k yy k yz(cid:12) (cid:12) (2.21)
+(cid:12) (cid:12)
+(cid:12) (cid:12)
+(cid:12)k z k yz k zz(cid:12)
+The conductivity is thus dependant on the flow direction. There are however three orthogonal
+directions which let vanish the off diagonal terms. For an isotropic medium there are further
+2-4 SOFiSTiK2023TheoreticalBackground |HYDRA
+simplifications to yield:
+k = k = k = k
+ yy zz
+k = k = k = 0
+y z yz
+2.8 Basic Equations of Thermal Analysis
+If the Fourier equation () is inserted into the energy conservation law () and if we combine the
+product ρ·cp to a storage coefficient S, we have the governing equation:
+δT
+d(−K · grd T) = q − S ·+ (2.22)
+δt
+2.9 Boundary Conditions of Thermal Analysis
+• Potential (Lines or areas of equal temperature)
+T = T0 (2.23)
+• Stream lines (Lines or areas with prescribed heat flux)
+ = 0 (2.24)
+Thisboundaryconditionalsocontainsthesocallednaturalboundarycondition. Allboundaries
+not described otherwise will have the boundary condition, that the flux across the boundary is
+zero (adiabatic surface):
+t · n = 0 (2.25)
+• Convective boundary condition The flux on the surface is proportional to the difference of
+the surface temperature to the surrounding temperature.
+ = α · (T − T) (2.26)
+• Radiation condition of black body The flux on the surface is proportional to the difference
+of the fourth powers of the absolute surface temperature and the absolute surrounding
+temperature (Law of Boltzmann)
+q = ε · K · (T4 − T4) (2.27)
+
+2.10 Hydration of concrete
+Thephysicsofthehydrationofconcretearerathercomplex. Howeveritispossibletodescribe
+the phenomena with a few parameters empirically. Base for all properties, strength, elasticity
+modulus and heat production is the hydration grade α, defined as the ratio of the heat already
+SOFiSTiK2023 2-5HYDRA|TheoreticalBackground
+produced to the maximum heat possible an the end of time:
+Q(τ )
+
+α = (2.28)
+Q(∞)
+Althoughtherearesomedefinitionsaroundusingtherealtime,itisfarmoresoundtousethe
+effectiveageoftheconcrete τ . Therearesomedefinitionsavailableforthatpurpose,butthe
+definition according to Freiesleben matches experimental data best and is used therefore as
+default:
+• CTRL TEFF 1: enhanced definition acc. to Saul ( -10 ◦ < T < + 50 ◦)
+(cid:90) (cid:150) T + T (cid:153)s
+reƒ
+τ  = dt ; T reƒ = 10 ; s = 1.0 (2.29)
+20 + T
+reƒ
+• CTRL TEFF 2: Freiesleben Definition ( -10 ◦ < T < 80 ◦)
+(cid:90) (cid:18)A(cid:18) 1 1 (cid:19)(cid:19)
+τ  = ep − dt (2.30)
+R 293 273+T
+R = 8.3143 [ J/(mol K) ]
+A = A0 + A1 · Max (0, 20-T)
+A0 = 33500 [ J/mol ]
+A1 = 1470 [ J/mol ]
+• CTRL TEFF 2: Definition according to Jonasson (small modification of the Freiesleben
+definition)
+(cid:90) (cid:32) (cid:130) T+T (cid:140)−0.45 (cid:18) 1 1 (cid:19)(cid:33)
+reƒ
+τ  = ep 5300 − dt (2.31)
+20+T 293 273+T
+reƒ
+Forthefunctiondefiningthehydrationgraddependingontheeffectiveconcreteage,thereare
+numerous suggestions available in literature. The most useful seems to be that of Jonasson,
+an extension to the Byfors definition, which has been implemented therefore:
+(cid:18) (cid:18) τ (cid:19)(cid:19)
+
+α = ep b·n 1+ (2.32)
+τ
+k
+Examplesofthoseconstantsa,bandτ k canbefoundinAppendixAofHeft512oftheGerman
+DAfStB, printed with the input record HMAT but the general rule is that you need tests!
+2-6 SOFiSTiK2023TheoreticalBackground |HYDRA
+Figure2.1
+Another possible function is the "Shrinkage-Core" model:
+·(τ −τ )
+ k
+α = τ  > τ k (2.33)
+1 + ·(τ − τ )
+ k
+or the Danish model according to Wesche including also a function for the development of
+concrete strength within time:
+(cid:130) (cid:18)τ (cid:19)b(cid:140)
+k
+α = ep − (2.34)
+τ
+
+ƒ (t) 
+cc 0
+β = = ·ep(c·t−0.55) c = c 1 (2.35)
+ƒ (28d) z
+cc
+2.11 Basics of Hydrology
+Inhydraulicsitiscommontoexpresstheenergyofthefluidviatheelevationofthefluidabove
+a reference level (piezometric head or potential) which is called h and composed of:
+- geodetic height (potential energy) z
+- pressure heigth p/γ
+- velocity height v2/2g
+- stream height (acceleration energy) ”Integral”
+Forgroundwaterseepagethevelocitiesaresmallenoughtoallowtoneglectthelasttwoterms.
+SOFiSTiK2023 2-7HYDRA|TheoreticalBackground
+For the coordinate z you may use any other coordinate axis with a positive or negative sign.
+A movement of the groundwater will always occur from the higher value of the potential to the
+lower through a connecting material with hydraulic conductivity.
+If the soil does not only contain water but also air, one has a so-called multiphase flow which
+cannot be used in HYDRA in the form of coupled differential equations. However, there are
+possibilities for the description of partial saturated flows. One can introduce itself very well
+the negative suctions as the height of capillary rise. A sufficient fine-grained soil may move
+upward with its capillary water. Thus it has in the dry state a suction which corresponds to this
+maximum height of capillary rise.
+In the area of the saturated pore volume the pressure increases linearly with the depth, so
+that the piezometric height and the position height are added to a constant value. It is very
+important, that a constant pressure has to be available in all points above the capillary line. It
+results consequently from top to bottom a gradient of the potential, which corresponds to the
+geodetic height. The gradient is therefore 1.0.
+2.12 The Governing Law of Hydrology
+Theory of groundwater movement is governed by two rules. The law of continuity formulates
+thatforeveryregionthesumofenteringandleavingflowquantitieshastobeequaltothesinks
+and sources or internal storage capacities:
+∂m
+d  = q − (2.36)
+∂t
+v = vector of flow velocities
+q = Sources or sinks
+m = mass of water within the volume
+The flow law describes the streaming velocities v depending on the potential gradient i = grad
+H. The mostly used linear flow rule from Darcy is:
+ = −K · grd H (2.37)
+where K is the tensor of conductivity
+(cid:12) (cid:12)
+(cid:12)k  k y k z(cid:12)
+(cid:12) (cid:12)
+K = (cid:12) (cid:12)k y k yy k yz(cid:12) (cid:12) (2.38)
+(cid:12) (cid:12)
+(cid:12) (cid:12)
+(cid:12)k z k yz k zz(cid:12)
+The conductivity is thus dependant on the flow direction. There are however three orthogonal
+directions which let vanish the off diagonal terms. For an isotropic medium there are further
+simplifications to yield:
+k = k = k = k
+ yy zz
+k = k = k = 0
+y z yz
+2-8 SOFiSTiK2023TheoreticalBackground |HYDRA
+The permeabilities may vary in large magnitudes (up to 10 powers of 10). The numerical
+treatment of such large differences may become difficult.
+grdh =  ·  + b · 2 (2.39)
+no flow plastic linear postlinear turbulent
+k
+ro
+K
+   
+, , ,V V,V
+= ∂h
+∂
+Figure2.2
+2.13 Basic Equations of Hydrology
+If the flow rule () is inserted into the continuity law (), we have the differential equation of our
+problem:
+d(−K · grd H) = q − S(δH/δt) (2.40)
+Sisthespecificstoragecoefficient,defininghowmuchvolumeofthefluidmaybestoredinter-
+nallyifthepressureisrisedby1m. Forafullysaturatedsoilthisisgivenbythecompressibility
+of the water and the soil particles by
+S = γ  ((1 − n)/K b + n/K ) (2.41)
+where
+n = porosity
+K = Compression moduli
+e.g. K = 2 000 000 kN/m2
+SOFiSTiK2023 2-9HYDRA|TheoreticalBackground
+For unconfined flow however S will be governed by the free surface and the effective porosity
+for storage nsp . This value is much larger than the value according to equation (). However it
+is recommended to specify S anyhow to avoid numerical difficulties if the saturation becomes
+exactly 0.0 or 1.0.
+As an extension HYDRA may account for partial saturated soils by defining the conductivity
+and the effective storage volume as a function of the pore water pressure resp. suction. This
+is not as powerful as a real three-phase flow and requires some experience therefore
+2.14 Dupuit-Hypothesis
+It is a common case, that we have to analyze a structure where the horizontal dimensions
+are much larger than the vertical one. In this case we may use the benefits of the Dupuit-
+Hypothesis. It assumes that the potential is constant across the thickness of the strata resp.
+the part of which has saturated flow. This will reduce the 3D-Problem to a 2D-Problem, where
+the geometry however is rather general in 3D and not necessarily plane. The conductivity
+real
+assumed
+Piezometric head
+Piezometric Head
+Figure2.3: Dupuit-Hypothesis
+is replaced by the transmissivity, the integral of the first across the thickness of the layer.
+confined aquifer:
+(cid:90) d (cid:90) d
+T = k dz , S = S 0 dz (2.42)
+0 0
+unconfined (free) aquifer:
+(cid:90) H (cid:90) H
+T = k dz , S = S 0 dz + n (2.43)
+0 0
+2.15 Pipes and Channels
+Inadditiontothebasiclinearequationsoftheprecedingchapterweneednonlinearequations
+for the analysis of pipes and channels. For both cases we have similar formulas according
+to Prandtl-Colebrook resp. Darcy-Weißbach. The energy loss is proportional to the velocity
+height and a loss factor:
+L · 2
+Δh = λ · (2.44)
+R · 8 · g
+2-10 SOFiSTiK2023TheoreticalBackground |HYDRA
+where
+L = length of pipe or channel
+R = Hydraulic Radius (for circle R = Diameter/4)
+v = Streaming velocity
+g = Gravity acceleration
+The loss coefficient λ depends from the Reynolds number
+RE =  · 4 · R · kz (2.45)
+wherekzistheinverse1/ν ofthekinematicviscosityofthefluid. Fortherarecaseoflaminar
+flow (RE < 2320) we have the law form Hagen-Poisseuille
+λ = 64/RE (2.46)
+For the turbulent flow (RE>2320) we have the formula given from Prandtl-Colebrook with the
+absolute roughness k:
+1 (cid:18) 2.51 k (cid:19)
+(cid:112) = −2g (cid:112) + (2.47)
+λ λ · RE 14.84 · R
+Forchannelsthetotalsectionwillbesubdividedinpartswithasimilarflowcharacteristic. The
+following assumptions will be made:
+- The water level is horizontal across the channel
+- There is the same gradient in all parts of the channel.
+The absolute value of the gradient is rather small.
+- There are now vertical movements.
+Therearetwosubdivisionscommon. Forcompactsectionsthereareverticaldivisionsperpen-
+dicular to the isotaches. These lines do not have any roughness. The total resistance is then:
+(cid:88)
+  · λ ges =  , · λ  (2.48)
+The value of l is the wetted part of the section. The value of λ depends not only on the
+roughness but also on the hydraulic radius, which in turn is dependant on the water level.
+Fornoncompactsectionsthismethodisnotadmissible. Forthatcasewethedivisionlineswill
+be vertical and will have roughness assigned with a value of 1 to 3 times the roughness of the
+bottom. The flow is then calculated for every partial section in separate.
+2.16 Boundary Conditions of Hydrology
+The basic boundary conditions are:
+• Potential lines (Lines of equal piezometric head)
+(Dirichlet boundary condition)
+H = H0 (2.49)
+SOFiSTiK2023 2-11HYDRA|TheoreticalBackground
+Hint: A surface with a wetting liquid has in all points the same value of the potential, be-
+cause the geodetic height and pressure height will add up to the same constant value.
+• Stream lines (Lines with prescribed flux)
+(Neumann boundary condition)
+ =  0 Q = Q 0 (2.50)
+This boundary condition is also the natural boundary condition. All edges which do not
+have a boundary condition will have the impermeable boundary condition:
+ t · n = 0 (2.51)
+Moreover this type of boundary condition also covers the effect of ground water genera-
+tion,evenifthisconditionisnormallyreferredontoanareaorthevolumeandnotanedge
+or point.
+With these basic types we have some more variants available:
+• Free Surface
+The line bounding the flow region is not know a priori. The impermeable stream line
+is also a line with given pressure (p=0). The location of this boundary has to be found
+within an iterative process.
+• Seepage areas (Groundwater leaving the domain)
+Atthesurfaceofseepagewehaveatmosphericpressure. Thepointwherethefreesurface
+hits the seepage area has to be found iteratively.
+Figure2.4: Boundaryconditionsofunconfinedflow
+Although the formulation of the free surface with the natural boundary condition is mathemat-
+ically elegant and easy to implement, one should keep in mind, that very steep gradients will
+createskewedintersectionsandaninherentinstabilityoftheiterations. Insomecasesaswitch
+to an unsaturated flow model may become necessary.
+Last we have to special conditions simplifying other boundary conditions.
+• Wells
+Wells with a given positive outlet or a negative inlet may be handled like a given potential
+or seepage area, but the potential will be varied iteratively until the desired quantity of
+2-12 SOFiSTiK2023TheoreticalBackground |HYDRA
+discharge has been achieved.
+• Transition conditions
+These are the general case of a Robin-Problem and are needed for the leakage of a mud-
+ded soil of a river. The quantity which is entering or leaving the system is dependant on
+the potential difference of two points. This is the hydraulic analogue to the spring element
+in static analysis.
+2.17 Coordinate System
+HYDRA uses a three dimensional right handed coordinate system. For the correct evaluation
+of pressures it is however necessary to align one of the coordinate axis vertical. This is in
+general the z-axis, but may be selected via the gravity direction freely.
+2.18 Elements
+The total thermal or hydraulic system can be described with an assemblage of the following
+elementtypes. Eachelementhasaspecificflowproperty. Allelementsareconnectedtoeach
+other at nodes. The sum of all flux quantities at any node has to be equal to the external take
+in or take out, which establishes the equation system.
+2.18.1 Pipe Element
+The pipe element connects two nodes. It follows the laws of Prandtl-Colebrook resp. Darcy-
+Weisbach. It is suited for pipes and open or full flow channels. It is not usable for thermal
+analysis. PIPEelementsarederivedfromtrusselementswithasuitablesection(e.g. TUBE).
+2.18.2 Link Element
+TheLinkelementconnectstwonodesandfollowsalinearorquadraticflowruleortheradiation
+condition. The element is derived from spring elements in the database.
+Figure2.5: PipeandLinkelement
+2.18.3 Plane Element
+Theelementwiththreeorfournodesdescribesageneraltwisted(bilinear)element,wherethe
+streaming component perpendicular to the element plane is neglected. The volume used for
+the flow is described by the direction of the normal vector n and the thickness t extending in
+that direction. A special case of the quadrilaterals are surface elements. They are needed
+SOFiSTiK2023 2-13HYDRA|TheoreticalBackground
+Figure2.6: Quadrilateralwithconfined/unconfinedflow
+todescribeboundaryconditionsonareasofavolume,buthavenowownphysicalproperties.
+2.18.4 Axissymmetric Element
+Theaxissymmetricelementisaplanequadrilateral,whichispartofameridinalsectionwithin
+the Y-X or Z-X plane. The rotational axis is always the x-axis. For free surface problems, the
+x-axis is therefore required to be parallel to the gravity direction.
+2.18.5 Volume Element
+The volume element with 8 nodes is suited for general 3D problems.
+2.19 Boundary Conditions
+The natural boundary condition "streamline" will be establish on all boundaries without other
+specification.
+Other quantity conditions will be accounted for by surface integrals. The matching to the ele-
+ments will be obtained by the same firm functions of the elements:
+(cid:90)
+Q = q H  · N  dF (2.52)
+2.19.1 Free Surface
+Thefreesurfaceisaboundarywhichisapotentialboundaryaswellasastreamlineboundary.
+What is unknown is the position of it. If the line of vanishing pressure of a given potential
+distribution is used as the limit of the integration, the stream line will be fulfilled by the natural
+2-14 SOFiSTiK2023TheoreticalBackground |HYDRA
+Figure2.7: AxissymmetricElement
+Figure2.8: VolumeElement
+boundary condition. By repeating this process the desired location will be found by iteration.
+An error encountered quite often is to define faulty boundary conditions which let the total
+domainbecomedry. Thesolutionsareofcoursenotcorrect,butabeginnermayhaveproblems
+in finding that fact.
+2.19.2 Seepage Areas
+Forfreesurfaceproblemseverypointwithapotentiallessthanitsgeometricheightwillhavea
+negative pore pressure. Thus the potential has to be reduced to give a zero pressure. If then
+therewillbeapositive(entering)quantitythepotentialconditionhastobereleasedfullyunless
+during later iterations the pressure becomes positive again.
+2.19.3 Konvection and Radiation Boundaries
+This type of boundary condition requires contributions on both sides of the equation system.
+The radiation condition has to start with some linear estimate to be converted to the true
+SOFiSTiK2023 2-15HYDRA|TheoreticalBackground
+nonlinear boundary condition.
+2.20 Principal Program Organisation
+The total solution thus comprehends the following steps:
+• Thetotalsystemissubdividedinnodeandelements. Materialconstantswillbedefinedfor
+nodes or elements. Parts of the structure my be organised in groups and missing material
+values may be calculated with linear regression.
+• Withthegivenboundaryconditionstherewillbenowaniterativesteadyortransientanaly-
+sis. Each intermediate step follows the scheme:
+- Evaluate results of step i-1
+- Create new conductivity and capacity matrixes or
+corrective parts on the right hand side
+- Check the boundary conditions
+- Evaluate potentials at step i
+• At the end of any time step or the total analysis, the flow in each element and the total
+quantities for all nodes will be evaluated:
+Q = −A · H − C · dH/dt (2.53)
+The quantities will be summed up for any partial system (group). They will be integral
+results for any node and will fulfil the total balance exactly within the computers precision.
+For transient analysis however the differential equation si fulfilled at a time between the
+time stepping values, thus there might be small deviations.
+Thevelocitiesorfluxeswithintheelementsareobtainedbydifferentiationofthepotentials.
+Theyarethereforelesspreciseandwilljumpfromoneelementtoitsneighbour. That’swhy
+they are only evaluated at the centre of the element.
+2-16 SOFiSTiK2023InputDescription|HYDRA
+3 Input Description
+The program calculates problems of groundwater flow and thermal analysis for an existing
+structure in the database. The different variants are selected by the unit of the quantities with
+record SYST (e.g. Watt or l/min)
+3.1 Program Limits
+general
+Highest node number 9999999
+Number of nodes 9999999
+Number of materials 999
+Highest element number 9999999
+Number of elements 9999999
+Number of nodes per well 240
+3.2 Input Language
+Program HYDRA uses the CADINP input language. Description see the general manual
+SOFiSTiK: ’FEA / STRUCTURAL Installation and Basics’. The following records and items
+are defined:
+Record Items
+SYST TYPE SNO GDIR DIMT DIMQ
+CTRL OPT VAL
+GRP NO LEV LOAD T HC TF HP
+STEP N T TFAK THET HOPT TMIN
+PLC NO T HP DHPX DHPY DHPZ DHTF
+PU LCS LCU LCU0
+NVAL NO TYPE VAL VAL2 VAL3 VAL4 VAL5
+VAL6 COPY
+HMAT NO TYPE TEMP KXX KYY KZZ KXY
+KXZ KYZ S NSP A B C
+QMAX TK TITL
+LINK NO A B S EPS AREF
+PIPE NO L
+LC NO TITL
+BOUN TYPE VAL FROM TO INC F VP
+EPS NB DVX DVY DVZ
+Tablecontinuedonnextpage.
+SOFiSTiK2023 3-1HYDRA|InputDescription
+Record Items
+SURF TYPE VAL FROM TO INC F VP
+EPS NB
+FUNC T F NO TITL
+HIST TYPE FROM TO INC
+ECHO OPT VAL
+The records HEAD, END and PAGE are described in the general manual SOFiSTiK: ’FEA /
+STRUCTURAL Installation and Basics’.
+The description of the single records follows.
+3-2 SOFiSTiK2023InputDescription|HYDRA
+3.3 SYST – System Parameters
+Seealso: CTRL,STEP,GRP
+SYST
+Item Description Unit Default
+TYPE Type of System LT REST
+REST use existing main system
+SECT use subsystem of section GDIV
+explicit system definition
+SNO Section number − -
+GDIR Direction of gravity LT NEGZ
+POSX,POSY,POSZ positive axis
+NEGX,NEGY,NEGZ negative axis
+DIMT Unit of time in Input and Output LT SEC
+SEC Seconds
+MIN Minutes
+H Hours
+D Days
+DIMQ Unit of quantities in In-/Output LT L
+KG Megapascal
+L Liter
+M3 cubic meter
+W Watt·DIMT,
+Temperatures in Celsius
+KW Kilowatt·DIMT, Celsius
+MW Megawatt·DIMT, Celsius
+AW Watt·DIMT,
+Temperatures in Kelvin
+AKW Kilowatt·DIMT, Kelvin
+AMW Megawatt·DIMT, Kelvin
+The system for the analysis has to exist in the database.
+HYDRA can use also the FE-meshes of a specific section. This may be selected with SYST
+SECT nnn, where nnn is the number of that section. The FE-Systems of the sections are
+saved in a subdirectory and has to be created for general sections in AQUA via option CTRL
+STYP FEMX. HYDRA may create those meshes from scratch for simple rectangular T-Beam
+and circular or annular sections if not yet available. The mesh density is controlled by CTRL
+HDIV defined before the SYST record.
+The specification of unit W, kW or MW respective AW, AKW or AMW will select a thermal
+problem. The unit KG is used for a vapour diffusion analysis.
+The specification of a unit for the time will allow the usage of handsome units in input and
+SOFiSTiK2023 3-3HYDRA|InputDescription
+output for the large range of possible physical problems. Dependant are time values of the
+functions and time steps as well as all quantities given for boundary conditions or obtained as
+a result.
+The unit is only valid within the current run. It is not saved in the database and has to be
+specified for every single task.
+3-4 SOFiSTiK2023InputDescription|HYDRA
+3.4 CTRL – Control Values
+CTRL
+Item Description Unit Default
+OPT Designation of an Option LT -
+AFIX Treatment of multivalued systems
+SCON Type of capacity matrix
+FROB Free surface
+TURB Turbulent flow
+SOLV Equation solver
+KITE Iteration method
+GEN Precision of iteration
+MITE maximum number of Iterations
+ETOL Tolerance of Line-Search
+HDIF allowed change of Potential
+FMAX maximum acceleration factor
+FMUL maximum raise of acceleration factor
+LDIF Storage of difference values at LC + LDIF
+HLIM break off limit for potential
+VLIM break off limit for fluxes
+GAM Specific Weight of flow media
+KZ Kinematic viscosity
+TEFF Effective Age of concrete
+HDIV mesh density for sections
+VAL Value of the Option ∗ !
+V2 second value for some options ∗ -
+V3 third value for some options ∗ -
+The options have the following options:
+SOLV Selection of solver
+3 = serial
+4 = PARDISO parallel
+GAM Spezific Weight of flow media kN/m3 10
+KZ Kinematic Viscosity sec/cm2 76.3
+(for pipe elements only)
+FROB Free surface / unconfined flow - 0
+0 = do not account for
+1 = take into account
+2 = incl. velocity height
+SOFiSTiK2023 3-5HYDRA|InputDescription
+TURB Turbulent flow - 0
+0 = do not account for
+1 = take into account (e.g. PIPE-Elements)
+SCON Type of capacity matrices - 1
+1 = Diagonal matrices
+2 = consistent matrices
+(require a minimum size of the time step)
+LDIF Save the difference estate of the result - 0
+at LC + LDIF if different from zero
+KITE Bitpattern of iteration method - 1
+0 = constant stiffness
+1 = Tangential stiffness
+2 = Crisfield-Quasi-Newton
+4 = activate Linesearch
+8 = BFGS-method
+KITE = 8·(max number of updates)
+GEN Precision of iteration resp. K m 0.01
+MITE Maximum number of iterations - 20
+FMAX Maximum value for control mechanism - *
+Default: 2.0 for KITE 1
+10.0 for KITE 0
+1000.0 for KITE >1
+FMUL Maximum Increase of control mechanism - *
+Default: 1.1 for KITE 1
+2.0 for KITE 0
+1000.0 for KITE >1
+HDIF Allowed change of Potential/Temperature m -
+(limiting the Linesearch) resp. K
+HLIM Break off tolerance for Potential/Temperature m -
+The analysis will be stopped immediately if resp.K
+the values of a new estate differ by more than
+HTOL from the primary estate.
+VLIM Break off tolerance for fluxes m/sec -
+The analysis will be stopped immediately if resp.W
+the values of a new estate differ by more than
+VTOL from the primary estate..
+3-6 SOFiSTiK2023InputDescription|HYDRA
+TEFF Method to calculate the effective age 2
+of concrete
+0 no evaluation
+1 Definition according to Saul
+2 Definition according to Freiesleben
+W2 = A0 [33500] ; W3 = A1 [1470]
+3 Definition according to Jonasson
+W2 = A2 [5300]
+HDIV mesh density for FE-sections SREC/SCIR m -
+and a progression factor V2 - 1.1
+Remarks to the iteration method:
+Themethodoftangentstiffnessisrecommendedingeneralforfreesurfaceflowasthechange
+of the boundary conditions require a new system matrix quite often. For larger systems which
+do not change so much, the quasi Newton-Methods will be favourable instead.
+Toenhancethestabilityandspeedoftheiterationmethodstherearemultiplefacilitiestodamp
+oscillating iterations or to extrapolate for monotone convergence. The extrapolation is limited
+by a maximum factor of FMAX and a maximum increase of the factor by FMUL. Values of
+FMAX < 1.0 will introduce a damping. FMUL 0.0 will deactivate the increase.
+SOFiSTiK2023 3-7HYDRA|InputDescription
+3.5 STEP – Transient Analysis
+Seealso: CTRL
+STEP
+Item Description Unit Default
+N Number of time steps − 0
+T Time value of first step or total Time DMT 1
+TFAK Factor for time steps − 1
+THET Coefficient of time integration (0.5≤Θ<2) − 0.7
+HOPT Optimal change of potential m/K -
+TMIN smallest allowed time step for HOPT DMT 0.001T
+A transient analysis will be initiated by the specification of N. There are several possibilities to
+subdivide the analysis time.
+• constant time step
+Definition of N and T defines the size of the time step.
+• geometric progression with fixed values
+The size of the (n+1)th time step is established by multiplication of the nth time step with
+TFAC. For larger numbers of time steps it is advisable to check the given values with a
+pocket calculator, as the time steps can grow rather high if TFAC is chosen improper.
+• automatic time step selection
+starting from an optimal value HOPT for the change of the potential within every time step,
+TFACdefaultsto1.4. WheneverthechangeofthepotentialexceedsTFAC·HOPT,thetime
+step will be reduced and the step repeated. Is the change however less than HOPT/TFAC,
+the next time step will be enlarged by factor TFAC.
+On the other side one can define the total time of the analysis explicit or via the time steps.
+• With an input of N > 1 , N is the number of time steps. The total time is the sum of all time
+steps.
+• As an alternate definition T may be the total analysis time if N is defined less than 1.0. N
+is than the factor for the first time step. (N 0.001 yields a first time step of one/thousand of
+the total time T.)
+3-8 SOFiSTiK2023InputDescription|HYDRA
+3.6 PLC – Primary Load Case
+Seealso: CTRL
+PLC
+Item Description Unit Default
+NO Number of primary load case − -
+T Time value at start of this analysis DMT *
+HP Constant value of primary Potential morK 0.
+DHPX Global gradient of primary estate m/m 0.
+DHPY or 0.
+DHPZ K/m 0.
+DHTF Factor for time derivatives − 0.0
+PU Minimum pore water pressure m -9999.0
+for the transition to free surface flow
+LCS Structural load case for stresses − -
+LCU Structural load cases for pore water pressures de- − -
+rived form LCU-LCU0
+LCU0 − -
+Start of any transient analysis or the deviation to a given result case will be a primary estate
+withnumberNRattimevalueT.DefaultforTisofcoursethelasttimevaluestoredatNO.The
+T-value is needed for correct interpolation within the time functions and identification of results
+especially for graphics required.
+Additional linear varying potentials are also possible. For each node we will have an extra
+component of the primary estate by:
+HP = HP + DHPX · X + DHPY ·+Y + DHPZ ·+Z
+   
+Eventually it is also possible to add a primary value for every group via GRP. Nodes blonging
+to multiple groups will get the mean value of all defined values of all groups connecting to that
+node.
+For transient analysis the time derivative of the last estate may facilitate the startup of the
+current analysis. If desired a specification of DTHF 1.0 will be required. The time derivative
+itself will be calculated from the difference of the last two values and the involved time step.
+As it is not always that this condition is valid, the default for DTHF has to be 0.0. PU may be
+neededifforthetransitionfromtheprimaryestatetotheinitialstep,significantchangesforthe
+boundary conditions are encountered.
+If for item T is given the literal CONT, all potential values of the primary estate - even those
+from earlier time steps - will be copied to the current load case. This creates more data in the
+databasebutisconvenientforthegraphicalpostprocessing. Resultsoftheelementshowever
+can not be processed this way.
+SOFiSTiK2023 3-9HYDRA|InputDescription
+With LCS it is possible to specify a load case the stresses of which are used to modify the
+transmissivities according the given definitions (HMAT FVOL/FSIG).
+A structural load case can be input with LCU/LCU0. The volumetric stress of this load
+case is then used as initial conditions for the pore water pressure of a consolidation (H=h-
+1/3(Δsigx+Δsigy+Δsigz)/gam).
+Forveryspecialcasesitispossibletomodifyresultsinthedatabase. TherecordCOPY,allows
+to combine several transient results or to shift and scale pressure values.
+3.7 COPY – Modification of Results
+COPY
+Item Description Unit Default
+FROM First number of a primary load case − -
+TO Last number of a primary load case − FROM
+TARG Resulting load case number − FROM
+PCOR Shift of pressure values by ∗ 0.0
+PREF Divide pressure values by ∗ 1.0
+3-10 SOFiSTiK2023InputDescription|HYDRA
+3.8 GRP – Selection of Groups
+Seealso: CTRL,STEP
+GRP
+Item Description Unit Default
+NO Group number Lt/− *
+Default: * all Groups
+LEV Level of usage LT FULL
+OFF do not use this group
+YES use, but suppress printout
+FULL use and print results
+LOAD Save loading in the database LT NEIN
+NONE do not save anything
+LIFT Buoyancy
+STRE Streaming pressure
+PRES Buoyancy + Streaming
+TEMP Temperature difference
+ATEM absolute temperature
+HP Value of the potential in primary estate m|◦ -
+(see PLC for more details)
+HC Size of the capillar suction zone m 0
+TF Reduction factor for permeability within − 0.001
+the dry region above the free surface
+The total structure may be organized within groups. The group number will be multiplied with
+the group divisor (record SYST GDIV) and added to the element number during creation after
+the GRP-record. Later analysis steps may then deactivate parts of the system by selecting
+LEV OFF or selecting only other groups.
+HYDRA may save as a result loading in the database to be used by TALPA or ASE. A pure
+temperaturefileddoesnotneedtobesavedasloadingasthoseprogramshavebetteroptions
+to use the temperature field directly.
+BUOY Allelementswithintheactiveflowregion(=notabovethefreesurface)willreceive
+a buoyancy loading.
+P = +γ · grd Z
+
+STRE Allelementswithintheactiveflowregion(=notabovethefreesurface)willreceive
+a streaming pressure loading..
+P = −γ · grd H
+
+PRES Allelementswithintheactiveflowregion(=notabovethefreesurface)willreceive
+SOFiSTiK2023 3-11HYDRA|InputDescription
+a buoyancy + streaming pressure loading..
+P = −γ · grd (H−Z)
+
+TEMP All elements will be loaded with a uniform mean temperature.
+Forfreesurfaceproblemsthenonactiveflowregionwillkeepasmallconductivityfornumerical
+reasons, obtained by multiplying the permeability with a factor TF. The definition of HC as
+the height of the suction region will be a simple tool for partial saturated soils with a smooth
+transition between those two regions.
+3-12 SOFiSTiK2023InputDescription|HYDRA
+3.9 NVAL – Material Values at Nodes
+Seealso: HMAT
+NVAL
+Item Description Unit Default
+NO Node number (0=all nodes) − !
+TYPE Type of value (cmp. table) LT !
+VAL Value ∗ !
+VAL2 Additional values if required ∗ -
+VAL3 ∗ -
+VAL4 ∗ -
+VAL5 ∗ -
+VAL6 ∗ -
+COPY Reference case from database − -
+Linear Material values may be specified either in a separate material table or at any node via
+this record NVAL to be used by the connecting elements.
+As TYPE we have the following possibilities (cmp record HMAT):
+K Isotropic permeability for law of Darcy m/sec
+resp. isotrope thermal conductivity W/Km
+KXYZ Anisotropic permeability tensor m/sec
+resp. anisotrope thermal conductivity W/Km
+items VAL-VAL6 are the values
+k, kyy, kzz, ky, kz, kyz
+S Specific Capacity/Storage coefficient 1/m
+resp. J/Km3
+NSP effective i.e. usable porosity -
+With COPY any result case within the database may be used to set the material values. Items
+VAL to VAL6 are then factors. This option is intended for those cases where an solution of the
+identification problem has been run and the results should be converted to material values.
+SOFiSTiK2023 3-13HYDRA|InputDescription
+3.10 HMAT – Material Constants HYDRA
+HMAT
+Item Description Unit Default
+NO Material number − !
+TYPE Type of material law LT *
+DARC Seepage (Darcy, linear)
+FORC Seepage (Forchheimer, nonlin.)
+MISS Seepage (Missbach, nonlin.)
+FLOW General diffusion (e.g. vapor)
+FOUR Heatflow (Fourier, linear)
+Hydration of concrete:
+JONA Jonasson model
+HSCM ”Shrinkage-Core” model
+WESC Danish model acc. to Wesche
+TEMP Temperature or pore pressure level ∗ 0
+KXX Isotropic permeability or conductivity ∗ 0.
+KYY or anisotropic permeability/conductivity ∗ KXX
+KZZ or parameters A,B (Forchheimer), ∗ KXX
+KXY or parameters C,M (Missbach) ∗ 0.
+KXZ ∗ 0.
+KYZ ∗ 0.
+S Specific Capacity/Storage coefficient ∗ 0.
+NSP effective porosity or moisture grade − 0.
+Parameters for Hydration
+A Constant a for JONA / HSCM / WESC − *
+B Constant b for JONA / WESC − *
+C Constant c for WESC − *
+QMAX Maximum heat quantity for hydration kJ/m3 0.
+TK Reference time h 15
+TITL Designation of material Lt32 -
+HMAT allows to specify three individual sets of constants for three tasks diffusion, seepage
+and heat flow for a material. Material properties have to be selected according to literature or
+experimental data. But some rough estimates (without warranty) are given here.
+For any material there might be up to 15 different sets of materials for different temperatures
+[ ◦ Celsius] or pore water pressures [ kPa = kN/m2] . With a nonlinear analysis the material
+values will then be interpolated between those values.
+3-14 SOFiSTiK2023InputDescription|HYDRA
+Large jumps (e.g. by more than 10 times) of the material values K and S in adjacent regions
+can lead to numerical problems in a non-linear calculation, i.e. to a poor iteration process.
+These problems can be solved by material transition regions, smaller and more iteration steps
+and/or a coarser iteration tolerance.
+3.10.1 Hydraulic Parameters
+For seepage (DARC,FORC,MISS) the unit for conductivity (KXX, KYY, KZZ) is [m/sec], for
+storage coefficient (S) [m3/m]. TEMP is the pressure in [kPa].
+e.g. Hydraulic permeability (acc. Dyck, Peschke):
+Type of soil k [ m/sec]
+Sandy gravel 3·10−3 ... 5·10−4
+Gravelly sand 1·10−3 ... 2·10−4
+Medium sand 4·10−4 ... 1·10−4
+Silty sand 2·10−4 ... 1·10−5
+Sandy silt 5·10−5 ... 1·10−6
+Silty clay 5·10−6 ... 1·10−8
+Clay ≈ 10−8
+Positivepressuresrepresentsaturatedflowregionswhilenegativevaluesdescribeunsaturated
+soils. Conductivities and Capacities will be interpolated. Free surface problems also use a
+variation of the porosity to account for the effective capacity of the free surface.
+Material values may be defined isotropic or anisotropic depending on a stress state from the
+database. This is performed by additional data given with the same material number and the
+types FVOL, FSIN or FSIT. The difference between FSIN and FSIT is given by the fact that
+FSIN modifies the values across the crack, while FSIT does this perpendicular to the crack. It
+is recommended to use a linear stress field for that purpose and not a plasticity field.
+WithinHYDRAtheuserhasthepossibilitytodefinematerialpropertiesfortheelementseither
+via a given material number (engineering constructions) or via the nodes (element material
+number = 0), especially for ground water models. Both methods may be used together within
+the same system.
+For a general diffusion according to potential theory, the unit for conductivity (KXX, KYY, KZZ)
+is [sec/m], for storage coefficient (S) [kg/m3/Pa]=[sec2/m].
+3.10.2 Heat Conduction
+Heat conduction according to the equations of Forier (FOUR). The unit for conductivity (KXX,
+KYY, KZZ) is [W/K/m], for storage coefficient (S) specific capacity*Density [J/Km3]. TEMP is
+the temperature in degree Celsius or Kelvin, which may be selected with an explicit unit in the
+table headder.
+e.g.:
+SOFiSTiK2023 3-15HYDRA|InputDescription
+Material Conductivity Capacity Elongation Emission
+λ [W/Km] c [J/kgK] coeff. [-] rate ε[-]
+P.concrete 0.14 ... 1.20 1050
+LW concrete 0.70 ... 1.20 1050
+concrete 1.60 ... 2.10 1050 1.0·10−5
+brickwork 0.50 ... 1.30 950 0.93
+insulation 0.020 ... 0.090 850 -
+steel 50 850 1.2·10−5 0.06 ...0.67
+copper 380 850 1.6·10−5 0.04 ...0.78
+aluminum 200 850 2.4·10−5 0.05 ...0.30
+timber 0.13 ... 0.20 2500 0.18·10−3
+Water 0.58 4187
+(S = c·ρ)
+If the materials have been defined with CONC, STEE, TIMB, BRIC or TYPE at MATE, all
+constants will be preset or calculated for FOUR according to EN 12524 or DIN EN ISO 10456
+and the design codes EN 199x-1-2. For concrete and timber a definition of NSP will select the
+moisture ratio.
+With explicit definition of a TEMP-value it is possible to create and modify tabulated values.
+The default is to use the formulas defined in the Eurocode. The thermal conductivity of the
+4500
+1.800
+4000
+1.600
+3500
+1.400
+3000
+1.200
+1.000 2500 S[kJ/m3/K]
+0.800 2000
+K[W/m/k]
+0.600 1500
+0.400 1000
+0.200 500
+0.00 [◦C] 0.00 [◦C]
+00.001 00.002 00.003 00.004 00.005 00.006 00.007 00.008 00.009 00.0001 00.0011 00.0021 00.001 00.002 00.003 00.004 00.005 00.006 00.007 00.008 00.009 00.0001 00.0011 00.0021
+00.0 00.0
+Figure3.1: ConductivityandCapacityofConcrete
+concrete is given by an upper (A=1.0) and a lower (A=0.0) limit. The special effect for S is the
+evaporation of pore water.
+3-16 SOFiSTiK2023InputDescription|HYDRA
+.0 50.00 18000 18000
+.0 45.00
+16000 16000
+.0 40.00
+14000 14000
+.0 35.00
+12000 12000
+.0 30.00 K[W/m/k]
+k [W/m/K] 10000 10000
+.0 25.00
+.0 20.00 8000 8000
+.0 15.00 6000 6000 S[kJ/m3/K] S [kJ
+.0 10.00 4000 4000
+00 5.00 2000 2000
+.0 0.00 [◦C] 0.00 0.0 [◦C]
+[C] [C] 00.0 00.001 00.00 000.000.0301 000.000.0503 000.000.0604 000.000.0705 000.000.0806 000.000.0907 000.000.00018 000.000.01109 000.000.201001 000.00.002 000.000.0103 000.000.0305 000.000.0406 000.000.0507 000.000.0709 000.000.001021 00.0011 00.0021
+00 00.002 00.0011 00.0021 00.0 00.001 00.004 00.008 00.0001 00.0011
+2.0
+Figure3.2: ConductivityandCapacityofStructuralSteel
+1.50 7.00
+1.40 6.50
+1.30 6.00
+1.20 K[W/m/k] 5.50
+1.10 5.00
+1.00
+4.50
+0.90
+4.00
+0.80
+0.70 3.50
+0.60 3.00
+0.50 2.50
+0.40 2.00
+0.30 1.50
+0.20 1.00
+0.10 0.50 S[kJ/m3/K]
+[◦C] [◦C]
+00.0 00.001 00.002 00.003 00.004 00.005 00.006 00.007 00.008 00.009 00.0001 00.0011 00.0021 00.0 00.001 00.002 00.003 00.004 00.005 00.006 00.007 00.008 00.009 00.0001 00.0011 00.0021
+Figure3.3: ConductivityandCapacityofTimber
+SOFiSTiK2023 3-17HYDRA|InputDescription
+3.10.3 Hydration of Concrete
+For the hydration of concrete it is required to know the maximum heat release QMAX, a func-
+tionfortheeffectiveageofconcrete(seeHYDRACTRLTEFF)andaformulaforthehydration
+degreeα governingallotherproperties. Therearenumerouspossibilitieswithdifferentparam-
+eters. All of them have in common:
+TEMP Eine Referenztemperatur [◦C] 10
+QMAX The maximum heat quantity [kJ/m3] !
+TK The reference time τ k [h] 15
+S The exponent for maturity function acc. Saul 1.00
+TYPE JONA
+Function of Jonasson, an extension to the Byfors definition:
+(cid:18) (cid:20) (cid:18) τ (cid:19)(cid:21)(cid:19)
+
+α=ep b n 1+ (3.1)
+τ
+k
+Examples of those constants a,b and τ k can be found in Appendix A of Heft 512 of the Ger-
+man DAfStB, printed with the input record HMAT but the general rule is that you need tests!
+Unfortunately there are publications with exchanged parameters a and b.
+A,B Parameters a and b [-[ -1.15,-1.00
+The values have to be determined from experiments, values for the total heat in the literature
+are often defined in [ kJ/kg] . However the following values might give a rough idea:
+Q-max [kJ/m3] a b τ k [h]
+B25 (Heft 512 DAfStB) 167700 -0.925 -0.42 41.82
+B35WU (Heft 512 DAfStB) 135750 -1.185 -1.00 17.53
+B35 (Heft 512 DAfStB) 105940 -1.605 -1.00 37.46
+3-18 SOFiSTiK2023InputDescription|HYDRA
+TYPE HSCM
+”Shrinkage-Core” model:
+ · (τ −τ )
+ k
+α = τ  > τ k (3.2)
+1+ · (τ −τ )
+ k
+τ k is a period with very low chemical reaction, named d in the original formula. Values for a
+mass concrete are given by Dussinger:
+τ k =2.88[h] =0.029[1/h] (3.3)
+TYPE WESC
+Danish model according to Wesche:
+(cid:130) (cid:18)τ (cid:19)b(cid:140)
+k
+α = ep − (3.4)
+τ
+
+ƒ (t) 
+cc ep(cid:128) t−0.55(cid:138) 0
+β = =  · c · c = c 1 · (3.5)
+ƒ (28d) z
+cc
+The water cement ratio w0/z has to be incorporated in the input value c. Please note that
+parameter a is used in the original with two different meanings. The following parameters for
+the Wesche model can be found in the literature.
+Q-max [kJ/kg] a c1
+w0/z 0.35 0.55 0.75
+Z 55 / Z 45 F 380 1.10 1.15 1.20 -1.50
+Z 45 L / Z 35 F 295 1.20 1.30 1.40 -2.80
+Z 35 L 216 1.30 1.50 1.70 -4.40
+Z 25 1.50 1.90 2.30 -7.10
+Values for a mass concrete (Z 35L) are given by Dussinger:
+τ =24.87[h]
+k
+b=0.84[−]
+ 0/z=0.68[−] (3.6)
+=1.63[−]
+c1=−4.4[−] ⇒ c=−4.4·0.68=−2.99
+Hint: IfthematurityfunctionaccordingtoSaulisused,theexponentstheremightbespecified
+with item S.
+SOFiSTiK2023 3-19HYDRA|InputDescription
+3.11 LINK – Connecting Element
+Seealso: PIPE
+LINK
+Item Description Unit Default
+NO Element number or secondary group − !
+A Linear loss coefficient ∗ 0.0
+B Quadratic loss coefficient ∗ 0.0
+S Storage coefficient ∗ 0.0
+EPS Emission ratios ∗ 0.0
+Figure3.4: Link-Element
+With this record spring elements from the data base will become effective for the analysis.
+These elements can be redefined at any time which is especially useful for systems where
+temperature and seepage analysis has to be performed. The link element allows a rather
+general coupling within hydraulic or thermal analysis problems. The difference of the potential
+or temperature is given by the following equation:
+Q Q 2
+dh = A · + B ·
+A A
+reƒ reƒ
+For example:
+L dh
+dh = · Q ⇐⇒ Q = A · K ·
+reƒ
+K · A L
+reƒ
+for a prismatic body with area A reƒ, the conductivity K and the length L. The term B can be
+used only with a nonlinear analysis.
+MoreoveraradiationconditionaccordingtothelawofBoltzmannmaybeapplied. EPSisthan
+theemissionratiooftheblackbody. Forthecorrectdefinitionoftheboundaryconditionsitmust
+then be distinguished between absolute or relative temperatures in degree Kelvin or Celsius
+and the correct literal selected at record SYST . Of course this effect is also nonlinear.
+The unit of the constants is depending on the problem type:
+3-20 SOFiSTiK2023InputDescription|HYDRA
+Hydraulic Conduction
+A m per m/sec K ·m2 /W
+B m per m/sec not reasonable
+S 1 = m3/m/m2 J/m2/K
+EPS not reasonable 1
+SOFiSTiK2023 3-21HYDRA|InputDescription
+3.12 PIPE – Pipe or Channel Elements
+Seealso: LINK,SECT
+PIPE
+Item Description Unit Default
+NO Element number or secondary group − !
+L Effectivelengthofpipeorchannelifnotequalthedis- m *
+tance between nodes
+Hydraulic conductive elements like pipes or culverts are introduced by truss elements. As a
+section of a pipe the simplest case is defined with a TUBE where the nominal width and the
+roughnessdefinedbeMEXTisused. Themoregeneralcaseofanopenorclosedsectionmay
+be described with a polygon section.
+Figure3.5: Pipeandchannelelement
+ThepipeelementallowstheanalysisoffullflowgovernedbytheruleofPrandtl-Colebrookand
+ofopenchannelswiththeDarcy-Weissbachformulas. ThestoragecoefficientSwillbederived
+from the compressibility of the fluid and the elastic properties of the pipe material or from the
+cuurent width of the free surface (flow width).
+An analysis requires the setting of TURB=1 and KITE=1 (Record CTRL) in general.
+A section with VERT-elements is composed from any number of polygon segments collected
+within partial sections. Each edge of the polygons may have a different roughness assigned
+with EXP and MEXT.
+Figure3.6: Sectionofanopenchannel
+3-22 SOFiSTiK2023InputDescription|HYDRA
+3.13 LC – Analysis Case
+Seealso: BOUN,SURF,FUNC
+LC
+Item Description Unit Default
+NO Number of the case − 1
+TITL Designation of the case Lt32 -
+All results of an analysis are saved in the data base with a number LC (loading case). For
+every input block only one LC-record is allowed.
+It is also possible to save differences to the initial estate as a separate loading case. This
+will be done be defining with record PLC the initial estate and with CTRL LDIF an positive or
+negative offset of the load case number.
+SOFiSTiK2023 3-23HYDRA|InputDescription
+3.14 BOUN – Boundary Conditions
+Seealso: LC,SURF,FUNC
+BOUN
+Item Description Unit Default
+TYPE Type of boundary condition LT QA
+VAL Value of boundary condition ∗ !
+FROM Starting number −/LT 1
+TO End number − FROM
+INC Increment / Selection type −/LT 1
+F Function number for transient conditions − 0
+VP Additional parameter
+EPS Emission ratio (type SPEC only) − 0.0
+NB Balance number m/K 0.0
+DVX Global gradient of boundary value ∗/m 0.0
+DVY e.g. for imbedding in a given groundwater flow ∗/m 0.0
+DVZ ∗/m 0.0
+Inputofalinearorgeometricallyindependentboundaryconditiononasequenceofnodes. The
+nodes may be selected either by their numbers with FROM, TO and an numerical increment
+INC,orwecanrefertoanEDGEofnodesorforHagroupofQUADsdefinedinthedatabase:
+BOUN H value 11 111 10 $ nodes 11,21,...,111
+BOUN H value 11 12 FIT $ all nodes of EDGE 11 to 12
+BOUN H value EDGE 100 $ all nodes on EDGE 100
+BOUN H value EDGE 'UP' $ all nodes on EDGE 'UP'
+BOUN H value QGRP 11 $ all nodes connected to QUADs of group ll
+BOUN H value QGRP 'OUT' $ all nodes connected to QUADs of group "OUT"
+There are variants possible which design to any node the same value or which integrate the
+values between the adjacent nodes.
+Overview to the implemented boundary conditions BOUN
+H Potential (e.g. Piezometric Head m or temperature K)
+All nodes will receive the Potential VAL.
+HP All nodes will receive the potential from the initial estate
+(cmp PLC) augmented by the constant value VAL.
+The flow will always be from the higher to the lower potential value. The sign of the potential
+is for free surface problems always to the top positive. For those problems the potential value
+will be only applied if the resulting pressure is positive. If this is not true, the potential defined
+by pressure zero will be set and maintained as long as the resulting quantities are negative
+3-24 SOFiSTiK2023InputDescription|HYDRA
+(outflow). Ifthegravitydirectionisinapositivedirection(GDIRPOSZ),wehaveforapressure
+free seepage boundary therefore H = -z.
+In special cases e.g. for the specification of water levels within a BRIC element edge this
+behaviour may be not appropriate. In those cases the user may act as follows:
+• If NB is negative or zero, the check will be completely disabled, i.e. the potential is always
+set without checking the quantities.
+• VP describes the possible suction (negative pore pressure) at the node. The potential will
+not be corrected until this values has been reached. For the type HP this value is preset to
+-9999 which will always apply the value of the primary estate. .
+The resulting quantities at the nodes applied with the H, HP or SPEC boundary condition will
+be evaluated separately for all values of NB and may be saved with the HIST record to the
+database for later display.
+Itisalsopossibletodefineglobalgradientsfortheboundaryvalue. Foranyselectednode,the
+value at that point is calculated via:
+VAL  = VAL + DVX · X  + DVY · Y  + DVZ · Z  (3.7)
+Quantity boundary conditions:
+QA Inflow (VAL positive) or Outflow (VAL negative)
+of a defined quantity per unit time (cmp. record SYST).
+I Internal inflow or outflow
+As QA, but in the balance the quantities will be on the internal account.
+QP All nodes will receive the flow quantity of the primary estate.
+QAD as QA, but the quantities are referred onto the length between the nodes (e.g.
+Liter/m per defined time, cmp. record SYST)
+QID similar to QAD for internal quantities
+NB is for QI and QID the number of a group or partial region where the quantity
+should be added to the internal account.
+WELL well
+Forallselectednodesawaterlevelwillbechoseniterativelyinsuchawaythatthe
+sum of all quantities is equal to VAL as outflow (positive) or inflow (negative). The
+well itself may apply a suction up to the value of VP [m] (negative pressure of a
+vakua well). The number of nodes per well is restricted to 240.
+SPEC Mixed or convective boundary condition
+Thequantityofthenodeisdependantontheactualpotentialvalue. Itiscalculated
+as:
+Q = −(H − VP) · VAL + EPS · 5.67E−8 · (H4 − VP4)
+There VP is the potential value of the environment in [m] or [K] . VAL defines
+theconductivityasdensityperpotential(e.g.. l/sec/morW/KorkW/K)perrunning
+meter of the boundary. If H is larger than the environment VP, we will have an
+outflow.
+SOFiSTiK2023 3-25HYDRA|InputDescription
+3.14.1 Thermal Conductivity and Emissivity.
+For the thermal conductivity the following values might be used (DIN 4108 Teil 4, EC 1 part
+2):
+Conductivity α
+[W/m2K]
+Inner wall 7.8
+Outer side of ceilings and walls 25.0
+Protected outer side of ceilings and walls 12.5
+Floors, Heat transfer downwards 5.8
+Floors, Heat transfer upwards 10.0
+Fire case, hot side 25.0
+Fire case, cool side 5.0
+The radiation/emission boundary has to distinguish between absolute temperatures (Kelvin)
+andordinarytemperatures(Celsius)(cmp. recordSYSTDIMQ).Thisconditionisnotavailable
+for singular nodes, please use the LINK-element instead.
+The emissivity EPS = ε ƒ· ε m contains the factors of the source ε ƒ(e.g. 0.8) and of the ma-
+terial surface ε m(e.g. 0.7). (cmp. EC1-2, Abs. 4.2.1) A total value of 0.5 to 0.7 is therefore
+quite common. However Kordina has stated, that for a numerical fire analysis of a standard
+fire curve (ETK of DIN 4102) a resulting factor of 0.4 yields much more reasonable results.
+(Betonkalender, 2003, page 180). Further one may find in the literature:
+Material constants from physical table Emission degree ε
+Steel plate, rolled 0.67
+Steel plate, coated with nickel 0.06
+Steel plate, galvanized 0.25
+Iron, polished 0.29
+Cast Iron, rough 0.94
+Aluminium, rolled 0.081
+Aluminium, polished 0.051
+Aluminium, Sand-mold 0.30
+Copper, polished 0.04
+Copper, black 0.78
+Brickwork, plastered 0.93
+Concrete 0.90
+Sand 0.76
+Fire clay brick 0.75
+Water 0.67
+Soot 0.95
+3-26 SOFiSTiK2023InputDescription|HYDRA
+3.15 SURF – Surface and Volume Boundary Conditions
+Seealso: LC,BOUN,FUNC
+SURF
+Item Description Unit Default
+TYPE Type of boundary condition LT !
+VAL Value of boundary condition ∗ !
+FROM Starting element number −/LT 1
+TO End element number − FROM
+INC Increment of element numbers − 1
+F Function number for transient condition − 0
+VP Additional parameter m/K 0.0
+EPS Emission ratio (type SPEC only) − 0.0
+NB Balance number − 1
+Figure3.7: Surfaceboundarycondition
+The record SURF acts as an area boundary condition on all quadrilateral elements. You may
+address standard QUAD-elements wit a positive number or surface elements also with a neg-
+ative number. The conditions QAV and QIV however act always on volume elements.
+For FROM teh definition of the literal GRP is possible, then TO ist the number of a primary
+group or the identifier of a secondary group.
+Overview to the implemented boundary conditions
+QAS Inflow or Outflow referenced on a surface
+For all QUAD-elements within the selected definition the flux of VAL in
+(quantityunits/m2) per defined time unit (cmp. record SYST) will be applied.
+VAL positive = Inflow to the system
+VAL negative = Outflow from the system
+QIS internal inflow or outflow
+As QAS, but the quantities will be introduced into the balance as internal. NB is for
+SOFiSTiK2023 3-27HYDRA|InputDescription
+QI and QID the number of a group or partial region where the quantity should be
+added to the internal account.
+QAV inflow or outflow referenced to the volume
+For all volume elements within the selected region the quantity of VAL in (l/m3) per
+defined time unit (cmp. record SYST) will be applied.
+QIV internal inflow or outflow referenced to the volume
+SPEC Mixed or convective boundary condition
+The quantity of the node is dependant on the actual potential value. It is calculated
+as:
+Q = −(H − VP) · VAL + EPS · 5.67E−8 · (H4 − VP4)
+ThereVPisthepotentialvalueoftheenvironmentin [ m] or [ K] . VALdefinesthe
+density per potential (e.g.. l/sec/m or W/K per area of the boundary. If H is larger
+than the environment VP, we will have an outflow.
+The parameters of the SPEC-Condition are explained in detail at the BOUN record descrip-
+tion.
+3-28 SOFiSTiK2023InputDescription|HYDRA
+3.16 FUNC – Transient Conditions
+Seealso: LC,BOUN,SURF
+FUNC
+Item Description Unit Default
+T Time value ∗ !
+F Function value or predefined type −/LT !
+ISO Standard fire curve
+EXT External fire curve
+CARB Hydro carbon-fire curve
+NO Number of the time function − 1
+TITL Title of this function Lt32 -
+The record FUNC describes a boundary condition which changes in time during a transient
+analysis. ThetimevaluesareexpectedintheunitspecifiedatrecordSYST.Withoutspecifica-
+tionofFUNCtheboundaryconditionwillbetreatedasconstantduringtime. Withthedefinition
+the function values of BOUN or SURF will be multiplied with the function value at any given
+time value. For type SPEC only the VP-value will be multiplied. In that case it is advisable to
+set VP to 1.0 and to describe the potential values with FUNC.
+A function is composed by at least two pairs of values with the same function number. The
+functions are expected to be sorted by time. The function value before the first and after the
+last time value is assumed to be zero. Instead of discrete functions a literal may be used to
+Figure3.8: Transientfunction
+select predefined curves as specified in EC1-2 chapter 4.2. for design fires:
+• ISO-fire curve accord. to 4.2.2. (identical to ETK of DIN 4102-2)
+T = 20 + 345og 10(8t + 1) (3.8)
+• External fire curve accord. to 4.2.3.
+SOFiSTiK2023 3-29HYDRA|InputDescription
+T = 20 + 660 · (1 − 0.687 · e−0.32t − 0.313 · e−3.8t) (3.9)
+• Hydrocarbon fire curve accord. to 4.2.4.
+T = 20 + 1080 · (1 − 0.325 · e−0.167t − 0.675 · e−2.5t) (3.10)
+1100 HYDRO−CARBON
+1050 ISO/ETK
+1000
+950
+900
+850
+800
+750
+700
+EXTERN
+650
+600
+550
+500
+450
+400
+350
+300
+250
+200
+150
+100
+50.0 00..00 5.00 10.0 15.0 20.0 25.0 30.0 35.0 40.0 45.0 50.0 55.0 60.0 65.0 70.0 75.0 80.0 85.0 90.0 95.0 100 105 110 115 120
+[min]
+Figure3.9: DesignFires
+3-30 SOFiSTiK2023InputDescription|HYDRA
+3.17 HIST – Transient Results
+HIST
+Item Description Unit Default
+TYPE Type of result LT *
+H Potential at node
+T Temperature at node
+Q Quantity at node
+QB Total quantity of balance-No
+PIPE Flux in elements of type
+PIPE / LINK
+QUAD Flux in elements of type
+QUAD
+BRIC Flux in elements of type
+BRIC
+REST Resume selection of
+Primary estate
+FROM First number − -
+TO Last number − FROM
+INC Increment − 1
+Fortransientanalysisthereareeitherthemethodtosavethecompleteresultsforanytimestep
+atadifferentloadcasenumberortoselectsomeimportantresultslikepotentials,temperature
+or flux quantities of elements or groups (max 1024) and to save their development in time in a
+compact form in the database. DYNR will then be used to show these diagrams
+If a selection set has already been established for the primary load case, a definition of HIST
+REST will take this and continue with the time history automatically.
+SOFiSTiK2023 3-31HYDRA|InputDescription
+3.18 COPY – Modify nodal results in the database
+COPY
+Item Description Unit Default
+FROM Range of result cases to be treated − -
+TO − -
+TARG Resulting case number − -
+Correction of pressures
+PCOR by a value to add ∗ 0.0
+PREF by a reference to divide ∗ 1.0
+COPY is a command for special cases where separate result cases should be combined to a
+single one. For the evaluation of wind pressures which have been calculated with PHYSICA,
+the conversion to pressure coefficients is a useful aid.
+A licence for HYDRA is not required for this option.
+3-32 SOFiSTiK2023InputDescription|HYDRA
+3.19 IMPO – Import of Results
+IMPO
+Item Description Unit Default
+LC Number of result case − !
+TYPE Type of results LT !
+TEMK Temperatures in Kelvin
+TEMP Temperatures in Celsius
+TK2C Convert Kelvin to Celsius
+T Time value sec !
+FROM name of external file to import LT !
+With IMPO it is possible to import results from other programs into HYDRA. The import file
+is a text file and may contain any comments starting with a $ or #, the data values have to
+be specified in lines each containing the node number and the data value at this node in free
+format.
+Aline*ENDterminatestheimport,aline*TIME=timevaluemaybeusedtostructureatransient
+result file.
+A licence for HYDRA is not required for this option.
+SOFiSTiK2023 3-33HYDRA|InputDescription
+3.20 ECHO – Output Options
+ECHO
+Item Description Unit Default
+OPT Designation of an option LT FULL
+FULL all options
+NODE nodal coordinates and values
+ELEM Elements
+FUNC Functional values
+BOUN Boundary conditions
+POT Potentials or Temperatures
+QUAN Quantities
+VELO fluxes and velocities
+STAT Iterations etc.
+STEP Output interval
+for transient analysis
+VAL value of the option LT FULL
+-1 or OFF no computation
+0 or NO no output
+1 or YES regular output
+2 or FULL extensive output
+3 or EXTR extreme output
+For the effects of those options see chapter 4. output description.
+3-34 SOFiSTiK2023OutputDescription|HYDRA
+4 Output Description
+4.1 System Parameters
+Every printout starts with a sum up of the system parameters and the defined groups. The
+table of the groups contains the number of elements within that group, the usage level and the
+height of the capillary height (H-KAP) and the reduction factor for the fully dry condition (FT).
+This table may be influenced by the record ECHO
+4.2 Nodes
+The first table contains the maximum coordinates within the system followed by the explicitly
+defined nodes. Option ECHO NODE FULL will switch to the total table. The same mechanism
+will be used for the printout of nodal results.
+The nodal table will be printed when creating or modifying a system or with an explicit option
+ECHO FULL or NODE.
+It contains:
+NUMBER nodal number
+X, Y, Z nodal coordinates
+T-MAX Maximum thickness of layer
+S Storage coefficient
+NSP(-) effective usable porosity
+K isotope permeability/conductivity or up to six ele-
+ments of the full 3D-tensor.
+4.3 Materials
+If materials have been defined a material table follows:
+NO Material number
+P pore pressure level
+S[1/m] Storage coefficient
+NSP[-] effective porosity
+Kxx[m/sec] Permeability
+Kyy[m/sec]
+Kzz[m/sec]
+or for thermal analysis:
+NO Material number
+SOFiSTiK2023 4-1HYDRA|OutputDescription
+TEMP Temperature level
+S[J/Km3] Storage coefficient
+eps[-] moisture percentage
+Kxx[m/sec] Conductivity
+Kyy[m/sec]
+Kzz[m/sec]
+4.4 Sections
+The table of pipe and culvert sections is hierarchically organized:
+C R O S S S E C T I O N S
+No PNO VNO area CIRCUM EFFECT. K LEAKAGE Y Z
+[m2] [m] [m] [mm] (m2/sec) [m] [m]
+2 57.0000 59.301 31.301 4.9 1.55E+02 S = 1.250E+01
+2 1 6.5000 15.414 8.414 12.6 2.54E+01 15.000 -2.000
+1 2 20.0 1.00E+00 14.000 -1.000
+1 3 12.0 4.00E+00 8.000 -1.000
+1 4 -8.0 0.00E+00 8.000 -2.000
+2 2 46.0000 36.472 20.472 5.6 1.12E+02 8.000 -2.000
+2 12 -4.0 0.00E+00 8.000 -1.000
+2 13 3.0 0.00E+00 7.000 1.000
+2 14 7.0 8.00E+00 -7.000 1.000
+2 15 3.0 0.00E+00 -8.000 -1.000
+2 16 -4.0 0.00E+00 -8.000 -2.000
+...
+Thefirstnumbergivesthetotalsectionalvalueswiththemeanroughnessandleakagefactors.
+Then (with ECHO SECT FULL) one will get the sectional values of every partial section, and
+with (ECHO SECT EXTR) the individual vertices of the section.
+4.5 Elements
+The second part of the system description are the elements. These tables will be printed if a
+system is defined or the option ECHO ELEM FULL has been selected.
+Link Elements
+NUMBER Element number
+N1,N2 node numbers
+Aref[m2] Reference area
+A Linear loss coefficient
+B Quadratic loss coefficient
+S0 Storage coefficient
+eps Emission rate according to Boltzmann
+4-2 SOFiSTiK2023OutputDescription|HYDRA
+Pipe Elements
+NUMBER Element number
+N1,N2 node numbers
+NS section number
+NW(MM) nominal width
+KS(MM) absolute roughness
+L(M) Effective length of pipe
+S0(L/M2) Storage coefficient
+Plane Elements
+NUMBER Element number
+N1-N4 node numbers
+MNO Material number
+T0[m] Elementdicke or Text "SURFACE"
+Volume Elements
+NUMBER Element number
+N1-N8 node numbers
+MNO Material number
+4.6 Boundary Conditions
+Thetableoftheboundaryconditionscontainsallspecifieddatawiththesamedesignationsas
+given in the input. The table may be suppressed with option ECHO BOUN NO.
+Boundary Conditions
+Surface Boundary Conditions
+TYPE Type of boundary condition
+NB number of identification or balance
+F Function number
+FROM smallest node or element number
+TO largest node or element number
+INC Increment of node or element number
+VALUE Value of the boundary condition
+VP additional value (environment potential, suction
+etc.)
+EPS Emission rate according to Boltzmann
+SOFiSTiK2023 4-3HYDRA|OutputDescription
+4.7 Statistical Information
+With ECHO STAT one gets all intermediate values of the iterations or transient analysis also
+within the normal printout (default only in protocol-file)
+Step 2 dt= 1.0000 dH= 1.242 Node 3
+dt= 1.0000 dH= 1.243 Node 3
+Iteration 2 dH= 0.017 Node 41 f = 1.000
+dt= 1.0000 dH= 1.237 Node 3
+Iteration 3 dH= 0.045 Node 34 f = 0.112
+dtisthesizeofthetimestep,thevariationofthepotentialwithinthetime,thefollowingiteration
+lines reflect the changes to the last iteration. "f" is the correction factor or the parameter of the
+line search.
+For every well there will be a line with the current water head and the resulting take out. For
+transient analysis and option ECHO FUNC one will get functional values of the function for
+every time step.
+4.8 Results of the Elements
+For every element with its centre within the active flow region (= not above the free surface)
+and the group of which has been selected for printout. One will get at the centre:
+Plane Elements
+NUMBER Element number
+GRADIENT Potential or Temperature gradient
+VX,VY,VZ Components of flow or heat flux
+(real velocity for groundwater)
+Q The quantity crossing the element
+For Pipe elements there is again a hierarchic print out
+ROHR Element number
+T Number of subregion
+I[m/km] Gradient
+Q[l/sec] Flow quantity
+V[m/sec] Velocity of flow
+A[m2] Active flow area
+R[m] Hydraulic Radius
+K[mm] Effective roughness
+REYNOLD Reynolds number
+FROUD Froud number
+4-4 SOFiSTiK2023OutputDescription|HYDRA
+For open culverts a "flooded" estate will be marked. Elements with velocities above a given
+limit will be flagged with asterix.
+For LINK-elements only ECHO VELO FULL will print potential differences and flux quantities.
+With ECHO VELO NO those tables may be suppressed. Option ECHO VELO FULL will also
+print the flow rates. If the porosity is not specified, the real velocity is undefined, then the flow
+rates will be printed instead in the only printed line.
+4.9 Results at Nodes
+Resultsatnodeswillbeprintedforallexplicitlydefinednodes,withECHOPOThoweverforall
+nodes. Transient analysis will have the actual time value within the header.
+Allnodeswhichyieldaquantityenteringorleavingthesystemwillbeprintedwithinaseparate
+table. With nonlinear problems there might be small quantities in other nodes. Option ECHO
+QUAN EXTR will print all nodes even those with zero or very small quantities.
+Capacity effects of derivatives in time of a transient analysis will be also calculated and in-
+cluded. For larger time steps the total balance of flow will therefore not match. ECHO ERG 6
+or7insteadofFULLorEXTRwillsuppressthisfeature. Allnodeswillthenshowthequantities
+stored or supplied at the node.
+For coupled nodes, one will get two quantities with opposite signs in the master and slave
+node.
+4.10 Balancing
+For every group there will be the balance of the quantities going in and out and internally
+absorbed or generated. A total balance of all groups will be printed whenever more than two
+groups are present in the analysis.
+SOFiSTiK2023 4-5HYDRA|OutputDescription
+4-6 SOFiSTiK2023GraphicalOutputofTransientResults|HYDRA
+5 Graphical Output of Transient Results
+For graphical results there are the modules WING/WinGRAF and DYNR available. As only a
+few commands from DYNR are required for HYDRA we repeat them here for the ease of use.
+5.1 SIZE – Graphic Format
+SIZE
+Item Description Unit Default
+TYPE Paper size − 3
+Positive value landscape format
+Negative value portrait format
+SC Scale − *
+0 format filling
+* engineering scale, best
+possible for filling the page
+W Paper width cm *
+H Paper height cm *
+MARG Draws a border LT FULL
+NO draws an inner border + scale
+here W and H define the size
+of the area to be drawn at
+(for single sheet plotters and
+laser printers)
+YES draws a free border around
+the drawing W and H define
+the size of the paper (2cm
+margin, otherwise .5cm)
+FULL an additional border to cut the
+drawing at the outer paper
+limits is drawn (for drum
+plotters)
+FORM Form of the border LT *
+STAN standard frame
+ZTVK ZTVK-88 frame
+TMAX Maximum time value of presentation sec *
+The horizontal scale of the time will be automatically selected based on the given time val-
+ues. The unit will be switched to minutes or days whenever the size of the values makes this
+reasonable. At HIST you may also specify an interval at your own discretisation.
+SOFiSTiK2023 5-1HYDRA|GraphicalOutputofTransientResults
+For further remarks see the general SOFiSTiK-Manual "Installation and Basics"
+5.2 SCHH – Set Character Heights
+SCHH
+Item Description Unit Default
+H1 Header lines cm 0.35
+H2 Texts within the legend cm 0.25
+H3 Designation of axis cm 0.25
+H4 Scaling of Axis cm 0.25
+H5 Company and Program name cm 0.18
+The default of H1 will be corrected for smaller formats to enable the display of 72 characters.
+A value of 0.0 will suppress the labelling.
+Values will be kept until a redefintion occurs of SIZE or SCHH.
+5-2 SOFiSTiK2023GraphicalOutputofTransientResults|HYDRA
+5.3 FUNC – External Function
+FUNC
+Item Description Unit Default
+T Time value sec !
+F Function value − !
+DT Division of time sec *
+NO number of function − *
+TITL Designation Lt24
+OnecandefineanyfunctionwithinDYNRtobeusedascomparisonwithintheHISTdisplays.
+NO and TITL are evaluated only for the first function value. If no time value is given, the last
+timeincrementwillbeaddedtothelasttimevalue. Forregulartimestepsthetimevaluesmay
+be omitted therefore for all higher values.
+5.4 HIST – Display of Transient Results
+HIST
+Item Description Unit Default
+LCS Storage number of curve − !
+TYPE Degree of freedom LT !
+(see following remarks)
+NO1 First node or element number Colour and line type of − -
+first curve
+C1 Second node or element number − 1001
+NO2 Colour and line type of second curve − -
+C2 Third node or element number − C1
+NO3 Colour and line type of third curve − -
+C3 Fourth node or element number − C2
+NO4 Colour and line type of fourth curve − -
+C4 Fifth node or element number − C3
+NO5 Colour and line type of fifth curve − -
+C5 Sixth node or element number − C4
+NO6 Colour and line type of sixth curve − -
+Tablecontinuedonnextpage.
+SOFiSTiK2023 5-3HYDRA|GraphicalOutputofTransientResults
+Item Description Unit Default
+C6 − C5
+YMIN Lower value of the vertical value range ∗ *
+YMAX Upper value of the vertical value range ∗ *
+TMIN Lower value of the vertical value range ∗ *
+TMAX Upper value of the vertical value range ∗ *
+TDIM Unit of TMIN and TMAX & legend LT *
+SEC, MIN, H or D
+LOGS, LOGM, LOGH, LOGD
+ThecommandHISTcanrequestuptosixtimevariationcurvespergraph. Thedisplayedrange
+of values is determined automatically based on the found values and the scale data given in
+SIZE. YMIN and YMAX or TMIN and TMAX can be used to modify this range.
+The following types are allowed:
+H = Potentials
+QH QBH QHPI = Quantities nodes, regions, pipes
+VQUA VBRI = velocities QUAD, BRIC-Elements
+T = Temperature
+QT QBT QTPI = Heat flux nodes, regions, links
+QQUA QBRI = Heat flux densities QUAD, BRIC-Elements
+Besidethevariationsthatarestoredinthedatabase,onecanalsodefineandplotcomparison
+curves with FUNC. The negative value of the function number must be given to one of the
+NOi-entries for this purpose. In order to plot the functions only, one must enter the value of 0
+for LCS.
+5-4 SOFiSTiK2023

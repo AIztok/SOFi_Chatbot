@@ -1,0 +1,529 @@
+DYNR
+Transient Results and Response Spectra
+SOFiSTiK | 2023DYNR
+TransientResultsandResponseSpectra
+DYNRManual,ServicePack2023-3Build88
+Copyright©2023 bySOFiSTiKAG,Nuremberg,Germany.
+SOFiSTiKAG
+HQNuremberg OfficeGarching
+Flataustraße14 Parkring2
+90411Nürnberg 85748GarchingbeiMünchen
+Germany Germany
+T+49(0)91139901-0 T+49(0)89315878-0
+F+49(0)911397904 F+49(0)89315878-23
+info@sofistik.com
+www.sofistik.com
+Thismanualisprotectedbycopyrightlaws. Nopartofitmaybetranslated,copiedorreproduced,inanyformorby
+anymeans,withoutwrittenpermissionfromSOFiSTiKAG.SOFiSTiKreservestherighttomodifyortorelease
+neweditionsofthismanual.
+Themanualandtheprogramhavebeenthoroughlycheckedforerrors. However,SOFiSTiKdoesnotclaimthat
+eitheroneiscompletelyerrorfree. Errorsandomissionsarecorrectedassoonastheyaredetected.
+Theuseroftheprogramissolelyresponsiblefortheapplications. Westronglyencouragetheusertotestthe
+correctnessofallcalculationsatleastbyrandomsampling.
+FrontCover
+Volkstheater,Munich Photo:FlorianSchreiberContents|DYNR
+Contents
+Contents i
+1 Task Description 1-1
+2 Input Description 2-1
+2.1 Input Language . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.2 Input Records. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-1
+2.3 SIZE – Size and Scale of the Representation . . . . . . . . . . . . . . . . . 2-2
+2.4 SCHH – Text Size . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-3
+2.5 RESP – Properties of the Single Mass Oscillator . . . . . . . . . . . . . . . 2-4
+2.6 FUNC – External Function . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-6
+2.7 EXCI – Excitation Function . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-7
+2.8 SPEC – Response Spectra . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-8
+2.9 HIST – Histogram Curves . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 2-9
+2.10 ECHO – Control of the Output Extent. . . . . . . . . . . . . . . . . . . . . . . 2-12
+3 Examples 3-1
+3.1 Dynamic Load Factors . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-1
+3.2 Story Response Spectrum . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3-3
+SOFiSTiK2023 iDYNR|Contents
+ii SOFiSTiK2023TaskDescription|DYNR
+1 Task Description
+The program DYNR enables the graphical presentation of transient results from the programs
+DYNAandHYDRA.Itplotstime-controlledorfrequency-controlledresultsand,asanadditional
+option, calculates response spectra for a given loading or acceleration history.
+Using the input record HIST during a dynamic analysis with the program DYNA one can store
+in the database the time variations of selected degrees of freedom or internal forces and mo-
+ments. By the same record HIST, the program HYDRA stores in the database the unsteady
+temperature or potential variation. DYNR can present these curves graphically in any combi-
+nation.
+Furthermore,itiscapableofusingeitherthealreadystoredaccelerationvariationsofindividual
+points or any newly defined function in order to determine the response spectra.
+A response spectrum is determined by the maximum response of a single mass oscillator
+with known damping to a known excitation function in relation to the natural frequency of the
+oscillator.
+Each loading (e.g. earthquake, impact at corner A, impact at corner B, etc.) is stored in DYNA
+by a certain number.
+DYNR can now plot either the given HIST curves or the response spectra in the various coor-
+dinate directions under consideration of the various damping values.
+SOFiSTiK2023 1-1DYNR|TaskDescription
+1-2 SOFiSTiK2023InputDescription|DYNR
+2 Input Description
+2.1 Input Language
+Input is made in the CADINP language (see general manual SOFiSTiK: FEA / STRUCTURAL
+Installation and Basics).
+2.2 Input Records
+The following record names are defined:
+Record Items
+SIZE DINA S W H MARG FORM TMAX
+SCHH H1 H2 H3 H4 H5
+RESP TYPE TMIN TMAX TDIF
+D1 D2 D3 D4 D5
+C1 C2 C3 C4 C5
+REF1 RC1 REF2 RC2 REF3 RC3
+FUNC T F DT NO TITL
+EXCI LCS NO COMP F TITL
+SPEC TYPE
+HIST LCS TYPE
+NO0 C0 NO1 C1 NO2 C2
+NO3 C3 NO4 C4 NO5 C5
+NO6 C6 NO7 C7 NO8 C8
+NO9 C9 YMIN YMAX
+TMIN TMAX TDIM YTOL LIM1 LIM2
+TEFF CLIM
+XTYP NX TITL
+ECHO OPT VAL
+The records HEAD, END and PAGE are described in the general manual SOFiSTiK: "‘FEA /
+STRUCTURAL Installation and Basics"’.
+A description of each record follows:
+SOFiSTiK2023 2-1DYNR|InputDescription
+2.3 SIZE – Size and Scale of the Representation
+Seealso: SCHH,HIST
+SIZE
+Item Description Unit Default
+DINA Paper size − -4
+Positive value landscape format
+Negative value portrait format
+S Scale of the function values − *
+0 format filling
+* engineering scale, best possible
+for filling the page
+W Paper width cm DINA
+H Paper height cm DINA
+MARG Draws a border LT FULL
+OFF no border will be drawn
+NO does draw only the inner border
+YES does consider a free border
+around the drawing
+FULL an additional border to cut the
+drawing at the outer paper limits
+is drawn
+FORM Form of the border LT STAN
+STAN standard frame SOFiSTiK
+ZTVK ZTVK-88 frame
+TMAX Maximum time / frequency in the representation sec/Hz *
+The horizontal scale of time or frequency is selected automatically in an engineering manner
+based on the values at hand. An automatic switch to minutes or days takes place when time
+values become accordingly large. TMAX can be used to select a larger time range for better
+result comparison.
+TheverticalscaleisselectedwithS.Inaddition, the valuerangecanbearbitrarilychangedby
+HIST.
+More explanations can be found in the general manual SOFiSTiK: ’FEA / STRUCTURAL In-
+stallation and Basics’.
+2-2 SOFiSTiK2023InputDescription|DYNR
+2.4 SCHH – Text Size
+Seealso: SIZE
+SCHH
+Item Description Unit Default
+H1 Height of the legend cm 2.50
+H2 Texts of the legend cm 0.25
+H3 Designation of the axes cm 0.25
+H4 Dimensional lines at the axes cm 0.25
+H5 reserved cm 0.18
+A value of 0. suppresses the corresponding designation. The values remain valid until a new
+definition of SIZE or SCHH is given.
+SOFiSTiK2023 2-3DYNR|InputDescription
+2.5 RESP – Properties of the Single Mass Oscillator
+Seealso: EXCI,SPEC
+RESP
+Item Description Unit Default
+TYPE Result which is supposed to be represented: LT A
+P Force
+S Displacement
+V Velocity
+A Relative acceleration
+AA Absolute acceleration
+AS A as function of S
+AAS AA as function of S
+TMIN Lowest natural period sec 0
+TMAX Highest natural period sec !
+TDIF Step size of the natural periods or frequencies sec *
+bz.
+Default: (TMIN-TMAX)/20
+1/sec
+D1 Modal damping value 1, marked with . − 0.
+D2 Modal damping value 2, marked with + − -
+D3 Modal damping value 3, marked with * − -
+D4 Modal damping value 4, marked with o − -
+D5 Modal damping value 5, marked with x − -
+C1 Colour and line type for D1 − 1001
+C2 Colour and line type for D2 − 1001
+C3 Colour and line type for D3 − 1001
+C4 Colour and line type for D4 − 1001
+C5 Colour and line type for D5 − 1001
+REF1 Number of an optional reference curve − -
+RF1 Colour and line type for REF1 − 2001
+REF2 Number of an optional reference curve − -
+RF2 Colour and line type for REF2 − 2001
+REF3 Number of an optional reference curve − -
+RF3 Colour and line type for REF3 − 2001
+Thesinglemassoscillator,whichissubjectedtothevariousexcitations,mustbedescribedvia
+a frequency range with fixed subdivisions.
+Inthecaseofexcitationthroughanacceleration, TYPEAAcanbeusedtoplotthetotalaccel-
+2-4 SOFiSTiK2023InputDescription|DYNR
+eration(ground+oscillator). Thisisusuallythedesiredvalue. ForTYPEonecanalsoenterP+,
+S+, V+, A+, AA+ as well as P-, S-, V-, A-, AA-. Then only the positive or negative components
+are evaluated.
+The evaluation of the oscillation equations is performed only for the times defined by the exci-
+tation function. The duration of the evaluation is also determined by the highest time value of
+the excitation value. A somewhat longer time range with exciting function 0.0 should thus be
+defined in the case of high frequency excitation.
+Up to five different damping values can be examined simultaneously. The damping values D1
+through D5 can be used arbitrarily according to the desired marking. Different line types and
+colour values can be defined for the curves. The colour values and the line types are added
+here to the values defined inthe record EXCI minus 1001 (e.g. 2001 ”+” 3002 - 1001 = 4002).
+Therefore it is reasonable to input one record with line types (1001 through 1010) and the
+others with colours (e.g. 1001 through 9001).
+Up to three external reference curves may be shown. These functions have to be defined via
+FUNC and must be defined after an external load function for the response analysis.
+SOFiSTiK2023 2-5DYNR|InputDescription
+2.6 FUNC – External Function
+Seealso: EXCI,SPEC,HIST
+FUNC
+Item Description Unit Default
+T Time value sec !
+F Function value − !
+DT Time subdivision sec *
+NO Number of the function − *
+TITL Title of the function LT24 -
+Anyfunctionsthatcanbeselectedeitherasaccelerationorloadingofthesinglemassoscillator
+or as comparison curves to HIST can be defined in DYNR. Since the mass of the single mass
+oscillator is 1.0, no need of the differentiation exists there between acceleration and force.
+The values of all excitation functions get stored in the database. They are maintained until
+a new definition takes place. If FUNC values are input after the records HIST or SPEC, all
+functions are automatically deleted.
+NO and TITL are input by the first function value only. If no time value is entered, the last time
+incrementisaddedtothelasttimevalue. Inthiscaseforregulartimeintervalstheinputoftime
+values can be omitted for all higher values.
+2-6 SOFiSTiK2023InputDescription|DYNR
+2.7 EXCI – Excitation Function
+Seealso: RESP,FUNC
+EXCI
+Item Description Unit Default
+LCS Storage number of the curve − !
+NO Node number of the excited point − !
+COMP Excitation components LT XYZ
+X X direction only
+Y Y direction only
+Z Z direction only
+XY X and Y direction
+XZ X and Z direction
+YZ Y and Z direction
+XYZ all directions
+F Colour and line type for the curve − 1001
+(see general manual SOFiSTiK: ’FEA /
+STRUCTURAL Installation and Basics’)
+TITL Title of the function LT24 -
+EXCI activates the variation curves that are stored in the database. All curves selected with
+EXCI are plotted simultaneously.
+The selection of the excitation functions remains valid up to a new definition.
+If the excitation variation were defined in DYNR by the record FUNC, such a function must be
+selected with LCS 0. The first defined function FUNC is used, if EXCI is not input.
+SOFiSTiK2023 2-7DYNR|InputDescription
+2.8 SPEC – Response Spectra
+Seealso: RESP,FUNC,HIST
+SPEC
+Item Description Unit Default
+TYPE Representation in dependence from LT TIME
+TIME time
+FREQ frequency
+LOGT time in logarithmic
+representation
+LOGF frquency in logarithmic
+representation
+When TYPE FREQ is input, the values TMIN, TMAX and TDIF of the RESP input are inter-
+preted as frequencies too.
+IfLOGTorLOGFaredefined,alogarithmicscaleisselected. TDIFdefinesthenasubdivision
+factor relative to 1.0 for the number of intermediate values (e.g. TDIF 0.05 = 20 intermediate
+values).
+Each record SPEC or HIST produces a drawing with the current parameters.
+2-8 SOFiSTiK2023InputDescription|DYNR
+2.9 HIST – Histogram Curves
+Seealso: SIZE,FUNC,SPEC
+HIST
+Item Description Unit Default
+LCS Storage number of the curve − !
+TYPE Degree of freedom (see explanations) LT !
+NO0 First node or element number − -
+C0 Colour and line type of first curve − 1001
+NO1 Second node or element number − -
+C1 Colour and line type of second curve − C0
+... ...
+NO9 Tenth node or element number − -
+C9 Colour and line type of tenth curve − C8
+YFAC Scaling factor vertical − 1
+YMIN Lower value of the vertical value range ∗ *
+YMAX Upper value of the vertical value range ∗ *
+TMIN Lower value of horizontal value range ∗ 0.
+TMAX Upper value of horizontal value range ∗ *
+TDIM Dimension of TMIN, TMAX and legend LT SEC
+SEC second
+MIN minute
+H hour
+D day
+LOGS logarithmic
+LOGM logarithmic
+LOGH logarithmic
+LOGD logarithmic
+YTOL Tolerance for limit values LIM1 / LIM2 − 0.3
+LIM1 First limit value ∗/LT -
+LIM2 Second limit value ∗/LT -
+CLIM Line type and colour for limit value lines − 2010
+TEFF Duration for effective average values (TDM) -
+XTYP Value to be used for the horizontal axis LT *
+NX number for XTYP within the load case LCS − -
+TITL Designation of this graf Lt∗ *
+Tablecontinuedonnextpage.
+SOFiSTiK2023 2-9DYNR|InputDescription
+Item Description Unit Default
+DUMP Dump of data into a Textfile with this name Lt∗ *
+With the record HIST one can request up to ten transient curves per picture.
+The displayed range of values is determined automatically based on the found values and
+the scale data given in the record SIZE. YMIN and YMAX or TMIN and TMAX can be used
+to modify this range. If you specify the values for LIM1 and/or LIM2, these limit values will
+be included in the display, if the current maximum values pass YTOL times the specified limit
+values.
+The following types are allowed for both axes X and Y:
+U-X U-Y U-Z Displacements
+U-RX U-RY U-RZ Rotations
+V-X V-Y V-Z Velocities
+V-RX V-RY V-RZ Angular velocity
+A-X A-Y A-Z Accelerations
+A-RX A-RY A-RZ Angular acceleration
+P PT Spring forces
+SPX SPY SPZ Sum of spring forces or total drag force or coefficient
+SPXX SPYY SPZZ Sum of spring moments or total drag moment or coeffi-
+cient
+TRUS CABL Truss bar force / cable force
+N VY VZ Beam forces axial and shear
+MT MY MZ Beam moments torsion and bending
+SIG TAU SIGV Stresses in beams
+MXX MYY MXY Shell moments
+VXX VYY Shell shear forces
+NXX NYY NXY Shell axial forces
+H PN Potential, Pressure
+QH QBH QHPI Flow quantities nodes, regions, pipes
+VQUA VBRI Flow velocities QUAD, BRIC-Elements
+U V W Flow velocities in monitor points
+TKP TDN Turbulence parameter k and eps in monitor points
+T Temperature
+QT QBT QTPI Heat flow nodes, regions, links
+QQUA QBRI Heat flow densities QUAD, BRIC-Elements
+2-10 SOFiSTiK2023InputDescription|DYNR
+DSX DSY DSZ Stiffness and damping coefficient of the dynamic
+impedance
+(1/displacements SX or SY or SZ)
+DSRX DSRY DSRZ Stiffness and damping coefficient of the dynamic
+impedance
+(1/rotations SRX or SRY or SRZ)
+It is also possible to show similar values in the same picture together. This will be controlled
+with an additional decimal at the number used as a shift. Thus for a specified TYPE U-X a
+selection of 1001.0 is the displacement of node 1001 in X, while 1001.2 is that in Z direction
+etc.
+Besidethevariationsthatarestoredinthedatabase,onecanalsodefineandplotcomparison
+curveswiththerecordFUNC.Thenegativevalueofthefunctionnumbermustbegiventoone
+oftheNOi-entriesforthispurpose. Inordertoplotthefunctionsonly,onemustenterthevalue
+of 0 for LCS.
+With LIM1 and LIM2 it is possible to show a constant limit or reference value with a horizontal
+lineandaprintedvalue. ThedefinitionofliteralsMEANorSDEVwillshowthemeanvaluesor
+valuesshiftedbythestandarddeviation. ThedefinitionofliteralsMAX,MINorMAMIwillshow
+the maximum and/or minimum values. The definition of literal RMS will show the positive and
+negative root of mean squares value.
+Each record SPEC or HIST produces a drawing with the current parameters.
+SOFiSTiK2023 2-11DYNR|InputDescription
+2.10 ECHO – Control of the Output Extent
+ECHO
+Item Description Unit Default
+OPT ECHO option LT FULL
+FULL output also as text
+VAL Value of the output option LT FULL
+FULL extensive output
+2-12 SOFiSTiK2023Examples|DYNR
+3 Examples
+The input files which are explained here are to be found in the installation directory SOFiSTiK
+inthesubdirectorydyna.dat\english. AlternativelyyouwillfindtheseexamplesviatheTEDDY
+menu HELP > EXAMPLES sorted by program name and language.
+For additional help like tutorials, tutorial movies and practical examples please refer to the
+SOFiSTiK Infoportal (www.sofistik.com/Infoportal).
+3.1 Dynamic Load Factors
+The first example refers to the search of the dynamic load factors for various trapezoidal load-
+ings. Such an analysis can be performed by DYNR without a database. The input for this
+purpose would be e.g.
+PROG DYNR
+HEAD RESPONSE SPECTRA OF TRAPEZOIDAL FUNCTIONS
+HEAD MANUAL DYNR
+RESP P 0 6 0.10 0.0 0.20 1.00
+FUNC 0.00 0. TITL 'TRAPEZOIDAL LOAD 1'
+0.25 1. 0.025
+0.75 1. 0.025
+1.00 0. 0.025
+SPEC
+FUNC 0.00 0. TITL 'TRAPEZOIDAL LOAD 2'
+0.33 1. 0.025
+0.67 1. 0.025
+1.00 0. 0.025
+SPEC
+FUNC 0.00 0. TITL 'TRIANGULAR LOAD'
+0.50 1. 0.025
+1.00 0. 0.025
+SPEC
+END
+The following three pictures are obtained in this way:
+SOFiSTiK2023 3-1DYNR|Examples
+TRAPEZOIDAL LOAD 1
+Damping 0.000
+Damping 0.200
+Damping 1.000
+Force [kN]
+1.8
+1.6
+1.4
+1.2
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0 Period
+1.0 2.0 3.0 4.0 5.0 6.0 [sec]
+Figure3.1: Trapezoidalload1
+TRAPEZOIDAL LOAD 2
+Damping 0.000
+Damping 0.200
+Damping 1.000
+Force [kN]
+1.8
+1.6
+1.4
+1.2
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0 Period
+1.0 2.0 3.0 4.0 5.0 6.0 [sec]
+Figure3.2: Trapezoidalload2
+Force [kN] TRIANGULAR LOAD
+Damping 0.000
+Damping 0.200
+Damping 1.000
+1.4
+1.2
+1.0
+0.8
+0.6
+0.4
+0.2
+0.0 Period
+1.0 2.0 3.0 4.0 5.0 6.0 [sec]
+Figure3.3: Triangularload
+3-2 SOFiSTiK2023Examples|DYNR
+3.2 Story Response Spectrum
+This example makes use of the three-story frame from the manual for the program DYNA
+in order to calculate a story response spectrum for the highest story. Prerequisite for that
+is an excitation function, which can model the earthquake in a more realistic manner than a
+sinusoidal excitation. The sinusoidal excitation can be clearly marked as a spike in the story
+response spectrum making the analysis quite meaningless. For this reason, without going
+in depth, an excitation function with a frequency of roughly 10 Hertz, created by a statistical
+process, was selected.
+FirstanoscillationanalysisoftheentirestructurewiththeprogramDYNAisnecessary. Thisis
+done e.g. by the following input:
+PROG DYNA
+HEAD THREE-STORY FRAME BASE POINT EXCITATION
+! MAXIMUM VALUES U3 = 10.2 CM ; V = 1360 KN ; M = 2040 KNM
+! 0.5 CM ; V = 92 KN ; M = 138 KNM
+! 0.2 CM ; V = 56 KN ; M = 84 KNM
+! NATURAL FREQUENCIES 1.501 / 3.185 / 4.862 (HERTZ)
+EIGE 3 REST
+STEP 200 0.06
+LC 51
+FUNC 0.0000 0.0000; 0.1000 -0.5765; 0.2000 0.1357
+FUNC 0.3000 -0.5040; 0.4000 0.5614; 0.5000 0.6055
+. . .
+ACCE 0 0.0 3.0
+HIST U-Y 4 LCST 51
+HIST A-Y 3 4 1 LCST 51
+HIST MYA 1 3 1 LCST 51
+END
+The time variation of the displacements as well as the accelerations of the upper node (No. 4)
+is now available in the database. Then DYNR plots both these variations and calculates the
+story response spectrum with the following input:
+PROG DYNR
+HEAD RESPONSE SPECTRUM OF ROOF STOREY
+HIST 51 U-Y 4 1001
+HIST 51 A-Y 4 2001
+HIST 51 MYA 1 1001 2 2001 3 3001
+RESP A 0 1.5 0.02 0.001 0.02
+EXCI 51 4 Y 1001
+EXCI 51 3 Y 2001
+SPEC
+END
+The pictures can be found in the next pages:
+SOFiSTiK2023 3-3DYNR|Examples
+Displacement uY 4
+Displacement uY [mm]
+100.000
+50.000
+Time
+0.000
+2.0 4.0 6.0 8.0 10.0 12.0 [sec]
+−50.000
+−100.000
+Figure3.4: DisplacementuY[mm]
+3-4 SOFiSTiK2023Examples|DYNR
+Acceleration AY 4
+Acceleration AY [m/sec2]
+10.00
+5.00
+Time
+0.00
+2.0 4.0 6.0 8.0 10.0 12.0 [sec]
+−5.00
+−10.00
+Figure3.5: AccelerationAY[m/sec2]
+SOFiSTiK2023 3-5DYNR|Examples
+bending moment My beam 1
+bending moment My beam 2
+bending moment My beam 3
+bending moment My beam [kNm]
+4000.00
+3000.00
+2000.00
+1000.00
+Time
+0.00
+2.0 4.0 6.0 8.0 10.0 12.0 [sec]
+−1000.00
+−2000.00
+−3000.00
+−4000.00
+Figure3.6: BendingmomentMy
+3-6 SOFiSTiK2023Examples|DYNR
+LOADCASE 51 NODE 4 Y
+LOADCASE 51 NODE 3 Y
+Damping 0.001
+Damping 0.020
+Acceleration [m/sec2]
+200.00
+150.00
+100.00
+50.00
+Period
+0.00
+0.2 0.4 0.6 0.8 1.0 1.2 1.4 [sec]
+Figure3.7: Damping
+SOFiSTiK2023 3-7

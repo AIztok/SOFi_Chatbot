@@ -1,0 +1,80 @@
+!#!KAPITEL Material and System generation
++prog aqua urs:1
+HEAD
+NORM 'DIN' 'en199X-200X'
+CONC  1 C 40
+STEE 11 S 500
+END
+
++PROG SOFIMSHA urs:2
+HEAD BRIC
+UNIT 5 ; SYST SPAC GDIV 10000 GDIR POSZ
+grp 0
+NODE NO              X        Y        Z
+     1               0        0        0   $NODI IN PIANTA
+     2               0        1        0
+     3               1        1        0
+     4               1        0        0
+     5               0        0       -0.25  $NODI IN ELEVAZIONE+25CM
+     6               0        1       -0.25
+     7               1        1       -0.25
+     8               1        0       -0.25
+grp 1
+  BRIC - N1 1 2 3 4 5 6 7 8  M 10 N 10 K 5 MNO 1
+
+NODE NO           FIX
+     1            KF
+     2            KF
+     3            KF
+     4            KF
+    (1001 1036 1) KF
+    (1314 1394 1) KF
+END
+
++PROG SOFILOAD urs:14.1 $ PESO
+HEAD ACTION
+ACT G_1  $PESO PROPRIO
+ACT Q    $FORZA DA RITEGNO SISMICO
+END
+
+$ PESO PROPRIO
+LC 1 FACD 1.0 TITL 'PESO PROPRIO' TYPE G_1
+
+$ SPINTA RITEGNO
+LC 2 TITL 'RITEGNO' TYPE Q
+  NODE (1209 1220 1) TYPE PXX P1 -330
+END
+
+!#!KAPITEL Analysis
++prog ase urs:3
+HEAD
+LC 2
+END
+
++PROG BEMESS URS:23
+HEAD Definition of reinforcement
+DI3D 0[°] 0[°]  $ = BRIC input in rad , for 10 degree please input 10*3.14/180 or 10[°]
+PARA NOG - DU 26[mm] asu 50 asu2 50  dl 26[mm] asl 50   asl2 50
+END
+
++PROG BEMESS URS:26
+HEAD bric
+CTRL LCR 1 ; LC 2
+$ elem 10391
+END
+
+<TEXT>
+Load 330 kN on each node (node reference area= 0.1 * 0.05 )
+
+p=330 kN/0.1/0.05 = 66 N/mm2
+concrete may carry 34.0/1.5 = 22.6 N/mm2
+Rest -> compression reinforcement = (66-22.6)(400/1.15) = 1247 cm2/m2
+
+  BEMESS gives max value 1438 cm2/m2  - OK as we have addition shear
+
+J. Bellmann 20.03.2019
+</TEXT>
+
+$ Clean file folder:
++sys del $(project).$d?
+
