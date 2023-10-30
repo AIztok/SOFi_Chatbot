@@ -3,6 +3,8 @@
 The Chatbot was done as part of a course on finite element analysis of structures using the SOFiSTiK software package, especially their language cadinp. The chatbot should show the future of working with the software with a LLM (large language model) "co-pilot". 
 The database is continuously expanded by the author.
 
+[SOFi_Chatbot](https://sofichatbot.streamlit.app/)
+
 ## Data
 The Chatbot has access to different Teddy Examples (see Data Folder):
 - Examples provided by the Author
