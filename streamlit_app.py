@@ -37,7 +37,7 @@ def load_data():
         return index
 
 index = load_data()
-memory = ChatMemoryBuffer.from_defaults(token_limit=1500)
+memory = ChatMemoryBuffer.from_defaults(token_limit=500)
 
 chat_engine = index.as_chat_engine(chat_mode="context", verbose=True, memory=memory)
 
@@ -52,5 +52,5 @@ if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
             response = chat_engine.chat(st.session_state.messages[-1]["content"])
-            st.write(response.response)
-            st.session_state.messages.append({"role": "assistant", "content": response.response})
+            st.write(response)
+            st.session_state.messages.append({"role": "assistant", "content": response})
