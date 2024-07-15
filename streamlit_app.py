@@ -1,9 +1,9 @@
 import streamlit as st
-from llama_index import VectorStoreIndex, ServiceContext, Document
-from llama_index.llms import OpenAI
+from llama_index.core import VectorStoreIndex, ServiceContext, Document
+from llama_index.llms.openai import OpenAI
 import openai
-from llama_index import SimpleDirectoryReader
-from llama_index.memory import ChatMemoryBuffer # for the context chat engine
+from llama_index.core import SimpleDirectoryReader
+from llama_index.core.memory import ChatMemoryBuffer # for the context chat engine
 
 st.set_page_config(
     page_title="Chat with a SOFiSTiK database of Teddy/Cadinp files, powered by LlamaIndex",
