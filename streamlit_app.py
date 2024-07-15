@@ -61,8 +61,8 @@ if st.session_state.messages[-1]["role"] != "assistant":
 #            response = chat_engine.chat(st.session_state.messages[-1]["content"])
 #            st.write(response)
 #            st.session_state.messages.append({"role": "assistant", "content": response})
-        response_stream = st.session_state.chat_engine.stream_chat(prompt)
-        st.write_stream(response_stream.response_gen)
-        message = {"role": "assistant", "content": response_stream.response}
-        # Add response to message history
-        st.session_state.messages.append(message)
+            response_stream = st.session_state.chat_engine.stream_chat(prompt)
+            st.write_stream(response_stream.response_gen)
+            message = {"role": "assistant", "content": response_stream.response}
+            # Add response to message history
+            st.session_state.messages.append(message)
